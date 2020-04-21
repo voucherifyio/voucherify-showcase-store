@@ -175,7 +175,6 @@ class ProductProvider extends Component {
     }
 
     addPromotionToCart = couponCode => {
-        debugger;
         client.vouchers.get(couponCode, (error, result) => {
             if (error) {
                 return error
@@ -204,7 +203,7 @@ class ProductProvider extends Component {
 
         if (voucher.discount.type === "PERCENT") {
             voucherDiscount = parseInt(voucher.discount.percent_off, 10)/100
-            cartDiscount = actualCartSubTotal * (1 - voucherDiscount)
+            cartDiscount = actualCartSubTotal * voucherDiscount
 
         } else if (voucher.discount.type === "AMOUNT") {
             voucherDiscount = parseInt(voucher.discount.amount, 10)
@@ -216,6 +215,7 @@ class ProductProvider extends Component {
         }
 
             let cartTotalAfterPromotion = actualCartSubTotal - cartDiscount + cartTax
+            console.log(cartTotalAfterPromotion)
 
             this.setState(() => {
                 return {
@@ -225,14 +225,6 @@ class ProductProvider extends Component {
             })
 
         }
-    
-    // getCouponCode = (value) => {
-    //     this.setState ( {
-    //         couponCode: value
-    //     })
-
-    //     console.log(this.state.couponCode)
-    // }
 
     render() {
         return (
