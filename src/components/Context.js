@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {storeProducts, detailProduct} from '../data'
+import client from './Cart/VoucherifyContext'
 
 const ProductContext = React.createContext()
 
@@ -14,6 +15,11 @@ class ProductProvider extends Component {
         cartSubTotal: 0,
         cartTax: 0,
         cartTotal: 0,
+        cartDiscount: 0,
+        cartTotalAfterPromotion: 0,
+        promotionItemsNumber: 0,
+        promotionItems: {},
+        couponCode: "",
     };
     
     componentDidMount() {
@@ -140,7 +146,13 @@ class ProductProvider extends Component {
 
     clearCart = () => {
         this.setState(() => {
-            return {cart:[]}
+            return {
+                cart:[],
+                cartDiscount: 0,
+                cartTotalAfterPromotion: 0,
+                promotionItemsNumber: 0,
+                promotionItems: {},
+            }
         }, () => {
             this.setProducts();
             this.addTotals();
@@ -161,6 +173,67 @@ class ProductProvider extends Component {
             }
         })
     }
+
+    addPromotionToCart = couponCode => {
+
+        client.vouchers.get(couponCode, (error, result) => {
+            if (error) {
+                return error
+            }
+            const promotion2 = result
+            console.log(promotion2)
+            this.setState(() => {
+                return {
+                    promotionItems: promotion2,
+                    promotionItemsNumber: 1
+                }
+            }, 
+            () => {
+                this.countDiscount();
+            })
+        })
+    }
+
+    countDiscount = () => {
+
+        const voucher = this.state.promotionItems
+        const actualCartSubTotal = parseInt(this.state.cartSubTotal,10)
+        const cartTax = this.state.cartTax
+        let voucherDiscount = 0
+        let cartDiscount = 0
+
+        if (voucher.discount.type === "PERCENT") {
+            voucherDiscount = parseInt(voucher.discount.percent_off, 10)/100
+            cartDiscount = actualCartSubTotal * (1 - voucherDiscount)
+
+        } else if (voucher.discount.type === "AMOUNT") {
+            voucherDiscount = parseInt(voucher.discount.amount, 10)
+            cartDiscount = actualCartSubTotal - voucherDiscount
+
+        } else if (voucher.discount.type === "UNIT") {
+            console.log("Mega unit")
+
+        }
+
+            let cartTotalAfterPromotion = actualCartSubTotal - cartDiscount + cartTax
+
+            this.setState(() => {
+                return {
+                    cartDiscount: cartDiscount,
+                    cartTotalAfterPromotion: cartTotalAfterPromotion
+                }
+            })
+
+        }
+    
+    // getCouponCode = (value) => {
+    //     this.setState ( {
+    //         couponCode: value
+    //     })
+
+    //     console.log(this.state.couponCode)
+    // }
+
     render() {
         return (
             <ProductContext.Provider
@@ -174,6 +247,8 @@ class ProductProvider extends Component {
                     decrement: this.decrement,
                     removeItem: this.removeItem,
                     clearCart: this.clearCart,
+                    addPromotionToCart: this.addPromotionToCart,
+                    // getCouponCode: this.getCouponCode,
                 }}
             >
                 {this.props.children}
