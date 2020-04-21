@@ -9,7 +9,6 @@ export default function CartForm() {
       { ctx =>
         (
           <div className="col-lg-6">
-            <form onSubmit={() => ctx.addPromotionToCart(couponCode)}>
               <div className="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Coupon code</div>
               <div className="p-4">
                 <div className="d-flex" style={{ flexDirection: "column" }}>
@@ -23,13 +22,12 @@ export default function CartForm() {
                       class="form-control border-0"
                     />
                   </div>
-                  <button id="button-addon3" type="submit" class="btn btn-dark px-4 rounded-pill">
+                  <button id="button-addon3" type="button" onClick={() => ctx.addPromotionToCart(couponCode)} class="btn btn-dark px-4 rounded-pill">
                     <i class="fa fa-gift mr-2"/>
                     Apply coupon
                   </button>
                 </div>
               </div>
-            </form>
           </div>
         )
       }
