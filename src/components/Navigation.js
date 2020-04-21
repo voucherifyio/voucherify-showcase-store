@@ -24,7 +24,7 @@ export default class Navbar extends Component {
               </li>
             </ul>
             <Link to="/cart">
-              <button className="btn btn-sm btn-outline-secondary" type="button">Cart&nbsp;
+              <span className="btn" type="button"><i class="fas fa-shopping-cart"></i>&nbsp;
                 <ProductConsumer>
                   {value => {
                       const {cart} = value;
@@ -35,7 +35,7 @@ export default class Navbar extends Component {
                       } 
                     }}
                 </ProductConsumer>
-              </button>
+              </span>
             </Link>
           </div>
         </nav>
