@@ -175,7 +175,7 @@ class ProductProvider extends Component {
     }
 
     addPromotionToCart = couponCode => {
-
+        debugger;
         client.vouchers.get(couponCode, (error, result) => {
             if (error) {
                 return error

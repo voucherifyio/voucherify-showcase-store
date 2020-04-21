@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {ProductConsumer} from './Context'
+import {ProductConsumer} from '../Context'
 
 export default class CartFrom extends React.Component {
     constructor(props) {
@@ -7,30 +7,20 @@ export default class CartFrom extends React.Component {
       this.state = {couponCode: ''};
   
       this.handleChange = this.handleChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
     }
   
     handleChange(event) {
       this.setState({couponCode: event.target.value});
     }
-  
-    handleSubmit(event) {
-      alert('Podano kupon: ' + this.state.couponCode);
-      event.preventDefault();
-      
-      this.setState(() => {
-        return {
-            couponCode: this.state.value
-        }
-      });
-      console.log(this.state)
-    }
-    
     
     render() {
       return (
+        <ProductConsumer>
+          {ctx => {
+
+            return (
             <div className="col-lg-6">
-              <form onSubmit={this.handleSubmit}>
+              <form onSubmit={() => ctx.addPromotionToCart(this.state.couponCode)}>
                 <div className="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Coupon code</div>
                     <div className="p-4">
                         <div className="d-flex" style={{"flexDirection": "column"}}>
@@ -42,6 +32,10 @@ export default class CartFrom extends React.Component {
                         </div>
                       </form>
                     </div>
+            )
+          }
+        }
+        </ProductConsumer>
       );
     }
   }
