@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {storeProducts, detailProduct} from '../data'
 import client from './Cart/VoucherifyContext'
+import { toast } from 'react-toastify';
 
 const ProductContext = React.createContext()
 
@@ -19,7 +20,7 @@ class ProductProvider extends Component {
         cartTotalAfterPromotion: 0,
         promotionItemsNumber: 0,
         promotionItems: {},
-        couponCode: "",
+        appliedCouponCode: "",
     };
     
     componentDidMount() {
@@ -60,6 +61,7 @@ class ProductProvider extends Component {
         product.count = 1
         const price = product.price
         product.total = price;
+        
 
         this.setState(() => {
             return {
@@ -68,6 +70,7 @@ class ProductProvider extends Component {
             }
         }, 
         () => {
+            toast.success('Item added to cart')
             this.addTotals();
         })
     }
@@ -154,8 +157,10 @@ class ProductProvider extends Component {
                 promotionItems: {},
             }
         }, () => {
+            toast.success('Cart cleared')
             this.setProducts();
             this.addTotals();
+
         })
     }
 
@@ -177,19 +182,36 @@ class ProductProvider extends Component {
     addPromotionToCart = couponCode => {
         client.vouchers.get(couponCode, (error, result) => {
             if (error) {
+                toast.error('Promotion not found')
                 return error
             }
-            const promotion2 = result
-            console.log(promotion2)
+            const voucher = result
+            console.log(voucher)
             this.setState(() => {
                 return {
-                    promotionItems: promotion2,
-                    promotionItemsNumber: 1
+                    promotionItems: voucher,
+                    promotionItemsNumber: 1,
+                    appliedCouponCode: couponCode
                 }
             }, 
             () => {
+                toast.success('Promotion applied')
                 this.countDiscount();
             })
+        })
+    }
+    
+    removePromotionFromCart = () => {
+        this.setState(() => {
+            return {
+                promotionItems: {},
+                promotionItemsNumber: 0,
+                appliedCouponCode: "",
+                cartTotalAfterPromotion: 0
+            }
+        }, 
+        () => {
+            toast.success('Promotion removed')
         })
     }
 
@@ -240,7 +262,7 @@ class ProductProvider extends Component {
                     removeItem: this.removeItem,
                     clearCart: this.clearCart,
                     addPromotionToCart: this.addPromotionToCart,
-                    // getCouponCode: this.getCouponCode,
+                    removePromotionFromCart: this.removePromotionFromCart,
                 }}
             >
                 {this.props.children}
