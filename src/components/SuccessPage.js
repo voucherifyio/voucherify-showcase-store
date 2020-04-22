@@ -15,7 +15,7 @@ export default class SuccessPage extends Component {
                             <div className="text-center mb-5">
                                 ID: 433dd1b3-5433-400d-82e5-82812ecd1cd3
                             </div>
-                            <Link to="/store" class="inline-block btn btn-outline-secondary">Continue shopping</Link>
+                            <Link to="/store" className="inline-block btn btn-outline-secondary">Continue shopping</Link>
                         </div>
                     </div>
                 </div>

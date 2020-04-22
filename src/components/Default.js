@@ -6,7 +6,7 @@ export default class Default extends Component {
             <div className="container ">
                 <div className="row">
                     <div className="col my-5">
-                        <div class="error-template">
+                        <div className="error-template">
                             <h1 className="text-center">
                                 Oops!</h1>
                             <h2 className="text-center">
