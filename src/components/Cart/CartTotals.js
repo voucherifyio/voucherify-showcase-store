@@ -1,78 +1,67 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ProductConsumer } from '../Context';
 
 export default function CartTotals({ value }) {
-  const {
-    cartSubTotal,
-    cartTax,
-    cartTotal,
-    clearCart,
-    cartDiscount,
-    cartTotalAfterPromotion,
-  } = value;
-
   return (
     <div className='col-lg-6'>
       <div className='bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold'>
-        Order summary{' '}
+        Order summary
       </div>
       <div className='p-4'>
         <ul className='list-unstyled mb-4'>
           <li className='d-flex justify-content-between py-3 border-bottom'>
             <strong className='text-muted'>Subtotal </strong>
-            <strong>${cartSubTotal}</strong>
+            <strong>${value.cartSubTotal}</strong>
           </li>
           <li className='d-flex justify-content-between py-3 border-bottom'>
             <strong className='text-muted'>Tax</strong>
-            <strong>${cartTax}</strong>
+            <strong>${value.cartTax}</strong>
           </li>
           <li className='d-flex justify-content-between py-3 border-bottom'>
-            <strong className='text-muted'>Total</strong>
-            <h5 className='font-weight-bold'>${cartTotal}</h5>
+            <h5>
+              <strong className='text-muted'>Total</strong>
+            </h5>
+            <h5 className='font-weight-bold'>${value.cartTotal}</h5>
           </li>
-          <ProductConsumer>
-            {(value) => {
-              const { promotionItemsNumber } = value;
-              if (promotionItemsNumber > 0) {
-                return (
-                  <>
-                    <li className='d-flex justify-content-between py-3 border-bottom'>
-                      <strong className='text-success'>Discount</strong>
-                      <strong className='text-success'>
-                        - ${cartDiscount}
-                      </strong>
-                    </li>
-                    <li className='d-flex justify-content-between py-3 border-bottom'>
-                      <strong className='text-success'>After promotion</strong>
-                      <h5 className='font-weight-bold text-success'>
-                        ${cartTotalAfterPromotion}
-                      </h5>
-                    </li>
-                  </>
-                );
-              }
-            }}
-          </ProductConsumer>
+          {(value) => {
+            const { promotionItemsNumber } = value;
+            if (promotionItemsNumber > 0) {
+              return (
+                <>
+                  <li className='d-flex justify-content-between py-3 border-bottom'>
+                    <strong className='text-success'>Discount</strong>
+                    <strong className='text-success'>
+                      - ${value.cartDiscount}
+                    </strong>
+                  </li>
+                  <li className='d-flex justify-content-between py-3 border-bottom'>
+                    <h5>
+                      <strong className='text-success'>After discount</strong>
+                    </h5>
+                    <h5 className='font-weight-bold text-success'>
+                      ${value.cartTotalAfterPromotion}
+                    </h5>
+                  </li>
+                </>
+              );
+            }
+          }}
         </ul>
-        <Link to='/success'>
+        <Link to='/success' className='link-unstyled' style={{'text-decoration': 'none'}}>
           <button
-            className='btn btn-dark rounded-pill py-2 btn-block mb-2'
-            onClick={() => clearCart()}
-          >
-            Procceed to checkout
+            className='btn btn-dark rounded-pill py-2 btn-block mb-2 '
+            onClick={() => value.clearCart()}>
+            Proceed to checkout
           </button>
         </Link>
-        <Link to='/'>
+        <Link to='/' className='link-unstyled' style={{'text-decoration': 'none'}}>
           <button
             className='btn btn-danger rounded-pill py-2 btn-block'
-            onClick={() => clearCart()}
-          >
+            onClick={() => value.clearCart()}>
             Clear cart
           </button>
         </Link>
       </div>
     </div>
-    // </div>
   );
 }
