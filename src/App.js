@@ -9,7 +9,19 @@ import Default from './components/Default'
 import Details from './components/Details'
 import Footer from './components/Footer'
 import MainPage from './components/MainPage'
+import SuccessPage from './components/SuccessPage'
+
 import Modal from './components/Modal'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+const toastOptions = {
+  position: 'bottom-center',
+  draggable: false,
+  toastClassName: 'text-xl text-white bg-dark text-center p-3 shadow-none',
+  progressClassName: 'bg-white opacity-25',
+  closeButton: false
+}
 
 class App extends Component {
   render() {
@@ -21,10 +33,12 @@ class App extends Component {
           <Route path='/products' component={ProductList}></Route>
           <Route path='/details' component={Details}></Route>
           <Route path='/cart' component={Cart}></Route>
+          <Route path='/success' component={SuccessPage}></Route>
           <Route component={Default}></Route>
         </Switch>
         <Modal />
         <Footer />
+        <ToastContainer {...toastOptions} />
       </React.Fragment>
     );
   }
