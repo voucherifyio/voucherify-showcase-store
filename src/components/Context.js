@@ -20,7 +20,7 @@ class ProductProvider extends Component {
         cartTotalAfterPromotion: 0,
         promotionItemsNumber: 0,
         promotionItems: {},
-        appliedCouponCode: "",
+        appliedCouponCode: '',
     };
     
     componentDidMount() {
@@ -206,7 +206,7 @@ class ProductProvider extends Component {
             return {
                 promotionItems: {},
                 promotionItemsNumber: 0,
-                appliedCouponCode: "",
+                appliedCouponCode: '',
                 cartTotalAfterPromotion: 0
             }
         }, 
@@ -223,16 +223,16 @@ class ProductProvider extends Component {
         let voucherDiscount = 0
         let cartDiscount = 0
 
-        if (voucher.discount.type === "PERCENT") {
+        if (voucher.discount.type === 'PERCENT') {
             voucherDiscount = parseInt(voucher.discount.percent_off, 10)/100
             cartDiscount = actualCartSubTotal * voucherDiscount
 
-        } else if (voucher.discount.type === "AMOUNT") {
+        } else if (voucher.discount.type === 'AMOUNT') {
             voucherDiscount = parseInt(voucher.discount.amount, 10)
             cartDiscount = actualCartSubTotal - voucherDiscount
 
-        } else if (voucher.discount.type === "UNIT") {
-            console.log("Mega unit")
+        } else if (voucher.discount.type === 'UNIT') {
+            console.log('Mega unit')
 
         }
 
