@@ -34,10 +34,8 @@ export default function CartTotals({value}) {
                                 }}
                             </ProductConsumer>
                     </ul>
-                    <Link to="#" className="btn btn-dark rounded-pill py-2 btn-block mb-2">Procceed to checkout</Link>
-                    <Link to="/">
-                        <button className="btn btn-danger rounded-pill py-2 btn-block" onClick={() => clearCart()}>Clear cart</button>
-                    </Link>
+                    <Link to="/success"><button className="btn btn-dark rounded-pill py-2 btn-block mb-2" onClick={() => clearCart()}>Procceed to checkout</button></Link>
+                    <Link to="/"><button className="btn btn-danger rounded-pill py-2 btn-block" onClick={() => clearCart()}>Clear cart</button></Link>
                 </div>
             </div>
         // </div>
