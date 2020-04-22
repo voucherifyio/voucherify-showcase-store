@@ -16,9 +16,6 @@ export default class Product extends Component {
                             <Link to="/details">
                                 <div className="product-image4" id={id} onClick={() => value.handleDetail(id)}>
                                         <img className="pic-1" src={img} alt="productImage"/>
-                                    {/* </Link> */}
-                                    {/* <span class="product-new-label">New</span> */}
-                                    {/* <span class="product-discount-label">-10%</span> */}
                                 </div>
                             </Link>
                             <div className="product-content">
