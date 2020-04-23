@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
 import { ProductConsumer } from '../Context';
+import _ from 'lodash'
+import 'voucherify.js'
+
+window.Voucherify.initialize(
+  "f503ecb0-c840-4748-ad75-a17694014b7f",
+  "791c2768-347c-44ee-8e67-00eecd7b89a6"
+)
 
 export default function CartForm() {
   const [couponCode, setCouponCode] = useState('');
@@ -7,7 +14,7 @@ export default function CartForm() {
   return (
     <ProductConsumer>
       {(value) => {
-        if (value.appliedCouponCode !== '') {
+        if (!_.isEmpty(value.appliedVoucher)) {
           return (
             <div className='col-lg-6'>
               <div className='bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold'>
@@ -18,9 +25,9 @@ export default function CartForm() {
                   className='d-flex'
                   style={{ flexDirection: 'column' }}
                 ></div>
-                <h1 className='text-center'>
-                  <span className='badge badge-pill badge-success'>
-                    {value.appliedCouponCode}
+                <h2 className='text-center'>
+                  <span className='badge badge-success'>
+                    {value.appliedVoucher.code}
                     <span
                       className='ml-4'
                       onClick={() => value.removePromotionFromCart()}
@@ -28,7 +35,7 @@ export default function CartForm() {
                       <i className='fas fa-times'></i>
                     </span>
                   </span>
-                </h1>
+                </h2>
               </div>
             </div>
           );
