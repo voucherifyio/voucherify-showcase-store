@@ -1,9 +1,40 @@
 import React, { Component } from 'react';
 import { storeProducts, detailProduct } from '../data';
-import client from './Cart/VoucherifyContext';
 import { toast } from 'react-toastify';
 
 const ProductContext = React.createContext();
+
+const addPromotion = 'ADD_PROMOTION';
+
+const reducer = (action) => (state, props) => {
+  switch (action.type) {
+    case addPromotion:
+      console.log(state.cartDiscount);
+
+      if (state.cartDiscount !== []) {
+        if (state.cartDiscount[1] === 'percent') {
+          return {
+            cartTotalAfterPromotion:
+              state.cartTotal - state.cartTotal * state.cartDiscount[0],
+            discounted: state.cartTotal * state.cartDiscount[0],
+          };
+        } else if (state.cartDiscount[1] === 'amount') {
+          return {
+            cartTotalAfterPromotion: state.cartTotal - state.cartDiscount[0],
+            discounted: state.cartDiscount[0],
+          };
+        }
+      }
+
+      if (state.cartDiscount === [])
+        return {
+          cartTotalAfterPromotion: state.cartTotal + 0,
+        };
+
+    default:
+      return null;
+  }
+};
 
 class ProductProvider extends Component {
   state = {
@@ -13,13 +44,19 @@ class ProductProvider extends Component {
     modalOpen: false,
     modalProduct: detailProduct,
     cartSubTotal: 0,
-    cartTax: 0,
     cartTotal: 0,
-    cartDiscount: 0,
+    cartDiscount: [],
     cartTotalAfterPromotion: 0,
-    promotionItemsNumber: 0,
-    promotionItems: {},
-    appliedCouponCode: '',
+    appliedVoucher: {},
+    discounted: 0,
+  };
+
+  addPromotion = () => {
+    this.setState(
+      reducer({
+        type: addPromotion,
+      })
+    );
   };
 
   componentDidMount() {
@@ -168,8 +205,7 @@ class ProductProvider extends Component {
           cart: [],
           cartDiscount: 0,
           cartTotalAfterPromotion: 0,
-          promotionItemsNumber: 0,
-          promotionItems: {},
+          appliedVoucher: {},
         };
       },
       () => {
@@ -183,49 +219,51 @@ class ProductProvider extends Component {
   addTotals = () => {
     let subTotal = 0;
     this.state.cart.map((item) => (subTotal += item.total));
-    const tempTax = subTotal * 0.1;
-    const tax = parseFloat(tempTax.toFixed(2));
-    const total = subTotal + tax;
+    const total = subTotal;
+
     this.setState(() => {
       return {
         cartSubTotal: subTotal,
-        cartTax: tax,
         cartTotal: total,
       };
     });
+    this.addPromotion();
   };
 
-  addPromotionToCart = (couponCode) => {
-    client.vouchers.get(couponCode, (error, result) => {
-      if (error) {
-        toast.error('Promotion not found');
-        return error;
-      }
-      const voucher = result;
-      console.log(voucher);
+  addPromotionToCart = async (couponCode) => {
+    try {
+      const voucher = await new Promise((resolve, reject) => {
+        window.Voucherify.validate(couponCode, (response) => {
+          if (response.valid) {
+            resolve(response);
+          } else {
+            reject(new Error(response.reason));
+          }
+        });
+      });
+
       this.setState(
         () => {
           return {
-            promotionItems: voucher,
-            promotionItemsNumber: 1,
-            appliedCouponCode: couponCode,
+            appliedVoucher: voucher,
           };
         },
         () => {
           toast.success('Promotion applied');
-          this.countDiscount();
+          this.checkDiscount();
+          this.addPromotion();
         }
       );
-    });
+    } catch (e) {
+      toast.error('Promotion not found');
+    }
   };
 
   removePromotionFromCart = () => {
     this.setState(
       () => {
         return {
-          promotionItems: {},
-          promotionItemsNumber: 0,
-          appliedCouponCode: '',
+          appliedVoucher: {},
           cartTotalAfterPromotion: 0,
         };
       },
@@ -235,30 +273,24 @@ class ProductProvider extends Component {
     );
   };
 
-  countDiscount = () => {
-    const voucher = this.state.promotionItems;
-    const actualCartSubTotal = parseInt(this.state.cartSubTotal, 10);
-    const cartTax = this.state.cartTax;
-    let voucherDiscount = 0;
-    let cartDiscount = 0;
+  checkDiscount = () => {
+    const voucher = this.state.appliedVoucher;
+    let cartDiscount = [];
 
     if (voucher.discount.type === 'PERCENT') {
-      voucherDiscount = parseInt(voucher.discount.percent_off, 10) / 100;
-      cartDiscount = actualCartSubTotal * voucherDiscount;
+      cartDiscount = [
+        parseInt(voucher.discount.percent_off, 10) / 100,
+        'percent',
+      ];
     } else if (voucher.discount.type === 'AMOUNT') {
-      voucherDiscount = parseInt(voucher.discount.amount, 10);
-      cartDiscount = actualCartSubTotal - voucherDiscount;
+      cartDiscount = [parseInt(voucher.discount.amount, 10), 'amount'];
     } else if (voucher.discount.type === 'UNIT') {
       console.log('Mega unit');
     }
 
-    let cartTotalAfterPromotion = actualCartSubTotal - cartDiscount + cartTax;
-    console.log(cartTotalAfterPromotion);
-
     this.setState(() => {
       return {
         cartDiscount: cartDiscount,
-        cartTotalAfterPromotion: cartTotalAfterPromotion,
       };
     });
   };
@@ -278,8 +310,7 @@ class ProductProvider extends Component {
           clearCart: this.clearCart,
           addPromotionToCart: this.addPromotionToCart,
           removePromotionFromCart: this.removePromotionFromCart,
-        }}
-      >
+        }}>
         {this.props.children}
       </ProductContext.Provider>
     );
