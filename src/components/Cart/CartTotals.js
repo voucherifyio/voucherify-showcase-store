@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import _ from 'lodash'
 
 export default function CartTotals({ value }) {
   const {
     cartSubTotal,
-    cartTax,
     cartTotal,
     clearCart,
     cartDiscount,
+    discounted,
     cartTotalAfterPromotion,
-    promotionItemsNumber,
   } = value;
 
   return (
@@ -24,20 +24,16 @@ export default function CartTotals({ value }) {
             <strong>${cartSubTotal}</strong>
           </li>
           <li className='d-flex justify-content-between py-3 border-bottom'>
-            <strong className='text-muted'>Tax</strong>
-            <strong>${cartTax}</strong>
-          </li>
-          <li className='d-flex justify-content-between py-3 border-bottom'>
             <h5>
               <strong className='text-muted'>Total</strong>
             </h5>
             <h5 className='font-weight-bold'>${cartTotal}</h5>
           </li>
-          {promotionItemsNumber > 0 && (
+          {!_.isEmpty(value.appliedVoucher) && (
             <>
               <li className='d-flex justify-content-between py-3 border-bottom'>
                 <strong className='text-success'>Discount</strong>
-                <strong className='text-success'>-&nbsp;${cartDiscount}</strong>
+                <strong className='text-success'>-&nbsp;${discounted}</strong>
               </li>
               <li className='d-flex justify-content-between py-3 border-bottom'>
                 <h5>
