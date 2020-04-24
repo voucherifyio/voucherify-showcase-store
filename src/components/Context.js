@@ -1,35 +1,55 @@
-import React, { Component } from 'react';
-import { storeProducts, detailProduct } from '../data';
-import { toast } from 'react-toastify';
+import React, { Component } from "react";
+import { storeProducts, detailProduct } from "../data";
+import { toast } from "react-toastify";
+import _ from "lodash";
 
 const ProductContext = React.createContext();
 
-const addPromotion = 'ADD_PROMOTION';
+const REMOVE_PROMOTION = "REMOVE_PROMOTION";
+const SET_CART = "SET_CART";
+const CLEAR_CART = "CLEAR_CART";
 
 const reducer = (action) => (state, props) => {
   switch (action.type) {
-    case addPromotion:
-      console.log(state.cartDiscount);
+    case SET_CART:
+      let discountedAmount = 0;
+      let tempTotal = 0;
+      const cartTotal = state.cart.map((item) => (tempTotal += item.total));
+      let cartTotalAfterPromotion = cartTotal;
 
-      if (state.cartDiscount !== []) {
-        if (state.cartDiscount[1] === 'percent') {
-          return {
-            cartTotalAfterPromotion:
-              state.cartTotal - state.cartTotal * state.cartDiscount[0],
-            discounted: state.cartTotal * state.cartDiscount[0],
-          };
-        } else if (state.cartDiscount[1] === 'amount') {
-          return {
-            cartTotalAfterPromotion: state.cartTotal - state.cartDiscount[0],
-            discounted: state.cartDiscount[0],
-          };
+      if (!_.isEmpty(state.appliedVoucher)) {
+        if (state.appliedVoucher.discount.type === "PERCENT") {
+          const discountAmount = state.appliedVoucher.discount.percent_off;
+          cartTotalAfterPromotion =
+            cartTotal - cartTotal * (discountAmount / 100);
+          discountedAmount = cartTotal * (discountAmount / 100);
+          console.log(discountAmount);
+        } else if (state.appliedVoucher.discount.type === "AMOUNT") {
+          const discountAmount = state.appliedVoucher.discount.amount;
+          cartTotalAfterPromotion = cartTotal - discountAmount;
+          discountedAmount = discountAmount;
         }
       }
 
-      if (state.cartDiscount === [])
-        return {
-          cartTotalAfterPromotion: state.cartTotal + 0,
-        };
+      return {
+        cartTotalAfterPromotion: cartTotalAfterPromotion,
+        discountedAmount: discountedAmount,
+        cartTotal: cartTotal,
+      };
+
+    case REMOVE_PROMOTION:
+      return {
+        appliedVoucher: {},
+        cartTotalAfterPromotion: state.cartTotal,
+      };
+
+    case CLEAR_CART:
+      return {
+        cart: [],
+        cartDiscount: 0,
+        cartTotalAfterPromotion: 0,
+        appliedVoucher: {},
+      };
 
     default:
       return null;
@@ -43,18 +63,17 @@ class ProductProvider extends Component {
     cart: [],
     modalOpen: false,
     modalProduct: detailProduct,
-    cartSubTotal: 0,
     cartTotal: 0,
-    cartDiscount: [],
+    cartDiscount: {},
     cartTotalAfterPromotion: 0,
     appliedVoucher: {},
-    discounted: 0,
+    discountedAmount: 0,
   };
 
-  addPromotion = () => {
+  dispatch = (type) => {
     this.setState(
       reducer({
-        type: addPromotion,
+        type: type,
       })
     );
   };
@@ -105,8 +124,8 @@ class ProductProvider extends Component {
         };
       },
       () => {
-        toast.success('Item added to cart');
-        this.addTotals();
+        toast.success("Item added to cart");
+        this.dispatch("SET_CART");
       }
     );
   };
@@ -143,7 +162,7 @@ class ProductProvider extends Component {
         return { cart: [...tempCart] };
       },
       () => {
-        this.addTotals();
+        this.dispatch("SET_CART");
       }
     );
   };
@@ -165,7 +184,7 @@ class ProductProvider extends Component {
           return { cart: [...tempCart] };
         },
         () => {
-          this.addTotals();
+          this.dispatch("SET_CART");
         }
       );
     }
@@ -193,41 +212,15 @@ class ProductProvider extends Component {
         };
       },
       () => {
-        this.addTotals();
+        this.dispatch("SET_CART");
       }
     );
   };
 
   clearCart = () => {
-    this.setState(
-      () => {
-        return {
-          cart: [],
-          cartDiscount: 0,
-          cartTotalAfterPromotion: 0,
-          appliedVoucher: {},
-        };
-      },
-      () => {
-        toast.success('Cart cleared');
-        this.setProducts();
-        this.addTotals();
-      }
-    );
-  };
-
-  addTotals = () => {
-    let subTotal = 0;
-    this.state.cart.map((item) => (subTotal += item.total));
-    const total = subTotal;
-
-    this.setState(() => {
-      return {
-        cartSubTotal: subTotal,
-        cartTotal: total,
-      };
-    });
-    this.addPromotion();
+    this.dispatch("CLEAR_CART");
+    toast.success("Cart cleared");
+    this.setProducts();
   };
 
   addPromotionToCart = async (couponCode) => {
@@ -249,50 +242,17 @@ class ProductProvider extends Component {
           };
         },
         () => {
-          toast.success('Promotion applied');
-          this.checkDiscount();
-          this.addPromotion();
+          toast.success("Promotion applied");
+          this.dispatch("SET_CART");
         }
       );
     } catch (e) {
-      toast.error('Promotion not found');
+      toast.error("Promotion not found");
     }
   };
 
   removePromotionFromCart = () => {
-    this.setState(
-      () => {
-        return {
-          appliedVoucher: {},
-          cartTotalAfterPromotion: 0,
-        };
-      },
-      () => {
-        toast.success('Promotion removed');
-      }
-    );
-  };
-
-  checkDiscount = () => {
-    const voucher = this.state.appliedVoucher;
-    let cartDiscount = [];
-
-    if (voucher.discount.type === 'PERCENT') {
-      cartDiscount = [
-        parseInt(voucher.discount.percent_off, 10) / 100,
-        'percent',
-      ];
-    } else if (voucher.discount.type === 'AMOUNT') {
-      cartDiscount = [parseInt(voucher.discount.amount, 10), 'amount'];
-    } else if (voucher.discount.type === 'UNIT') {
-      console.log('Mega unit');
-    }
-
-    this.setState(() => {
-      return {
-        cartDiscount: cartDiscount,
-      };
-    });
+    this.dispatch("REMOVE_PROMOTION");
   };
 
   render() {
@@ -310,7 +270,8 @@ class ProductProvider extends Component {
           clearCart: this.clearCart,
           addPromotionToCart: this.addPromotionToCart,
           removePromotionFromCart: this.removePromotionFromCart,
-        }}>
+        }}
+      >
         {this.props.children}
       </ProductContext.Provider>
     );
