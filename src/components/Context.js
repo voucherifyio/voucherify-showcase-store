@@ -5,45 +5,49 @@ import _ from "lodash";
 
 const ProductContext = React.createContext();
 
-const REMOVE_PROMOTION = "REMOVE_PROMOTION";
 const SET_CART = "SET_CART";
 const CLEAR_CART = "CLEAR_CART";
+const SET_COUPON = "SET_COUPON";
 
 const reducer = (action) => (state, props) => {
-  switch (action.type) {
-    case SET_CART:
-      let discountedAmount = 0;
-      let tempTotal = 0;
-      const cartTotal = state.cart.map((item) => (tempTotal += item.total));
-      let cartTotalAfterPromotion = cartTotal;
+  const calc = (cartItems, voucher) => {
+    const cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+    let discountedAmount = 0;
+    let cartTotalAfterPromotion = cartTotal;
 
-      if (!_.isEmpty(state.appliedVoucher)) {
-        if (state.appliedVoucher.discount.type === "PERCENT") {
-          const discountAmount = state.appliedVoucher.discount.percent_off;
-          cartTotalAfterPromotion =
-            cartTotal - cartTotal * (discountAmount / 100);
-          discountedAmount = cartTotal * (discountAmount / 100);
-          console.log(discountAmount);
-        } else if (state.appliedVoucher.discount.type === "AMOUNT") {
-          const discountAmount = state.appliedVoucher.discount.amount;
-          cartTotalAfterPromotion = cartTotal - discountAmount;
-          discountedAmount = discountAmount;
-        }
+    if (!_.isEmpty(voucher)) {
+      if (voucher.discount.type === "PERCENT") {
+        const discountAmount = voucher.discount.percent_off;
+        cartTotalAfterPromotion =
+          cartTotal - cartTotal * (discountAmount / 100);
+        discountedAmount = cartTotal * (discountAmount / 100);
+        console.log(discountAmount);
+      } else if (voucher.discount.type === "AMOUNT") {
+        const discountAmount = voucher.discount.amount;
+        cartTotalAfterPromotion = cartTotal - discountAmount;
+        discountedAmount = discountAmount;
       }
+    }
+    return {
+      cart: cartItems,
+      discountedAmount,
+      cartTotal,
+      cartTotalAfterPromotion,
+      appliedVoucher: voucher,
+    }
+  };
 
-      return {
-        cartTotalAfterPromotion: cartTotalAfterPromotion,
-        discountedAmount: discountedAmount,
-        cartTotal: cartTotal,
-      };
-
-    case REMOVE_PROMOTION:
-      return {
-        appliedVoucher: {},
-        cartTotalAfterPromotion: state.cartTotal,
-      };
-
+  switch (action.type) {
+    case SET_COUPON:
+      const calculatedCart = calc(state.cart, action.appliedVoucher);
+      debugger;
+      return calculatedCart;
+    case SET_CART:
+      const calculatedCart2 = calc(action.cart, state.appliedVoucher); // TODO we can inline this `return calc(...)`
+      debugger;
+      return calculatedCart2;
     case CLEAR_CART:
+      // return calc([], null); // how about this? :)
       return {
         cart: [],
         cartDiscount: 0,
@@ -70,10 +74,11 @@ class ProductProvider extends Component {
     discountedAmount: 0,
   };
 
-  dispatch = (type) => {
+  dispatch = (type, data) => {
     this.setState(
       reducer({
-        type: type,
+        type,
+        ...data,
       })
     );
   };
@@ -90,9 +95,9 @@ class ProductProvider extends Component {
       tempProducts = [...tempProducts, singleItem];
     });
 
-    this.setState(() => {
-      return { products: tempProducts };
-    });
+    this.setState(() => ({
+      products: tempProducts, // why in state?
+    }));
   };
 
   getItem = (id) => {
@@ -102,95 +107,68 @@ class ProductProvider extends Component {
 
   handleDetail = (id) => {
     const product = this.getItem(id);
-    this.setState(() => {
-      return { detailProduct: product };
-    });
+    this.setState(() => ({
+      detailProduct: product,
+    }));
   };
 
   addToCart = (id) => {
-    let tempProducts = [...this.state.products];
-    const index = tempProducts.indexOf(this.getItem(id));
-    const product = tempProducts[index];
-    product.inCart = true;
-    product.count = 1;
-    const price = product.price;
-    product.total = price;
-
-    this.setState(
-      () => {
-        return {
-          products: tempProducts,
-          cart: [...this.state.cart, product],
-        };
-      },
-      () => {
-        toast.success("Item added to cart");
-        this.dispatch("SET_CART");
-      }
-    );
+    const product = this.getItem(id);
+    this.dispatch(SET_CART, {
+      cart: [
+        ...this.state.cart,
+        {
+          ...product,
+          count: 1, // potential problem here, if that product is already in your cart :)
+          total: product.price
+        }
+      ],
+    });
+    toast.success("Item added to cart");
   };
 
   openModal = (id) => {
     const product = this.getItem(id);
-    this.setState(() => {
-      return {
-        modalProduct: product,
-        modalOpen: true,
-      };
-    });
+    this.setState(() => ({
+      modalProduct: product,
+      modalOpen: true,
+    }));
   };
 
   closeModal = () => {
-    this.setState(() => {
-      return {
-        modalOpen: false,
-      };
-    });
+    this.setState(() => ({
+      modalOpen: false,
+    }));
   };
 
   increment = (id) => {
-    let tempCart = [...this.state.cart];
+    const tempCart = [...this.state.cart];
     const selectedProduct = tempCart.find((item) => item.id === id);
-    const index = tempCart.indexOf(selectedProduct);
-    const product = tempCart[index];
+    selectedProduct.count = selectedProduct.count + 1;
+    selectedProduct.total = selectedProduct.count * selectedProduct.price; // let's move these calculations to reducer
 
-    product.count = product.count + 1;
-    product.total = product.count * product.price;
-
-    this.setState(
-      () => {
-        return { cart: [...tempCart] };
-      },
-      () => {
-        this.dispatch("SET_CART");
-      }
-    );
+    this.dispatch(SET_CART, {
+      cart: tempCart,
+    });
   };
 
   decrement = (id) => {
     let tempCart = [...this.state.cart];
     const selectedProduct = tempCart.find((item) => item.id === id);
-    const index = tempCart.indexOf(selectedProduct);
-    const product = tempCart[index];
+    selectedProduct.count = selectedProduct.count - 1;
 
-    product.count = product.count - 1;
-
-    if (product.count === 0) {
+    if (selectedProduct.count === 0) {
       this.removeItem(id);
     } else {
-      product.total = product.count * product.price;
-      this.setState(
-        () => {
-          return { cart: [...tempCart] };
-        },
-        () => {
-          this.dispatch("SET_CART");
-        }
-      );
+      selectedProduct.total = selectedProduct.count * selectedProduct.price; // let's move these calculations to reducer
+      this.dispatch(SET_CART, {
+        cart: tempCart,
+      });
     }
   };
 
   removeItem = (id) => {
+    // TODO clean this function up
     let tempProducts = [...this.state.products];
     let tempCart = [...this.state.cart];
 
@@ -204,23 +182,14 @@ class ProductProvider extends Component {
     removedProduct.count = 0;
     removedProduct.total = 0;
 
-    this.setState(
-      () => {
-        return {
-          cart: [...tempCart],
-          products: [...tempProducts],
-        };
-      },
-      () => {
-        this.dispatch("SET_CART");
-      }
-    );
+    this.dispatch(SET_CART, {
+      cart: tempCart,
+    });
   };
 
   clearCart = () => {
-    this.dispatch("CLEAR_CART");
+    this.dispatch(CLEAR_CART);
     toast.success("Cart cleared");
-    this.setProducts();
   };
 
   addPromotionToCart = async (couponCode) => {
@@ -235,24 +204,19 @@ class ProductProvider extends Component {
         });
       });
 
-      this.setState(
-        () => {
-          return {
-            appliedVoucher: voucher,
-          };
-        },
-        () => {
-          toast.success("Promotion applied");
-          this.dispatch("SET_CART");
-        }
-      );
+      this.dispatch(SET_COUPON, {
+        appliedVoucher: voucher,
+      });
+      toast.success("Promotion applied");
     } catch (e) {
       toast.error("Promotion not found");
     }
   };
 
   removePromotionFromCart = () => {
-    this.dispatch("REMOVE_PROMOTION");
+    this.dispatch(SET_COUPON, {
+      appliedVoucher: null,
+    });
   };
 
   render() {
