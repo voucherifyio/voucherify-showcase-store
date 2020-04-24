@@ -9,8 +9,18 @@ const SET_CART = "SET_CART";
 const CLEAR_CART = "CLEAR_CART";
 const SET_COUPON = "SET_COUPON";
 
+let products = [];
+    storeProducts.forEach((item) => {
+      const singleItem = { ...item };
+      products = [...products, singleItem];
+    });
+
 const reducer = (action) => (state, props) => {
   const calc = (cartItems, voucher) => {
+   cartItems.forEach(cartItem => {
+      cartItem.total = cartItem.count * cartItem.price
+    });
+    
     const cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
     let discountedAmount = 0;
     let cartTotalAfterPromotion = cartTotal;
@@ -23,7 +33,8 @@ const reducer = (action) => (state, props) => {
         discountedAmount = cartTotal * (discountAmount / 100);
         console.log(discountAmount);
       } else if (voucher.discount.type === "AMOUNT") {
-        const discountAmount = voucher.discount.amount;
+        console.log(voucher)
+        const discountAmount = (voucher.discount.amount_off / 100);
         cartTotalAfterPromotion = cartTotal - discountAmount;
         discountedAmount = discountAmount;
       }
@@ -39,22 +50,11 @@ const reducer = (action) => (state, props) => {
 
   switch (action.type) {
     case SET_COUPON:
-      const calculatedCart = calc(state.cart, action.appliedVoucher);
-      debugger;
-      return calculatedCart;
+      return calc(state.cart, action.appliedVoucher);
     case SET_CART:
-      const calculatedCart2 = calc(action.cart, state.appliedVoucher); // TODO we can inline this `return calc(...)`
-      debugger;
-      return calculatedCart2;
+      return calc(action.cart, state.appliedVoucher); 
     case CLEAR_CART:
-      // return calc([], null); // how about this? :)
-      return {
-        cart: [],
-        cartDiscount: 0,
-        cartTotalAfterPromotion: 0,
-        appliedVoucher: {},
-      };
-
+      return calc([], null)
     default:
       return null;
   }
@@ -62,7 +62,7 @@ const reducer = (action) => (state, props) => {
 
 class ProductProvider extends Component {
   state = {
-    products: [],
+    products: products,
     detailProduct: detailProduct,
     cart: [],
     modalOpen: false,
@@ -84,21 +84,8 @@ class ProductProvider extends Component {
   };
 
   componentDidMount() {
-    this.setProducts();
+    // this.setProducts();
   }
-
-  setProducts = () => {
-    let tempProducts = [];
-
-    storeProducts.forEach((item) => {
-      const singleItem = { ...item };
-      tempProducts = [...tempProducts, singleItem];
-    });
-
-    this.setState(() => ({
-      products: tempProducts, // why in state?
-    }));
-  };
 
   getItem = (id) => {
     const product = this.state.products.find((item) => item.id === id);
@@ -119,7 +106,7 @@ class ProductProvider extends Component {
         ...this.state.cart,
         {
           ...product,
-          count: 1, // potential problem here, if that product is already in your cart :)
+          count: 1,
           total: product.price
         }
       ],
@@ -145,8 +132,6 @@ class ProductProvider extends Component {
     const tempCart = [...this.state.cart];
     const selectedProduct = tempCart.find((item) => item.id === id);
     selectedProduct.count = selectedProduct.count + 1;
-    selectedProduct.total = selectedProduct.count * selectedProduct.price; // let's move these calculations to reducer
-
     this.dispatch(SET_CART, {
       cart: tempCart,
     });
@@ -160,7 +145,6 @@ class ProductProvider extends Component {
     if (selectedProduct.count === 0) {
       this.removeItem(id);
     } else {
-      selectedProduct.total = selectedProduct.count * selectedProduct.price; // let's move these calculations to reducer
       this.dispatch(SET_CART, {
         cart: tempCart,
       });
@@ -168,19 +152,9 @@ class ProductProvider extends Component {
   };
 
   removeItem = (id) => {
-    // TODO clean this function up
-    let tempProducts = [...this.state.products];
     let tempCart = [...this.state.cart];
 
     tempCart = tempCart.filter((item) => item.id !== id);
-
-    const index = tempProducts.indexOf(this.getItem(id));
-
-    let removedProduct = tempProducts[index];
-
-    removedProduct.inCart = false;
-    removedProduct.count = 0;
-    removedProduct.total = 0;
 
     this.dispatch(SET_CART, {
       cart: tempCart,
