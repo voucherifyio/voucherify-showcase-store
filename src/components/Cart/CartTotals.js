@@ -1,15 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import _ from 'lodash'
 
 export default function CartTotals({ value }) {
   const {
-    cartSubTotal,
-    cartTax,
     cartTotal,
     clearCart,
-    cartDiscount,
+    discountedAmount,
     cartTotalAfterPromotion,
-    promotionItemsNumber,
   } = value;
 
   return (
@@ -20,31 +18,23 @@ export default function CartTotals({ value }) {
       <div className='p-4'>
         <ul className='list-unstyled mb-4'>
           <li className='d-flex justify-content-between py-3 border-bottom'>
-            <strong className='text-muted'>Subtotal </strong>
-            <strong>${cartSubTotal}</strong>
-          </li>
-          <li className='d-flex justify-content-between py-3 border-bottom'>
-            <strong className='text-muted'>Tax</strong>
-            <strong>${cartTax}</strong>
-          </li>
-          <li className='d-flex justify-content-between py-3 border-bottom'>
             <h5>
               <strong className='text-muted'>Total</strong>
             </h5>
-            <h5 className='font-weight-bold'>${cartTotal}</h5>
+            <h5 className='font-weight-bold'>${cartTotal.toFixed(2)}</h5>
           </li>
-          {promotionItemsNumber > 0 && (
+          {!_.isEmpty(value.appliedVoucher) && (
             <>
               <li className='d-flex justify-content-between py-3 border-bottom'>
                 <strong className='text-success'>Discount</strong>
-                <strong className='text-success'>-&nbsp;${cartDiscount}</strong>
+                <strong className='text-success'>-&nbsp;${discountedAmount.toFixed(2)}</strong>
               </li>
               <li className='d-flex justify-content-between py-3 border-bottom'>
                 <h5>
                   <strong className='text-success'>After discount</strong>
                 </h5>
                 <h5 className='font-weight-bold text-success'>
-                  ${cartTotalAfterPromotion}
+                  ${cartTotalAfterPromotion.toFixed(2)}
                 </h5>
               </li>
             </>
@@ -53,7 +43,7 @@ export default function CartTotals({ value }) {
         <Link
           to='/success'
           className='link-unstyled'
-          style={{ 'text-decoration': 'none' }}>
+          style={{ 'textDecoration': 'none' }}>
           <button
             className='btn btn-dark rounded-pill py-2 btn-block mb-2 '
             onClick={() => clearCart()}>
@@ -63,7 +53,7 @@ export default function CartTotals({ value }) {
         <Link
           to='/'
           className='link-unstyled'
-          style={{ 'text-decoration': 'none' }}>
+          style={{ 'textDecoration': 'none' }}>
           <button
             className='btn btn-danger rounded-pill py-2 btn-block'
             onClick={() => clearCart()}>
