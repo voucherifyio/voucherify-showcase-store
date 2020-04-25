@@ -9,12 +9,6 @@ const SET_CART = "SET_CART";
 const CLEAR_CART = "CLEAR_CART";
 const SET_COUPON = "SET_COUPON";
 
-let products = [];
-    storeProducts.forEach((item) => {
-      const singleItem = { ...item };
-      products = [...products, singleItem];
-    });
-
 const reducer = (action) => (state, props) => {
   const calc = (cartItems, voucher) => {
    cartItems.forEach(cartItem => {
