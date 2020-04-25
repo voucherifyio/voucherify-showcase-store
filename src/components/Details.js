@@ -26,7 +26,7 @@ export default function Details() {
                       <button
                         type="button"
                         className="btn btn-outline-secondary"
-                        disabled={inCart ? true : false}
+                        disabled={inCart}
                         onClick={() => {
                           value.addToCart(id);
                         }}
