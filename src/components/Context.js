@@ -62,7 +62,6 @@ const reducer = (action) => (state, props) => {
 
 class ProductProvider extends Component {
   state = {
-    products: products,
     detailProduct: detailProduct,
     cart: [],
     modalOpen: false,
@@ -84,11 +83,11 @@ class ProductProvider extends Component {
   };
 
   componentDidMount() {
-    // this.setProducts();
+    // TODO: We will use it for loading localStorage
   }
 
   getItem = (id) => {
-    const product = this.state.products.find((item) => item.id === id);
+    const product = _.cloneDeep(storeProducts.find((item) => item.id === id));
     return product;
   };
 
