@@ -21,20 +21,20 @@ export default function CartTotals({ value }) {
             <h5>
               <strong className='text-muted'>Total</strong>
             </h5>
-            <h5 className='font-weight-bold'>${cartTotal}</h5>
+            <h5 className='font-weight-bold'>${cartTotal.toFixed(2)}</h5>
           </li>
           {!_.isEmpty(value.appliedVoucher) && (
             <>
               <li className='d-flex justify-content-between py-3 border-bottom'>
                 <strong className='text-success'>Discount</strong>
-                <strong className='text-success'>-&nbsp;${discountedAmount}</strong>
+                <strong className='text-success'>-&nbsp;${discountedAmount.toFixed(2)}</strong>
               </li>
               <li className='d-flex justify-content-between py-3 border-bottom'>
                 <h5>
                   <strong className='text-success'>After discount</strong>
                 </h5>
                 <h5 className='font-weight-bold text-success'>
-                  ${cartTotalAfterPromotion}
+                  ${cartTotalAfterPromotion.toFixed(2)}
                 </h5>
               </li>
             </>
