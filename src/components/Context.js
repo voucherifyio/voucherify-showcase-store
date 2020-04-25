@@ -11,10 +11,10 @@ const SET_COUPON = "SET_COUPON";
 
 const reducer = (action) => (state, props) => {
   const calc = (cartItems, voucher) => {
-   cartItems.forEach(cartItem => {
-      cartItem.total = cartItem.count * cartItem.price
+    cartItems.forEach((cartItem) => {
+      cartItem.total = cartItem.count * cartItem.price;
     });
-    
+
     const cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
     let discountedAmount = 0;
     let cartTotalAfterPromotion = cartTotal;
@@ -25,30 +25,34 @@ const reducer = (action) => (state, props) => {
         cartTotalAfterPromotion =
           cartTotal - cartTotal * (discountAmount / 100);
         discountedAmount = cartTotal * (discountAmount / 100);
-        console.log(discountAmount);
       } else if (voucher.discount.type === "AMOUNT") {
-        console.log(voucher)
-        const discountAmount = (voucher.discount.amount_off / 100);
+        const discountAmount = voucher.discount.amount_off / 100;
         cartTotalAfterPromotion = cartTotal - discountAmount;
         discountedAmount = discountAmount;
       }
+
+      if (cartTotalAfterPromotion < 0) {
+        cartTotalAfterPromotion = 0;
+        discountedAmount = cartTotal;
+      }
     }
+
     return {
       cart: cartItems,
       discountedAmount,
       cartTotal,
       cartTotalAfterPromotion,
       appliedVoucher: voucher,
-    }
+    };
   };
 
   switch (action.type) {
     case SET_COUPON:
       return calc(state.cart, action.appliedVoucher);
     case SET_CART:
-      return calc(action.cart, state.appliedVoucher); 
+      return calc(action.cart, state.appliedVoucher);
     case CLEAR_CART:
-      return calc([], null)
+      return calc([], null);
     default:
       return null;
   }
@@ -100,8 +104,8 @@ class ProductProvider extends Component {
         {
           ...product,
           count: 1,
-          total: product.price
-        }
+          total: product.price,
+        },
       ],
     });
     toast.success("Item added to cart");
@@ -146,9 +150,7 @@ class ProductProvider extends Component {
 
   removeItem = (id) => {
     let tempCart = [...this.state.cart];
-
     tempCart = tempCart.filter((item) => item.id !== id);
-
     this.dispatch(SET_CART, {
       cart: tempCart,
     });
