@@ -8,6 +8,7 @@ export default function CartTotals({ value }) {
     clearCart,
     discountedAmount,
     cartTotalAfterPromotion,
+    checkoutCart
   } = value;
 
   return (
@@ -46,7 +47,7 @@ export default function CartTotals({ value }) {
           style={{ 'textDecoration': 'none' }}>
           <button
             className='btn btn-dark rounded-pill py-2 btn-block mb-2 '
-            onClick={() => clearCart()}>
+            onClick={() => checkoutCart()}>
             Proceed to checkout
           </button>
         </Link>
