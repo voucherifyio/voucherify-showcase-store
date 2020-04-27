@@ -7,6 +7,7 @@ const ProductContext = React.createContext();
 
 const SET_CART = "SET_CART";
 const CLEAR_CART = "CLEAR_CART";
+const LOAD_CART = "LOAD_CART";
 const SET_COUPON = "SET_COUPON";
 
 const reducer = (action) => (state, props) => {
@@ -37,12 +38,41 @@ const reducer = (action) => (state, props) => {
       }
     }
 
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+    localStorage.setItem("discountedAmount", JSON.stringify(discountedAmount));
+    localStorage.setItem("cartTotal", JSON.stringify(cartTotal));
+    localStorage.setItem(
+      "cartTotalAfterPromotion",
+      JSON.stringify(cartTotalAfterPromotion)
+    );
+    localStorage.setItem("appliedVoucher", JSON.stringify(voucher));
+
     return {
       cart: cartItems,
       discountedAmount,
       cartTotal,
       cartTotalAfterPromotion,
       appliedVoucher: voucher,
+    };
+  };
+
+  const loadItemsFromLocalStorage = () => {
+    return {
+      cart: !localStorage.getItem("cart")
+        ? []
+        : JSON.parse(localStorage.getItem("cart")),
+      discountedAmount: !localStorage.getItem("discountedAmount")
+        ? 0
+        : JSON.parse(localStorage.getItem("discountedAmount")),
+      cartTotal: !localStorage.getItem("cartTotal")
+        ? 0
+        : JSON.parse(localStorage.getItem("cartTotal")),
+      cartTotalAfterPromotion: !localStorage.getItem("cartTotalAfterPromotion")
+        ? 0
+        : JSON.parse(localStorage.getItem("cartTotalAfterPromotion")),
+      appliedVoucher: !localStorage.getItem("appliedVoucher")
+        ? 0
+        : JSON.parse(localStorage.getItem("appliedVoucher")),
     };
   };
 
@@ -53,6 +83,8 @@ const reducer = (action) => (state, props) => {
       return calc(action.cart, state.appliedVoucher);
     case CLEAR_CART:
       return calc([], null);
+    case LOAD_CART:
+      return loadItemsFromLocalStorage();
     default:
       return null;
   }
@@ -81,7 +113,7 @@ class ProductProvider extends Component {
   };
 
   componentDidMount() {
-    // TODO: We will use it for loading localStorage
+    this.dispatch(LOAD_CART);
   }
 
   getItem = (id) => {
@@ -151,9 +183,13 @@ class ProductProvider extends Component {
   removeItem = (id) => {
     let tempCart = [...this.state.cart];
     tempCart = tempCart.filter((item) => item.id !== id);
-    this.dispatch(SET_CART, {
-      cart: tempCart,
-    });
+    if (tempCart.length === 0) {
+      this.clearCart();
+    } else {
+      this.dispatch(SET_CART, {
+        cart: tempCart,
+      });
+    }
   };
 
   clearCart = () => {
