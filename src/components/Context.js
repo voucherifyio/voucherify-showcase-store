@@ -67,11 +67,11 @@ const reducer = (action) => (state, props) => {
 
   const loadItemsFromLocalStorage = () => {
     return {
-      cart: readValueFromLocalStorage("cart") || [],
-      discountedAmount: readValueFromLocalStorage("discountedAmount") || 0,
-      cartTotal: readValueFromLocalStorage("cartTotal") || 0,
-      cartTotalAfterPromotion: readValueFromLocalStorage("cartTotalAfterPromotion") || 0,
-      appliedVoucher: readValueFromLocalStorage("appliedVoucher") || {},
+      cart: readValueFromLocalStorage("cart") || null,
+      discountedAmount: readValueFromLocalStorage("discountedAmount") || null,
+      cartTotal: readValueFromLocalStorage("cartTotal") || null,
+      cartTotalAfterPromotion: readValueFromLocalStorage("cartTotalAfterPromotion") || null,
+      appliedVoucher: readValueFromLocalStorage("appliedVoucher") || null
     };
   };
 
