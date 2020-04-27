@@ -56,23 +56,22 @@ const reducer = (action) => (state, props) => {
     };
   };
 
+  const readValueFromLocalStorage = key => {
+    const value = localStorage.getItem(key);
+    if (value) {
+      try {
+        return JSON.parse(value);
+      } catch (e) {}
+    }
+  }
+
   const loadItemsFromLocalStorage = () => {
     return {
-      cart: !localStorage.getItem("cart")
-        ? []
-        : JSON.parse(localStorage.getItem("cart")),
-      discountedAmount: !localStorage.getItem("discountedAmount")
-        ? 0
-        : JSON.parse(localStorage.getItem("discountedAmount")),
-      cartTotal: !localStorage.getItem("cartTotal")
-        ? 0
-        : JSON.parse(localStorage.getItem("cartTotal")),
-      cartTotalAfterPromotion: !localStorage.getItem("cartTotalAfterPromotion")
-        ? 0
-        : JSON.parse(localStorage.getItem("cartTotalAfterPromotion")),
-      appliedVoucher: !localStorage.getItem("appliedVoucher")
-        ? 0
-        : JSON.parse(localStorage.getItem("appliedVoucher")),
+      cart: readValueFromLocalStorage("cart") || [],
+      discountedAmount: readValueFromLocalStorage("discountedAmount") || 0,
+      cartTotal: readValueFromLocalStorage("cartTotal") || 0,
+      cartTotalAfterPromotion: readValueFromLocalStorage("cartTotalAfterPromotion") || 0,
+      appliedVoucher: readValueFromLocalStorage("appliedVoucher") || {},
     };
   };
 
@@ -97,7 +96,6 @@ class ProductProvider extends Component {
     modalOpen: false,
     modalProduct: detailProduct,
     cartTotal: 0,
-    cartDiscount: {},
     cartTotalAfterPromotion: 0,
     appliedVoucher: {},
     discountedAmount: 0,
