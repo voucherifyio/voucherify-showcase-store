@@ -56,22 +56,23 @@ const reducer = (action) => (state, props) => {
     };
   };
 
-  const readValueFromLocalStorage = key => {
+  const readValueFromLocalStorage = (key) => {
     const value = localStorage.getItem(key);
     if (value) {
       try {
         return JSON.parse(value);
       } catch (e) {}
     }
-  }
+  };
 
   const loadItemsFromLocalStorage = () => {
     return {
       cart: readValueFromLocalStorage("cart") || null,
       discountedAmount: readValueFromLocalStorage("discountedAmount") || null,
       cartTotal: readValueFromLocalStorage("cartTotal") || null,
-      cartTotalAfterPromotion: readValueFromLocalStorage("cartTotalAfterPromotion") || null,
-      appliedVoucher: readValueFromLocalStorage("appliedVoucher") || null
+      cartTotalAfterPromotion:
+        readValueFromLocalStorage("cartTotalAfterPromotion") || null,
+      appliedVoucher: readValueFromLocalStorage("appliedVoucher") || null,
     };
   };
 
@@ -206,13 +207,55 @@ class ProductProvider extends Component {
           }
         });
       });
-
       this.dispatch(SET_COUPON, {
         appliedVoucher: voucher,
       });
       toast.success("Promotion applied");
+      console.log(this.state.cart);
     } catch (e) {
       toast.error("Promotion not found");
+    }
+  };
+
+  checkoutCart = async () => {
+    try {
+      if (!_.isEmpty(this.state.appliedVoucher)) {
+        const prepareItemsPayload = (item) => {
+          return {
+            product_id: item.id,
+            quantity: item.count,
+            price: item.price,
+            amount: item.total,
+          };
+        };
+        const redemptionPayload = {
+          customer: {
+            tracking_id: this.state.appliedVoucher.tracking_id,
+          },
+          order: {
+            amount: this.state.cartTotalAfterPromotion,
+            items: this.state.cart.map(prepareItemsPayload),
+          },
+        };
+
+        const code = this.state.appliedVoucher.code;
+
+        await new Promise((resolve, reject) => {
+          window.Voucherify.redeem(code, redemptionPayload, (response) => {
+            console.log(response);
+            if (response.result === "SUCCESS") {
+              this.clearCart();
+              resolve(response);
+            } else {
+              reject(new Error(response.message));
+            }
+          });
+        });
+      } else {
+        this.clearCart();
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -235,6 +278,7 @@ class ProductProvider extends Component {
           decrement: this.decrement,
           removeItem: this.removeItem,
           clearCart: this.clearCart,
+          checkoutCart: this.checkoutCart,
           addPromotionToCart: this.addPromotionToCart,
           removePromotionFromCart: this.removePromotionFromCart,
         }}
