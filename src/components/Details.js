@@ -1,18 +1,22 @@
 import React from "react";
 import { ProductConsumer } from "./Context";
+import { useParams } from "react-router";
 
 export default function Details() {
+  let { productId } = useParams();
+
   return (
     <ProductConsumer>
       {(value) => {
-        const { id, img, company, info, price, title } = value.detailProduct;
+        const product = value.getItem(parseInt(productId, 10));
+        const { id, img, company, info, price, title } = product;
         const inCart = value.cart.find((item) => item.id === id);
         return (
           <main className="mt-5 pt-4">
             <div className="container dark-grey-text mt-5">
               <div className="row wow fadeIn">
                 <div className="col-md-6 mb-4">
-                  <img src={img} className="img-fluid" alt="" />
+                  <img src={`/${img}`} className="img-fluid" alt="" />
                 </div>
                 <div className="col-md-6 mb-4">
                   <div className="p-4">
