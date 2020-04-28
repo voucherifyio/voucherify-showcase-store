@@ -45,7 +45,7 @@ export default function Navbar() {
             <i className="fas fa-shopping-cart"></i>&nbsp;
             <ProductConsumer>
               {(value) => {
-                if (value.cart !== null) {
+                if (value.cart.length > 0) {
                   let countTotalItems = value.cart.reduce(function (a, b) {
                     return a + b["count"];
                   }, 0);
