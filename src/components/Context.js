@@ -218,45 +218,45 @@ class ProductProvider extends Component {
   };
 
   checkoutCart = async () => {
+    // If voucher is not applied
+    if (_.isEmpty(this.state.appliedVoucher)) {
+      this.dispatch(CLEAR_CART);
+      toast.success("Payment successful");
+      return;
+    }
+    // If voucher is applied
     try {
-      if (!_.isEmpty(this.state.appliedVoucher)) {
-        const prepareItemsPayload = (item) => {
-          return {
-            product_id: item.id,
-            quantity: item.count,
-            price: item.price,
-            amount: item.total,
-          };
+      const prepareItemsPayload = (item) => {
+        return {
+          product_id: item.id,
+          quantity: item.count,
+          price: item.price,
+          amount: item.total,
         };
-        const redemptionPayload = {
-          customer: {
-            tracking_id: this.state.appliedVoucher.tracking_id,
-          },
-          order: {
-            amount: this.state.cartTotalAfterPromotion,
-            items: this.state.cart.map(prepareItemsPayload),
-          },
-        };
+      };
+      const redemptionPayload = {
+        customer: {
+          tracking_id: this.state.appliedVoucher.tracking_id,
+        },
+        order: {
+          amount: this.state.cartTotalAfterPromotion,
+          items: this.state.cart.map(prepareItemsPayload),
+        },
+      };
 
-        const code = this.state.appliedVoucher.code;
+      const code = this.state.appliedVoucher.code;
 
-        await new Promise((resolve, reject) => {
-          window.Voucherify.redeem(code, redemptionPayload, (response) => {
-            if (response.result === "SUCCESS") {
-              resolve(response);
-            } else {
-              reject(new Error(response.message));
-            }
-          });
+      await new Promise((resolve, reject) => {
+        window.Voucherify.redeem(code, redemptionPayload, (response) => {
+          if (response.result === "SUCCESS") {
+            resolve(response);
+          } else {
+            reject(new Error(response.message));
+          }
         });
-        // Processing payment with voucher
-        this.dispatch(CLEAR_CART);
-        toast.success("Payment successful");
-      } else {
-        // If there is not any voucher applied, process the payment
-        this.dispatch(CLEAR_CART);
-        toast.success("Payment successful");
-      }
+      });
+      this.dispatch(CLEAR_CART);
+      toast.success("Payment successful");
     } catch (e) {
       console.error(e);
       toast.error("There was a problem with your purchase");
