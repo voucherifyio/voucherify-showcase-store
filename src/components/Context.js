@@ -230,8 +230,8 @@ class ProductProvider extends Component {
         return {
           product_id: item.id,
           quantity: item.count,
-          price: item.price,
-          amount: item.total,
+          price: item.price * 100,
+          amount: item.total * 100,
         };
       };
       const redemptionPayload = {
@@ -239,7 +239,7 @@ class ProductProvider extends Component {
           tracking_id: this.state.appliedVoucher.tracking_id,
         },
         order: {
-          amount: this.state.cartTotalAfterPromotion,
+          amount: this.state.cartTotalAfterPromotion * 100,
           items: this.state.cart.map(prepareItemsPayload),
         },
       };
