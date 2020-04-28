@@ -92,7 +92,6 @@ const reducer = (action) => (state, props) => {
 
 class ProductProvider extends Component {
   state = {
-    detailProduct: detailProduct,
     cart: [],
     modalOpen: false,
     modalProduct: detailProduct,
@@ -118,13 +117,6 @@ class ProductProvider extends Component {
   getItem = (id) => {
     const product = _.cloneDeep(storeProducts.find((item) => item.id === id));
     return product;
-  };
-
-  handleDetail = (id) => {
-    const product = this.getItem(id);
-    this.setState(() => ({
-      detailProduct: product,
-    }));
   };
 
   addToCart = (id) => {
@@ -282,6 +274,7 @@ class ProductProvider extends Component {
           decrement: this.decrement,
           removeItem: this.removeItem,
           clearCart: this.clearCart,
+          getItem: this.getItem,
           checkoutCart: this.checkoutCart,
           addPromotionToCart: this.addPromotionToCart,
           removePromotionFromCart: this.removePromotionFromCart,
