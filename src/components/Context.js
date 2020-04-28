@@ -210,8 +210,8 @@ class ProductProvider extends Component {
       this.dispatch(SET_COUPON, {
         appliedVoucher: voucher,
       });
+
       toast.success("Promotion applied");
-      console.log(this.state.cart);
     } catch (e) {
       toast.error("Promotion not found");
     }
@@ -242,20 +242,24 @@ class ProductProvider extends Component {
 
         await new Promise((resolve, reject) => {
           window.Voucherify.redeem(code, redemptionPayload, (response) => {
-            console.log(response);
             if (response.result === "SUCCESS") {
-              this.clearCart();
               resolve(response);
             } else {
               reject(new Error(response.message));
             }
           });
         });
+        // Processing payment with voucher
+        this.dispatch(CLEAR_CART);
+        toast.success("Payment successful");
       } else {
-        this.clearCart();
+        // If there is not any voucher applied, process the payment
+        this.dispatch(CLEAR_CART);
+        toast.success("Payment successful");
       }
     } catch (e) {
       console.error(e);
+      toast.error("There was a problem with your purchase");
     }
   };
 
