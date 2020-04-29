@@ -7,10 +7,10 @@ export default function Details() {
 
   return (
     <ProductConsumer>
-      {(value) => {
-        const product = value.getItem(parseInt(productId, 10));
+      {(ctx) => {
+        const product = ctx.getItem(parseInt(productId, 10));
         const { id, img, company, info, price, title } = product;
-        const inCart = value.cart.find((item) => item.id === id);
+        const inCart = ctx.cart.find((item) => item.id === id);
         return (
           <main className="mt-5 pt-4">
             <div className="container dark-grey-text mt-5">
@@ -32,7 +32,7 @@ export default function Details() {
                         className="btn btn-outline-secondary"
                         disabled={inCart}
                         onClick={() => {
-                          value.addToCart(id);
+                          ctx.addToCart(id);
                         }}
                       >
                         {inCart ? (
