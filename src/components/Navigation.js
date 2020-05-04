@@ -2,10 +2,30 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../HotBeansLogo.svg";
 import { ProductConsumer } from "./Context";
-
+import { CustomerConsumer} from "./CustomerContext"
 export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="mnb navbar navbar-default navbar-fixed-top">
+        <div className="container-fluid">
+          <div className="navbar-header">
+            <button
+              type="button"
+              className="navbar-toggle collapsed"
+              data-toggle="collapse"
+              data-target="#navbar"
+              aria-expanded="false"
+              aria-controls="navbar"
+              onClick={() => {
+                document.body.classList.toggle("msb-x");
+              }}
+            >
+              <span className="sr-only">Toggle navigation</span>
+              <i className="ic fa fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
       <button
         className="navbar-toggler"
         type="button"
@@ -43,6 +63,13 @@ export default function Navbar() {
         <Link to="/cart">
           <span className="btn" type="button">
             <i className="fas fa-shopping-cart"></i>&nbsp;
+            <CustomerConsumer>
+              {(ctx) => {
+                if (ctx.customer !== []) {
+                  return <span>{ctx.customer.name}</span>
+                }
+              }}
+            </CustomerConsumer>
             <ProductConsumer>
               {(value) => {
                 if (value.cart.length > 0) {

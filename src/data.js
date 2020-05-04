@@ -109,3 +109,157 @@ export const detailProduct = {
   count: 0,
   total: 0
 };
+
+
+export const storeCustomers = [
+  {
+    object: "customer",
+    id: "cust_V0bVvrPynG0gKDr5oNNfNMjX",
+    source_id: "alice@morgan.io",
+    name: "Alice Morgan",
+    description: null,
+    email: "alice@morgan.io",
+    metadata: {
+      gender: null,
+      last_payment: 111
+    },
+    created_at: "2017-08-08T07:58:09.635Z",
+    address: {
+      city: "London",
+      state: null,
+      line_1: null,
+      line_2: null,
+      country: null,
+      postal_code: null
+    },
+    summary: {
+      redemptions: {
+        total_redeemed: 76,
+        total_failed: 33,
+        total_succeeded: 43,
+        total_rolled_back: 0,
+        total_rollback_failed: 0,
+        total_rollback_succeeded: 0
+      },
+      orders: {
+        total_amount: 731399,
+        total_count: 37,
+        average_amount: 19768,
+        last_order_amount: 5000,
+        last_order_date: "2017-08-30T08:56:50.513Z"
+      }
+    },
+    loyalty: {
+      points: 0,
+      referred_customers: 4,
+      campaigns: {
+        "Yohan-Refarral": {
+          referred_customers: 4
+        }
+      }
+    },
+    updated_at: "2017-10-11T09:29:49.336Z",
+    phone: null,
+    birthday: null
+  },
+  {
+    object: "customer",
+    id: "cust_V0bVvrPynG0gKDr5oNNfNMjX",
+    source_id: "alice@morgan.io",
+    name: "Daniel Wieszcz",
+    description: null,
+    email: "alice@morgan.io",
+    metadata: {
+      gender: null,
+      last_payment: 111
+    },
+    created_at: "2017-08-08T07:58:09.635Z",
+    address: {
+      city: "London",
+      state: null,
+      line_1: null,
+      line_2: null,
+      country: null,
+      postal_code: null
+    },
+    summary: {
+      redemptions: {
+        total_redeemed: 76,
+        total_failed: 33,
+        total_succeeded: 43,
+        total_rolled_back: 0,
+        total_rollback_failed: 0,
+        total_rollback_succeeded: 0
+      },
+      orders: {
+        total_amount: 731399,
+        total_count: 37,
+        average_amount: 19768,
+        last_order_amount: 5000,
+        last_order_date: "2017-08-30T08:56:50.513Z"
+      }
+    },
+    loyalty: {
+      points: 0,
+      referred_customers: 4,
+      campaigns: {
+        "Yohan-Refarral": {
+          referred_customers: 4
+        }
+      }
+    },
+    updated_at: "2017-10-11T09:29:49.336Z",
+    phone: null,
+    birthday: null
+  },
+  {
+    object: "customer",
+    id: "cust_V0bVvrPynG0gKDr5oNNfNMjX",
+    source_id: "alice@morgan.io",
+    name: "JD",
+    description: null,
+    email: "alice@morgan.io",
+    metadata: {
+      gender: null,
+      last_payment: 111
+    },
+    created_at: "2017-08-08T07:58:09.635Z",
+    address: {
+      city: "London",
+      state: null,
+      line_1: null,
+      line_2: null,
+      country: null,
+      postal_code: null
+    },
+    summary: {
+      redemptions: {
+        total_redeemed: 76,
+        total_failed: 33,
+        total_succeeded: 43,
+        total_rolled_back: 0,
+        total_rollback_failed: 0,
+        total_rollback_succeeded: 0
+      },
+      orders: {
+        total_amount: 731399,
+        total_count: 37,
+        average_amount: 19768,
+        last_order_amount: 5000,
+        last_order_date: "2017-08-30T08:56:50.513Z"
+      }
+    },
+    loyalty: {
+      points: 0,
+      referred_customers: 4,
+      campaigns: {
+        "Yohan-Refarral": {
+          referred_customers: 4
+        }
+      }
+    },
+    updated_at: "2017-10-11T09:29:49.336Z",
+    phone: null,
+    birthday: null
+  },
+]
