@@ -391,8 +391,8 @@ body {
 	transform-style: preserve-3d;
   }
   
-  body.msb-x .mcw,
-  body.msb-x .mnb {
+  .msb-x .mcw,
+  .msb-x .mnb {
 	margin-left: 0;
 	-moz-animation: bodyslideout 300ms forwards;
 	-o-animation: bodyslideout 300ms forwards;
@@ -401,7 +401,7 @@ body {
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
   }
-  body.msb-x .msb {
+  .msb-x .msb {
 	-moz-animation: slideout 300ms forwards;
 	-o-animation: slideout 300ms forwards;
 	-webkit-animation: slideout 300ms forwards;

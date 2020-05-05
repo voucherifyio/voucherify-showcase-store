@@ -10,7 +10,6 @@ import Details from "./components/Details";
 import Footer from "./components/Footer";
 import MainPage from "./components/MainPage";
 import SuccessPage from "./components/SuccessPage";
-import Sidebar from "./components/Sidebar";
 import Modal from "./components/Modal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,7 +26,6 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <Sidebar />
         <Navigation />
         <Switch>
           <Route exact path="/" component={MainPage}></Route>
