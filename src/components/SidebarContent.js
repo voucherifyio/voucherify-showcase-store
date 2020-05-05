@@ -9,11 +9,13 @@ export default function SidebarContent() {
       ctx.setCustomer(e.target.value);
     };
   };
+
   return (
-    <CustomerConsumer>
-      {(ctx) => {
-        return (
-          <div className="side-menu-container">
+    <div className="side-menu-container">
+      <CustomerConsumer>
+        {(ctx) => {
+          console.log(ctx.customer);
+          return (
             <select
               id="storeCustomers"
               onChange={updateCustomer(ctx)}
@@ -31,7 +33,24 @@ export default function SidebarContent() {
                 );
               })}
             </select>
-            <ul className="nav navbar-nav">
+          );
+        }}
+      </CustomerConsumer>
+      <CustomerConsumer>
+        {(ctx) => {
+          if (ctx.customer !== null) {
+            return (
+              <div>
+                <h5>Customer data</h5>
+                <pre className="pre-scrollable" style={{ "font-size": "10px" }}>
+                  <code>{JSON.stringify(ctx.customer, null, 1)}</code>
+                </pre>
+              </div>
+            );
+          }
+        }}
+      </CustomerConsumer>
+      {/* <ul className="nav navbar-nav">
               <li className="panel panel-default" id="dropdown">
                 <a data-toggle="collapse" href="#dropdown-lvl1">
                   <i className="fa fa-diamond"></i> Dropdown
@@ -47,10 +66,7 @@ export default function SidebarContent() {
                   </div>
                 </div>
               </li>
-            </ul>
-          </div>
-        );
-      }}
-    </CustomerConsumer>
+            </ul> */}
+    </div>
   );
 }
