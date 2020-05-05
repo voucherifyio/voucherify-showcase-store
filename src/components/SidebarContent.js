@@ -1,53 +1,40 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { storeCustomers } from "../data";
 import { CustomerConsumer } from "./CustomerContext";
 
 export default function SidebarContent() {
-  const updateCustomer = (ctx) => {
-    return (e) => {
-      ctx.setCustomer(e.target.value);
-    };
-  };
-
   return (
     <div className="side-menu-container">
       <CustomerConsumer>
         {(ctx) => {
-          console.log(ctx.customer);
           return (
-            <select
-              id="storeCustomers"
-              onChange={updateCustomer(ctx)}
-              defaultValue={"DEFAULT"}
-            >
-              <option value="DEFAULT" disabled>
-                Select customer
-              </option>
+            <>
+              <select
+                id="storeCustomers"
+                onChange={(e) => ctx.setCustomer(e.target.value)}
+                defaultValue="DEFAULT"
+              >
+                <option value="DEFAULT" disabled>
+                  Select customer
+                </option>
 
-              {storeCustomers.map((customer) => {
-                return (
-                  <option key={customer.name} value={customer.name}>
-                    {customer.name}
-                  </option>
-                );
-              })}
-            </select>
+                {storeCustomers.map((customer) => (
+                    <option key={customer.name} value={customer.name}>
+                      {customer.name}
+                    </option>
+                ))}
+              </select>
+
+              {ctx.customer && (
+                <div>
+                  <h5>Customer data</h5>
+                  <pre className="pre-scrollable" style={{ fontSize: "10px" }}>
+                    <code>{JSON.stringify(ctx.customer, null, 1)}</code>
+                  </pre>
+                </div>
+              )}
+            </>
           );
-        }}
-      </CustomerConsumer>
-      <CustomerConsumer>
-        {(ctx) => {
-          if (ctx.customer !== null) {
-            return (
-              <div>
-                <h5>Customer data</h5>
-                <pre className="pre-scrollable" style={{ "font-size": "10px" }}>
-                  <code>{JSON.stringify(ctx.customer, null, 1)}</code>
-                </pre>
-              </div>
-            );
-          }
         }}
       </CustomerConsumer>
       {/* <ul className="nav navbar-nav">
