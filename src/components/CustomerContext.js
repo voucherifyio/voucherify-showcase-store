@@ -6,17 +6,18 @@ const CustomerContext = React.createContext();
 
 class CustomerProvider extends Component {
   state = {
-    customer: [],
+    customer: null,
   };
 
   componentDidMount() {}
 
   setCustomer = (name) => {
-    const customer = _.cloneDeep(storeCustomers.find((customer) => customer.name === name));
+    const customer = _.cloneDeep(
+      storeCustomers.find((customer) => customer.name === name)
+    );
     this.setState({
       customer: customer,
     });
-    console.log(this.state.customer)
   };
 
   render() {
