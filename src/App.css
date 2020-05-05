@@ -251,12 +251,12 @@ body {
   }
   
   .navbar-default {
-	margin-left: 200px;
+	margin-left: 350px;
   }
   
   /*main side bar*/
   .msb {
-	width: 200px;
+	width: 350px;
 	background-color: #f5f7f9;
 	position: fixed;
 	left: 0;
@@ -413,7 +413,7 @@ body {
   /* Slide in animation */
   @-moz-keyframes slidein {
 	0% {
-	  left: -200px;
+	  left: -350px;
 	}
 	100% {
 	  left: 0;
@@ -421,7 +421,7 @@ body {
   }
   @-webkit-keyframes slidein {
 	0% {
-	  left: -200px;
+	  left: -350px;
 	}
 	100% {
 	  left: 0;
@@ -429,7 +429,7 @@ body {
   }
   @keyframes slidein {
 	0% {
-	  left: -200px;
+	  left: -350px;
 	}
 	100% {
 	  left: 0;
@@ -440,7 +440,7 @@ body {
 	  left: 0;
 	}
 	100% {
-	  left: -200px;
+	  left: -350px;
 	}
   }
   @-webkit-keyframes slideout {
@@ -448,7 +448,7 @@ body {
 	  left: 0;
 	}
 	100% {
-	  left: -200px;
+	  left: -350px;
 	}
   }
   @keyframes slideout {
@@ -456,7 +456,7 @@ body {
 	  left: 0;
 	}
 	100% {
-	  left: -200px;
+	  left: -350px;
 	}
   }
   @-moz-keyframes bodyslidein {
@@ -464,7 +464,7 @@ body {
 	  left: 0;
 	}
 	100% {
-	  margin-left: 200px;
+	  margin-left: 350px;
 	}
   }
   @-webkit-keyframes bodyslidein {
@@ -480,12 +480,12 @@ body {
 	  margin-left: 0;
 	}
 	100% {
-	  margin-left: 200px;
+	  margin-left: 350px;
 	}
   }
   @-moz-keyframes bodyslideout {
 	0% {
-	  margin-left: 200px;
+	  margin-left: 350px;
 	}
 	100% {
 	  margin-right: 0;
@@ -493,7 +493,7 @@ body {
   }
   @-webkit-keyframes bodyslideout {
 	0% {
-	  margin-left: 200px;
+	  margin-left: 350px;
 	}
 	100% {
 	  margin-left: 0;
@@ -501,7 +501,7 @@ body {
   }
   @keyframes bodyslideout {
 	0% {
-	  margin-left: 200px;
+	  margin-left: 350px;
 	}
 	100% {
 	  margin-left: 0;
