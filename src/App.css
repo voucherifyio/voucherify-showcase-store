@@ -1,61 +1,61 @@
 :root {
-    --mainBlue: #2a2a72;
-    --lightBlue: #009ffd;
-    --mainWhite: #ffffff;
-    --mainDark: #232528;
-    --mainYellow: #ffa400;
+  --mainBlue: #2a2a72;
+  --lightBlue: #009ffd;
+  --mainWhite: #ffffff;
+  --mainDark: #232528;
+  --mainYellow: #ffa400;
 }
 
 body {
-    font-family: 'Lato', sans-serif !important;
-    background: var(--mainWhite) !important;
-    color: var(--mainDark) !important;
+  font-family: 'Lato', sans-serif !important;
+  background: var(--mainWhite) !important;
+  color: var(--mainDark) !important;
 }
 
 .wrapper {
-    display: flex;
-    width: 100%;
-    align-items: stretch;
+  display: flex;
+  width: 100%;
+  align-items: stretch;
 }
 
 .text-title {
-    text-transform: uppercase;
-    letter-spacing: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3rem;
 }
 
 .text-blue {
-    color: var(--mainBlue);
+  color: var(--mainBlue);
 }
 
 .text-bright {
-    color: var(--lightBlue);
+  color: var(--lightBlue);
 }
 
 .product-grid4 {
-    text-align: center;
-    border-radius: 5px;
-    overflow: hidden;
-    z-index: 1;
-    transition: all .3s ease 0s;
-    margin-bottom: 1rem;
+  text-align: center;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 1;
+  transition: all .3s ease 0s;
+  margin-bottom: 1rem;
 }
 
 .product-grid4:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, .2)
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2)
 }
 
 .product-grid4 .product-image4 a {
-    display: block
+  display: block
 }
 
 .product-grid4 .product-image4 img {
-    width: 100%;
-    height: auto
+  width: 100%;
+  height: auto
 }
 
 .product-grid4 .pic-1 {
-    opacity: 1;
-    transition: all .5s ease-out 0s
+  opacity: 1;
+  transition: all .5s ease-out 0s
 }
 
 /* 
@@ -64,446 +64,493 @@ body {
 } */
 
 .product-grid4 .pic-2 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    transition: all .5s ease-out 0s
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all .5s ease-out 0s
 }
 
 .product-grid4 .social {
-    width: 180px;
-    padding: 0;
-    margin: 0 auto;
-    list-style: none;
-    position: absolute;
-    right: 0;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: all .3s ease 0s
+  width: 180px;
+  padding: 0;
+  margin: 0 auto;
+  list-style: none;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all .3s ease 0s
 }
 
 .product-grid4 .social li {
-    display: inline-block;
-    opacity: 0;
-    transition: all .7s
+  display: inline-block;
+  opacity: 0;
+  transition: all .7s
 }
 
 .product-grid4 .social li:nth-child(1) {
-    transition-delay: .15s
+  transition-delay: .15s
 }
 
 .product-grid4 .social li:nth-child(2) {
-    transition-delay: .3s
+  transition-delay: .3s
 }
 
 .product-grid4 .social li:nth-child(3) {
-    transition-delay: .45s
+  transition-delay: .45s
 }
 
 .product-grid4:hover .social li {
-    opacity: 1
+  opacity: 1
 }
 
 .product-grid4 .social li a {
-    color: #222;
-    background: #fff;
-    font-size: 17px;
-    line-height: 36px;
-    width: 40px;
-    height: 36px;
-    border-radius: 2px;
-    margin: 0 5px;
-    display: block;
-    transition: all .3s ease 0s
+  color: #222;
+  background: #fff;
+  font-size: 17px;
+  line-height: 36px;
+  width: 40px;
+  height: 36px;
+  border-radius: 2px;
+  margin: 0 5px;
+  display: block;
+  transition: all .3s ease 0s
 }
 
 .product-grid4 .social li a:hover {
-    color: #fff;
-    background: #16a085
+  color: #fff;
+  background: #16a085
 }
 
 .product-grid4 .social li a:after,
 .product-grid4 .social li a:before {
-    content: attr(data-tip);
-    color: #fff;
-    background-color: #000;
-    font-size: 12px;
-    line-height: 20px;
-    border-radius: 3px;
-    padding: 0 5px;
-    white-space: nowrap;
-    opacity: 0;
-    transform: translateX(-50%);
-    position: absolute;
-    left: 50%;
-    top: -30px
+  content: attr(data-tip);
+  color: #fff;
+  background-color: #000;
+  font-size: 12px;
+  line-height: 20px;
+  border-radius: 3px;
+  padding: 0 5px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-50%);
+  position: absolute;
+  left: 50%;
+  top: -30px
 }
 
 .product-grid4 .social li a:after {
-    content: '';
-    height: 15px;
-    width: 15px;
-    border-radius: 0;
-    transform: translateX(-50%) rotate(45deg);
-    top: -22px;
-    z-index: -1
+  content: '';
+  height: 15px;
+  width: 15px;
+  border-radius: 0;
+  transform: translateX(-50%) rotate(45deg);
+  top: -22px;
+  z-index: -1
 }
 
 .product-grid4 .social li a:hover:after,
 .product-grid4 .social li a:hover:before {
-    opacity: 1
+  opacity: 1
 }
 
 .product-grid4 .product-discount-label,
 .product-grid4 .product-new-label {
-    color: #fff;
-    background-color: #16a085;
-    font-size: 13px;
-    font-weight: 800;
-    text-transform: uppercase;
-    line-height: 45px;
-    height: 45px;
-    width: 45px;
-    border-radius: 50%;
-    position: absolute;
-    left: 10px;
-    top: 15px;
-    transition: all .3s
+  color: #fff;
+  background-color: #16a085;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 45px;
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  transition: all .3s
 }
 
 .product-grid4 .product-discount-label {
-    left: auto;
-    right: 10px;
-    background-color: #d7292a
+  left: auto;
+  right: 10px;
+  background-color: #d7292a
 }
 
 .product-grid4:hover .product-new-label {
-    opacity: 0
+  opacity: 0
 }
 
 .product-grid4 .product-content {
-    padding: 25px
+  padding: 25px
 }
 
 .product-grid4 .title {
-    font-size: 15px;
-    font-weight: 400;
-    text-transform: capitalize;
-    margin: 0 0 7px;
-    transition: all .3s ease 0s
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: capitalize;
+  margin: 0 0 7px;
+  transition: all .3s ease 0s
 }
 
 .product-grid4 .title a {
-    text-decoration: none;
-    color: var(--mainDark)
+  text-decoration: none;
+  color: var(--mainDark)
 }
 
 .product-grid4 .price {
-    color: var(--mainDark);
-    font-size: 17px;
-    font-weight: 700;
-    margin: 0 2px 15px 0;
-    display: block
+  color: var(--mainDark);
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 2px 15px 0;
+  display: block
 }
 
 .product-grid4 .price span {
-    color: #909090;
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 0;
-    text-decoration: line-through;
-    text-align: left;
-    vertical-align: middle;
-    display: inline-block
+  color: #909090;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-decoration: line-through;
+  text-align: left;
+  vertical-align: middle;
+  display: inline-block
 }
 
 @media only screen and (max-width:990px) {
-    .product-grid4 {
-        margin-bottom: 30px
-    }
+  .product-grid4 {
+    margin-bottom: 30px
+  }
 }
 
 #modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
 }
 
 .modalElement {
-    padding: 1rem;
-}  
+  padding: 1rem;
+}
+
 body {
-	margin-top: 50px;
-	background-color: #fff;
-	font-family: Arial, sans-serif;
-	font-size: 14px;
-	letter-spacing: 0.01em;
-	color: #39464e;
+  margin-top: 50px;
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  color: #39464e;
+}
+
+.navbar-default {
+  margin-left: 350px;
+}
+
+/*main side bar*/
+.msb {
+  width: 350px;
+  background-color: #f5f7f9;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: auto;
+  min-height: 100%;
+  /* overflow-y: auto; */
+  white-space: nowrap;
+  height: 100%;
+  z-index: 1;
+  border-right: 1px solid #ddd;
+}
+
+.msb .navbar {
+  border: none;
+  margin-left: 0;
+  background-color: inherit;
+}
+
+.msb .navbar-header {
+  width: 100%;
+  border-bottom: 1px solid #e7e7e7;
+  margin-bottom: 20px;
+  background: #fff;
+}
+
+.msb .navbar-nav .panel {
+  border: 0 none;
+  box-shadow: none;
+  margin: 0;
+  background: inherit;
+}
+
+.msb .navbar-nav li {
+  display: block;
+  width: 100%;
+}
+
+.msb .navbar-nav li a {
+  padding: 15px;
+  color: #5f5f5f;
+}
+
+.msb .navbar-nav li a .glyphicon,
+.msb .navbar-nav li a .fa {
+  margin-right: 8px;
+}
+
+.msb .nb {
+  padding-top: 5px;
+  padding-left: 10px;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+ul.nv,
+ul.ns {
+  position: relative;
+  padding: 0;
+  list-style: none;
+}
+
+.nv {
+  /*ns: nav-sub*/
+}
+
+.nv li {
+  display: block;
+  position: relative;
+}
+
+.nv li::before {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.nv li a {
+  color: #444;
+  padding: 10px 25px;
+  display: block;
+  vertical-align: middle;
+}
+
+.nv li a .ic {
+  font-size: 16px;
+  margin-right: 5px;
+  font-weight: 300;
+  display: inline-block;
+}
+
+.nv .ns li a {
+  padding: 10px 50px;
+}
+
+/*main content wrapper*/
+.mcw {
+  margin-left: 200px;
+  position: relative;
+  min-height: 100%;
+  /*content view*/
+}
+
+/*globals*/
+a,
+a:focus,
+a:hover {
+  text-decoration: none;
+}
+
+.inbox .container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.inbox ul,
+.inbox li {
+  margin: 0;
+  padding: 0;
+}
+
+.inbox ul li {
+  list-style: none;
+}
+
+.inbox ul li a {
+  display: block;
+  padding: 10px 20px;
+}
+
+.msb,
+.mnb {
+  -moz-animation: slidein 300ms forwards;
+  -o-animation: slidein 300ms forwards;
+  -webkit-animation: slidein 300ms forwards;
+  animation: slidein 300ms forwards;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.mcw {
+  -moz-animation: bodyslidein 300ms forwards;
+  -o-animation: bodyslidein 300ms forwards;
+  -webkit-animation: bodyslidein 300ms forwards;
+  animation: bodyslidein 300ms forwards;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.msb-x .mcw,
+.msb-x .mnb {
+  margin-left: 0;
+  -moz-animation: bodyslideout 300ms forwards;
+  -o-animation: bodyslideout 300ms forwards;
+  -webkit-animation: bodyslideout 300ms forwards;
+  animation: bodyslideout 300ms forwards;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.msb-x .msb {
+  -moz-animation: slideout 300ms forwards;
+  -o-animation: slideout 300ms forwards;
+  -webkit-animation: slideout 300ms forwards;
+  animation: slideout 300ms forwards;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.sidebar-button {
+  /* display: inline-block; */
+  margin: 15px;
+  position: absolute;
+  left: 370px;
+}
+
+/* Slide in animation */
+@-moz-keyframes slidein {
+  0% {
+    left: -350px;
   }
-  
-  .navbar-default {
-	margin-left: 350px;
+
+  100% {
+    left: 0;
   }
-  
-  /*main side bar*/
-  .msb {
-	width: 350px;
-	background-color: #f5f7f9;
-	position: fixed;
-	left: 0;
-	top: 0;
-	right: auto;
-	min-height: 100%;
-	overflow-y: auto;
-	white-space: nowrap;
-	height: 100%;
-	z-index: 1;
-	border-right: 1px solid #ddd;
+}
+
+@-webkit-keyframes slidein {
+  0% {
+    left: -350px;
   }
-  .msb .navbar {
-	border: none;
-	margin-left: 0;
-	background-color: inherit;
+
+  100% {
+    left: 0;
   }
-  .msb .navbar-header {
-	width: 100%;
-	border-bottom: 1px solid #e7e7e7;
-	margin-bottom: 20px;
-	background: #fff;
+}
+
+@keyframes slidein {
+  0% {
+    left: -350px;
   }
-  .msb .navbar-nav .panel {
-	border: 0 none;
-	box-shadow: none;
-	margin: 0;
-	background: inherit;
+
+  100% {
+    left: 0;
   }
-  .msb .navbar-nav li {
-	display: block;
-	width: 100%;
+}
+
+@-moz-keyframes slideout {
+  0% {
+    left: 0;
   }
-  .msb .navbar-nav li a {
-	padding: 15px;
-	color: #5f5f5f;
+
+  100% {
+    left: -350px;
   }
-  .msb .navbar-nav li a .glyphicon,
-  .msb .navbar-nav li a .fa {
-	margin-right: 8px;
+}
+
+@-webkit-keyframes slideout {
+  0% {
+    left: 0;
   }
-  .msb .nb {
-	padding-top: 5px;
-	padding-left: 10px;
-	margin-bottom: 30px;
-	overflow: hidden;
+
+  100% {
+    left: -350px;
   }
-  
-  ul.nv,
-  ul.ns {
-	position: relative;
-	padding: 0;
-	list-style: none;
+}
+
+@keyframes slideout {
+  0% {
+    left: 0;
   }
-  
-  .nv {
-	/*ns: nav-sub*/
+
+  100% {
+    left: -350px;
   }
-  .nv li {
-	display: block;
-	position: relative;
+}
+
+@-moz-keyframes bodyslidein {
+  0% {
+    left: 0;
   }
-  .nv li::before {
-	clear: both;
-	content: "";
-	display: table;
+
+  100% {
+    margin-left: 350px;
   }
-  .nv li a {
-	color: #444;
-	padding: 10px 25px;
-	display: block;
-	vertical-align: middle;
+}
+
+@-webkit-keyframes bodyslidein {
+  0% {
+    left: 0;
   }
-  .nv li a .ic {
-	font-size: 16px;
-	margin-right: 5px;
-	font-weight: 300;
-	display: inline-block;
+
+  100% {
+    left: 0;
   }
-  .nv .ns li a {
-	padding: 10px 50px;
+}
+
+@keyframes bodyslidein {
+  0% {
+    margin-left: 0;
   }
-  
-  /*main content wrapper*/
-  .mcw {
-	margin-left: 200px;
-	position: relative;
-	min-height: 100%;
-	/*content view*/
+
+  100% {
+    margin-left: 350px;
   }
-  
-  /*globals*/
-  a,
-  a:focus,
-  a:hover {
-	text-decoration: none;
+}
+
+@-moz-keyframes bodyslideout {
+  0% {
+    margin-left: 350px;
   }
-  
-  .inbox .container-fluid {
-	padding-left: 0;
-	padding-right: 0;
+
+  100% {
+    margin-right: 0;
   }
-  .inbox ul,
-  .inbox li {
-	margin: 0;
-	padding: 0;
+}
+
+@-webkit-keyframes bodyslideout {
+  0% {
+    margin-left: 350px;
   }
-  .inbox ul li {
-	list-style: none;
+
+  100% {
+    margin-left: 0;
   }
-  .inbox ul li a {
-	display: block;
-	padding: 10px 20px;
+}
+
+@keyframes bodyslideout {
+  0% {
+    margin-left: 350px;
   }
-  
-  .msb,
-  .mnb {
-	-moz-animation: slidein 300ms forwards;
-	-o-animation: slidein 300ms forwards;
-	-webkit-animation: slidein 300ms forwards;
-	animation: slidein 300ms forwards;
-	-webkit-transform-style: preserve-3d;
-	transform-style: preserve-3d;
+
+  100% {
+    margin-left: 0;
   }
-  
-  .mcw {
-	-moz-animation: bodyslidein 300ms forwards;
-	-o-animation: bodyslidein 300ms forwards;
-	-webkit-animation: bodyslidein 300ms forwards;
-	animation: bodyslidein 300ms forwards;
-	-webkit-transform-style: preserve-3d;
-	transform-style: preserve-3d;
-  }
-  
-  .msb-x .mcw,
-  .msb-x .mnb {
-	margin-left: 0;
-	-moz-animation: bodyslideout 300ms forwards;
-	-o-animation: bodyslideout 300ms forwards;
-	-webkit-animation: bodyslideout 300ms forwards;
-	animation: bodyslideout 300ms forwards;
-	-webkit-transform-style: preserve-3d;
-	transform-style: preserve-3d;
-  }
-  .msb-x .msb {
-	-moz-animation: slideout 300ms forwards;
-	-o-animation: slideout 300ms forwards;
-	-webkit-animation: slideout 300ms forwards;
-	animation: slideout 300ms forwards;
-	-webkit-transform-style: preserve-3d;
-	transform-style: preserve-3d;
-  }
-  
-  /* Slide in animation */
-  @-moz-keyframes slidein {
-	0% {
-	  left: -350px;
-	}
-	100% {
-	  left: 0;
-	}
-  }
-  @-webkit-keyframes slidein {
-	0% {
-	  left: -350px;
-	}
-	100% {
-	  left: 0;
-	}
-  }
-  @keyframes slidein {
-	0% {
-	  left: -350px;
-	}
-	100% {
-	  left: 0;
-	}
-  }
-  @-moz-keyframes slideout {
-	0% {
-	  left: 0;
-	}
-	100% {
-	  left: -350px;
-	}
-  }
-  @-webkit-keyframes slideout {
-	0% {
-	  left: 0;
-	}
-	100% {
-	  left: -350px;
-	}
-  }
-  @keyframes slideout {
-	0% {
-	  left: 0;
-	}
-	100% {
-	  left: -350px;
-	}
-  }
-  @-moz-keyframes bodyslidein {
-	0% {
-	  left: 0;
-	}
-	100% {
-	  margin-left: 350px;
-	}
-  }
-  @-webkit-keyframes bodyslidein {
-	0% {
-	  left: 0;
-	}
-	100% {
-	  left: 0;
-	}
-  }
-  @keyframes bodyslidein {
-	0% {
-	  margin-left: 0;
-	}
-	100% {
-	  margin-left: 350px;
-	}
-  }
-  @-moz-keyframes bodyslideout {
-	0% {
-	  margin-left: 350px;
-	}
-	100% {
-	  margin-right: 0;
-	}
-  }
-  @-webkit-keyframes bodyslideout {
-	0% {
-	  margin-left: 350px;
-	}
-	100% {
-	  margin-left: 0;
-	}
-  }
-  @keyframes bodyslideout {
-	0% {
-	  margin-left: 350px;
-	}
-	100% {
-	  margin-left: 0;
-	}
-  }
+}

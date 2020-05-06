@@ -3,25 +3,14 @@ import { Link } from "react-router-dom";
 import Logo from "../HotBeansLogo.svg";
 import { ProductConsumer } from "./Context";
 import { CustomerConsumer } from "./CustomerContext";
-import SidebarButton from "./SidebarButton";
 
-export default function Navbar({isSidebarOpen}) {
+export default function Navbar() {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className={isSidebarOpen ? "navbar navbar-default navbar-fixed-top" : "navbar navbar-fixed-top"}>
+        <div className="navbar navbar-fixed-top">
           <div className="container-fluid">
-            <div className="navbar-header">
-              <CustomerConsumer>
-                {(ctx) => {
-                  return (
-                    <SidebarButton
-                      onClick={() => ctx.setSideBar()}
-                    />
-                  );
-                }}
-              </CustomerConsumer>
-            </div>
+            <div className="navbar-header"></div>
           </div>
         </div>
         <button

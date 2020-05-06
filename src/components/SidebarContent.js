@@ -19,15 +19,15 @@ export default function SidebarContent() {
                 </option>
 
                 {storeCustomers.map((customer) => (
-                    <option key={customer.name} value={customer.name}>
-                      {customer.name}
-                    </option>
+                  <option key={customer.name} value={customer.name}>
+                    {customer.name}
+                  </option>
                 ))}
               </select>
 
               {ctx.customer && (
                 <div>
-                  <h5>Customer data</h5>
+                  <h5>{ctx.customer.name} data</h5>
                   <pre className="pre-scrollable" style={{ fontSize: "10px" }}>
                     <code>{JSON.stringify(ctx.customer, null, 1)}</code>
                   </pre>

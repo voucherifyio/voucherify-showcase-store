@@ -4,13 +4,31 @@ import _ from "lodash";
 
 const CustomerContext = React.createContext();
 
+const readValueFromLocalStorage = (key) => {
+  const value = localStorage.getItem(key);
+  if (value) {
+    try {
+      return JSON.parse(value);
+    } catch (e) {}
+  }
+};
+
+const loadItemsFromLocalStorage = () => {
+  return {
+    customer: readValueFromLocalStorage("customer") || null,
+  };
+};
+
+
 class CustomerProvider extends Component {
   state = {
     customer: null,
     sidebar: true,
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.setState(loadItemsFromLocalStorage())
+  }
 
   setCustomer = (name) => {
     const customer = _.cloneDeep(
@@ -19,13 +37,7 @@ class CustomerProvider extends Component {
     this.setState({
       customer: customer,
     });
-  };
-
-  setSideBar = () => {
-    let value = this.state.sidebar;
-    this.setState({
-      sidebar: !value,
-    });
+    localStorage.setItem("customer", JSON.stringify(customer));
   };
 
   render() {
@@ -34,7 +46,6 @@ class CustomerProvider extends Component {
         value={{
           ...this.state,
           setCustomer: this.setCustomer,
-          setSideBar: this.setSideBar,
         }}
       >
         {this.props.children}

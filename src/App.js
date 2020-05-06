@@ -14,7 +14,6 @@ import Modal from "./components/Modal";
 import Sidebar from "./components/Sidebar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { CustomerConsumer } from "./components/CustomerContext";
 
 const toastOptions = {
   position: "bottom-center",
@@ -28,17 +27,8 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <CustomerConsumer>
-          {(ctx) => {
-            return (
-              <>
-                <Sidebar isSidebarOpen={ctx.sidebar} />
-                <Navigation isSidebarOpen={ctx.sidebar} />
-              </>
-            );
-          }}
-        </CustomerConsumer>
-        {/* <Navigation /> */}
+        <Sidebar />
+        <Navigation />
         <Switch>
           <Route exact path="/" component={MainPage}></Route>
           <Route path="/products" component={ProductList}></Route>
