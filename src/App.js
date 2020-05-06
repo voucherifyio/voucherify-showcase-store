@@ -30,10 +30,15 @@ class App extends Component {
       <React.Fragment>
         <CustomerConsumer>
           {(ctx) => {
-            return <Sidebar isSidebarOpen={ctx.sidebar} />;
+            return (
+              <>
+                <Sidebar isSidebarOpen={ctx.sidebar} />
+                <Navigation isSidebarOpen={ctx.sidebar} />
+              </>
+            );
           }}
         </CustomerConsumer>
-        <Navigation />
+        {/* <Navigation /> */}
         <Switch>
           <Route exact path="/" component={MainPage}></Route>
           <Route path="/products" component={ProductList}></Route>

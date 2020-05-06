@@ -5,11 +5,11 @@ import { ProductConsumer } from "./Context";
 import { CustomerConsumer } from "./CustomerContext";
 import SidebarButton from "./SidebarButton";
 
-export default function Navbar() {
+export default function Navbar({isSidebarOpen}) {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="mnb navbar navbar-default navbar-fixed-top">
+        <div className={isSidebarOpen ? "navbar navbar-default navbar-fixed-top" : "navbar navbar-fixed-top"}>
           <div className="container-fluid">
             <div className="navbar-header">
               <CustomerConsumer>
