@@ -17,14 +17,12 @@ export default function SidebarContent() {
                 <option value="DEFAULT" disabled>
                   Select customer
                 </option>
-
                 {storeCustomers.map((customer) => (
                   <option key={customer.name} value={customer.name}>
                     {customer.name}
                   </option>
                 ))}
               </select>
-
               {ctx.customer && (
                 <div>
                   <h5>{ctx.customer.name} data</h5>
