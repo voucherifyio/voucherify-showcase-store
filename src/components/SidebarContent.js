@@ -12,7 +12,7 @@ export default function SidebarContent() {
               <select
                 id="storeCustomers"
                 onChange={(e) => ctx.setCustomer(e.target.value)}
-                defaultValue="DEFAULT"
+                value={(ctx.customer || {}).name || "DEFAULT"}
               >
                 <option value="DEFAULT" disabled>
                   Select customer
@@ -25,7 +25,6 @@ export default function SidebarContent() {
               </select>
               {ctx.customer && (
                 <div>
-                  <h5>{ctx.customer.name} data</h5>
                   <pre className="pre-scrollable" style={{ fontSize: "10px" }}>
                     <code>{JSON.stringify(ctx.customer, null, 1)}</code>
                   </pre>

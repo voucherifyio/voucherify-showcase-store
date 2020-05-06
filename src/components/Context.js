@@ -209,7 +209,7 @@ class ProductProvider extends Component {
     }
   };
 
-  checkoutCart = async () => {
+  checkoutCart = async (customer={}) => {
     // If voucher is not applied
     if (_.isEmpty(this.state.appliedVoucher)) {
       this.dispatch(CLEAR_CART);
@@ -227,9 +227,7 @@ class ProductProvider extends Component {
         };
       };
       const redemptionPayload = {
-        customer: {
-          tracking_id: this.state.appliedVoucher.tracking_id,
-        },
+        customer,
         order: {
           amount: this.state.cartTotalAfterPromotion * 100,
           items: this.state.cart.map(prepareItemsPayload),
@@ -237,7 +235,6 @@ class ProductProvider extends Component {
       };
 
       const code = this.state.appliedVoucher.code;
-
       await new Promise((resolve, reject) => {
         window.Voucherify.redeem(code, redemptionPayload, (response) => {
           if (response.result === "SUCCESS") {
