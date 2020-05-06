@@ -37,23 +37,6 @@ export default function SidebarContent() {
           );
         }}
       </CustomerConsumer>
-      {/* <ul className="nav navbar-nav">
-              <li className="panel panel-default" id="dropdown">
-                <a data-toggle="collapse" href="#dropdown-lvl1">
-                  <i className="fa fa-diamond"></i> Dropdown
-                  <span className="caret"></span>
-                </a>
-                <div id="dropdown-lvl1" className="panel-collapse collapse">
-                  <div className="panel-body">
-                    <ul className="nav navbar-nav">
-                      <li>
-                        <Link to="#">Mail</Link>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul> */}
     </div>
   );
 }

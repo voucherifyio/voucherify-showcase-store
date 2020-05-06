@@ -7,6 +7,7 @@ const CustomerContext = React.createContext();
 class CustomerProvider extends Component {
   state = {
     customer: null,
+    sidebar: true,
   };
 
   componentDidMount() {}
@@ -20,12 +21,20 @@ class CustomerProvider extends Component {
     });
   };
 
+  setSideBar = () => {
+    let value = this.state.sidebar;
+    this.setState({
+      sidebar: !value,
+    });
+  };
+
   render() {
     return (
       <CustomerContext.Provider
         value={{
           ...this.state,
           setCustomer: this.setCustomer,
+          setSideBar: this.setSideBar,
         }}
       >
         {this.props.children}

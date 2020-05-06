@@ -11,7 +11,7 @@ export default function SidebarButton({ onClick }) {
         viewBox="0 0 16 16"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
-        onClick={(e) => { onClick && onClick(e) }}
+        onClick={onClick}
         style={{ cursor: "pointer" }}
       >
         <rect width="16" height="16" rx="2" />

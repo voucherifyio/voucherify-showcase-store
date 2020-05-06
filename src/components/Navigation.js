@@ -1,24 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../HotBeansLogo.svg";
 import { ProductConsumer } from "./Context";
 import { CustomerConsumer } from "./CustomerContext";
 import SidebarButton from "./SidebarButton";
-import Sidebar from "./Sidebar";
 
 export default function Navbar() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-
   return (
     <>
-      <div className={sidebarOpen ? "" : "msb-x"}>
-        <Sidebar/>
-      </div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="mnb navbar navbar-default navbar-fixed-top">
           <div className="container-fluid">
             <div className="navbar-header">
-              <SidebarButton onClick={() => setSidebarOpen(!sidebarOpen)}/>
+              <CustomerConsumer>
+                {(ctx) => {
+                  return (
+                    <SidebarButton
+                      onClick={() => ctx.setSideBar()}
+                    />
+                  );
+                }}
+              </CustomerConsumer>
             </div>
           </div>
         </div>
@@ -71,7 +73,10 @@ export default function Navbar() {
               <ProductConsumer>
                 {(ctx) => {
                   if (ctx.cart.length > 0) {
-                    const countTotalItems = ctx.cart.reduce((acc, curr) => (acc + curr.count), 0);
+                    const countTotalItems = ctx.cart.reduce(
+                      (acc, curr) => acc + curr.count,
+                      0
+                    );
                     return (
                       <span className="badge badge-pill badge-warning">
                         {countTotalItems}
