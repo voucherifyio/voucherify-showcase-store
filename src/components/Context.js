@@ -209,7 +209,7 @@ class ProductProvider extends Component {
     }
   };
 
-  checkoutCart = async (customer={}) => {
+  checkoutCart = async (customer = {}) => {
     // If voucher is not applied
     if (_.isEmpty(this.state.appliedVoucher)) {
       this.dispatch(CLEAR_CART);
