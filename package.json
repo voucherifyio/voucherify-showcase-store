@@ -7,12 +7,16 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.4.1",
+    "jquery": "^3.5.1",
     "lodash": "^4.17.15",
+    "popper.js": "^1.16.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.4.1",
     "react-toastify": "^5.5.0",
     "styled-components": "^5.1.0",
+    "typescript": "^3.8.3",
     "voucherify.js": "^1.31.0"
   },
   "scripts": {
@@ -35,8 +39,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "react-scripts": "^3.4.1"
   }
 }
