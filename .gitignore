@@ -4,6 +4,8 @@
 # exception to the rule
 !.data/.gitkeep 
 
+build/*
+
 # Logs
 logs
 *.log
