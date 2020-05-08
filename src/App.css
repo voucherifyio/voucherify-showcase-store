@@ -437,6 +437,11 @@ a:hover {
 #storeCustomers {
   width: 100%;
 }
+
+.customer-data {
+  width: 300px;
+}
+
 /* Slide in animation */
 @-moz-keyframes slidein {
   0% {

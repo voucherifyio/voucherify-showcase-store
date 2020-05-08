@@ -39,12 +39,22 @@ app.get("/ping", (req, res) => {
   res.send("pong");
 });
 
-app.use(express.static("build"));
+const voucherify = voucherifyClient({
+  applicationId: process.env.APPLICATION_ID,
+  clientSecretKey: process.env.CLIENT_SECRET_KEY,
+});
 
-// const voucherify = voucherifyClient({
-//     applicationId: process.env.APPLICATION_ID,
-//     clientSecretKey: process.env.CLIENT_SECRET_KEY
-// });
+app.get("/customers", async (request, response) => {
+  try {
+    console.log("[Fetching customers]");
+    voucherify.customers.list().then((customers) => response.json(customers));
+  } catch (e) {
+    console.error("[Fetching customers][Error] error: %s", e);
+    response.status(500).end();
+  }
+});
+
+app.use(express.static("build"));
 
 const listener = app.listen(process.env.PORT, () => {
   console.log(`Your app is listening on port ${listener.address().port}`);

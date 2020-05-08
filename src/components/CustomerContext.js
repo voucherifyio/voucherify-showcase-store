@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { storeCustomers } from "../data";
+// import { storeCustomers } from "../data";
 import _ from "lodash";
 
 const CustomerContext = React.createContext();
@@ -19,25 +19,38 @@ const loadItemsFromLocalStorage = () => {
   };
 };
 
-
 class CustomerProvider extends Component {
   state = {
     customer: null,
     sidebar: true,
+    customers: [],
   };
 
   componentDidMount() {
-    this.setState(loadItemsFromLocalStorage())
+    this.setState(loadItemsFromLocalStorage());
+    this.getCustomers();
   }
 
+  getCustomers = async () => {
+    try {
+      let customers = await fetch("/customers").then((x) => x.json());
+      this.setState({
+        customers: customers.customers,
+      });
+      console.log(customers);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   setCustomer = (name) => {
-    const customer = _.cloneDeep(
-      storeCustomers.find((customer) => customer.name === name)
-    );
+    // let customer = this.state.customers.find(
+    //   (customer) => customer.name === name
+    // );
     this.setState({
-      customer: customer,
+      customer: name,
     });
-    localStorage.setItem("customer", JSON.stringify(customer));
+    localStorage.setItem("customer", JSON.stringify(name));
   };
 
   render() {
@@ -46,6 +59,7 @@ class CustomerProvider extends Component {
         value={{
           ...this.state,
           setCustomer: this.setCustomer,
+          getCustomers: this.getCustomers,
         }}
       >
         {this.props.children}

@@ -51,7 +51,7 @@ export default function Navbar() {
             {(ctx) => {
               if (ctx.customer !== null) {
                 return (
-                  <span className="font-weight-bold">{ctx.customer.name}</span>
+                  <span className="font-weight-bold">{ctx.customer}</span>
                 );
               }
             }}

@@ -233,7 +233,6 @@ class ProductProvider extends Component {
           items: this.state.cart.map(prepareItemsPayload),
         },
       };
-
       const code = this.state.appliedVoucher.code;
       await new Promise((resolve, reject) => {
         window.Voucherify.redeem(code, redemptionPayload, (response) => {

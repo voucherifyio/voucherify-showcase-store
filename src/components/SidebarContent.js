@@ -1,5 +1,5 @@
 import React from "react";
-import { storeCustomers } from "../data";
+// import { storeCustomers } from "../data";
 import { CustomerConsumer } from "./CustomerContext";
 
 export default function SidebarContent() {
@@ -7,17 +7,20 @@ export default function SidebarContent() {
     <div className="side-menu-container">
       <CustomerConsumer>
         {(ctx) => {
+          let customer = ctx.customers.filter(
+            (customer) => customer.name === ctx.customer
+          )[0];
           return (
             <>
               <select
                 id="storeCustomers"
                 onChange={(e) => ctx.setCustomer(e.target.value)}
-                value={(ctx.customer || {}).name || "DEFAULT"}
+                value={ctx.customer || "DEFAULT"}
               >
                 <option value="DEFAULT" disabled>
                   Select customer
                 </option>
-                {storeCustomers.map((customer) => (
+                {ctx.customers.map((customer) => (
                   <option key={customer.name} value={customer.name}>
                     {customer.name}
                   </option>
@@ -25,8 +28,11 @@ export default function SidebarContent() {
               </select>
               {ctx.customer && (
                 <div>
-                  <pre className="pre-scrollable" style={{ fontSize: "10px" }}>
-                    <code>{JSON.stringify(ctx.customer, null, 1)}</code>
+                  <pre
+                    className="customer-data pre-scrollable"
+                    style={{ fontSize: "10px" }}
+                  >
+                    <code>{JSON.stringify(customer, null, 1)}</code>
                   </pre>
                 </div>
               )}
