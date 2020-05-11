@@ -41,6 +41,16 @@ export default function SidebarContent() {
                     >
                       <code>{JSON.stringify(ctx.customer, null, 1)}</code>
                     </pre>
+                    {ctx.customerRedemptions && (
+                      <pre
+                        className="customer-data pre-scrollable"
+                        style={{ fontSize: "10px" }}
+                      >
+                        <code>
+                          {JSON.stringify(ctx.customerRedemptions, null, 1)}
+                        </code>
+                      </pre>
+                    )}
                   </div>
                 </>
               )}
