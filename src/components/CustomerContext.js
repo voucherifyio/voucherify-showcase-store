@@ -16,6 +16,7 @@ const readValueFromLocalStorage = (key) => {
 const loadItemsFromLocalStorage = () => {
   return {
     customer: readValueFromLocalStorage("customer") || null,
+    fetchingCustomer: readValueFromLocalStorage("fetchingCustomer") || false,
   };
 };
 
@@ -24,6 +25,7 @@ class CustomerProvider extends Component {
     customer: null,
     sidebar: true,
     customers: [],
+    fetchingCustomer: true,
   };
 
   componentDidMount() {
@@ -43,12 +45,34 @@ class CustomerProvider extends Component {
       console.log(e);
     }
   };
+  
+  sleep = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
 
-  setCustomer = (name) => {
-    this.setState({
-      customer: name,
-    });
-    localStorage.setItem("customer", JSON.stringify(name));
+  setCustomer = async (id) => {
+    try {
+      this.setState({ fetchingCustomer: true });
+      let customer = await fetch(`/customer/${id}`, {
+        credentials: "include",
+      }).then((x) => x.json());
+      if (
+        customer.summary.redemptions.total_redeemed ===
+        this.state.customer.summary.redemptions.total_redeemed
+      ) {
+        await this.sleep(5000);
+        this.setCustomer(id);
+      } else {
+        this.setState({
+          customer: customer,
+          fetchingCustomer: false,
+        });
+        localStorage.setItem("customer", JSON.stringify(customer));
+        localStorage.setItem("fetchingCustomer", JSON.stringify(false));
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   getCustomer = () => {

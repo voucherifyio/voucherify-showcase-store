@@ -55,6 +55,17 @@ app.get("/customers", async (request, response) => {
   }
 });
 
+app.get("/customer/:id", async (request, response) => {
+  let id = request.params.id;
+  try {
+    const customer = await voucherify.customers.get(id);
+    response.json(customer);
+  } catch (e) {
+    console.error("[Fetching customer][Error] error: %s", e);
+    response.status(500).end();
+  }
+});
+
 app.use(express.static("build"));
 
 const listener = app.listen(process.env.PORT, () => {

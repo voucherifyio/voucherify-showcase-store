@@ -55,8 +55,8 @@ export default function CartTotals({ value }) {
                 <button
                   className="btn btn-dark rounded-pill py-2 btn-block mb-2 "
                   onClick={() => {
-                    checkoutCart(ctx.getCustomer());
-                    ctx.getCustomers();
+                    checkoutCart(ctx.customer);
+                    ctx.setCustomer(ctx.customer.id);
                   }}
                 >
                   Proceed to checkout
