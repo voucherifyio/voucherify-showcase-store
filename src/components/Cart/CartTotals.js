@@ -51,13 +51,13 @@ export default function CartTotals({ value }) {
         >
           <CustomerConsumer>
             {(ctx) => {
-              let customer = ctx.customers.filter(
-                (customer) => customer.name === ctx.customer
-              )[0];
               return (
                 <button
                   className="btn btn-dark rounded-pill py-2 btn-block mb-2 "
-                  onClick={() => checkoutCart(customer)}
+                  onClick={() => {
+                    checkoutCart(ctx.getCustomer());
+                    ctx.getCustomers();
+                  }}
                 >
                   Proceed to checkout
                 </button>

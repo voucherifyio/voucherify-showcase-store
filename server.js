@@ -47,7 +47,8 @@ const voucherify = voucherifyClient({
 app.get("/customers", async (request, response) => {
   try {
     console.log("[Fetching customers]");
-    voucherify.customers.list().then((customers) => response.json(customers));
+    const customers = await voucherify.customers.list();
+    response.json(customers);
   } catch (e) {
     console.error("[Fetching customers][Error] error: %s", e);
     response.status(500).end();

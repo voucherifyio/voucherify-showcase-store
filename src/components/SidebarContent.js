@@ -7,9 +7,6 @@ export default function SidebarContent() {
     <div className="side-menu-container">
       <CustomerConsumer>
         {(ctx) => {
-          let customer = ctx.customers.filter(
-            (customer) => customer.name === ctx.customer
-          )[0];
           return (
             <>
               <select
@@ -32,7 +29,7 @@ export default function SidebarContent() {
                     className="customer-data pre-scrollable"
                     style={{ fontSize: "10px" }}
                   >
-                    <code>{JSON.stringify(customer, null, 1)}</code>
+                    <code>{JSON.stringify(ctx.getCustomer(), null, 1)}</code>
                   </pre>
                 </div>
               )}

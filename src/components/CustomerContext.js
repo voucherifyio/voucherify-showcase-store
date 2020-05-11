@@ -33,24 +33,28 @@ class CustomerProvider extends Component {
 
   getCustomers = async () => {
     try {
-      let customers = await fetch("/customers").then((x) => x.json());
+      let customers = await fetch("/customers", {
+        credentials: "include",
+      }).then((x) => x.json());
       this.setState({
         customers: customers.customers,
       });
-      console.log(customers);
     } catch (e) {
       console.log(e);
     }
   };
 
   setCustomer = (name) => {
-    // let customer = this.state.customers.find(
-    //   (customer) => customer.name === name
-    // );
     this.setState({
       customer: name,
     });
     localStorage.setItem("customer", JSON.stringify(name));
+  };
+
+  getCustomer = () => {
+    return this.state.customers.find(
+      (customer) => this.state.customer === customer.name
+    );
   };
 
   render() {
@@ -59,6 +63,7 @@ class CustomerProvider extends Component {
         value={{
           ...this.state,
           setCustomer: this.setCustomer,
+          getCustomer: this.getCustomer,
           getCustomers: this.getCustomers,
         }}
       >
