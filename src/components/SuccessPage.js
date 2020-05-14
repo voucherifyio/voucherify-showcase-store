@@ -14,7 +14,7 @@ export default class SuccessPage extends Component {
                 ID: 433dd1b3-5433-400d-82e5-82812ecd1cd3
               </div>
               <Link
-                to='/products'
+                to='/'
                 className='inline-block btn btn-outline-secondary'
               >
                 Continue shopping

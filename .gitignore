@@ -1,3 +1,11 @@
+# exclude everything
+.data/*
+
+# exception to the rule
+!.data/.gitkeep 
+
+build/*
+
 # Logs
 logs
 *.log
