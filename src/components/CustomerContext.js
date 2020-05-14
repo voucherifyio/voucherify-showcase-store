@@ -54,8 +54,25 @@ class CustomerProvider extends Component {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
-  setCustomer = async (id) => {
+  getRedemptions = async (id) => {
     const customerRedemptions = {};
+    let redemptions = await fetch(`/redemptions/${id}`, {
+      credentials: "include",
+    }).then((redemptions) => redemptions.json());
+
+    //Count reedemed codes
+    for (let i = 0; i < redemptions.length; i++) {
+      customerRedemptions[redemptions[i].voucher.code] =
+        (customerRedemptions[redemptions[i].voucher.code] || 0) + 1;
+    }
+    Object.keys(customerRedemptions).map((key) => ({
+      [key]: customerRedemptions[key],
+    }));
+
+    return customerRedemptions
+  };
+
+  setCustomer = async (id) => {
     try {
       //Get customer data, start spinner
       this.setState({ fetchingCustomer: true });
@@ -63,38 +80,44 @@ class CustomerProvider extends Component {
         credentials: "include",
       }).then((x) => x.json());
 
-      //Check if customer data has not updated
-      if (
-        customer.summary.redemptions.total_redeemed ===
-        this.state.customer.summary.redemptions.total_redeemed
-      ) {
-        //If true -> wait
-        await this.sleep(5000);
-        this.setCustomer(id);
-      } else {
-        //If false (has changed) -> get redemptions
-        let redemptions = await fetch(`/redemptions/${id}`, {
-          credentials: "include",
-        }).then((redemptions) => redemptions.json());
-
-        //Count reedemed codes
-        for (let i = 0; i < redemptions.length; i++) {
-          customerRedemptions[redemptions[i].voucher.code] =
-            (customerRedemptions[redemptions[i].voucher.code] || 0) + 1;
+      //Check if customer exists in state
+      if (!_.isEmpty(this.state.customer)) {
+        //Check if customer data has not updated
+        if (
+          customer.summary.redemptions.total_redeemed ===
+          this.state.customer.summary.redemptions.total_redeemed
+        ) {
+          //If true -> wait
+          await this.sleep(5000);
+          this.setCustomer(id);
+        } else {
+          //If false (has changed) -> get redemptions
+          let customerRedemptionsList = await this.getRedemptions(id);
+          console.log(customerRedemptionsList)
+          this.setState({
+            customer: customer,
+            fetchingCustomer: false,
+            customerRedemptions: customerRedemptionsList,
+          });
+          localStorage.setItem("customer", JSON.stringify(customer));
+          localStorage.setItem("fetchingCustomer", JSON.stringify(false));
+          localStorage.setItem(
+            "customerRedemptions",
+            JSON.stringify(customerRedemptionsList)
+          );
         }
-        Object.keys(customerRedemptions).map((key) => ({
-          [key]: customerRedemptions[key],
-        }));
+      } else {
+        let customerRedemptionsList = await this.getRedemptions(id);
         this.setState({
           customer: customer,
           fetchingCustomer: false,
-          customerRedemptions: customerRedemptions,
+          customerRedemptions: customerRedemptionsList,
         });
         localStorage.setItem("customer", JSON.stringify(customer));
         localStorage.setItem("fetchingCustomer", JSON.stringify(false));
         localStorage.setItem(
           "customerRedemptions",
-          JSON.stringify(customerRedemptions)
+          JSON.stringify(customerRedemptionsList)
         );
       }
     } catch (e) {
@@ -116,6 +139,7 @@ class CustomerProvider extends Component {
           setCustomer: this.setCustomer,
           getCustomer: this.getCustomer,
           getCustomers: this.getCustomers,
+          getRedemptions: this.getRedemptions,
         }}
       >
         {this.props.children}
