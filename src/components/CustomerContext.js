@@ -33,7 +33,19 @@ class CustomerProvider extends Component {
 
   componentDidMount() {
     this.setState(loadItemsFromLocalStorage());
-    this.getCustomers();
+    this.init();
+    // this.getCustomers();
+  }
+
+  init = async () => {
+    try {
+      const { session } = await fetch(`${process.env.REACT_APP_API_URL}/init`, {
+        credentials: "include",
+      }).then((response) => response.json());
+      console.log('YOUR SESSION ID IS', session);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   getCustomers = async () => {

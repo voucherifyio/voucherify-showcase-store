@@ -1,12 +1,19 @@
 require("dotenv").config();
+
 const express = require("express");
+const cors = require("cors");
 const voucherifyClient = require("voucherify");
 const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
 
-const debug = false;
+if (process.env.NODE_ENV !== 'production') {
+  app.use(cors({
+    credentials: true,
+    origin: "http://localhost:3001", // REACT_APP_API_URL
+  }));
+}
 
 app.use(bodyParser.json());
 app.use(
@@ -19,8 +26,7 @@ app.use(
   })
 );
 
-app.get("/", (request, response) => {
-  console.log("HELLO!!! does it work?");
+app.get("/init", (request, response) => {
   if (request.session.views) {
     console.log(
       "[Re-visit] %s - %s",
@@ -32,7 +38,7 @@ app.get("/", (request, response) => {
     request.session.views = 1;
     console.log("[New-visit] %s", request.session.id);
   }
-  response.sendFile(__dirname + "/build/index.html");
+  response.json({ session: request.session.id });
 });
 
 app.get("/ping", (req, res) => {
@@ -77,8 +83,10 @@ app.get("/redemptions/:id", async(request, response) => {
   }
 });
 
-app.use(express.static("build"));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("build"));
+}
 
 const listener = app.listen(process.env.PORT, () => {
-  console.log(`Your app is listening on port ${listener.address().port}`);
+  console.log(`Your server is listening on port ${listener.address().port}`);
 });
