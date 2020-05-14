@@ -121,6 +121,7 @@ export const storeCustomers = [
     metadata: {
       gender: null,
       last_payment: 111,
+      demostore_id: null,
     },
     created_at: "2017-08-08T07:58:09.635Z",
     address: {
@@ -171,6 +172,7 @@ export const storeCustomers = [
     metadata: {
       gender: null,
       last_payment: 111,
+      demostore_id: null,
     },
     created_at: "2018-08-08T07:58:09.635Z",
     address: {
@@ -216,6 +218,7 @@ export const storeCustomers = [
     metadata: {
       gender: "male",
       last_payment: 111,
+      demostore_id: null,
     },
     created_at: "2017-08-08T07:58:09.635Z",
     address: {

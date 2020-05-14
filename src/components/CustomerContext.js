@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import { storeCustomers } from "../data";
+import storeCustomers from "../storeCustomers";
 import _ from "lodash";
 
 const CustomerContext = React.createContext();
@@ -33,19 +33,19 @@ class CustomerProvider extends Component {
 
   componentDidMount() {
     this.setState(loadItemsFromLocalStorage());
-    this.getCustomers();
+    this.createCustomers();
   }
 
-  getCustomers = async () => {
+  createCustomers = async () => {
     try {
-      let customers = await fetch("/customers", {
-        credentials: "include",
-      }).then((x) => x.json());
-      this.setState({
-        customers: customers.customers,
+      storeCustomers.forEach(async (customer) => {
+        await fetch(`/create-customer/${customer.source_id}`, {
+          credentials: "include",
+        });
       });
     } catch (e) {
       console.log(e);
+      console.log("test")
     }
   };
 
@@ -69,7 +69,7 @@ class CustomerProvider extends Component {
       [key]: customerRedemptions[key],
     }));
 
-    return customerRedemptions
+    return customerRedemptions;
   };
 
   setCustomer = async (id) => {
@@ -79,46 +79,40 @@ class CustomerProvider extends Component {
       let customer = await fetch(`/customer/${id}`, {
         credentials: "include",
       }).then((x) => x.json());
+      let customerRedemptionsList = await this.getRedemptions(id);
+      this.setState({
+        customer: customer,
+        fetchingCustomer: false,
+        customerRedemptions: customerRedemptionsList,
+      });
+      localStorage.setItem("customer", JSON.stringify(customer));
+      localStorage.setItem("fetchingCustomer", JSON.stringify(false));
+      localStorage.setItem(
+        "customerRedemptions",
+        JSON.stringify(customerRedemptionsList)
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-      //Check if customer exists in state
-      if (!_.isEmpty(this.state.customer)) {
-        //Check if customer data has not updated
-        if (
-          customer.summary.redemptions.total_redeemed ===
-          this.state.customer.summary.redemptions.total_redeemed
-        ) {
-          //If true -> wait
-          await this.sleep(5000);
-          this.setCustomer(id);
-        } else {
-          //If false (has changed) -> get redemptions
-          let customerRedemptionsList = await this.getRedemptions(id);
-          console.log(customerRedemptionsList)
-          this.setState({
-            customer: customer,
-            fetchingCustomer: false,
-            customerRedemptions: customerRedemptionsList,
-          });
-          localStorage.setItem("customer", JSON.stringify(customer));
-          localStorage.setItem("fetchingCustomer", JSON.stringify(false));
-          localStorage.setItem(
-            "customerRedemptions",
-            JSON.stringify(customerRedemptionsList)
-          );
-        }
+  updateCustomerData = async (id) => {
+    try {
+      //Get customer data, start spinner
+      this.setState({ fetchingCustomer: true });
+      let customer = await fetch(`/customer/${id}`, {
+        credentials: "include",
+      }).then((x) => x.json());
+      //Check if customer data has not updated
+      if (
+        customer.summary.redemptions.total_redeemed ===
+        this.state.customer.summary.redemptions.total_redeemed
+      ) {
+        //If true -> wait
+        await this.sleep(5000);
+        this.updateCustomerData(id);
       } else {
-        let customerRedemptionsList = await this.getRedemptions(id);
-        this.setState({
-          customer: customer,
-          fetchingCustomer: false,
-          customerRedemptions: customerRedemptionsList,
-        });
-        localStorage.setItem("customer", JSON.stringify(customer));
-        localStorage.setItem("fetchingCustomer", JSON.stringify(false));
-        localStorage.setItem(
-          "customerRedemptions",
-          JSON.stringify(customerRedemptionsList)
-        );
+        this.setCustomer(id);
       }
     } catch (e) {
       console.log(e);
@@ -138,8 +132,8 @@ class CustomerProvider extends Component {
           ...this.state,
           setCustomer: this.setCustomer,
           getCustomer: this.getCustomer,
-          getCustomers: this.getCustomers,
           getRedemptions: this.getRedemptions,
+          updateCustomerData: this.updateCustomerData,
         }}
       >
         {this.props.children}

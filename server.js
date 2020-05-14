@@ -5,8 +5,10 @@ const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
-
+let storeCustomers = require("./src/storeCustomers.json");
 const debug = false;
+
+const demostoreVersion = "DEMOSTORE_3"
 
 app.use(bodyParser.json());
 app.use(
@@ -44,21 +46,23 @@ const voucherify = voucherifyClient({
   clientSecretKey: process.env.CLIENT_SECRET_KEY,
 });
 
-app.get("/customers", async (request, response) => {
+app.get("/create-customer/:source_id", async (request, response) => {
+  let source_id = request.params.source_id;
   try {
-    console.log("[Fetching customers]");
-    const customers = await voucherify.customers.list();
-    response.json(customers);
+    let customer = storeCustomers.find(customer => {return customer.source_id === source_id})
+    customer.source_id = `${demostoreVersion}${customer.source_id}${request.session.id}`
+    const createCustomer = await voucherify.customers.create(customer);
+    response.json(createCustomer);
   } catch (e) {
-    console.error("[Fetching customers][Error] error: %s", e);
+    console.error("[Creating customer][Error] error: %s", e);
     response.status(500).end();
   }
 });
 
-app.get("/customer/:id", async (request, response) => {
-  let id = request.params.id;
+app.get("/customer/:source_id", async (request, response) => {
+  let source_id = `${demostoreVersion}${request.params.source_id}${request.session.id}`
   try {
-    const customer = await voucherify.customers.get(id);
+    const customer = await voucherify.customers.get(source_id);
     response.json(customer);
   } catch (e) {
     console.error("[Fetching customer][Error] error: %s", e);
@@ -66,10 +70,10 @@ app.get("/customer/:id", async (request, response) => {
   }
 });
 
-app.get("/redemptions/:id", async(request, response) => {
-  let id = request.params.id;
+app.get("/redemptions/:source_id", async (request, response) => {
+  let source_id = `${demostoreVersion}${request.params.source_id}${request.session.id}`
   try {
-    const redemptionLists = await voucherify.redemptions.list({customer: id});
+    const redemptionLists = await voucherify.redemptions.list({ customer: source_id });
     response.json(redemptionLists.redemptions);
   } catch (e) {
     console.error("[Fetching redemptions][Error] error: %s", e);
