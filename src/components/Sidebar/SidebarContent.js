@@ -1,6 +1,7 @@
 import React from "react";
 // import { storeCustomers } from "../data";
 import { CustomerConsumer } from "../CustomerContext";
+import _ from 'lodash'
 
 export default function SidebarContent() {
   return (
@@ -33,25 +34,26 @@ export default function SidebarContent() {
                 </>
               ) : (
                 <>
-                  {" "}
-                  <div>
-                    <pre
-                      className="customer-data pre-scrollable"
-                      style={{ fontSize: "10px" }}
-                    >
-                      <code>{JSON.stringify(ctx.customer, null, 1)}</code>
-                    </pre>
-                    {ctx.customerRedemptions && (
+                  {!_.isEmpty(ctx.customer) && (
+                    <div>
                       <pre
                         className="customer-data pre-scrollable"
                         style={{ fontSize: "10px" }}
                       >
-                        <code>
-                          {JSON.stringify(ctx.customerRedemptions, null, 1)}
-                        </code>
+                        <code>{JSON.stringify(ctx.customer, null, 1)}</code>
                       </pre>
-                    )}
-                  </div>
+                      {ctx.customerRedemptions && (
+                        <pre
+                          className="customer-data pre-scrollable"
+                          style={{ fontSize: "10px" }}
+                        >
+                          <code>
+                            {JSON.stringify(ctx.customerRedemptions, null, 1)}
+                          </code>
+                        </pre>
+                      )}
+                    </div>
+                  )}
                 </>
               )}
             </>
