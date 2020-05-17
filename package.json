@@ -9,6 +9,7 @@
     "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
     "connect-sqlite3": "^0.9.11",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
@@ -27,8 +28,8 @@
   },
   "scripts": {
     "dev": "react-scripts start",
-    "start": "npm run build && node server.js",
-    "build": "react-scripts build",
+    "dev-server": "NODE_ENV=development nodemon server.js",
+    "start": "react-scripts build && NODE_ENV=production node server.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -46,5 +47,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "build/*",
+      ".data"
+    ],
+    "delay": "1000"
   }
 }

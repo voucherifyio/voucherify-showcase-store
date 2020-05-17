@@ -1,5 +1,4 @@
 import React from "react";
-// import { storeCustomers } from "../data";
 import { CustomerConsumer } from "../CustomerContext";
 import _ from 'lodash'
 
@@ -27,8 +26,8 @@ export default function SidebarContent() {
               {ctx.fetchingCustomer ? (
                 <>
                   <div>
-                    <div class="spinner-border" role="status">
-                      <span class="sr-only">Loading...</span>
+                    <div className="spinner-border" role="status">
+                      <span className="sr-only">Loading...</span>
                     </div>
                   </div>
                 </>
