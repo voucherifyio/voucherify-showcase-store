@@ -33,25 +33,32 @@ class CustomerProvider extends Component {
 
   componentDidMount() {
     this.setState(loadItemsFromLocalStorage());
+    this.init();
     this.getCustomers();
+  }
+
+  init = async () => {
+    try {
+      const { session } = await fetch(`${process.env.REACT_APP_API_URL}/init`, {
+        credentials: "include",
+      }).then((response) => response.json());
+      console.log('YOUR SESSION ID IS', session);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   createCustomers = async () => {
     try {
       storeCustomers.forEach(async (customer) => {
-        await fetch(`/create-customer/${customer.source_id}`, {
+        await fetch(`${process.env.REACT_APP_API_URL}/create-customer/${customer.source_id}`, {
           credentials: "include",
         });
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
+        
   getCustomers = async () => {
     const customers = await Promise.all(
       storeCustomers.map((customer) => {
-        return fetch(`/customer/${customer.source_id}`, {
+        return fetch(`${process.env.REACT_APP_API_URL}/customer/${customer.source_id}`, {
           include: "credentials",
         }).then((cust) => cust.json());
       })
@@ -70,7 +77,7 @@ class CustomerProvider extends Component {
 
   getRedemptions = async (id) => {
     const customerRedemptions = {};
-    let redemptions = await fetch(`/redemptions/${id}`, {
+    let redemptions = await fetch(`${process.env.REACT_APP_API_URL}/redemptions/${id}`, {
       credentials: "include",
     }).then((redemptions) => redemptions.json());
 
@@ -90,7 +97,7 @@ class CustomerProvider extends Component {
     try {
       //Get customer data, start spinner
       this.setState({ fetchingCustomer: true });
-      let customer = await fetch(`/customer/${id}`, {
+      let customer = await fetch(`${process.env.REACT_APP_API_URL}/customer/${id}`, {
         credentials: "include",
       }).then((x) => x.json());
       let customerRedemptionsList = await this.getRedemptions(id);

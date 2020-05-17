@@ -1,12 +1,27 @@
 require("dotenv").config();
+
 const express = require("express");
+const cors = require("cors");
 const voucherifyClient = require("voucherify");
 const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
 let storeCustomers = require("./src/storeCustomers.json");
-const debug = false;
+
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    cors({
+      credentials: true,
+      origin: "http://localhost:3001", // REACT_APP_API_URL
+    })
+  );
+}
+
+const voucherify = voucherifyClient({
+  applicationId: process.env.APPLICATION_ID,
+  clientSecretKey: process.env.CLIENT_SECRET_KEY,
+});
 
 const demostoreVersion = "DEMOSTORE+11";
 
@@ -21,8 +36,8 @@ app.use(
   })
 );
 
-app.get("/", async (request, response) => {
-  console.log("HELLO!!! does it work?");
+
+app.get("/init", (request, response) => {
   if (request.session.views) {
     console.log(
       "[Re-visit] %s - %s",
@@ -42,17 +57,13 @@ app.get("/", async (request, response) => {
       })
     );
   }
-  response.sendFile(__dirname + "/build/index.html");
+  response.end();
 });
 
 app.get("/ping", (req, res) => {
   res.send("pong");
 });
 
-const voucherify = voucherifyClient({
-  applicationId: process.env.APPLICATION_ID,
-  clientSecretKey: process.env.CLIENT_SECRET_KEY,
-});
 
 // app.get("/create-customer/:source_id", async (request, response) => {
 //   let source_id = request.params.source_id;
@@ -68,6 +79,17 @@ const voucherify = voucherifyClient({
 //     response.status(500).end();
 //   }
 // });
+
+app.get("/customers", async (request, response) => {
+  try {
+    console.log("[Fetching customers]");
+    const customers = await voucherify.customers.list();
+    response.json(customers);
+  } catch (e) {
+    console.error("[Fetching customers][Error] error: %s", e);
+    response.status(500).end();
+  }
+});
 
 app.get("/customer/:source_id", async (request, response) => {
   let source_id = `${demostoreVersion}${request.params.source_id}${request.session.id}`;
@@ -93,8 +115,10 @@ app.get("/redemptions/:source_id", async (request, response) => {
   }
 });
 
-app.use(express.static("build"));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("build"));
+}
 
 const listener = app.listen(process.env.PORT, () => {
-  console.log(`Your app is listening on port ${listener.address().port}`);
+  console.log(`Your server is listening on port ${listener.address().port}`);
 });
