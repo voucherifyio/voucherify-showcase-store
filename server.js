@@ -7,6 +7,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
+let storeCustomers = require("./src/storeCustomers.json");
 
 if (process.env.NODE_ENV !== "production") {
   app.use(
@@ -22,6 +23,8 @@ const voucherify = voucherifyClient({
   clientSecretKey: process.env.CLIENT_SECRET_KEY,
 });
 
+const demostoreVersion = "DEMOSTORE+11";
+
 app.use(bodyParser.json());
 app.use(
   session({
@@ -32,6 +35,7 @@ app.use(
     cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
   })
 );
+
 
 app.get("/init", (request, response) => {
   if (request.session.views) {
@@ -44,6 +48,14 @@ app.get("/init", (request, response) => {
   } else {
     request.session.views = 1;
     console.log("[New-visit] %s", request.session.id);
+
+    //Create new customers if this is a new session
+    await Promise.all(
+      storeCustomers.map((customer) => {
+        customer.source_id = `${demostoreVersion}${customer.source_id}${request.session.id}`;
+        voucherify.customers.create(customer);
+      })
+    );
   }
   response.end();
 });
@@ -51,6 +63,22 @@ app.get("/init", (request, response) => {
 app.get("/ping", (req, res) => {
   res.send("pong");
 });
+
+
+// app.get("/create-customer/:source_id", async (request, response) => {
+//   let source_id = request.params.source_id;
+//   try {
+//     let customer = storeCustomers.find((customer) => {
+//       return customer.source_id === source_id;
+//     });
+//     customer.source_id = `${demostoreVersion}${customer.source_id}${request.session.id}`;
+//     const createCustomer = await voucherify.customers.create(customer);
+//     response.json(createCustomer);
+//   } catch (e) {
+//     console.error("[Creating customer][Error] error: %s", e);
+//     response.status(500).end();
+//   }
+// });
 
 app.get("/customers", async (request, response) => {
   try {
@@ -63,10 +91,10 @@ app.get("/customers", async (request, response) => {
   }
 });
 
-app.get("/customer/:id", async (request, response) => {
-  let id = request.params.id;
+app.get("/customer/:source_id", async (request, response) => {
+  let source_id = `${demostoreVersion}${request.params.source_id}${request.session.id}`;
   try {
-    const customer = await voucherify.customers.get(id);
+    const customer = await voucherify.customers.get(source_id);
     response.json(customer);
   } catch (e) {
     console.error("[Fetching customer][Error] error: %s", e);
@@ -74,10 +102,12 @@ app.get("/customer/:id", async (request, response) => {
   }
 });
 
-app.get("/redemptions/:id", async (request, response) => {
-  let id = request.params.id;
+app.get("/redemptions/:source_id", async (request, response) => {
+  let source_id = `${demostoreVersion}${request.params.source_id}${request.session.id}`;
   try {
-    const redemptionLists = await voucherify.redemptions.list({ customer: id });
+    const redemptionLists = await voucherify.redemptions.list({
+      customer: source_id,
+    });
     response.json(redemptionLists.redemptions);
   } catch (e) {
     console.error("[Fetching redemptions][Error] error: %s", e);
