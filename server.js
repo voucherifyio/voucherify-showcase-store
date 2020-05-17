@@ -8,7 +8,7 @@ const SQLiteStore = require("connect-sqlite3")(session);
 let storeCustomers = require("./src/storeCustomers.json");
 const debug = false;
 
-const demostoreVersion = "DEMOSTORE_3"
+const demostoreVersion = "DEMOSTORE+11";
 
 app.use(bodyParser.json());
 app.use(
@@ -21,7 +21,7 @@ app.use(
   })
 );
 
-app.get("/", (request, response) => {
+app.get("/", async (request, response) => {
   console.log("HELLO!!! does it work?");
   if (request.session.views) {
     console.log(
@@ -33,6 +33,14 @@ app.get("/", (request, response) => {
   } else {
     request.session.views = 1;
     console.log("[New-visit] %s", request.session.id);
+
+    //Create new customers if this is a new session
+    await Promise.all(
+      storeCustomers.map((customer) => {
+        customer.source_id = `${demostoreVersion}${customer.source_id}${request.session.id}`;
+        voucherify.customers.create(customer);
+      })
+    );
   }
   response.sendFile(__dirname + "/build/index.html");
 });
@@ -46,21 +54,23 @@ const voucherify = voucherifyClient({
   clientSecretKey: process.env.CLIENT_SECRET_KEY,
 });
 
-app.get("/create-customer/:source_id", async (request, response) => {
-  let source_id = request.params.source_id;
-  try {
-    let customer = storeCustomers.find(customer => {return customer.source_id === source_id})
-    customer.source_id = `${demostoreVersion}${customer.source_id}${request.session.id}`
-    const createCustomer = await voucherify.customers.create(customer);
-    response.json(createCustomer);
-  } catch (e) {
-    console.error("[Creating customer][Error] error: %s", e);
-    response.status(500).end();
-  }
-});
+// app.get("/create-customer/:source_id", async (request, response) => {
+//   let source_id = request.params.source_id;
+//   try {
+//     let customer = storeCustomers.find((customer) => {
+//       return customer.source_id === source_id;
+//     });
+//     customer.source_id = `${demostoreVersion}${customer.source_id}${request.session.id}`;
+//     const createCustomer = await voucherify.customers.create(customer);
+//     response.json(createCustomer);
+//   } catch (e) {
+//     console.error("[Creating customer][Error] error: %s", e);
+//     response.status(500).end();
+//   }
+// });
 
 app.get("/customer/:source_id", async (request, response) => {
-  let source_id = `${demostoreVersion}${request.params.source_id}${request.session.id}`
+  let source_id = `${demostoreVersion}${request.params.source_id}${request.session.id}`;
   try {
     const customer = await voucherify.customers.get(source_id);
     response.json(customer);
@@ -71,9 +81,11 @@ app.get("/customer/:source_id", async (request, response) => {
 });
 
 app.get("/redemptions/:source_id", async (request, response) => {
-  let source_id = `${demostoreVersion}${request.params.source_id}${request.session.id}`
+  let source_id = `${demostoreVersion}${request.params.source_id}${request.session.id}`;
   try {
-    const redemptionLists = await voucherify.redemptions.list({ customer: source_id });
+    const redemptionLists = await voucherify.redemptions.list({
+      customer: source_id,
+    });
     response.json(redemptionLists.redemptions);
   } catch (e) {
     console.error("[Fetching redemptions][Error] error: %s", e);

@@ -33,7 +33,7 @@ class CustomerProvider extends Component {
 
   componentDidMount() {
     this.setState(loadItemsFromLocalStorage());
-    this.createCustomers();
+    this.getCustomers();
   }
 
   createCustomers = async () => {
@@ -45,8 +45,22 @@ class CustomerProvider extends Component {
       });
     } catch (e) {
       console.log(e);
-      console.log("test")
     }
+  };
+
+  getCustomers = async () => {
+    const customers = await Promise.all(
+      storeCustomers.map((customer) => {
+        return fetch(`/customer/${customer.source_id}`, {
+          include: "credentials",
+        }).then((cust) => cust.json());
+      })
+    );
+    console.log(customers)
+    this.setState({
+      customers: customers,
+    });
+    localStorage.setItem("customers", JSON.stringify(customers));
   };
 
   //Simple sleep function for fetching data

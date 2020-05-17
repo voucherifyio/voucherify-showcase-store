@@ -18,8 +18,8 @@ export default function SidebarContent() {
                 <option value="DEFAULT" disabled>
                   Select customer
                 </option>
-                {storeCustomers.map((customer) => (
-                  <option key={customer.name} value={customer.source_id}>
+                {ctx.customers.map((customer) => (
+                  <option key={customer.name} value={customer.metadata.demostore_id}>
                     {customer.name}
                   </option>
                 ))}
