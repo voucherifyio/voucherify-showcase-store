@@ -8,12 +8,19 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
 
-if (process.env.NODE_ENV !== 'production') {
-  app.use(cors({
-    credentials: true,
-    origin: "http://localhost:3001", // REACT_APP_API_URL
-  }));
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    cors({
+      credentials: true,
+      origin: "http://localhost:3001", // REACT_APP_API_URL
+    })
+  );
 }
+
+const voucherify = voucherifyClient({
+  applicationId: process.env.APPLICATION_ID,
+  clientSecretKey: process.env.CLIENT_SECRET_KEY,
+});
 
 app.use(bodyParser.json());
 app.use(
@@ -38,16 +45,11 @@ app.get("/init", (request, response) => {
     request.session.views = 1;
     console.log("[New-visit] %s", request.session.id);
   }
-  response.json({ session: request.session.id });
+  response.end();
 });
 
 app.get("/ping", (req, res) => {
   res.send("pong");
-});
-
-const voucherify = voucherifyClient({
-  applicationId: process.env.APPLICATION_ID,
-  clientSecretKey: process.env.CLIENT_SECRET_KEY,
 });
 
 app.get("/customers", async (request, response) => {
@@ -72,10 +74,10 @@ app.get("/customer/:id", async (request, response) => {
   }
 });
 
-app.get("/redemptions/:id", async(request, response) => {
+app.get("/redemptions/:id", async (request, response) => {
   let id = request.params.id;
   try {
-    const redemptionLists = await voucherify.redemptions.list({customer: id});
+    const redemptionLists = await voucherify.redemptions.list({ customer: id });
     response.json(redemptionLists.redemptions);
   } catch (e) {
     console.error("[Fetching redemptions][Error] error: %s", e);

@@ -52,7 +52,10 @@
     "nodemon": "^2.0.4"
   },
   "nodemonConfig": {
-    "ignore": ["build/*", ".data"],
+    "ignore": [
+      "build/*",
+      ".data"
+    ],
     "delay": "1000"
   }
 }

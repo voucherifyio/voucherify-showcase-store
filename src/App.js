@@ -27,7 +27,6 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <div style={{backgroundColor: 'red'}}>REACT APP SERVER PORT IS: {process.env.REACT_APP_API_URL}</div>
         <Sidebar />
         <Navigation />
         <Switch>
