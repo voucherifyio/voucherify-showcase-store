@@ -41,7 +41,7 @@ class CustomerProvider extends Component {
       const session = await fetch(`${process.env.REACT_APP_API_URL}/init`, {
         credentials: "include",
       }).then((response) => response.json());
-      let sessionCode = session.join("");
+      let sessionCode = session
       this.setState({
         sessionCode: sessionCode,
       });
@@ -74,7 +74,6 @@ class CustomerProvider extends Component {
       this.setState({ fetchingCustomer: true });
       const customers = await Promise.all(
         storeCustomers.map((customer) => {
-          console.log(customer.source_id);
           return fetch(
             `${process.env.REACT_APP_API_URL}/customer/${this.state.sessionCode}${customer.source_id}`,
             {

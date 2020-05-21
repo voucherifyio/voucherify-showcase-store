@@ -23,7 +23,7 @@ const voucherify = voucherifyClient({
   clientSecretKey: process.env.CLIENT_SECRET_KEY,
 });
 
-const demostoreVersion = "DEMOSTORE+90000";
+// const demostoreVersion = "DEMOSTORE+TESSS";
 
 app.use(bodyParser.json());
 app.use(
@@ -50,12 +50,14 @@ app.get("/init", async (request, response) => {
     //Create new customers if this is a new session
     await Promise.all(
       storeCustomers.map((customer) => {
-        customer.source_id = `${demostoreVersion}${request.session.id}${customer.source_id}`;
+        customer.source_id = `${request.session.id}${customer.source_id}`;
+        console.log(customer)
         voucherify.customers.create(customer);
       })
     );
+
   }
-  response.json([demostoreVersion, request.session.id]);
+  response.json(request.session.id);
 });
 
 app.get("/ping", (req, res) => {
