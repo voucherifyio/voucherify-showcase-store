@@ -23,8 +23,6 @@ const voucherify = voucherifyClient({
   clientSecretKey: process.env.CLIENT_SECRET_KEY,
 });
 
-// const demostoreVersion = "DEMOSTORE+TESSS";
-
 app.use(bodyParser.json());
 app.use(
   session({
