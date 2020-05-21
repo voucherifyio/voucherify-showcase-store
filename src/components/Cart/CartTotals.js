@@ -56,7 +56,7 @@ export default function CartTotals({ value }) {
                   className="btn btn-dark rounded-pill py-2 btn-block mb-2 "
                   onClick={() => {
                     checkoutCart(ctx.customer);
-                    ctx.updateCustomerData(ctx.customer.metadata.demostore_id);
+                    ctx.updateCustomerData(ctx.customer.source_id);
                   }}
                 >
                   Proceed to checkout

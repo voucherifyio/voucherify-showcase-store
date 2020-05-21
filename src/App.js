@@ -11,7 +11,6 @@ import Footer from "./components/Footer";
 import MainPage from "./components/MainPage";
 import SuccessPage from "./components/SuccessPage";
 import Modal from "./components/Modal";
-import Sidebar from "./components/Sidebar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,11 +23,13 @@ const toastOptions = {
 };
 
 class App extends Component {
+ 
   render() {
     return (
       <React.Fragment>
-        <Sidebar />
+        <div className="mainContent">
         <Navigation />
+
         <Switch>
           <Route exact path="/" component={MainPage}></Route>
           <Route path="/products" component={ProductList}></Route>
@@ -40,6 +41,7 @@ class App extends Component {
         <Modal />
         <Footer />
         <ToastContainer {...toastOptions} />
+        </div>
       </React.Fragment>
     );
   }

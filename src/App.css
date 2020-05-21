@@ -249,10 +249,15 @@ body {
   font-size: 14px;
   letter-spacing: 0.01em;
   color: #39464e;
+  position: relative;
 }
 
 .navbar-default {
   margin-left: 350px;
+}
+
+.mainContent {
+    transition: margin-left .5s;
 }
 
 /*main side bar*/

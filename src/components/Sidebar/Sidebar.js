@@ -4,10 +4,10 @@ import SidebarButton from "./SidebarButton";
 
 export default function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-
+  
   return (
     <>
-      <div className={sidebarOpen ? "" : "msb-x"}>
+      <div className={sidebarOpen ? "sidebar" : "sidebar msb-x"}>
         <div className="msb" id="msb">
           <div className="sidebar-button">
           <SidebarButton onClick={() => setSidebarOpen(!sidebarOpen)} />

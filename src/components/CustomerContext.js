@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import storeCustomers from "../storeCustomers";
-import _ from "lodash";
+import storeCustomers from "../storeCustomers.json";
 
 const CustomerContext = React.createContext();
 
@@ -29,45 +28,69 @@ class CustomerProvider extends Component {
     customers: [],
     fetchingCustomer: true,
     customerRedemptions: null,
+    sessionCode: "",
   };
 
   componentDidMount() {
     this.setState(loadItemsFromLocalStorage());
     this.init();
-    this.getCustomers();
   }
 
   init = async () => {
     try {
-      const { session } = await fetch(`${process.env.REACT_APP_API_URL}/init`, {
+      const session = await fetch(`${process.env.REACT_APP_API_URL}/init`, {
         credentials: "include",
       }).then((response) => response.json());
-      console.log('YOUR SESSION ID IS', session);
+      let sessionCode = session.join("");
+      this.setState({
+        sessionCode: sessionCode,
+      });
+      localStorage.setItem("sessionCode", JSON.stringify(sessionCode));
+      this.getCustomers();
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   createCustomers = async () => {
     try {
       storeCustomers.forEach(async (customer) => {
-        await fetch(`${process.env.REACT_APP_API_URL}/create-customer/${customer.source_id}`, {
-          credentials: "include",
-        });
-        
+        console.log(customer.source_id);
+        await fetch(
+          `${process.env.REACT_APP_API_URL}/create-customer/${this.state.sessionCode}${customer.source_id}`,
+          {
+            credentials: "include",
+          }
+        );
+      });
+    } catch (e) {
+      console.log(e);
+      console.log("test");
+    }
+  };
+
   getCustomers = async () => {
-    const customers = await Promise.all(
-      storeCustomers.map((customer) => {
-        return fetch(`${process.env.REACT_APP_API_URL}/customer/${customer.source_id}`, {
-          include: "credentials",
-        }).then((cust) => cust.json());
-      })
-    );
-    console.log(customers)
-    this.setState({
-      customers: customers,
-    });
-    localStorage.setItem("customers", JSON.stringify(customers));
+    try {
+      this.setState({ fetchingCustomer: true });
+      const customers = await Promise.all(
+        storeCustomers.map((customer) => {
+          console.log(customer.source_id);
+          return fetch(
+            `${process.env.REACT_APP_API_URL}/customer/${this.state.sessionCode}${customer.source_id}`,
+            {
+              include: "credentials",
+            }
+          ).then((cust) => cust.json());
+        })
+      );
+      this.setState({
+        customers: customers,
+        fetchingCustomer: false,
+      });
+      localStorage.setItem("customers", JSON.stringify(customers));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   //Simple sleep function for fetching data
@@ -76,10 +99,14 @@ class CustomerProvider extends Component {
   };
 
   getRedemptions = async (id) => {
+    console.log(id)
     const customerRedemptions = {};
-    let redemptions = await fetch(`${process.env.REACT_APP_API_URL}/redemptions/${id}`, {
-      credentials: "include",
-    }).then((redemptions) => redemptions.json());
+    let redemptions = await fetch(
+      `${process.env.REACT_APP_API_URL}/redemptions/${id}`,
+      {
+        credentials: "include",
+      }
+    ).then((redemptions) => redemptions.json());
 
     //Count reedemed codes
     for (let i = 0; i < redemptions.length; i++) {
@@ -94,12 +121,16 @@ class CustomerProvider extends Component {
   };
 
   setCustomer = async (id) => {
+    console.log(id)
     try {
       //Get customer data, start spinner
       this.setState({ fetchingCustomer: true });
-      let customer = await fetch(`${process.env.REACT_APP_API_URL}/customer/${id}`, {
-        credentials: "include",
-      }).then((x) => x.json());
+      let customer = await fetch(
+        `${process.env.REACT_APP_API_URL}/customer/${id}`,
+        {
+          credentials: "include",
+        }
+      ).then((x) => x.json());
       let customerRedemptionsList = await this.getRedemptions(id);
       this.setState({
         customer: customer,
@@ -112,18 +143,24 @@ class CustomerProvider extends Component {
         "customerRedemptions",
         JSON.stringify(customerRedemptionsList)
       );
+      console.log(customer);
     } catch (e) {
       console.log(e);
     }
   };
 
   updateCustomerData = async (id) => {
+    console.log(id)
     try {
       //Get customer data, start spinner
       this.setState({ fetchingCustomer: true });
-      let customer = await fetch(`/customer/${id}`, {
-        credentials: "include",
-      }).then((x) => x.json());
+      let customer = await fetch(
+        `${process.env.REACT_APP_API_URL}/customer/${id}`,
+        {
+          credentials: "include",
+        }
+      ).then((x) => x.json());
+      console.log(customer)
       //Check if customer data has not updated
       if (
         customer.summary.redemptions.total_redeemed ===
@@ -153,6 +190,7 @@ class CustomerProvider extends Component {
           ...this.state,
           setCustomer: this.setCustomer,
           getCustomer: this.getCustomer,
+          getCustomers: this.getCustomers,
           getRedemptions: this.getRedemptions,
           updateCustomerData: this.updateCustomerData,
         }}

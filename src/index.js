@@ -6,13 +6,25 @@ import { BrowserRouter as Router } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 import { ProductProvider } from "./components/Context";
 import { CustomerProvider } from "./components/CustomerContext";
+import Sidebar from "./components/Sidebar";
+
+const Demostore = () => {
+
+  //Here will be code regarding sidebar
+  return (
+    <>
+      <Sidebar />
+      <App />
+    </>
+  );
+};
 
 ReactDOM.render(
   <CustomerProvider>
     <ProductProvider>
       <Router>
         <React.StrictMode>
-          <App />
+          <Demostore />
         </React.StrictMode>
       </Router>
     </ProductProvider>
