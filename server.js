@@ -62,35 +62,6 @@ app.get("/ping", (req, res) => {
   res.send("pong");
 });
 
-// app.get("/create-customer/:source_id", async (request, response) => {
-//   let source_id = request.params.source_id;
-//   try {
-//     let customer = storeCustomers.find((customer) => {
-//       return customer.source_id === source_id;
-//     });
-//     console.log(source_id);
-//     console.log(storeCustomers);
-//     console.log(customer);
-//     customer.source_id = `${demostoreVersion}${customer.source_id}${request.session.id}`;
-//     const createCustomer = await voucherify.customers.create(customer);
-//     response.json(createCustomer);
-//   } catch (e) {
-//     console.error("[Creating customer][Error] error: %s", e);
-//     response.status(500).end();
-//   }
-// });
-
-// app.get("/customers", async (request, response) => {
-//   try {
-//     console.log("[Fetching customers]");
-//     const customers = await voucherify.customers.list();
-//     response.json(customers);
-//   } catch (e) {
-//     console.error("[Fetching customers][Error] error: %s", e);
-//     response.status(500).end();
-//   }
-// });
-
 app.get("/customer/:source_id", async (request, response) => {
   let source_id = request.params.source_id;
   try {
