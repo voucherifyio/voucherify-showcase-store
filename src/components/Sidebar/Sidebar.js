@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import SidebarContent from "./SidebarContent";
 import SidebarButton from "./SidebarButton";
 
-export default function Sidebar() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  
+export default function Sidebar({ sidebar, isSidebarOpen }) {
   return (
     <>
-      <div className={sidebarOpen ? "sidebar" : "sidebar msb-x"}>
+      <div className={isSidebarOpen ? "sidebar" : "sidebar msb-x"}>
         <div className="msb" id="msb">
           <div className="sidebar-button">
-          <SidebarButton onClick={() => setSidebarOpen(!sidebarOpen)} />
+            <SidebarButton onClick={sidebar} />
           </div>
           <nav className="navbar navbar-default" role="navigation">
             <div className="navbar-header">

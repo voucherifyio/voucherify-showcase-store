@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
@@ -9,12 +9,15 @@ import { CustomerProvider } from "./components/CustomerContext";
 import Sidebar from "./components/Sidebar";
 
 const Demostore = () => {
+  const [sidebar, setSidebar] = useState(true);
 
-  //Here will be code regarding sidebar
+  const handleSidebar = () => {
+    setSidebar(!sidebar);
+  };
   return (
     <>
-      <Sidebar />
-      <App />
+      <Sidebar sidebar={handleSidebar} isSidebarOpen={sidebar} />
+      <App isSidebarOpen={sidebar} />
     </>
   );
 };

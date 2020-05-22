@@ -22,14 +22,18 @@ const toastOptions = {
   closeButton: false,
 };
 
-class App extends Component {
- 
-  render() {
-    return (
-      <React.Fragment>
-        <div className="mainContent">
+const App = (sidebar) => {
+  return (
+    <React.Fragment>
+      <div
+        className="mainContent"
+        style={
+          sidebar.isSidebarOpen
+            ? { marginLeft: 350 + "px" }
+            : { marginLeft: 0 + "px" }
+        }
+      >
         <Navigation />
-
         <Switch>
           <Route exact path="/" component={MainPage}></Route>
           <Route path="/products" component={ProductList}></Route>
@@ -41,10 +45,9 @@ class App extends Component {
         <Modal />
         <Footer />
         <ToastContainer {...toastOptions} />
-        </div>
-      </React.Fragment>
-    );
-  }
-}
+      </div>
+    </React.Fragment>
+  );
+};
 
 export default App;
