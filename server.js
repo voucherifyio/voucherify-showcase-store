@@ -47,24 +47,25 @@ app.get("/init", async (request, response) => {
     console.log("[New-visit] %s", request.session.id);
     //Create new customers if this is a new session
     await Promise.all(
-      storeCustomers.map(customer => {
+      storeCustomers.map((customer) => {
         let customerID = `${request.session.id}${customer.metadata.demostore_id}`;
 
         console.log("Current customer ID");
         console.log(customer.source_id);
         console.log("Current prepared customer ID");
         console.log(customerID);
-        
+
         // Switch
         customer.source_id = customerID;
-        
+
         console.log("Switched customer ID (should be equal to prepared)");
         console.log(customer.source_id);
         console.log("Current customer");
         console.log(customer);
-        
-        voucherify.customers.create(customer);
 
+        voucherify.customers.create(customer);
+      })
+    );
   }
   response.json(request.session.id);
 });
@@ -85,7 +86,7 @@ app.get("/customer/:source_id", async (request, response) => {
 });
 
 app.get("/redemptions/:source_id", async (request, response) => {
-  let source_id = request.params.source_id
+  let source_id = request.params.source_id;
   try {
     const redemptionLists = await voucherify.redemptions.list({
       customer: source_id,
