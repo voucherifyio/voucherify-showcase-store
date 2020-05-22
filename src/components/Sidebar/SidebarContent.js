@@ -3,7 +3,6 @@ import { CustomerConsumer } from "../CustomerContext";
 import _ from "lodash";
 
 export default function SidebarContent() {
-
   const [select] = useState(localStorage.getItem("customer"));
 
   return (
