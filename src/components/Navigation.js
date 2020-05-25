@@ -1,16 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Logo from "../HotBeansLogo.svg";
 import { ProductConsumer } from "./Context";
 import { CustomerConsumer } from "./CustomerContext";
 
-export default function Navbar() {
+export default function Navbar({ sidebar }) {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="navbar navbar-fixed-top">
           <div className="container-fluid">
-            <div className="navbar-header"></div>
+            <div className="navbar-header">
+              <Link to="/" className="navbar-brand">
+                Hot Beans
+              </Link>
+            </div>
           </div>
         </div>
         <button
@@ -24,58 +27,57 @@ export default function Navbar() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
+
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <Link to="/" className="navbar-brand">
-            <img
-              src={Logo}
-              width="30"
-              height="30"
-              className="d-inline-block align-top"
-              alt=""
-            />
-            Hot Beans
-          </Link>
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li className="nav-item active">
-              <Link to="/" className="nav-link">
-                Home <span className="sr-only">(current)</span>
-              </Link>
-            </li>
             <li className="nav-item">
               <Link to="/products" className="nav-link">
                 Store
               </Link>
             </li>
           </ul>
-          <CustomerConsumer>
-            {(ctx) => {
-              if (ctx.customer !== null) {
-                return (
-                  <span className="font-weight-bold">{ctx.customer.name}</span>
-                );
-              }
-            }}
-          </CustomerConsumer>
-          <Link to="/cart">
+          <div>
             <span className="btn" type="button">
-              <i className="fas fa-shopping-cart"></i>&nbsp;
-              <ProductConsumer>
+              <CustomerConsumer>
                 {(ctx) => {
-                  if (ctx.cart.length > 0) {
-                    const countTotalItems = ctx.cart.reduce(
-                      (acc, curr) => acc + curr.count,
-                      0
-                    );
+                  if (ctx.customer !== null) {
                     return (
-                      <span className="badge badge-pill badge-warning">
-                        {countTotalItems}
+                      <span className="font-weight-bold">
+                        {ctx.customer.name}
                       </span>
                     );
                   }
                 }}
-              </ProductConsumer>
+              </CustomerConsumer>
             </span>
-          </Link>
+          </div>
+          <div>
+            <Link to="/cart">
+              <span className="btn" type="button">
+                <i className="fas fa-shopping-cart"></i>&nbsp;
+                <ProductConsumer>
+                  {(ctx) => {
+                    if (ctx.cart.length > 0) {
+                      const countTotalItems = ctx.cart.reduce(
+                        (acc, curr) => acc + curr.count,
+                        0
+                      );
+                      return (
+                        <span className="badge badge-secondary badge-pill">
+                          {countTotalItems}
+                        </span>
+                      );
+                    }
+                  }}
+                </ProductConsumer>
+              </span>
+            </Link>
+          </div>
+          <div>
+            <span className="btn" type="button" onClick={sidebar}>
+              <i className="fas fa-cog"></i>
+            </span>
+          </div>
         </div>
       </nav>
     </>

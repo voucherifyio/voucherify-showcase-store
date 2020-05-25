@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { ProductConsumer } from "./Context";
 import { useParams } from "react-router";
 
-export default function Details() {
+const Details = () => {
   let { productId } = useParams();
-
+  const [quantity, setQuantity] = useState("1");
+  const handleOnChange = (e) => {
+    setQuantity(e.target.value);
+  };
+  console.log(quantity);
   return (
     <ProductConsumer>
       {(ctx) => {
@@ -26,13 +30,32 @@ export default function Details() {
                     </div>
                     <div className="mb-3">
                       <h2 className="title">{title}</h2>
-                      <p className="lead">Price: ${price}</p>
+                      <p className="lead">Price: ${price.toFixed(2)}</p>
+                      <span className="lead">Quantity:</span>
+                      <select
+                        value={quantity}
+                        onChange={handleOnChange}
+                        disabled={inCart}
+                      >
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </div>
+                    <div className="mb-3">
                       <button
                         type="button"
                         className="btn btn-outline-secondary"
                         disabled={inCart}
                         onClick={() => {
-                          ctx.addToCart(id);
+                          ctx.addToCart(id, quantity);
                         }}
                       >
                         {inCart ? (
@@ -53,4 +76,6 @@ export default function Details() {
       }}
     </ProductConsumer>
   );
-}
+};
+
+export default Details;

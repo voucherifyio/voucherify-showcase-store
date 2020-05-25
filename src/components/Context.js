@@ -47,6 +47,7 @@ const reducer = (action) => (state, props) => {
     );
     localStorage.setItem("appliedVoucher", JSON.stringify(voucher));
 
+    console.log(cartItems)
     return {
       cart: cartItems,
       discountedAmount,
@@ -119,14 +120,15 @@ class ProductProvider extends Component {
     return product;
   };
 
-  addToCart = (id) => {
+  addToCart = (id, qt) => {
     const product = this.getItem(id);
+    const quantity = parseInt(qt, 10)
     this.dispatch(SET_CART, {
       cart: [
         ...this.state.cart,
         {
           ...product,
-          count: 1,
+          count: quantity,
           total: product.price,
         },
       ],

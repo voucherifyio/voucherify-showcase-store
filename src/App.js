@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,18 +22,11 @@ const toastOptions = {
   closeButton: false,
 };
 
-const App = (sidebar) => {
+const App = ({ sidebar, isSidebarOpen }) => {
   return (
     <React.Fragment>
-      <div
-        className="mainContent"
-        style={
-          sidebar.isSidebarOpen
-            ? { marginLeft: 350 + "px" }
-            : { marginLeft: 0 + "px" }
-        }
-      >
-        <Navigation />
+      <div className="mainContent">
+        <Navigation sidebar={sidebar} isSidebarOpen={isSidebarOpen} />
         <Switch>
           <Route exact path="/" component={MainPage}></Route>
           <Route path="/products" component={ProductList}></Route>

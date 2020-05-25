@@ -1,6 +1,5 @@
 import React from "react";
 import Product from "./Product";
-import Title from "./Title";
 import { storeProducts } from "../data";
 
 export default function ProductList() {
@@ -9,7 +8,13 @@ export default function ProductList() {
       <React.Fragment>
         <div className="py-5">
           <div className="container">
-            <Title name="Our" title="products"></Title>
+            <div className="row my-4">
+              <div className="col-10 mx-auto my-2 text-center">
+                <h1>
+                  Our products
+                </h1>
+              </div>
+            </div>
             <div className="row">
               {storeProducts.map((product) => {
                 return <Product key={product.id} product={product}></Product>;

@@ -6,12 +6,22 @@
   --mainYellow: #ffa400;
 }
 
+.nav-item {
+  padding: 6px 12px;
+}
 body {
   font-family: 'Lato', sans-serif !important;
   background: var(--mainWhite) !important;
   color: var(--mainDark) !important;
 }
 
+.sidebarHeader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 .wrapper {
   display: flex;
   width: 100%;
@@ -253,7 +263,7 @@ body {
 }
 
 .navbar-default {
-  margin-left: 350px;
+  margin-left: 300px;
 }
 
 .mainContent {
@@ -262,7 +272,7 @@ body {
 
 /*main side bar*/
 .msb {
-  width: 350px;
+  width: 300px;
   background-color: #f5f7f9;
   position: fixed;
   left: 0;
@@ -395,19 +405,19 @@ a:hover {
 
 .msb,
 .mnb {
-  -moz-animation: slidein 300ms forwards;
-  -o-animation: slidein 300ms forwards;
-  -webkit-animation: slidein 300ms forwards;
-  animation: slidein 300ms forwards;
+  -moz-animation: slidein 200ms forwards;
+  -o-animation: slidein 200ms forwards;
+  -webkit-animation: slidein 200ms forwards;
+  animation: slidein 200ms forwards;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
 }
 
 .mcw {
-  -moz-animation: bodyslidein 300ms forwards;
-  -o-animation: bodyslidein 300ms forwards;
-  -webkit-animation: bodyslidein 300ms forwards;
-  animation: bodyslidein 300ms forwards;
+  -moz-animation: bodyslidein 200ms forwards;
+  -o-animation: bodyslidein 200ms forwards;
+  -webkit-animation: bodyslidein 200ms forwards;
+  animation: bodyslidein 200ms forwards;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
 }
@@ -415,42 +425,50 @@ a:hover {
 .msb-x .mcw,
 .msb-x .mnb {
   margin-left: 0;
-  -moz-animation: bodyslideout 300ms forwards;
-  -o-animation: bodyslideout 300ms forwards;
-  -webkit-animation: bodyslideout 300ms forwards;
-  animation: bodyslideout 300ms forwards;
+  -moz-animation: bodyslideout 200ms forwards;
+  -o-animation: bodyslideout 200ms forwards;
+  -webkit-animation: bodyslideout 200ms forwards;
+  animation: bodyslideout 200ms forwards;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
 }
 
 .msb-x .msb {
-  -moz-animation: slideout 300ms forwards;
-  -o-animation: slideout 300ms forwards;
-  -webkit-animation: slideout 300ms forwards;
-  animation: slideout 300ms forwards;
+  -moz-animation: slideout 200ms forwards;
+  -o-animation: slideout 200ms forwards;
+  -webkit-animation: slideout 200ms forwards;
+  animation: slideout 200ms forwards;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
 }
 
 .sidebar-button {
-  /* display: inline-block; */
   margin: 15px;
   position: absolute;
-  left: 370px;
+  left: 320px;
 }
 
+.sidebar-button-open {
+  margin: 15px;
+  position: static;
+  /* left: 320px; */
+}
+
+.side-menu-container {
+  width: 100%
+}
 #storeCustomers {
   width: 100%;
 }
 
 .customer-data {
-  width: 300px;
+  width: 100%;
 }
 
 /* Slide in animation */
 @-moz-keyframes slidein {
   0% {
-    left: -350px;
+    left: -300px;
   }
 
   100% {
@@ -460,7 +478,7 @@ a:hover {
 
 @-webkit-keyframes slidein {
   0% {
-    left: -350px;
+    left: -300px;
   }
 
   100% {
@@ -470,7 +488,7 @@ a:hover {
 
 @keyframes slidein {
   0% {
-    left: -350px;
+    left: -300px;
   }
 
   100% {
@@ -484,7 +502,7 @@ a:hover {
   }
 
   100% {
-    left: -350px;
+    left: -300px;
   }
 }
 
@@ -494,7 +512,7 @@ a:hover {
   }
 
   100% {
-    left: -350px;
+    left: -300px;
   }
 }
 
@@ -504,7 +522,7 @@ a:hover {
   }
 
   100% {
-    left: -350px;
+    left: -300px;
   }
 }
 
@@ -514,7 +532,7 @@ a:hover {
   }
 
   100% {
-    margin-left: 350px;
+    margin-left: 300px;
   }
 }
 
@@ -534,13 +552,13 @@ a:hover {
   }
 
   100% {
-    margin-left: 350px;
+    margin-left: 300px;
   }
 }
 
 @-moz-keyframes bodyslideout {
   0% {
-    margin-left: 350px;
+    margin-left: 300px;
   }
 
   100% {
@@ -550,7 +568,7 @@ a:hover {
 
 @-webkit-keyframes bodyslideout {
   0% {
-    margin-left: 350px;
+    margin-left: 300px;
   }
 
   100% {
@@ -560,7 +578,7 @@ a:hover {
 
 @keyframes bodyslideout {
   0% {
-    margin-left: 350px;
+    margin-left: 300px;
   }
 
   100% {

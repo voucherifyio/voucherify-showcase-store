@@ -16,8 +16,8 @@ const Demostore = () => {
   };
   return (
     <>
-      <Sidebar sidebar={handleSidebar} isSidebarOpen={sidebar} />
-      <App isSidebarOpen={sidebar} />
+      <Sidebar sidebar={handleSidebar} isSidebarOpen={sidebar}  />
+      <App sidebar={handleSidebar} isSidebarOpen={sidebar}  />
     </>
   );
 };
