@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { ProductConsumer } from "../Context";
+import { CustomerConsumer } from "../CustomerContext";
+
 import "voucherify.js";
 
 window.Voucherify.initialize(
@@ -13,7 +15,7 @@ const CartForm = () => {
   return (
     <ProductConsumer>
       {(value) => {
-        const { addPromotionToCart } = value;
+        
         return (
           <form className="card p-2">
             <div className="input-group">
@@ -24,13 +26,20 @@ const CartForm = () => {
                 onChange={(event) => setCouponCode(event.target.value)}
               />
               <div className="input-group-append">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => addPromotionToCart(couponCode)}
-                >
-                  Redeem
-                </button>
+                <CustomerConsumer>
+                  {(ctx) => {
+                    const { customer } = ctx;
+                    return (
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={() => value.addPromotionToCart(couponCode, customer)}
+                      >
+                        Redeem
+                      </button>
+                    );
+                  }}
+                </CustomerConsumer>
               </div>
             </div>
           </form>

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function CartItem({ item, value }) {
+const CartItem = ({ item, value }) => {
   const { id, title, count, total } = item;
   const { increment, decrement } = value;
 
@@ -30,4 +30,6 @@ export default function CartItem({ item, value }) {
       <span className="text-muted">${total.toFixed(2)}</span>
     </li>
   );
-}
+};
+
+export default CartItem;

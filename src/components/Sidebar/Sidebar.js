@@ -1,7 +1,7 @@
 import React from "react";
 import SidebarContent from "./SidebarContent";
 
-export default function Sidebar({ sidebar, isSidebarOpen }) {
+const Sidebar = ({ sidebar, isSidebarOpen }) => {
   return (
     <>
       <div className={isSidebarOpen ? "sidebar" : "sidebar msb-x"}>
@@ -19,4 +19,6 @@ export default function Sidebar({ sidebar, isSidebarOpen }) {
       </div>
     </>
   );
-}
+};
+
+export default Sidebar;

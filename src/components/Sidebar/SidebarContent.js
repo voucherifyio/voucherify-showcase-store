@@ -2,13 +2,27 @@ import React, { useState } from "react";
 import { CustomerConsumer } from "../CustomerContext";
 import _ from "lodash";
 
-export default function SidebarContent() {
+const SidebarContent = () => {
   const [select] = useState(localStorage.getItem("customer"));
-
+  
   return (
     <div className="side-menu-container">
       <CustomerConsumer>
         {(ctx) => {
+          const getCode = (camp_name) => {
+            let customer = ctx.customer.source_id;
+            let campaing = camp_name;
+        
+            let customerVouchers = ctx.publishedVouchers.find(
+              (voucher) => voucher.customer === customer
+            );
+        
+            let customerCampaigns = customerVouchers.campaings.find(
+              (camp) => camp.campaign === campaing
+            );
+        
+            return customerCampaigns.code;
+          };
           return (
             <>
               {ctx.fetchingCustomer ? (
@@ -35,6 +49,7 @@ export default function SidebarContent() {
                       </option>
                     ))}
                   </select>
+
                   {!_.isEmpty(ctx.customer) && (
                     <div>
                       <pre
@@ -53,6 +68,9 @@ export default function SidebarContent() {
                           </code>
                         </pre>
                       )}
+                      <h5>Cart Campaign</h5>
+                      <p>Your cart must be valued $55 or more</p>
+                      <div>Campaign voucher: {getCode("More-than-$55-in-Cart")} </div>
                     </div>
                   )}
                 </>
@@ -63,4 +81,6 @@ export default function SidebarContent() {
       </CustomerConsumer>
     </div>
   );
-}
+};
+
+export default SidebarContent;

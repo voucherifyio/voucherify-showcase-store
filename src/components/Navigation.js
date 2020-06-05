@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ProductConsumer } from "./Context";
 import { CustomerConsumer } from "./CustomerContext";
 
-export default function Navbar({ sidebar }) {
+const Navbar = ({ sidebar }) => {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -82,4 +82,6 @@ export default function Navbar({ sidebar }) {
       </nav>
     </>
   );
-}
+};
+
+export default Navbar;

@@ -47,7 +47,7 @@ const reducer = (action) => (state, props) => {
     );
     localStorage.setItem("appliedVoucher", JSON.stringify(voucher));
 
-    console.log(cartItems)
+    console.log(cartItems);
     return {
       cart: cartItems,
       discountedAmount,
@@ -122,7 +122,7 @@ class ProductProvider extends Component {
 
   addToCart = (id, qt) => {
     const product = this.getItem(id);
-    const quantity = parseInt(qt, 10)
+    const quantity = parseInt(qt, 10);
     this.dispatch(SET_CART, {
       cart: [
         ...this.state.cart,
@@ -190,13 +190,36 @@ class ProductProvider extends Component {
     toast.success("Cart cleared");
   };
 
-  addPromotionToCart = async (couponCode) => {
+  addPromotionToCart = async (couponCode, customer) => {
+    // console.log("tset")
+    console.log(couponCode);
+
     try {
+      const prepareItemsPayload = (item) => {
+        return {
+          product_id: item.id,
+          quantity: item.count,
+          price: item.price * 100,
+          amount: item.total * 100,
+        };
+      };
+
+      const redemptionPayload = {
+        code: couponCode,
+        customer,
+        amount: this.state.cartTotalAfterPromotion * 100,
+        items: this.state.cart.map(prepareItemsPayload),
+      };
+
+      console.log(redemptionPayload);
       const voucher = await new Promise((resolve, reject) => {
-        window.Voucherify.validate(couponCode, (response) => {
+        window.Voucherify.validate(redemptionPayload, (response) => {
           if (response.valid) {
+            console.log(response);
             resolve(response);
           } else {
+            console.log(response);
+            toast.error(response.error.message);
             reject(new Error(response.reason));
           }
         });
@@ -207,7 +230,7 @@ class ProductProvider extends Component {
 
       toast.success("Promotion applied");
     } catch (e) {
-      toast.error("Promotion not found");
+      console.error(e);
     }
   };
 

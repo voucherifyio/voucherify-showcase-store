@@ -2,7 +2,7 @@ import React from "react";
 import Product from "./Product";
 import { storeProducts } from "../data";
 
-export default function ProductList() {
+const ProductList = () => {
   return (
     <div>
       <React.Fragment>
@@ -10,9 +10,7 @@ export default function ProductList() {
           <div className="container">
             <div className="row my-4">
               <div className="col-10 mx-auto my-2 text-center">
-                <h1>
-                  Our products
-                </h1>
+                <h1>Our products</h1>
               </div>
             </div>
             <div className="row">
@@ -25,4 +23,6 @@ export default function ProductList() {
       </React.Fragment>
     </div>
   );
-}
+};
+
+export default ProductList;

@@ -27,6 +27,7 @@
     "voucherify.js": "^1.31.0"
   },
   "scripts": {
+    "setup": "node setup.js",
     "dev": "react-scripts start",
     "dev-server": "NODE_ENV=development nodemon server.js",
     "start": "react-scripts build && NODE_ENV=production node server.js",

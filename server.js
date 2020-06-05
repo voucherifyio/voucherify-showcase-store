@@ -7,6 +7,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
+const campaigns = require("./campaigns");
+
 let storeCustomers = require("./src/storeCustomers.json");
 
 if (process.env.NODE_ENV !== "production") {
@@ -22,6 +24,22 @@ const voucherify = voucherifyClient({
   applicationId: process.env.APPLICATION_ID,
   clientSecretKey: process.env.CLIENT_SECRET_KEY,
 });
+
+function publishForCustomer(id) {
+  const params = {
+    customer: {
+      source_id: id,
+    },
+  };
+
+  return campaigns
+    .map((campaign) => campaign.name)
+    .map((campaign) =>
+      voucherify.distributions.publications.create(
+        Object.assign(params, { campaign })
+      )
+    );
+}
 
 app.use(bodyParser.json());
 app.use(
@@ -46,28 +64,39 @@ app.get("/init", async (request, response) => {
     request.session.views = 1;
     console.log("[New-visit] %s", request.session.id);
     //Create new customers if this is a new session
-    await Promise.all(
+    const createdCustomers = await Promise.all(
       storeCustomers.map((customer) => {
         let customerID = `${request.session.id}${customer.metadata.demostore_id}`;
 
-        console.log("Current customer ID");
-        console.log(customer.source_id);
-        console.log("Current prepared customer ID");
-        console.log(customerID);
-
-        // Switch
         customer.source_id = customerID;
 
-        console.log("Switched customer ID (should be equal to prepared)");
-        console.log(customer.source_id);
-        console.log("Current customer");
-        console.log(customer);
-
-        voucherify.customers.create(customer);
+        let createdCustomer = voucherify.customers.create(customer);
+        return createdCustomer;
       })
     );
+
+    request.session.createdCouponsList = [];
+    for (let i = 0; i < createdCustomers.length; i++) {
+      console.log(createdCustomers[i].source_id);
+      const createdCoupons = Promise.all(
+        publishForCustomer(createdCustomers[i].source_id)
+      ).catch((error) =>
+        console.error(`[Publishing coupons][Error] - ${error}`)
+      );
+
+      let coupons = await createdCoupons;
+
+      request.session.createdCouponsList.push({
+        customer: createdCustomers[i].source_id,
+        campaings: coupons.map((coupon) => coupon.voucher),
+      });
+    }
   }
-  response.json(request.session.id);
+
+  response.json({
+    session: request.session.id,
+    coupons: request.session.createdCouponsList,
+  });
 });
 
 app.get("/ping", (req, res) => {

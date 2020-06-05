@@ -8,7 +8,6 @@ const Details = () => {
   const handleOnChange = (e) => {
     setQuantity(e.target.value);
   };
-  console.log(quantity);
   return (
     <ProductConsumer>
       {(ctx) => {

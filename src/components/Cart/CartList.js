@@ -9,7 +9,7 @@ window.Voucherify.initialize(
   "f503ecb0-c840-4748-ad75-a17694014b7f",
   "791c2768-347c-44ee-8e67-00eecd7b89a6"
 );
-export default function CartList() {
+const CartList = () => {
   return (
     <ProductConsumer>
       {(value) => {
@@ -53,4 +53,6 @@ export default function CartList() {
       }}
     </ProductConsumer>
   );
-}
+};
+
+export default CartList;

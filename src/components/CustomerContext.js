@@ -18,6 +18,7 @@ const loadItemsFromLocalStorage = () => {
     fetchingCustomer: readValueFromLocalStorage("fetchingCustomer") || false,
     customerRedemptions:
       readValueFromLocalStorage("customerRedemptions") || null,
+    publishedVouchers: readValueFromLocalStorage("publishedVouchers") || null,
   };
 };
 
@@ -29,6 +30,7 @@ class CustomerProvider extends Component {
     fetchingCustomer: true,
     customerRedemptions: null,
     sessionCode: "",
+    publishedVouchers: null,
   };
 
   componentDidMount() {
@@ -41,11 +43,18 @@ class CustomerProvider extends Component {
       const session = await fetch(`${process.env.REACT_APP_API_URL}/init`, {
         credentials: "include",
       }).then((response) => response.json());
-      let sessionCode = session
+
+      let sessionCode = session.session;
+      let publishedVouchers = session.coupons;
       this.setState({
         sessionCode: sessionCode,
+        publishedVouchers: publishedVouchers,
       });
       localStorage.setItem("sessionCode", JSON.stringify(sessionCode));
+      localStorage.setItem(
+        "publishedVouchers",
+        JSON.stringify(publishedVouchers)
+      );
       this.getCustomers();
     } catch (e) {
       console.log(e);
@@ -65,7 +74,6 @@ class CustomerProvider extends Component {
       });
     } catch (e) {
       console.log(e);
-      console.log("test");
     }
   };
 
@@ -86,6 +94,7 @@ class CustomerProvider extends Component {
         customers: customers,
         fetchingCustomer: false,
       });
+
       localStorage.setItem("customers", JSON.stringify(customers));
     } catch (e) {
       console.log(e);
@@ -98,7 +107,7 @@ class CustomerProvider extends Component {
   };
 
   getRedemptions = async (id) => {
-    console.log(id)
+    console.log(id);
     const customerRedemptions = {};
     let redemptions = await fetch(
       `${process.env.REACT_APP_API_URL}/redemptions/${id}`,
@@ -120,7 +129,7 @@ class CustomerProvider extends Component {
   };
 
   setCustomer = async (id) => {
-    console.log(id)
+    console.log(id);
     try {
       //Get customer data, start spinner
       this.setState({ fetchingCustomer: true });
@@ -148,8 +157,22 @@ class CustomerProvider extends Component {
     }
   };
 
+  getCode = (camp_name) => {
+    let customer = this.state.customer.source_id;
+    let campaing = camp_name;
+
+    let customerVouchers = this.state.publishedVouchers.find(
+      (voucher) => voucher.customer === customer
+    );
+
+    let customerCampaigns = customerVouchers.campaings.find(
+      (camp) => camp.campaign === campaing
+    );
+
+    return customerCampaigns.code;
+  };
   updateCustomerData = async (id) => {
-    console.log(id)
+    console.log(id);
     try {
       //Get customer data, start spinner
       this.setState({ fetchingCustomer: true });
@@ -159,7 +182,7 @@ class CustomerProvider extends Component {
           credentials: "include",
         }
       ).then((x) => x.json());
-      console.log(customer)
+      console.log(customer);
       //Check if customer data has not updated
       if (
         customer.summary.redemptions.total_redeemed ===
@@ -192,6 +215,7 @@ class CustomerProvider extends Component {
           getCustomers: this.getCustomers,
           getRedemptions: this.getRedemptions,
           updateCustomerData: this.updateCustomerData,
+          getCode: this.getCode,
         }}
       >
         {this.props.children}
