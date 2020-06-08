@@ -4,7 +4,7 @@ const voucherify = require("voucherify")({
   applicationId: process.env.APPLICATION_ID,
   clientSecretKey: process.env.CLIENT_SECRET_KEY,
 });
-const campaigns = require("./campaigns");
+const campaigns = require("./src/campaigns");
 const fs = require("fs");
 
 const dataDir = "./.data";
@@ -129,17 +129,27 @@ const setupCampaigns = () => {
 const setupValidationRules = () => {
   const rules = [
     {
-      name: "More-than-$55-in-Cart",
+      name: "More-than-$90-in-Cart-and-Pixel",
       rules: {
         1: {
           name: "order.amount",
           conditions: {
-            $more_than: [5500],
+            $more_than: [9000],
           },
           error: {
-            message: "Total cart value must be greater than $150",
+            message: "Total cart value must be greater than $88",
           },
         },
+        2: {
+          name: "product.id",
+          conditions: {
+            $is: [{ source_id: 1 }],
+          },
+          error: {
+            message: "You must have Pixel Phone in your cart",
+          },
+        },
+        logic: "1 and 2",
       },
     },
   ];

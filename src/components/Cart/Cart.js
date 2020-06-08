@@ -70,7 +70,7 @@ const Cart = () => {
                                 type="text"
                                 className="form-control"
                                 id="address"
-                                value={CustomerValue.customer.address.line_1}
+                                value={CustomerValue.customer.address.line_1 || ""}
                                 readOnly
                               />
                             </div>
@@ -84,7 +84,7 @@ const Cart = () => {
                                 type="text"
                                 className="form-control"
                                 id="address2"
-                                value={CustomerValue.customer.address.line_2}
+                                value={CustomerValue.customer.address.line_2 || ""}
                                 readOnly
                               />
                             </div>
@@ -95,7 +95,7 @@ const Cart = () => {
                                 <input
                                   className="form-control"
                                   id="country"
-                                  value={CustomerValue.customer.address.country}
+                                  value={CustomerValue.customer.address.country || ""}
                                   readOnly
                                 />
                               </div>
@@ -103,51 +103,24 @@ const Cart = () => {
                                 <label htmlFor="country">State</label>
                                 <input
                                   className="form-control"
-                                  id="country"
-                                  value={CustomerValue.customer.address.state}
+                                  id="state"
+                                  value={CustomerValue.customer.address.state || ""}
                                   readOnly
                                 />
                               </div>
                               <div className="col-md-3 mb-3">
-                                <label htmlFor="country">Zip-code</label>
+                                <label htmlFor="country">Postal code</label>
                                 <input
                                   className="form-control"
-                                  id="country"
+                                  id="postal_code"
                                   value={
-                                    CustomerValue.customer.address.postal_code
+                                    CustomerValue.customer.address.postal_code  || ""
                                   }
                                   readOnly
                                 />
                               </div>
                             </div>
-                            <hr className="mb-4" />
-                            <div className="custom-control custom-checkbox">
-                              <input
-                                type="checkbox"
-                                className="custom-control-input"
-                                id="same-address"
-                              />
-                              <label
-                                className="custom-control-label"
-                                htmlFor="same-address"
-                              >
-                                Shipping address is the same as my billing
-                                address
-                              </label>
-                            </div>
-                            <div className="custom-control custom-checkbox">
-                              <input
-                                type="checkbox"
-                                className="custom-control-input"
-                                id="save-info"
-                              />
-                              <label
-                                className="custom-control-label"
-                                htmlFor="save-info"
-                              >
-                                Save this information for next time
-                              </label>
-                            </div>
+                            
                             <hr className="mb-4" />
 
                             <h4 className="mb-3">Payment</h4>
@@ -232,6 +205,7 @@ const Cart = () => {
                                         ctx.updateCustomerData(
                                           ctx.customer.source_id
                                         );
+                                        ctx.getCampaigns();
                                       }}
                                     >
                                       Proceed to checkout

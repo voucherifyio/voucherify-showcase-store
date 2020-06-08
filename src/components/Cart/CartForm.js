@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { ProductConsumer } from "../Context";
 import { CustomerConsumer } from "../CustomerContext";
 
@@ -10,39 +10,41 @@ window.Voucherify.initialize(
 );
 
 const CartForm = () => {
-  const [couponCode, setCouponCode] = useState("");
+  // const [couponCode, setCouponCode] = useState("");
 
   return (
     <ProductConsumer>
       {(value) => {
-        
         return (
-          <form className="card p-2">
-            <div className="input-group">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Promo code"
-                onChange={(event) => setCouponCode(event.target.value)}
-              />
-              <div className="input-group-append">
-                <CustomerConsumer>
-                  {(ctx) => {
-                    const { customer } = ctx;
-                    return (
+          <CustomerConsumer>
+            {(ctx) => {
+              return (
+                <form className="card p-2">
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Promo code"
+                      readOnly
+                      value={ctx.copiedCode || ""}
+                      // onChange={(event) => setCouponCode(event.target.value)}
+                    />
+                    <div className="input-group-append">
                       <button
                         type="button"
                         className="btn btn-secondary"
-                        onClick={() => value.addPromotionToCart(couponCode, customer)}
+                        onClick={() =>
+                          value.addPromotionToCart(ctx.copiedCode, ctx.customer)
+                        }
                       >
-                        Redeem
+                        Validate
                       </button>
-                    );
-                  }}
-                </CustomerConsumer>
-              </div>
-            </div>
-          </form>
+                    </div>
+                  </div>
+                </form>
+              );
+            }}
+          </CustomerConsumer>
         );
       }}
     </ProductConsumer>

@@ -1,28 +1,15 @@
 import React, { useState } from "react";
 import { CustomerConsumer } from "../CustomerContext";
 import _ from "lodash";
+import CampaignCard from "./CampaignCard";
 
 const SidebarContent = () => {
   const [select] = useState(localStorage.getItem("customer"));
-  
+
   return (
     <div className="side-menu-container">
       <CustomerConsumer>
         {(ctx) => {
-          const getCode = (camp_name) => {
-            let customer = ctx.customer.source_id;
-            let campaing = camp_name;
-        
-            let customerVouchers = ctx.publishedVouchers.find(
-              (voucher) => voucher.customer === customer
-            );
-        
-            let customerCampaigns = customerVouchers.campaings.find(
-              (camp) => camp.campaign === campaing
-            );
-        
-            return customerCampaigns.code;
-          };
           return (
             <>
               {ctx.fetchingCustomer ? (
@@ -52,27 +39,40 @@ const SidebarContent = () => {
 
                   {!_.isEmpty(ctx.customer) && (
                     <div>
+                      <p>Customer data</p>
                       <pre
                         className="customer-data pre-scrollable"
                         style={{ fontSize: "10px" }}
                       >
                         <code>{JSON.stringify(ctx.customer, null, 1)}</code>
                       </pre>
-                      {ctx.customerRedemptions && (
-                        <pre
-                          className="customer-data pre-scrollable"
-                          style={{ fontSize: "10px" }}
-                        >
-                          <code>
-                            {JSON.stringify(ctx.customerRedemptions, null, 1)}
-                          </code>
-                        </pre>
+                      {!_.isEmpty(ctx.customerRedemptions) && (
+                        <>
+                          <p>Code redemptions</p>
+                          <pre
+                            className="customer-data pre-scrollable"
+                            style={{ fontSize: "10px" }}
+                          >
+                            <code>
+                              {JSON.stringify(ctx.customerRedemptions, null, 1)}
+                            </code>
+                          </pre>
+                        </>
                       )}
-                      <h5>Cart Campaign</h5>
-                      <p>Your cart must be valued $55 or more</p>
-                      <div>Campaign voucher: {getCode("More-than-$55-in-Cart")} </div>
                     </div>
                   )}
+                </>
+              )}
+              {!_.isEmpty(ctx.campaigns) && (
+                <>
+                  <p>Campaings</p>
+                  {ctx.campaigns.map((campaign) => (
+                    <CampaignCard
+                      key={campaign.name}
+                      campaign={campaign}
+                      code={ctx.getCode(campaign.name)}
+                    />
+                  ))}
                 </>
               )}
             </>

@@ -7,7 +7,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
-const campaigns = require("./campaigns");
+const campaigns = require("./src/campaigns");
 
 let storeCustomers = require("./src/storeCustomers.json");
 
@@ -126,6 +126,19 @@ app.get("/redemptions/:source_id", async (request, response) => {
     response.status(500).end();
   }
 });
+
+app.get("/campaigns", async (request, response) => {
+  try {
+    const campaigns = await voucherify.campaigns.list();
+    response.json(await campaigns);
+  } catch (e) {
+    console.error("[Fetching campaigns][Error] error: %s", e);
+    response.status(500).end();
+  }
+});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("build"));
+}
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("build"));
