@@ -462,6 +462,7 @@ a:hover {
 
 .customer-data {
   width: 100%;
+  max-height: 200px !important;
 }
 
 .campaign_card {
@@ -504,6 +505,10 @@ a:hover {
   cursor: "pointer";
 }
 
+.campaign_code p {
+  margin: 0px;
+}
+
 .campaign_steps {
   margin-top: 15px;
   display: flex;
@@ -532,7 +537,7 @@ a:hover {
 
  
 .expandable {
-  overflow: hidden;
+  overflow-y: scroll;
   transition: all .5s ease-in-out;
   line-height: 0;
   /* padding: 0 1em; */

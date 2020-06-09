@@ -19,7 +19,7 @@ const CampaignCard = ({ campaign, code }) => {
         <div
           className="expandable"
           id={campaign.name}
-          style={expand ? { height: "auto" } : { height: "0px" }}
+          style={expand ? { maxHeight: "200px" } : { height: "0px" }}
         >
           <CustomerConsumer>
             {(ctx) => {
