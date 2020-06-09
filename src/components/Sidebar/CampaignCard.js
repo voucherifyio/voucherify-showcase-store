@@ -3,7 +3,6 @@ import { CustomerConsumer } from "../CustomerContext";
 
 const CampaignCard = ({ campaign, code }) => {
   const [expand, setExpand] = useState(false);
-  console.log(campaign);
   return (
     <>
       <div className="campaign_card">
@@ -42,7 +41,7 @@ const CampaignCard = ({ campaign, code }) => {
           </CustomerConsumer>
           <p className="campaign_description">Campaign Details</p>
           <ul>
-            <li>Campaign {campaign.active === true ? "active" : "inactive"}</li>
+            <li>Campaign {campaign.active ? "active" : "inactive"}</li>
             <li>Description: {campaign.metadata.demostore_description}</li>
             <li>Type: {campaign.campaign_type}</li>
             {campaign.start_date && <li>Start: {campaign.start_date}</li>}

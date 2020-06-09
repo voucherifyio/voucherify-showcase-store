@@ -7,7 +7,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
-const campaigns = require("./src/campaigns");
+const voucherifyData = require("./voucherifyData");
+const campaigns = voucherifyData.campaigns;
 
 let storeCustomers = require("./src/storeCustomers.json");
 
@@ -31,7 +32,6 @@ function publishForCustomer(id) {
       source_id: id,
     },
   };
-
   return campaigns
     .map((campaign) => campaign.name)
     .map((campaign) =>
@@ -54,22 +54,16 @@ app.use(
 
 app.get("/init", async (request, response) => {
   if (request.session.views) {
-    console.log(
-      "[Re-visit] %s - %s",
-      request.session.id,
-      request.session.views
-    );
+    console.log(`[Re-visit] ${request.session.id} - ${request.session.views}`);
     request.session.views++;
   } else {
     request.session.views = 1;
-    console.log("[New-visit] %s", request.session.id);
+    console.log(`[New-visit] ${request.session.id}`);
     //Create new customers if this is a new session
     const createdCustomers = await Promise.all(
       storeCustomers.map((customer) => {
         let customerID = `${request.session.id}${customer.metadata.demostore_id}`;
-
         customer.source_id = customerID;
-
         let createdCustomer = voucherify.customers.create(customer);
         return createdCustomer;
       })
@@ -77,12 +71,9 @@ app.get("/init", async (request, response) => {
 
     request.session.createdCouponsList = [];
     for (let i = 0; i < createdCustomers.length; i++) {
-      console.log(createdCustomers[i].source_id);
       const createdCoupons = Promise.all(
         publishForCustomer(createdCustomers[i].source_id)
-      ).catch((error) =>
-        console.error(`[Publishing coupons][Error] - ${error}`)
-      );
+      ).catch((e) => console.error(`[Publishing coupons][Error] - ${e}`));
 
       let coupons = await createdCoupons;
 
@@ -109,7 +100,7 @@ app.get("/customer/:source_id", async (request, response) => {
     const customer = await voucherify.customers.get(source_id);
     response.json(await customer);
   } catch (e) {
-    console.error("[Fetching customer][Error] error: %s", e);
+    console.error(`[Fetching customers][Error] - ${e}`);
     response.status(500).end();
   }
 });
@@ -122,23 +113,20 @@ app.get("/redemptions/:source_id", async (request, response) => {
     });
     response.json(await redemptionLists.redemptions);
   } catch (e) {
-    console.error("[Fetching redemptions][Error] error: %s", e);
+    console.error(`[Fetching redemptions][Error] - ${e}`);
     response.status(500).end();
   }
 });
 
 app.get("/campaigns", async (request, response) => {
   try {
-    const campaigns = await voucherify.campaigns.list();
-    response.json(await campaigns);
+    const campaignsList = await voucherify.campaigns.list();
+    return response.json(campaignsList);
   } catch (e) {
-    console.error("[Fetching campaigns][Error] error: %s", e);
+    console.error(`[Fetching campaigns][Error] - ${e}`);
     response.status(500).end();
   }
 });
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("build"));
-}
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("build"));
