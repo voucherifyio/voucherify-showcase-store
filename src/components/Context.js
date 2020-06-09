@@ -191,12 +191,10 @@ class ProductProvider extends Component {
   };
 
   addPromotionToCart = async (couponCode, customer) => {
-    // console.log("tset")
-    console.log(couponCode);
-
     try {
       const prepareItemsPayload = (item) => {
         return {
+          source_id: item.id,
           product_id: item.id,
           quantity: item.count,
           price: item.price * 100,

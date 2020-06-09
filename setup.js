@@ -1,16 +1,19 @@
 require("dotenv").config();
-const request = require("request-promise-native");
+const voucherifyData = require("./voucherifyData");
 const voucherify = require("voucherify")({
   applicationId: process.env.APPLICATION_ID,
   clientSecretKey: process.env.CLIENT_SECRET_KEY,
 });
-const campaigns = require("./campaigns");
 const fs = require("fs");
-
 const dataDir = "./.data";
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir);
 }
+
+//Import data to setup
+const rules = voucherifyData.rules;
+const campaigns = voucherifyData.campaigns;
+// const segments = voucherifyData.segments
 
 const setupCampaigns = () => {
   const campaignPromises = campaigns.map((campaign) => {
@@ -61,20 +64,6 @@ const setupCampaigns = () => {
 
 //   return Promise.all(productCreationPromises).then(resp => console.log('ALL PRODUCTS SETUP') || resp)
 // }
-
-// const segments = [
-//   {
-//     type: "auto-update",
-//     name: "Germany",
-//     filter: {
-//       "address.country": {
-//         conditions: {
-//           $is: ["Germany"],
-//         },
-//       },
-//     },
-//   },
-// ];
 
 // const setupCustomerSegments = () => {
 //   const promises = segments.map((segment) => {
@@ -127,23 +116,6 @@ const setupCampaigns = () => {
 
 // hard dependencies on specific campaigns, products and segment
 const setupValidationRules = () => {
-  const rules = [
-    {
-      name: "More-than-$55-in-Cart",
-      rules: {
-        1: {
-          name: "order.amount",
-          conditions: {
-            $more_than: [5500],
-          },
-          error: {
-            message: "Total cart value must be greater than $150",
-          },
-        },
-      },
-    },
-  ];
-
   const ruleCreationPromises = rules.map(async (rule) => {
     const thisPromise = voucherify.validationRules.create(rule);
     let campaign = await voucherify.campaigns.get(rule.name);

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import storeCustomers from "../storeCustomers.json";
-
 const CustomerContext = React.createContext();
 
 const readValueFromLocalStorage = (key) => {
@@ -28,9 +27,13 @@ class CustomerProvider extends Component {
     sidebar: true,
     customers: [],
     fetchingCustomer: true,
+    fetchingCampaign: true,
     customerRedemptions: null,
+    fetchingCampaigns: true,
     sessionCode: "",
     publishedVouchers: null,
+    campaign: null,
+    copiedCode: null,
   };
 
   componentDidMount() {
@@ -56,6 +59,7 @@ class CustomerProvider extends Component {
         JSON.stringify(publishedVouchers)
       );
       this.getCustomers();
+      this.getCampaigns();
     } catch (e) {
       console.log(e);
     }
@@ -64,7 +68,6 @@ class CustomerProvider extends Component {
   createCustomers = async () => {
     try {
       storeCustomers.forEach(async (customer) => {
-        console.log(customer.source_id);
         await fetch(
           `${process.env.REACT_APP_API_URL}/create-customer/${this.state.sessionCode}${customer.source_id}`,
           {
@@ -75,6 +78,10 @@ class CustomerProvider extends Component {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  getCopiedCode = (code) => {
+    this.setState({ copiedCode: code });
   };
 
   getCustomers = async () => {
@@ -101,13 +108,37 @@ class CustomerProvider extends Component {
     }
   };
 
+  getCampaigns = async () => {
+    try {
+      this.setState({ fetchingCampaigns: true });
+      const allCampaigns = await fetch(
+        `${process.env.REACT_APP_API_URL}/campaigns`,
+        {
+          include: "credentials",
+        }
+      ).then((camps) => camps.json());
+
+      const campaigns = allCampaigns.campaigns.filter(
+        (campaign) => campaign.metadata.demostore === true
+      );
+
+      this.setState({
+        campaigns: campaigns,
+        fetchingCampaigns: false,
+      });
+
+      localStorage.setItem("campaigns", JSON.stringify(campaigns));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //Simple sleep function for fetching data
   sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
   getRedemptions = async (id) => {
-    console.log(id);
     const customerRedemptions = {};
     let redemptions = await fetch(
       `${process.env.REACT_APP_API_URL}/redemptions/${id}`,
@@ -129,7 +160,6 @@ class CustomerProvider extends Component {
   };
 
   setCustomer = async (id) => {
-    console.log(id);
     try {
       //Get customer data, start spinner
       this.setState({ fetchingCustomer: true });
@@ -151,7 +181,6 @@ class CustomerProvider extends Component {
         "customerRedemptions",
         JSON.stringify(customerRedemptionsList)
       );
-      console.log(customer);
     } catch (e) {
       console.log(e);
     }
@@ -171,8 +200,8 @@ class CustomerProvider extends Component {
 
     return customerCampaigns.code;
   };
+
   updateCustomerData = async (id) => {
-    console.log(id);
     try {
       //Get customer data, start spinner
       this.setState({ fetchingCustomer: true });
@@ -182,7 +211,6 @@ class CustomerProvider extends Component {
           credentials: "include",
         }
       ).then((x) => x.json());
-      console.log(customer);
       //Check if customer data has not updated
       if (
         customer.summary.redemptions.total_redeemed ===
@@ -216,6 +244,8 @@ class CustomerProvider extends Component {
           getRedemptions: this.getRedemptions,
           updateCustomerData: this.updateCustomerData,
           getCode: this.getCode,
+          getCampaigns: this.getCampaigns,
+          getCopiedCode: this.getCopiedCode,
         }}
       >
         {this.props.children}
