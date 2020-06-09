@@ -63,7 +63,7 @@ const SidebarContent = () => {
                   )}
                 </>
               )}
-              {!_.isEmpty(ctx.campaigns) && (
+              {!_.isEmpty(ctx.campaigns) && !_.isEmpty(ctx.customer)  && (
                 <>
                   <p>Campaings</p>
                   {ctx.campaigns.map((campaign) => (
