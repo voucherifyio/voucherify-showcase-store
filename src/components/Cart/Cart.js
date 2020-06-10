@@ -33,7 +33,7 @@ const Cart = () => {
                                   className="form-control"
                                   id="firstName"
                                   placeholder=""
-                                  value={CustomerValue.customer.name}
+                                  value={CustomerValue.customer.name || ""}
                                   readOnly
                                 />
                               </div>
@@ -44,7 +44,7 @@ const Cart = () => {
                                   className="form-control"
                                   id="lastName"
                                   placeholder=""
-                                  value={CustomerValue.customer.name}
+                                  value={CustomerValue.customer.name || ""}
                                   readOnly
                                 />
                               </div>
@@ -59,7 +59,7 @@ const Cart = () => {
                                 type="email"
                                 className="form-control"
                                 id="email"
-                                value={CustomerValue.customer.email}
+                                value={CustomerValue.customer.email || ""}
                                 readOnly
                               />
                             </div>

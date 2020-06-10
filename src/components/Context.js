@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { storeProducts, detailProduct } from "../data";
+import { detailProduct } from "../data";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
@@ -13,7 +13,7 @@ const SET_COUPON = "SET_COUPON";
 const reducer = (action) => (state, props) => {
   const calc = (cartItems, voucher) => {
     cartItems.forEach((cartItem) => {
-      cartItem.total = cartItem.count * cartItem.price;
+      cartItem.total = cartItem.count * (cartItem.price / 100);
     });
 
     const cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
@@ -47,7 +47,6 @@ const reducer = (action) => (state, props) => {
     );
     localStorage.setItem("appliedVoucher", JSON.stringify(voucher));
 
-    console.log(cartItems);
     return {
       cart: cartItems,
       discountedAmount,
@@ -74,6 +73,7 @@ const reducer = (action) => (state, props) => {
       cartTotalAfterPromotion:
         readValueFromLocalStorage("cartTotalAfterPromotion") || 0,
       appliedVoucher: readValueFromLocalStorage("appliedVoucher") || {},
+      products: readValueFromLocalStorage("products") | [],
     };
   };
 
@@ -100,6 +100,8 @@ class ProductProvider extends Component {
     cartTotalAfterPromotion: 0,
     appliedVoucher: {},
     discountedAmount: 0,
+    products: [],
+    fetchingProducts: true,
   };
 
   dispatch = (type, data) => {
@@ -113,10 +115,27 @@ class ProductProvider extends Component {
 
   componentDidMount() {
     this.dispatch(LOAD_CART);
+    this.loadProducts();
   }
 
+  loadProducts = async() => {
+    try {
+      const products = await fetch(`${process.env.REACT_APP_API_URL}/products`, {
+        credentials: "include",
+      }).then((response) => response.json());
+      this.setState({
+        products: products,
+        fetchingProducts: false,
+      });
+      localStorage.setItem("products", JSON.stringify(products));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   getItem = (id) => {
-    const product = _.cloneDeep(storeProducts.find((item) => item.id === id));
+    const tempProducts = this.state.products
+    const product = _.cloneDeep(tempProducts.find((item) => item.id === id));
     return product;
   };
 
@@ -197,7 +216,7 @@ class ProductProvider extends Component {
           source_id: item.id,
           product_id: item.id,
           quantity: item.count,
-          price: item.price * 100,
+          price: item.price,
           amount: item.total * 100,
         };
       };
@@ -297,6 +316,7 @@ class ProductProvider extends Component {
           checkoutCart: this.checkoutCart,
           addPromotionToCart: this.addPromotionToCart,
           removePromotionFromCart: this.removePromotionFromCart,
+          loadProducts: this.loadProducts,
         }}
       >
         {this.props.children}

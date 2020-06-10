@@ -1,6 +1,7 @@
 import React from "react";
 import Product from "./Product";
-import { storeProducts } from "../data";
+import { ProductConsumer } from "./Context";
+import Spinner from "react-bootstrap/Spinner";
 
 const ProductList = () => {
   return (
@@ -13,11 +14,32 @@ const ProductList = () => {
                 <h1>Our products</h1>
               </div>
             </div>
-            <div className="row">
-              {storeProducts.map((product) => {
-                return <Product key={product.id} product={product}></Product>;
-              })}
-            </div>
+            <ProductConsumer>
+              {(ctx) => {
+                return (
+                  <>
+                    {ctx.fetchingProducts ? (
+                      <div className="d-flex justify-content-center">
+                        <Spinner animation="border" role="status">
+                          <span className="sr-only">Loading...</span>
+                        </Spinner>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="row">
+                          {ctx.products.map((product) => (
+                            <Product
+                              key={product.id}
+                              product={product}
+                            ></Product>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </>
+                );
+              }}
+            </ProductConsumer>
           </div>
         </div>
       </React.Fragment>

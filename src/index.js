@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
@@ -6,28 +6,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 import { ProductProvider } from "./components/Context";
 import { CustomerProvider } from "./components/CustomerContext";
-import Sidebar from "./components/Sidebar";
-
-const Demostore = () => {
-  const [sidebar, setSidebar] = useState(true);
-
-  const handleSidebar = () => {
-    setSidebar(!sidebar);
-  };
-  return (
-    <>
-      <Sidebar sidebar={handleSidebar} isSidebarOpen={sidebar}  />
-      <App sidebar={handleSidebar} isSidebarOpen={sidebar}  />
-    </>
-  );
-};
 
 ReactDOM.render(
   <CustomerProvider>
     <ProductProvider>
       <Router>
         <React.StrictMode>
-          <Demostore />
+          <App />
         </React.StrictMode>
       </Router>
     </ProductProvider>

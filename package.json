@@ -17,6 +17,7 @@
     "lodash": "^4.17.15",
     "popper.js": "^1.16.1",
     "react": "^16.13.1",
+    "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
@@ -27,7 +28,7 @@
     "voucherify.js": "^1.31.0"
   },
   "scripts": {
-    "setup": "node setup.js",
+    "setup": "node ./setup/setup.js",
     "dev": "react-scripts start",
     "dev-server": "NODE_ENV=development nodemon server.js",
     "start": "react-scripts build && NODE_ENV=production node server.js",

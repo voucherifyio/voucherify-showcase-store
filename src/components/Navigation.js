@@ -74,7 +74,9 @@ const Navbar = ({ sidebar }) => {
             </Link>
           </div>
           <div>
-            <span className="btn" type="button" onClick={sidebar}>
+            <span id="menu-toggle"className="btn" type="button" 
+            onClick={sidebar}
+            >
               <i className="fas fa-cog"></i>
             </span>
           </div>

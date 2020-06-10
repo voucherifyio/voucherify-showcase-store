@@ -111,16 +111,16 @@ class CustomerProvider extends Component {
   getCampaigns = async () => {
     try {
       this.setState({ fetchingCampaigns: true });
-      const allCampaigns = await fetch(
+      const campaigns = await fetch(
         `${process.env.REACT_APP_API_URL}/campaigns`,
         {
           include: "credentials",
         }
       ).then((camps) => camps.json());
 
-      const campaigns = allCampaigns.campaigns.filter(
-        (campaign) => campaign.metadata.demostore === true
-      );
+      // const campaigns = allCampaigns.campaigns.filter(
+      //   (campaign) => campaign.metadata.demostore === true
+      // );
 
       this.setState({
         campaigns: campaigns,

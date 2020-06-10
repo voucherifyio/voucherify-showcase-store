@@ -11,25 +11,24 @@ const Details = () => {
   return (
     <ProductConsumer>
       {(ctx) => {
-        const product = ctx.getItem(parseInt(productId, 10));
-        const { id, img, company, info, price, title } = product;
-        const inCart = ctx.cart.find((item) => item.id === id);
+        const product = ctx.getItem(productId);
+        const inCart = ctx.cart.find((item) => item.id === product.id);
         return (
           <main className="mt-5 pt-4">
             <div className="container dark-grey-text mt-5">
               <div className="row wow fadeIn">
                 <div className="col-md-6 mb-4">
-                  <img src={`/${img}`} className="img-fluid" alt="" />
+                  <img src={product.metadata.imgUrl} className="img-fluid" alt="" />
                 </div>
                 <div className="col-md-6 mb-4">
                   <div className="p-4">
                     <div className="mb-3">
-                      <span className="badge badge-dark mr-2">{company}</span>
+                      <span className="badge badge-dark mr-2">{product.metadata.company}</span>
                       <span className="badge badge-success">In Stock</span>
                     </div>
                     <div className="mb-3">
-                      <h2 className="title">{title}</h2>
-                      <p className="lead">Price: ${price.toFixed(2)}</p>
+                      <h2 className="title">{product.name}</h2>
+                      <p className="lead">Price: ${(product.price / 100).toFixed(2)}</p>
                       <span className="lead">Quantity:</span>
                       <select
                         value={quantity}
@@ -54,7 +53,7 @@ const Details = () => {
                         className="btn btn-outline-secondary"
                         disabled={inCart}
                         onClick={() => {
-                          ctx.addToCart(id, quantity);
+                          ctx.addToCart(product.id, quantity);
                         }}
                       >
                         {inCart ? (
@@ -65,7 +64,7 @@ const Details = () => {
                       </button>
                     </div>
                     <p className="lead font-weight-bold">Description</p>
-                    <p>{info}</p>
+                    <p>{product.metadata.info}</p>
                   </div>
                 </div>
               </div>

@@ -7,8 +7,9 @@ const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
-const voucherifyData = require("./voucherifyData");
+const voucherifyData = require("./setup/voucherifyData");
 const campaigns = voucherifyData.campaigns;
+const versionNumber = voucherifyData.versionNumber;
 
 let storeCustomers = require("./src/storeCustomers.json");
 
@@ -121,9 +122,31 @@ app.get("/redemptions/:source_id", async (request, response) => {
 app.get("/campaigns", async (request, response) => {
   try {
     const campaignsList = await voucherify.campaigns.list();
-    return response.json(campaignsList);
+
+    const campaigns = campaignsList.campaigns.filter(
+      (campaign) => campaign.metadata.demostoreVersion === versionNumber
+    );
+
+    return response.json(campaigns);
   } catch (e) {
     console.error(`[Fetching campaigns][Error] - ${e}`);
+    response.status(500).end();
+  }
+});
+
+app.get("/products", async (request, response) => {
+  try {
+    const productsList = await voucherify.products.list();
+
+    //Filter out 'Shipping" - default Voucherify product
+
+    const products = productsList.products.filter(
+      product => product.name !== "Shipping"
+    );
+
+    return response.json(products);
+  } catch (e) {
+    console.error(`[Fetching products][Error] - ${e}`);
     response.status(500).end();
   }
 });
