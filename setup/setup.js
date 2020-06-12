@@ -33,46 +33,74 @@ const setupCampaigns = () => {
   );
 };
 
+const deleteProducts = async () => {
+  try {
+    const productsList = await voucherify.products.list();
+    for (let i = 0; i < productsList.products.length; i++) {
+      await voucherify.products
+        .delete(productsList.products[i].id, { force: true })
+        .then(
+          (resp) => {
+            console.log("Removed product");
+          },
+          (problem) =>
+            console.log(
+              `There was a problem removing product ${productsList.products[i].id}`,
+              JSON.stringify(problem, null, 2)
+            )
+        );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 //Run setupProducts only once!
 
-// const setupProducts = () => {
-// const products = voucherifyData.products;
-//   const productCreationPromises = products.map(async (product) => {
-//     const thisProduct = await voucherify.products
-//       .create({
-//         name: product.title,
-//         source_id: product.id,
-//         price: product.price * 100,
-//         metadata: {
-//           info: product.info,
-//           company: product.company,
-//           imgUrl: product.imgUrl,
-//           inCart: product.inCart,
-//           count: product.count,
-//           total: product.total,
-//         },
-//       })
-//       .then(
-//         (prod) => {
-//           console.log(`Product ${product.title} has been succesfully created`);
-//           const needsId = products.find(
-//             (p) => p.id === parseInt(prod.source_id, 10)
-//           );
-//           needsId.voucherifyId = prod.id;
-//         },
-//         (problem) =>
-//           console.log(
-//             `There was a problem creating product ${product.title}`,
-//             JSON.stringify(problem, null, 2)
-//           )
-//       );
-//     return thisProduct;
-//   });
+const setupProducts = () => {
+  const products = voucherifyData.products;
+  const productCreationPromises = products.map(async (product) => {
+    const thisProduct = await voucherify.products
+      .create({
+        name: product.name,
+        source_id: product.source_id,
+        price: product.price,
+        image_url: product.metadata.imgUrl,
+        metadata: {
+          demostore: product.metadata.demostore,
+          company: product.metadata.company,
+          categories: product.metadata.categories.join(),
+          info: product.metadata.info,
+          weight: product.metadata.weight,
+          slug: product.metadata.slug,
+          sku: product.metadata.sku,
+          inCart: false,
+          count: 0,
+          total: 0,
+        },
+      })
+      .then(
+        (prod) => {
+          voucherify.products.createSku(prod.id, {
+            id: product.metadata.sku,
+            source_id: product.metadata.sku,
+            sku: product.name,
+            price: product.price,
+          });
+        },
+        (problem) =>
+          console.log(
+            `There was a problem creating product ${product.name}`,
+            JSON.stringify(problem, null, 2)
+          )
+      );
+    return thisProduct;
+  });
 
-//   return Promise.all(productCreationPromises).then(
-//     (resp) => console.log("ALL PRODUCTS SETUP") || resp
-//   );
-// };
+  return Promise.all(productCreationPromises).then(
+    (resp) => console.log("ALL PRODUCTS SETUP") || resp
+  );
+};
 
 // const setupCustomerSegments = () => {
 // const segments = voucherifyData.segments
@@ -171,5 +199,7 @@ const setupValidationRules = () => {
 // };
 
 // setupCustomerSegments()
+deleteProducts();
 // setupProducts();
-setupCampaigns().then(setupValidationRules);
+// setupCampaigns().then(setupValidationRules);
+// deleteProducts();

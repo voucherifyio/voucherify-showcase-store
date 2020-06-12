@@ -2,11 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ProductConsumer } from "./Context";
 import { CustomerConsumer } from "./CustomerContext";
+import SettingsIcon from "@material-ui/icons/Settings";
+import IconButton from "@material-ui/core/IconButton";
 
-const Navbar = ({ sidebar }) => {
+const Navbar = ({ handleSidebar, sidebar }) => {
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light navbar-sticky">
         <div className="navbar navbar-fixed-top">
           <div className="container-fluid">
             <div className="navbar-header">
@@ -31,7 +33,7 @@ const Navbar = ({ sidebar }) => {
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <li className="nav-item">
-              <Link to="/products" className="nav-link">
+              <Link to="/store" className="nav-link">
                 Store
               </Link>
             </li>
@@ -63,7 +65,7 @@ const Navbar = ({ sidebar }) => {
                         0
                       );
                       return (
-                        <span className="badge badge-secondary badge-pill">
+                        <span className="badge badge-warning badge-pill">
                           {countTotalItems}
                         </span>
                       );
@@ -73,12 +75,21 @@ const Navbar = ({ sidebar }) => {
               </span>
             </Link>
           </div>
-          <div>
-            <span id="menu-toggle"className="btn" type="button" 
-            onClick={sidebar}
-            >
-              <i className="fas fa-cog"></i>
-            </span>
+          <div id="menu-toggle"
+              className="btn"
+              type="button"
+              onClick={handleSidebar}
+              >
+            {/* <span
+              id="menu-toggle"
+              className="btn"
+              type="button"
+              onClick={sidebar}
+            > */}
+              <IconButton className={sidebar ? "icon-selected" : ""}>
+                <SettingsIcon />
+              </IconButton>
+            {/* </span> */}
           </div>
         </div>
       </nav>

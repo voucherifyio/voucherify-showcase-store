@@ -7,14 +7,30 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Form from "react-bootstrap/Form";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const SidebarContent = () => {
   const [select] = useState(localStorage.getItem("customer"));
-
   return (
     <div className="list-group list-group-flush">
       <CustomerConsumer>
         {(ctx) => {
+          console.log(ctx.customer);
+
+          let customerDate = "";
+          let downloadCustomerData = "";
+
+          if (ctx.customer) {
+            customerDate = new Date(
+              ctx.customer.summary.orders.last_order_date
+            );
+            downloadCustomerData =
+              "data: text/json;charset=utf-8," +
+              encodeURIComponent(JSON.stringify(ctx.customer));
+          }
+
           return (
             <>
               {ctx.fetchingCustomer ? (
@@ -25,7 +41,7 @@ const SidebarContent = () => {
                 </div>
               ) : (
                 <>
-                  <div className="sidebar-heading">
+                  <div className="sidebar-select-customer">
                     <Form.Control
                       as="select"
                       id="storeCustomers"
@@ -44,33 +60,42 @@ const SidebarContent = () => {
                         </option>
                       ))}
                     </Form.Control>
+                    <a href={downloadCustomerData} download="customerData.json">
+                      <Tooltip title="Download data">
+                        <IconButton>
+                          <GetAppIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </a>
                   </div>
                   {!_.isEmpty(ctx.customer) && (
                     <>
-                      <div className="sidebar-heading">
-                        <pre
-                          className="customer-data pre-scrollable"
-                          style={{ fontSize: "10px" }}
-                        >
-                          <code>{JSON.stringify(ctx.customer, null, 1)}</code>
-                        </pre>
-                        {!_.isEmpty(ctx.customerRedemptions) && (
-                          <>
-                            <p>Code redemptions</p>
-                            <pre
-                              className="customer-data pre-scrollable"
-                              style={{ fontSize: "10px" }}
-                            >
-                              <code>
-                                {JSON.stringify(
-                                  ctx.customerRedemptions,
-                                  null,
-                                  1
-                                )}
-                              </code>
-                            </pre>
-                          </>
-                        )}
+                      <div className="sidebar-content">
+                        <p>
+                          Location:{" "}
+                          <span className="sidebar-content-data">
+                            {ctx.customer.address.country}
+                          </span>
+                        </p>
+                        <p>
+                          Total amount spent:{" "}
+                          <span className="sidebar-content-data">
+                            $
+                            {(
+                              ctx.customer.summary.orders.total_amount / 100
+                            ).toFixed(2)}
+                          </span>
+                        </p>
+                        <p>
+                          Last order date:{" "}
+                          <span className="sidebar-content-data">
+                            {("0" + customerDate.getDate()).slice(-2)}.
+                            {("0" + (customerDate.getMonth() + 1)).slice(-2)}.
+                            {customerDate.getFullYear()} at{" "}
+                            {customerDate.getHours()}:
+                            {customerDate.getMinutes()}
+                          </span>
+                        </p>
                       </div>
                     </>
                   )}
@@ -78,7 +103,9 @@ const SidebarContent = () => {
               )}
               {!_.isEmpty(ctx.campaigns) && !_.isEmpty(ctx.customer) && (
                 <>
-                  <div className="sidebar-heading">Campaings </div>
+                  <div className="sidebar-heading">
+                    Campaings ({ctx.campaigns.length}){" "}
+                  </div>
                   <Accordion>
                     {ctx.campaigns.map((campaign) => (
                       <Card key={campaign.id}>

@@ -554,12 +554,39 @@ body {
 }
 
 #sidebar-wrapper {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  max-height: 100vh;
+  margin-right: -25rem;
+  -webkit-transition: margin 0.25s ease-out;
+  -moz-transition: margin 0.25s ease-out;
+  -o-transition: margin 0.25s ease-out;
+  transition: margin 0.25s ease-out;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
   min-height: 100vh;
-  margin-left: -15rem;
-  -webkit-transition: margin .25s ease-out;
-  -moz-transition: margin .25s ease-out;
-  -o-transition: margin .25s ease-out;
-  transition: margin .25s ease-out;
+  overflow-x: hidden;
+  width: 25rem;
+  z-index: 3;
+}
+
+.navbar-sticky {
+  background-color: white;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
+  z-index: 2;
+}
+#sidebar-wrapper .sidebar-title {
+  margin-top: 1rem;
+  padding: 0.4rem 1rem;
+  font-size: 1.2rem;
+}
+
+.sidebarSelected {
+  box-shadow: -5px 0px 0px 0px black;
+  border-left: solid 5px black;
 }
 
 #sidebar-wrapper .sidebar-heading {
@@ -568,20 +595,43 @@ body {
 }
 
 #sidebar-wrapper .list-group {
-  width: 15rem;
+  /* width: 25rem; */
 }
 
 #page-content-wrapper {
   min-width: 100vw;
 }
+.sidebar-content {
+  padding: 0.875rem 1.25rem;
+  font-size: 1rem;
+}
 
+.sidebar-content-data {
+  font-weight: 700;
+}
+
+.sidebar-select-customer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.875rem 1.25rem;
+  font-size: 1rem;
+}
+button:focus {
+  outline: none !important;
+  border: 0 !important;
+}
+
+.icon-selected {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
 #wrapper.toggled #sidebar-wrapper {
-  margin-left: 0;
+  margin-right: 0;
 }
 
 @media (min-width: 768px) {
   #sidebar-wrapper {
-    margin-left: 0;
+    margin-right: 0;
   }
 
   #page-content-wrapper {
@@ -590,10 +640,9 @@ body {
   }
 
   #wrapper.toggled #sidebar-wrapper {
-    margin-left: -15rem;
+    margin-right: -25rem;
   }
 }
-
 
 /* Slide in animation */
 @-moz-keyframes slidein {

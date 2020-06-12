@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { detailProduct } from "../data";
 import { toast } from "react-toastify";
 import _ from "lodash";
+import axios from 'axios';
 
 const ProductContext = React.createContext();
 
@@ -118,11 +119,14 @@ class ProductProvider extends Component {
     this.loadProducts();
   }
 
-  loadProducts = async() => {
+  loadProducts = async () => {
     try {
-      const products = await fetch(`${process.env.REACT_APP_API_URL}/products`, {
-        credentials: "include",
-      }).then((response) => response.json());
+      const products = await fetch(
+        `${process.env.REACT_APP_API_URL}/products`,
+        {
+          credentials: "include",
+        }
+      ).then((response) => response.json());
       this.setState({
         products: products,
         fetchingProducts: false,
@@ -134,7 +138,7 @@ class ProductProvider extends Component {
   };
 
   getItem = (id) => {
-    const tempProducts = this.state.products
+    const tempProducts = this.state.products;
     const product = _.cloneDeep(tempProducts.find((item) => item.id === id));
     return product;
   };
@@ -252,29 +256,47 @@ class ProductProvider extends Component {
   };
 
   checkoutCart = async (customer = {}) => {
+    const prepareItemsPayload = (item) => {
+      return {
+        product_id: item.id,
+        quantity: item.count,
+        price: item.price * 100,
+        amount: item.total * 100,
+      };
+    };
+    const redemptionPayload = {
+      customer,
+      order: {
+        amount: this.state.cartTotalAfterPromotion * 100,
+        items: this.state.cart.map(prepareItemsPayload),
+      },
+    };
+
     // If voucher is not applied
     if (_.isEmpty(this.state.appliedVoucher)) {
+      redemptionPayload.status = "FULFILLED"
+      
+      axios
+      .post(`${process.env.REACT_APP_API_URL}/order`, redemptionPayload)
+      .then(() => console.log('Order Created'))
+      .catch(err => {
+        console.error(err);
+      });
+ 
+
+      // await fetch(`${process.env.REACT_APP_API_URL}/order`, {
+      //   include: "credentials",
+      //   method: "post",
+      //   data: redemptionPayload,
+      // }).then((order) => order.json());
+
       this.dispatch(CLEAR_CART);
       toast.success("Payment successful");
       return;
     }
     // If voucher is applied
     try {
-      const prepareItemsPayload = (item) => {
-        return {
-          product_id: item.id,
-          quantity: item.count,
-          price: item.price * 100,
-          amount: item.total * 100,
-        };
-      };
-      const redemptionPayload = {
-        customer,
-        order: {
-          amount: this.state.cartTotalAfterPromotion * 100,
-          items: this.state.cart.map(prepareItemsPayload),
-        },
-      };
+      window.Voucherify.order();
       const code = this.state.appliedVoucher.code;
       await new Promise((resolve, reject) => {
         window.Voucherify.redeem(code, redemptionPayload, (response) => {

@@ -8,7 +8,7 @@ const Product = (props) => {
         <React.Fragment>
           <Link to={`/details/${props.product.id}`}>
             <div className="product-image4" id={props.product.id}>
-              <img className="pic-1" src={props.product.metadata.imgUrl} alt="productImage" />
+              <img className="pic-1" src={props.product.image_url} alt="productImage" />
             </div>
           </Link>
           <div className="product-content">

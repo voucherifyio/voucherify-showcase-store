@@ -10,7 +10,7 @@ const MainPage = () => {
           Jumpstart your marketing efforts with this example based on Apple's
           marketing pages.
         </p>
-        <Link to="/products" className="btn btn-outline-secondary">
+        <Link to="/store" className="btn btn-outline-secondary">
           Store
         </Link>
       </div>

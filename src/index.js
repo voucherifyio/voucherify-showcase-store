@@ -6,12 +6,14 @@ import { BrowserRouter as Router } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 import { ProductProvider } from "./components/Context";
 import { CustomerProvider } from "./components/CustomerContext";
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 ReactDOM.render(
   <CustomerProvider>
     <ProductProvider>
       <Router>
         <React.StrictMode>
+          <CssBaseline />
           <App />
         </React.StrictMode>
       </Router>

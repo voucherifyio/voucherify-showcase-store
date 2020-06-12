@@ -1,5 +1,5 @@
 require("dotenv").config();
-
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const voucherifyClient = require("voucherify");
@@ -141,7 +141,7 @@ app.get("/products", async (request, response) => {
     //Filter out 'Shipping" - default Voucherify product
 
     const products = productsList.products.filter(
-      product => product.name !== "Shipping"
+      (product) => product.name !== "Shipping"
     );
 
     return response.json(products);
@@ -149,6 +149,25 @@ app.get("/products", async (request, response) => {
     console.error(`[Fetching products][Error] - ${e}`);
     response.status(500).end();
   }
+});
+
+app.post("/order", async (request, response) => {
+  try {
+    console.log(request.body)
+    const order = await voucherify.orders.create(request.body);
+    console.log(order)
+    return response.json(order);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+app.get("/store", (request, response) => {
+  return response.json({ test: "Test" });
+});
+
+app.get("/details/*", (request, response) => {
+  return response.json({ test: "Test" });
 });
 
 if (process.env.NODE_ENV === "production") {

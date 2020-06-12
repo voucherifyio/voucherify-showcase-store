@@ -18,7 +18,7 @@ const Details = () => {
             <div className="container dark-grey-text mt-5">
               <div className="row wow fadeIn">
                 <div className="col-md-6 mb-4">
-                  <img src={product.metadata.imgUrl} className="img-fluid" alt="" />
+                  <img src={product.image_url} className="img-fluid" alt="" />
                 </div>
                 <div className="col-md-6 mb-4">
                   <div className="p-4">

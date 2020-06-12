@@ -1,0 +1,44 @@
+{
+    "data": [
+        {
+            "id": "91190ea3-18fb-4b74-bd5c-a02cbeb10e55",
+            "type": "collection",
+            "status": "live",
+            "name": "Coffee",
+            "slug": "coffee",
+            "description": "",
+            "meta": {
+                "timestamps": {
+                    "created_at": "2020-04-14T11:32:17+00:00",
+                    "updated_at": "2020-04-14T11:33:06+00:00"
+                }
+            },
+            "relationships": {
+                "products": {
+                    "data": [
+                        {
+                            "type": "product",
+                            "id": "5ae67a44-807a-4cca-a440-8190e1914766"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "links": {
+        "current": "https://api.moltin.com/v2/collections?page[limit]=100&page[offset]=0",
+        "first": "https://api.moltin.com/v2/collections?page[limit]=100&page[offset]=0",
+        "last": null
+    },
+    "meta": {
+        "results": {
+            "total": 1
+        },
+        "page": {
+            "limit": 100,
+            "offset": 0,
+            "current": 1,
+            "total": 1
+        }
+    }
+}

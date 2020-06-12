@@ -30,15 +30,14 @@ const App = () => {
   };
   return (
     <>
-      <div className={sidebar ? "d-flex toggled" : "d-flex"} id="wrapper">
-        <Sidebar />
+      <div className={sidebar ? "d-flex" : "d-flex toggled"} id="wrapper">
         <div id="page-content-wrapper">
           <React.Fragment>
             <div className="mainContent">
-              <Navigation sidebar={handleSidebar} />
+              <Navigation sidebar={sidebar} handleSidebar={handleSidebar} />
               <Switch>
                 <Route exact path="/" component={MainPage}></Route>
-                <Route path="/products" component={ProductList}></Route>
+                <Route path="/store" component={ProductList}></Route>
                 <Route path="/details/:productId" component={Details}></Route>
                 <Route path="/cart" component={Cart}></Route>
                 <Route path="/success" component={SuccessPage}></Route>
@@ -50,6 +49,7 @@ const App = () => {
             </div>
           </React.Fragment>
         </div>
+        <Sidebar sidebar={sidebar} />
       </div>
     </>
   );
