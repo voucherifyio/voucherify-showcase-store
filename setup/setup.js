@@ -154,6 +154,7 @@ const setupProducts = () => {
 
 const setupValidationRules = () => {
   //This code checks added Validation Rules ID's for each campaign in voucherifyData and assigns this rule to the campaign
+  const campaigns = voucherifyData.campaigns;
   const ruleAssigmentPromises = campaigns.map(async (campaign) => {
     try {
       campaign = await voucherify.campaigns.get(campaign.name);
@@ -199,7 +200,8 @@ const setupValidationRules = () => {
 // };
 
 // setupCustomerSegments()
-deleteProducts();
+// deleteProducts();
 // setupProducts();
-// setupCampaigns().then(setupValidationRules);
+setupCampaigns().then(setupValidationRules);
+// setupValidationRules()
 // deleteProducts();

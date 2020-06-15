@@ -3,6 +3,7 @@ import { ProductConsumer } from "../Context";
 import { CustomerConsumer } from "../CustomerContext";
 import CartList from "./CartList";
 import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
 const Cart = () => {
   return (
@@ -33,7 +34,7 @@ const Cart = () => {
                                   className="form-control"
                                   id="firstName"
                                   placeholder=""
-                                  value={CustomerValue.customer.name || ""}
+                                  value={CustomerValue.customer.name.split(" ")[0] || ""}
                                   readOnly
                                 />
                               </div>
@@ -44,7 +45,7 @@ const Cart = () => {
                                   className="form-control"
                                   id="lastName"
                                   placeholder=""
-                                  value={CustomerValue.customer.name || ""}
+                                  value={CustomerValue.customer.name.split(" ")[1 ] || ""}
                                   readOnly
                                 />
                               </div>
@@ -70,7 +71,9 @@ const Cart = () => {
                                 type="text"
                                 className="form-control"
                                 id="address"
-                                value={CustomerValue.customer.address.line_1 || ""}
+                                value={
+                                  CustomerValue.customer.address.line_1 || ""
+                                }
                                 readOnly
                               />
                             </div>
@@ -84,7 +87,9 @@ const Cart = () => {
                                 type="text"
                                 className="form-control"
                                 id="address2"
-                                value={CustomerValue.customer.address.line_2 || ""}
+                                value={
+                                  CustomerValue.customer.address.line_2 || ""
+                                }
                                 readOnly
                               />
                             </div>
@@ -95,7 +100,9 @@ const Cart = () => {
                                 <input
                                   className="form-control"
                                   id="country"
-                                  value={CustomerValue.customer.address.country || ""}
+                                  value={
+                                    CustomerValue.customer.address.country || ""
+                                  }
                                   readOnly
                                 />
                               </div>
@@ -104,7 +111,9 @@ const Cart = () => {
                                 <input
                                   className="form-control"
                                   id="state"
-                                  value={CustomerValue.customer.address.state || ""}
+                                  value={
+                                    CustomerValue.customer.address.state || ""
+                                  }
                                   readOnly
                                 />
                               </div>
@@ -114,18 +123,18 @@ const Cart = () => {
                                   className="form-control"
                                   id="postal_code"
                                   value={
-                                    CustomerValue.customer.address.postal_code  || ""
+                                    CustomerValue.customer.address
+                                      .postal_code || ""
                                   }
                                   readOnly
                                 />
                               </div>
                             </div>
-                            
+
                             <hr className="mb-4" />
 
                             <h4 className="mb-3">Payment</h4>
 
-                            
                             <div className="row">
                               <div className="col-md-6 mb-3">
                                 <label htmlFor="cc-name">Name on card</label>
@@ -198,8 +207,8 @@ const Cart = () => {
                               <CustomerConsumer>
                                 {(ctx) => {
                                   return (
-                                    <button
-                                      className="my-2 btn btn-secondary btn-lg btn-block"
+                                    <Button
+                                      variant="dark"
                                       onClick={() => {
                                         value.checkoutCart(ctx.customer);
                                         ctx.updateCustomerData(
@@ -209,22 +218,10 @@ const Cart = () => {
                                       }}
                                     >
                                       Proceed to checkout
-                                    </button>
+                                    </Button>
                                   );
                                 }}
                               </CustomerConsumer>
-                            </Link>
-                            <Link
-                              to="/"
-                              className="link-unstyled"
-                              style={{ textDecoration: "none" }}
-                            >
-                              <button
-                                className="my-2 btn btn-danger btn-lg btn-block"
-                                onClick={() => value.clearCart()}
-                              >
-                                Clear cart
-                              </button>
                             </Link>
                           </form>
                         </div>

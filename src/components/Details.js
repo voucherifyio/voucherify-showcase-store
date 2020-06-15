@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ProductConsumer } from "./Context";
 import { useParams } from "react-router";
+import Button from "react-bootstrap/Button";
 
 const Details = () => {
   let { productId } = useParams();
@@ -23,12 +24,16 @@ const Details = () => {
                 <div className="col-md-6 mb-4">
                   <div className="p-4">
                     <div className="mb-3">
-                      <span className="badge badge-dark mr-2">{product.metadata.company}</span>
+                      <span className="badge badge-dark mr-2">
+                        {product.metadata.company}
+                      </span>
                       <span className="badge badge-success">In Stock</span>
                     </div>
                     <div className="mb-3">
                       <h2 className="title">{product.name}</h2>
-                      <p className="lead">Price: ${(product.price / 100).toFixed(2)}</p>
+                      <p className="lead">
+                        Price: ${(product.price / 100).toFixed(2)}
+                      </p>
                       <span className="lead">Quantity:</span>
                       <select
                         value={quantity}
@@ -48,9 +53,8 @@ const Details = () => {
                       </select>
                     </div>
                     <div className="mb-3">
-                      <button
-                        type="button"
-                        className="btn btn-outline-secondary"
+                      <Button
+                        variant="dark"
                         disabled={inCart}
                         onClick={() => {
                           ctx.addToCart(product.id, quantity);
@@ -61,7 +65,7 @@ const Details = () => {
                         ) : (
                           <span>Add to cart</span>
                         )}
-                      </button>
+                      </Button>
                     </div>
                     <p className="lead font-weight-bold">Description</p>
                     <p>{product.metadata.info}</p>

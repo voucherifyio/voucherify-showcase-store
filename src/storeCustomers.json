@@ -5,6 +5,7 @@
     "description": null,
     "email": "alice@morgan.io",
     "metadata": {
+      "country": "UK",
       "gender": null,
       "last_payment": 111,
       "demostore_id": "alicemorgan"
@@ -54,6 +55,7 @@
     "description": null,
     "email": "daniel_wieszcz@gmail.com",
     "metadata": {
+      "country": "USA",
       "gender": null,
       "last_payment": 111,
       "demostore_id": "danielwieszcz"
@@ -98,6 +100,7 @@
     "description": null,
     "email": "jd@scrubs.net",
     "metadata": {
+      "country": "PL",
       "gender": "male",
       "last_payment": 111,
       "demostore_id": "jd"

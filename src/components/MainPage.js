@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
 const MainPage = () => {
   return (
@@ -10,8 +11,8 @@ const MainPage = () => {
           Jumpstart your marketing efforts with this example based on Apple's
           marketing pages.
         </p>
-        <Link to="/store" className="btn btn-outline-secondary">
-          Store
+        <Link to="/store/All">
+          <Button variant="dark">Store</Button>
         </Link>
       </div>
       <div className="product-device box-shadow d-none d-md-block"></div>

@@ -1,27 +1,32 @@
 import React, { useState } from "react";
 import { CustomerConsumer } from "../CustomerContext";
 import _ from "lodash";
-import CampaignCard from "./CampaignCard";
-import Accordion from "react-bootstrap/Accordion";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
+import CampaignDetails from "./CampaignDetails";
 import Spinner from "react-bootstrap/Spinner";
 import Form from "react-bootstrap/Form";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import Typography from "@material-ui/core/Typography";
 
 const SidebarContent = () => {
+  const [expanded, setExpanded] = React.useState("panel1");
+
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
+
   const [select] = useState(localStorage.getItem("customer"));
   return (
     <div className="list-group list-group-flush">
       <CustomerConsumer>
         {(ctx) => {
-          console.log(ctx.customer);
-
           let customerDate = "";
           let downloadCustomerData = "";
-
+          console.log(ctx.customers);
           if (ctx.customer) {
             customerDate = new Date(
               ctx.customer.summary.orders.last_order_date
@@ -56,7 +61,7 @@ const SidebarContent = () => {
                       </option>
                       {ctx.customers.map((customer) => (
                         <option key={customer.name} value={customer.source_id}>
-                          {customer.name}
+                          {customer.name} ({customer.metadata.country})
                         </option>
                       ))}
                     </Form.Control>
@@ -106,28 +111,27 @@ const SidebarContent = () => {
                   <div className="sidebar-heading">
                     Campaings ({ctx.campaigns.length}){" "}
                   </div>
-                  <Accordion>
-                    {ctx.campaigns.map((campaign) => (
-                      <Card key={campaign.id}>
-                        <Card.Header>
-                          <Accordion.Toggle
-                            as={Button}
-                            variant="link"
-                            eventKey={campaign.id}
-                            style={{ whiteSpace: "pre-wrap" }}
-                          >
-                            {campaign.name}
-                          </Accordion.Toggle>
-                        </Card.Header>
-                        <Accordion.Collapse eventKey={campaign.id}>
-                          <CampaignCard
-                            campaign={campaign}
-                            code={ctx.getCode(campaign.name)}
-                          />
-                        </Accordion.Collapse>
-                      </Card>
-                    ))}
-                  </Accordion>
+                  {ctx.campaigns.map((campaign) => (
+                    <ExpansionPanel
+                      square
+                      key={campaign.name}
+                      expanded={expanded === `${campaign.name}`}
+                      onChange={handleChange(`${campaign.name}`)}
+                    >
+                      <ExpansionPanelSummary
+                        aria-controls="panel1d-content"
+                        id="panel1d-header"
+                      >
+                        <Typography>{campaign.name}</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <CampaignDetails
+                          campaign={campaign}
+                          code={ctx.getCode(campaign.name)}
+                        />
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  ))}
                 </>
               )}
             </>

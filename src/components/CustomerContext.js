@@ -198,6 +198,7 @@ class CustomerProvider extends Component {
       (camp) => camp.campaign === campaing
     );
 
+    console.log(customerCampaigns)
     return customerCampaigns.code;
   };
 

@@ -37,7 +37,7 @@ const App = () => {
               <Navigation sidebar={sidebar} handleSidebar={handleSidebar} />
               <Switch>
                 <Route exact path="/" component={MainPage}></Route>
-                <Route path="/store" component={ProductList}></Route>
+                <Route path="/store/:filterOption" component={ProductList}></Route>
                 <Route path="/details/:productId" component={Details}></Route>
                 <Route path="/cart" component={Cart}></Route>
                 <Route path="/success" component={SuccessPage}></Route>

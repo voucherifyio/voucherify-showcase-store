@@ -1,10 +1,10 @@
-const versionNumber = 8;
+const versionNumber = 12;
 
 exports.versionNumber = versionNumber
 
 exports.campaigns = [
   {
-    name: `More than $50 in cart and Samsung S7 #${versionNumber}`,
+    name: `More than $50 in cart and Illy Arabica Selection - Guatemala #${versionNumber}`,
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
@@ -14,15 +14,15 @@ exports.campaigns = [
       demostoreAssignedValRules: ["val_l6k6T16xpQYN"],
       demostoreVersion: versionNumber,
       demostoreDescription:
-        "Total cart value must be greater than $50 and you must have a Samsung S7 in it",
+        "Total cart value must be greater than $50 and you must have a Illy Arabica Selection - Guatemala in it",
       demostoreSteps: {
         step1: "Total cart value must be greater than $50",
-        step2: "You must have Samsung S7 in your cart",
+        step2: "You must have a Illy Arabica Selection - Guatemala in your cart",
       },
     },
   },
   {
-    name: `Cart includes 2 of Samsung S7 #${versionNumber}`,
+    name: `Cart includes 2 of Johan & Nyström - Bourbon Jungle #${versionNumber}`,
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
@@ -31,27 +31,60 @@ exports.campaigns = [
     metadata: {
       demostoreAssignedValRules: ["val_phBbhUNtDFHj"],
       demostoreVersion: versionNumber,
-      demostoreDescription: "You must have 2 of Samsung S7 in cart",
+      demostoreDescription: "You must have 2 of Johan & Nyström - Bourbon Jungle in cart",
       demostoreSteps: {
-        step1: "Add 2 of Samsung S7 to cart",
+        step1: "Add 2 of Johan & Nyström - Bourbon Jungle to cart",
+      },
+    },
+  },
+  {
+    name: `Only for Polish customers #${versionNumber}`,
+    type: "AUTO_UPDATE",
+    voucher: {
+      type: "DISCOUNT_VOUCHER",
+      discount: { amount_off: 500, type: "AMOUNT" },
+    },
+    metadata: {
+      demostoreAssignedValRules: ["val_AHvj4CKkJmJq"],
+      demostoreVersion: versionNumber,
+      demostoreDescription: "Only for Polish customers",
+      demostoreSteps: {
+        step1: "Select customer from Poland",
+      },
+    },
+  },
+  {
+    name: `Without Nivona CafeRomatica 759 in cart #${versionNumber}`,
+    type: "AUTO_UPDATE",
+    voucher: {
+      type: "DISCOUNT_VOUCHER",
+      discount: { percent_off: 5, type: "PERCENT" },
+    },
+    metadata: {
+      demostoreAssignedValRules: ["val_Ms2F2wUgzafw"],
+      demostoreVersion: versionNumber,
+      demostoreDescription:
+        "You can't have Nivona CafeRomatica 759 in cart",
+      demostoreSteps: {
+        step1: "Your cart can't include Nivona CafeRomatica 759",
       },
     },
   },
 ];
 
-// exports.segments = [
-//   {
-//     type: "auto-update",
-//     name: "Germany",
-//     filter: {
-//       "address.country": {
-//         conditions: {
-//           $is: ["Germany"],
-//         },
-//       },
-//     },
-//   },
-// ];
+exports.segments = [
+  {
+    type: "auto-update",
+    name: "Poland",
+    filter: {
+      "address.country": {
+        conditions: {
+          $is: ["Poland"],
+        },
+      },
+    },
+  },
+];
 
 exports.products = [
       {

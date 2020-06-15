@@ -4,97 +4,83 @@ import { ProductConsumer } from "./Context";
 import { CustomerConsumer } from "./CustomerContext";
 import SettingsIcon from "@material-ui/icons/Settings";
 import IconButton from "@material-ui/core/IconButton";
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import Badge from "@material-ui/core/Badge";
+import { withStyles } from "@material-ui/core/styles";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-const Navbar = ({ handleSidebar, sidebar }) => {
+const StyledBadge = withStyles(() => ({
+  badge: {
+    backgroundColor: "yellow",
+    color: "black",
+  },
+}))(Badge);
+
+const Navigation = ({ handleSidebar, sidebar }) => {
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light navbar-sticky">
-        <div className="navbar navbar-fixed-top">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <Link to="/" className="navbar-brand">
-                Hot Beans
-              </Link>
-            </div>
-          </div>
-        </div>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarTogglerDemo01"
-          aria-controls="navbarTogglerDemo01"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+      <Navbar className='m-auto navbar-sticky' collapseOnSelect expand="lg">
+        <Navbar.Brand className="m-auto" href="/store/all">
+          <img src="/logo.svg" width="150" alt="React Bootstrap logo" />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="ml-auto">
+            <CustomerConsumer>
+              {(ctx) => {
+                if (ctx.customer !== null) {
+                  const firstName = ctx.customer.name.split(" ")[0];
+                  return (
+                    <>
+                      <Nav.Item>
+                        <IconButton>
+                          <AccountCircleIcon />
+                        </IconButton>
+                        Hello, <b>{firstName}</b>
+                      </Nav.Item>
+                    </>
+                  );
+                }
+              }}
+            </CustomerConsumer>
+            <ProductConsumer>
+              {(ctx) => {
+                const countTotalItems = ctx.cart.reduce(
+                  (acc, curr) => acc + curr.count,
+                  0
+                );
 
-        <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li className="nav-item">
-              <Link to="/store" className="nav-link">
-                Store
-              </Link>
-            </li>
-          </ul>
-          <div>
-            <span className="btn" type="button">
-              <CustomerConsumer>
-                {(ctx) => {
-                  if (ctx.customer !== null) {
-                    return (
-                      <span className="font-weight-bold">
-                        {ctx.customer.name}
-                      </span>
-                    );
-                  }
-                }}
-              </CustomerConsumer>
-            </span>
-          </div>
-          <div>
-            <Link to="/cart">
-              <span className="btn" type="button">
-                <i className="fas fa-shopping-cart"></i>&nbsp;
-                <ProductConsumer>
-                  {(ctx) => {
-                    if (ctx.cart.length > 0) {
-                      const countTotalItems = ctx.cart.reduce(
-                        (acc, curr) => acc + curr.count,
-                        0
-                      );
-                      return (
-                        <span className="badge badge-warning badge-pill">
-                          {countTotalItems}
-                        </span>
-                      );
-                    }
-                  }}
-                </ProductConsumer>
-              </span>
-            </Link>
-          </div>
-          <div id="menu-toggle"
-              className="btn"
-              type="button"
-              onClick={handleSidebar}
+                return (
+                  <>
+                    <Nav.Item>
+                      <Link to="/cart">
+                        <IconButton>
+                          <StyledBadge badgeContent={countTotalItems}>
+                            <ShoppingCartIcon />
+                          </StyledBadge>
+                        </IconButton>
+                      </Link>
+                      <b>${ctx.cartTotalAfterPromotion.toFixed(2)}</b>
+                    </Nav.Item>
+                  </>
+                );
+              }}
+            </ProductConsumer>
+            <Nav.Item>
+              <IconButton
+                className={sidebar ? "icon-selected" : ""}
+                onClick={handleSidebar}
               >
-            {/* <span
-              id="menu-toggle"
-              className="btn"
-              type="button"
-              onClick={sidebar}
-            > */}
-              <IconButton className={sidebar ? "icon-selected" : ""}>
                 <SettingsIcon />
               </IconButton>
-            {/* </span> */}
-          </div>
-        </div>
-      </nav>
+            </Nav.Item>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     </>
   );
 };
 
-export default Navbar;
+export default Navigation;

@@ -1,7 +1,7 @@
 import React from "react";
 import { ProductConsumer } from "../Context";
 import { CustomerConsumer } from "../CustomerContext";
-
+import Button from "react-bootstrap/Button";
 import "voucherify.js";
 
 window.Voucherify.initialize(
@@ -10,8 +10,6 @@ window.Voucherify.initialize(
 );
 
 const CartForm = () => {
-  // const [couponCode, setCouponCode] = useState("");
-
   return (
     <ProductConsumer>
       {(value) => {
@@ -27,18 +25,16 @@ const CartForm = () => {
                       placeholder="Promo code"
                       readOnly
                       value={ctx.copiedCode || ""}
-                      // onChange={(event) => setCouponCode(event.target.value)}
                     />
                     <div className="input-group-append">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
+                      <Button
+                        variant="dark"
                         onClick={() =>
                           value.addPromotionToCart(ctx.copiedCode, ctx.customer)
                         }
                       >
                         Validate
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </form>
