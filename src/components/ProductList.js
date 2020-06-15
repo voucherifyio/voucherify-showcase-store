@@ -5,9 +5,6 @@ import Spinner from "react-bootstrap/Spinner";
 import { useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
-const capitalizeFirstLetter = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
 const ProductList = () => {
   let { filterOption } = useParams();
 
