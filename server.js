@@ -173,6 +173,6 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("build"));
 }
 
-const listener = app.listen(process.env.PORT, () => {
+const listener = app.listen(process.env.PORT || 3000, () => {
   console.log(`Your server is listening on port ${listener.address().port}`);
 });
