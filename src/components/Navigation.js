@@ -22,7 +22,7 @@ const Navigation = ({ handleSidebar, sidebar }) => {
   return (
     <>
       <Navbar className='m-auto navbar-sticky' collapseOnSelect expand="lg">
-        <Navbar.Brand className="m-auto" href="/store/all">
+        <Navbar.Brand className="m-auto" href="/store">
           <img src="/logo.svg" width="150" alt="React Bootstrap logo" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

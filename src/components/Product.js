@@ -6,10 +6,10 @@ import Button from "react-bootstrap/Button";
 const Product = (props) => {
   return (
     <div className="col-md-4 col-sm-6">
-      <div className="product-grid4">
+      <div className="product-grid">
         <React.Fragment>
           <Link to={`/details/${props.product.id}`}>
-            <div className="product-image4" id={props.product.id}>
+            <div className="product-image" id={props.product.id}>
               <img
                 className="pic-1"
                 src={props.product.image_url}

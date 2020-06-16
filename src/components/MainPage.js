@@ -11,7 +11,7 @@ const MainPage = () => {
           Jumpstart your marketing efforts with this example based on Apple's
           marketing pages.
         </p>
-        <Link to="/store/All">
+        <Link to="/store">
           <Button variant="dark">Store</Button>
         </Link>
       </div>
