@@ -21,7 +21,7 @@ const StyledBadge = withStyles(() => ({
 const Navigation = ({ handleSidebar, sidebar }) => {
   return (
     <>
-      <Navbar className='m-auto navbar-sticky' collapseOnSelect expand="lg">
+      <Navbar className="m-auto navbar-sticky" collapseOnSelect expand="lg">
         <Navbar.Brand className="m-auto" href="/store">
           <img src="/logo.svg" width="150" alt="React Bootstrap logo" />
         </Navbar.Brand>
@@ -34,10 +34,8 @@ const Navigation = ({ handleSidebar, sidebar }) => {
                   const firstName = ctx.customer.name.split(" ")[0];
                   return (
                     <>
-                      <Nav.Item>
-                        <IconButton>
-                          <AccountCircleIcon />
-                        </IconButton>
+                      <Nav.Item className="navbar-account px-2">
+                          <AccountCircleIcon className="navbar-icon mx-2" />
                         Hello, <b>{firstName}</b>
                       </Nav.Item>
                     </>
@@ -54,9 +52,9 @@ const Navigation = ({ handleSidebar, sidebar }) => {
 
                 return (
                   <>
-                    <Nav.Item>
+                    <Nav.Item className="px-2">
                       <Link to="/cart">
-                        <IconButton>
+                        <IconButton className="mx-2">
                           <StyledBadge badgeContent={countTotalItems}>
                             <ShoppingCartIcon />
                           </StyledBadge>
@@ -68,10 +66,11 @@ const Navigation = ({ handleSidebar, sidebar }) => {
                 );
               }}
             </ProductConsumer>
-            <Nav.Item>
+            <Nav.Item className="px-2">
               <IconButton
-                className={sidebar ? "icon-selected" : ""}
+                className={sidebar ? "mx-2 icon-selected" : "mx-2"}
                 onClick={handleSidebar}
+                
               >
                 <SettingsIcon />
               </IconButton>
