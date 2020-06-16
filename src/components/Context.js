@@ -234,7 +234,6 @@ class ProductProvider extends Component {
         items: this.state.cart.map(prepareItemsPayload),
       };
 
-      console.log(redemptionPayload);
       const voucher = await new Promise((resolve, reject) => {
         window.Voucherify.validate(redemptionPayload, (response) => {
           if (response.valid) {
@@ -310,7 +309,6 @@ class ProductProvider extends Component {
       try {
         // window.Voucherify.order();
         const code = this.state.appliedVoucher.code;
-        console.log(redemptionPayload);
         await new Promise((resolve, reject) => {
           window.Voucherify.redeem(code, redemptionPayload, (response) => {
             if (response.result === "SUCCESS") {
@@ -370,4 +368,4 @@ class ProductProvider extends Component {
 
 const ProductConsumer = ProductContext.Consumer;
 
-export { ProductProvider, ProductConsumer };
+export { ProductProvider, ProductConsumer, ProductContext};

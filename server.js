@@ -1,4 +1,5 @@
 require("dotenv").config();
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const voucherifyClient = require("voucherify");
@@ -159,13 +160,15 @@ app.post("/order", async (request, response) => {
   }
 });
 
-app.get("/store", (request, response) => {
-  return response.json({ test: "Test" });
+app.get("/*", (request, response) => {
+  response.sendFile(path.join(__dirname, "public", "index.html"));
 });
+// return response.json({ test: "Test" });
+// });
 
-app.get("/details/*", (request, response) => {
-  return response.json({ test: "Test" });
-});
+// app.get("/details/*", (request, response) => {
+//   return response.json({ test: "Test" });
+// });
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("build"));

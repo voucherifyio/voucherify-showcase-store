@@ -3,6 +3,7 @@ import { ProductConsumer } from "./Context";
 import { useParams } from "react-router";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+
 const Details = () => {
   let { productId } = useParams();
   const quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -10,10 +11,12 @@ const Details = () => {
   const handleOnChange = (e) => {
     setQuantity(e.target.value);
   };
+  const products = JSON.parse(localStorage.products);
+
+  const product = products.find((product) => product.id === productId);
   return (
     <ProductConsumer>
       {(ctx) => {
-        const product = ctx.getItem(productId);
         const inCart = ctx.cart.find((item) => item.id === product.id);
         return (
           <main className="mt-5 pt-4">
