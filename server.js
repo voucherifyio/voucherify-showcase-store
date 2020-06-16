@@ -152,9 +152,7 @@ app.get("/products", async (request, response) => {
 
 app.post("/order", async (request, response) => {
   try {
-    console.log(request.body)
     const order = await voucherify.orders.create(request.body);
-    console.log(order)
     return response.json(order);
   } catch (e) {
     console.log(e);
