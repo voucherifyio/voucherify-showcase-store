@@ -204,9 +204,9 @@ class ProductProvider extends Component {
         return {
           source_id: item.id,
           product_id: item.id,
-          quantity: item.count,
-          price: item.price,
-          amount: item.total * 100,
+          quantity: parseInt(item.count, 10),
+          price: parseInt((item.price * 100).toFixed(2), 10),
+          amount: parseInt((item.total * 100).toFixed(2), 10),
         };
       };
 
