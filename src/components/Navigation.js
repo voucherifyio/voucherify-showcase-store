@@ -22,9 +22,11 @@ const Navigation = ({ handleSidebar, sidebar }) => {
   return (
     <>
       <Navbar className="m-auto navbar-sticky" collapseOnSelect expand="lg">
-        <Navbar.Brand className="m-auto" href="/store">
-          <img src="/logo.svg" width="150" alt="React Bootstrap logo" />
-        </Navbar.Brand>
+        <Link to="/store">
+          <Navbar.Brand className="m-auto">
+            <img src="/logo.svg" width="150" alt="React Bootstrap logo" />
+          </Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
@@ -35,7 +37,7 @@ const Navigation = ({ handleSidebar, sidebar }) => {
                   return (
                     <>
                       <Nav.Item className="navbar-account px-2">
-                          <AccountCircleIcon className="navbar-icon mx-2" />
+                        <AccountCircleIcon className="navbar-icon mx-2" />
                         Hello, <b>{firstName}</b>
                       </Nav.Item>
                     </>
@@ -70,7 +72,6 @@ const Navigation = ({ handleSidebar, sidebar }) => {
               <IconButton
                 className={sidebar ? "mx-2 icon-selected" : "mx-2"}
                 onClick={handleSidebar}
-                
               >
                 <SettingsIcon />
               </IconButton>

@@ -160,9 +160,9 @@ app.post("/order", async (request, response) => {
   }
 });
 
-app.get("/*", (request, response) => {
-  response.sendFile(path.join(__dirname, "public", "index.html"));
-});
+// app.get("/*", (request, response) => {
+//   response.sendFile(path.join(__dirname, "public", "index.html"));
+// });
 // return response.json({ test: "Test" });
 // });
 
