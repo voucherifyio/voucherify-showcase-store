@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { detailProduct } from "../data";
 import { toast } from "react-toastify";
 import _ from "lodash";
 import axios from "axios";
@@ -96,8 +95,6 @@ const reducer = (action) => (state, props) => {
 class ProductProvider extends Component {
   state = {
     cart: [],
-    modalOpen: false,
-    modalProduct: detailProduct,
     cartTotal: 0,
     cartTotalAfterPromotion: 0,
     appliedVoucher: {},
@@ -159,20 +156,6 @@ class ProductProvider extends Component {
       ],
     });
     toast.success("Item added to cart");
-  };
-
-  openModal = (id) => {
-    const product = this.getItem(id);
-    this.setState(() => ({
-      modalProduct: product,
-      modalOpen: true,
-    }));
-  };
-
-  closeModal = () => {
-    this.setState(() => ({
-      modalOpen: false,
-    }));
   };
 
   increment = (id) => {
@@ -347,8 +330,6 @@ class ProductProvider extends Component {
           ...this.state,
           handleDetail: this.handleDetail,
           addToCart: this.addToCart,
-          openModal: this.openModal,
-          closeModal: this.closeModal,
           increment: this.increment,
           decrement: this.decrement,
           removeItem: this.removeItem,
@@ -368,4 +349,4 @@ class ProductProvider extends Component {
 
 const ProductConsumer = ProductContext.Consumer;
 
-export { ProductProvider, ProductConsumer, ProductContext};
+export { ProductProvider, ProductConsumer, ProductContext };
