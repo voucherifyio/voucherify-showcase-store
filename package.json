@@ -2,10 +2,6 @@
   "name": "voucherify-react-demo-store-hot-beans",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "npm": "6.14.4",
-    "node": "12.16.3"
-  },
   "dependencies": {
     "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
