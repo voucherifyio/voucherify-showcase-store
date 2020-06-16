@@ -238,22 +238,10 @@ button:focus {
     position: static;
     margin-left: 0px !important;
   }
-  .navbar {
-    flex-direction: row-reverse;
-  }
 }
 @media (max-width: 768px) {
   #sidebar-wrapper {
-    position: absolute;
-    top: 10vh;
-    right: 0px;
-    width: 50%;
-    min-height: 100%;
-
-    overflow-y: auto;
-    /* min-height: 100vh; */
-    overflow-x: hidden;
-    z-index: 3;
+    display: none;
   }
   #wrapper.toggled #sidebar-wrapper {
     margin-right: -25rem;
@@ -275,6 +263,7 @@ button:focus {
 
   .navbar-brand {
     position: absolute;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
   }

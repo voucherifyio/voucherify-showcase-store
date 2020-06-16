@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { ProductConsumer } from "./Context";
 import { useParams } from "react-router";
 import Button from "react-bootstrap/Button";
-
+import Form from "react-bootstrap/Form";
 const Details = () => {
   let { productId } = useParams();
+  const quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const [quantity, setQuantity] = useState("1");
   const handleOnChange = (e) => {
     setQuantity(e.target.value);
@@ -34,23 +35,23 @@ const Details = () => {
                       <p className="lead">
                         Price: ${(product.price / 100).toFixed(2)}
                       </p>
-                      <span className="lead">Quantity:</span>
-                      <select
-                        value={quantity}
-                        onChange={handleOnChange}
-                        disabled={inCart}
-                      >
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                      </select>
+                      <div className="d-flex align-items-center">
+                        <span className="lead">Quantity&nbsp;</span>
+                        <Form.Control
+                          as="select"
+                          id="productQuantity"
+                          onChange={(e) => handleOnChange(e.target.value)}
+                          value={quantity}
+                          disabled={inCart}
+                          className="col-4"
+                        >
+                          {quantities.map((qty) => (
+                            <option key={qty} value={qty}>
+                              {qty}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      </div>
                     </div>
                     <div className="mb-3">
                       <Button
