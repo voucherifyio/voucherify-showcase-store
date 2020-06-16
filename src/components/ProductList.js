@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Product from "./Product";
 import { ProductConsumer } from "./Context";
 import Spinner from "react-bootstrap/Spinner";
-import { useParams } from "react-router-dom";
-import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 const ProductList = () => {
-  let { filterOption } = useParams();
+  const [filterCategory, setFilterCategory] = useState("");
+
+  const handleSelectCategory = (name) => {
+    setFilterCategory(name);
+  };
 
   const categories = [
     "All",
@@ -23,79 +26,80 @@ const ProductList = () => {
     "Hand Grinders",
     "Cups",
   ];
-  filterOption = filterOption.split("%20").join(" ");
 
   return (
     <div>
-      <React.Fragment>
-        <div className="py-5">
-          <div className="container">
-            <div className="row my-4">
-              <div className="col-10 mx-auto my-2 text-center">
-                <h1>Our products</h1>
-              </div>
-              <div className="col-10 mx-auto my-2 text-center">
-                <div className="row">
-                  <div className="mx-2 my-2">
-                    {categories.map((category) => (
-                      <>
-                        <Button
-                          href={`/store/${category}`}
-                          variant="dark"
-                          size="sm"
-                          className="mx-1 my-1"
-                        >
-                          {category}{" "}
-                        </Button>{" "}
-                      </>
-                    ))}
-                  </div>
-                </div>
-              </div>
+      <div className="py-5">
+        <div className="container">
+          <div className="row my-4">
+            <div className="col-10 mx-auto my-2 text-center">
+              <h1>Our products {filterCategory && `- ${filterCategory}`}</h1>
             </div>
-            <ProductConsumer>
-              {(ctx) => {
-                console.log(ctx.products);
-                let filteredList;
-                if (!ctx.fetchingProducts) {
-                  switch (filterOption) {
-                    case "All":
-                      filteredList = ctx.products;
-                      break;
-                    default:
-                      filteredList = ctx.products.filter((product) =>
-                        product.metadata.categories.includes(filterOption)
-                      );
-                      break;
-                  }
-                }
-                return (
+            <div className="search-products">
+              <Form.Control
+                as="select"
+                id="storeProducts"
+                onChange={(e) => handleSelectCategory(e.target.value)}
+                value={filterCategory || "DEFAULT"}
+                className="col-3"
+              >
+                <option key="DEFAULT" value="DEFAULT" disabled>
+                  Select product category
+                </option>
+                {categories.map((category) => (
                   <>
-                    {ctx.fetchingProducts ? (
-                      <div className="d-flex justify-content-center">
-                        <Spinner animation="border" role="status">
-                          <span className="sr-only">Loading...</span>
-                        </Spinner>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="row">
-                          {filteredList.map((product) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  </>
+                ))}
+              </Form.Control>
+            </div>
+          </div>
+          <ProductConsumer>
+            {(ctx) => {
+              let filteredList;
+              if (!ctx.fetchingProducts) {
+                switch (filterCategory) {
+                  case "":
+                  case "All":
+                    filteredList = ctx.products;
+                    break;
+                  default:
+                    filteredList = ctx.products.filter((product) =>
+                      product.metadata.categories.includes(filterCategory)
+                    );
+                    break;
+                }
+              }
+              return (
+                <>
+                  {ctx.fetchingProducts ? (
+                    <div className="d-flex justify-content-center">
+                      <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </Spinner>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="row">
+                        {filteredList.map((product) => (
+                          <React.Fragment key={product.id}>
                             <Product
                               key={product.id}
                               product={product}
                             ></Product>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </>
-                );
-              }}
-            </ProductConsumer>
-          </div>
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </>
+              );
+            }}
+          </ProductConsumer>
         </div>
-      </React.Fragment>
+      </div>
     </div>
   );
 };

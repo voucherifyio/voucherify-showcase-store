@@ -1,20 +1,28 @@
 import React from "react";
 import { CustomerConsumer } from "../CustomerContext";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+// import List from "@material-ui/core/List";
+// import ListItem from "@material-ui/core/ListItem";
+// import ListItemText from "@material-ui/core/ListItemText";
+// import ListItemIcon from "@material-ui/core/ListItemIcon";
+// import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import Button from "@material-ui/core/Button";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
+// import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
 
 const CampaignDetails = ({ campaign, code }) => {
   const VoucherifyButton = withStyles(() => ({
     root: {
       color: "white",
-      backgroundColor: "#3bb8c3",
+      backgroundColor: "#ff8b5c",
+      borderRadius: "20em",
+      padding: "1em 3em",
+      marginTop: "15px",
+      marginBottom: "15px",
+      "&:hover": {
+        backgroundColor: "#ff8b5c",
+      },
     },
   }))(Button);
 
@@ -26,14 +34,54 @@ const CampaignDetails = ({ campaign, code }) => {
             <>
               <div
                 style={{
-                  maxHeight: "250px",
-                  overflowY: "scroll",
-                  whiteSpace: "pre-wrap",
+                  // maxHeight: "250px",
+                  // overflowY: "scroll",
+                  // whiteSpace: "pre-wrap",
                   width: "100%",
                   "transition:": "all .5s ease-in-out",
                 }}
               >
-                <List dense={true}>
+                <div>
+                  <Typography>
+                    <b>
+                      Your discount voucher{" "}
+                      {campaign.voucher.discount.type === "PERCENT" && (
+                        <>{campaign.voucher.discount.percent_off}% off</>
+                      )}
+                      {campaign.voucher.discount.type === "AMOUNT" && (
+                        <>
+                          $
+                          {(campaign.voucher.discount.amount_off / 100).toFixed(
+                            2
+                          )}{" "}
+                          off
+                        </>
+                      )}
+                    </b>
+                  </Typography>
+                  <Typography>
+                    Click on the code to copy it to checkout form
+                  </Typography>
+                  <div className="d-flex justify-content-center">
+                    <Tooltip title="Copy">
+                      <VoucherifyButton
+                        variant="contained"
+                        onClick={() => {
+                          ctx.getCopiedCode(code);
+                        }}
+                      >
+                        {code}
+                      </VoucherifyButton>
+                    </Tooltip>
+                  </div>
+
+                  {campaign.metadata.demostoreDescription && (
+                    <Typography>
+                      {campaign.metadata.demostoreDescription}
+                    </Typography>
+                  )}
+                </div>
+                {/* <List dense={true}>
                   {code && (
                     <ListItem>
                       <ListItemIcon>
@@ -183,8 +231,8 @@ const CampaignDetails = ({ campaign, code }) => {
                       />
                     </ListItem>
                   )}
-                </List>
-                <List dense={true}>
+                </List> */}
+                {/* <List dense={true}>
                   {campaign.metadata.demostoreSteps.step1 && (
                     <ListItem>
                       <ListItemText
@@ -217,7 +265,7 @@ const CampaignDetails = ({ campaign, code }) => {
                       />
                     </ListItem>
                   )}
-                </List>
+                </List> */}
               </div>
             </>
           );

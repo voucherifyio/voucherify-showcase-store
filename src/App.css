@@ -638,6 +638,12 @@ button:focus {
   margin-left: 300px;
 }
 
+.search-products {
+  display: flex;
+  width: 100%;
+  padding-left: 15px;
+}
+
 @media (min-width: 768px) {
   #sidebar-wrapper {
     margin-right: 0;

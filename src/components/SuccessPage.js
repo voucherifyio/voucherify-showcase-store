@@ -1,16 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import {ProductConsumer} from './Context'
 
 const SuccessPage = () => {
-  const [orderID, setOrderId] = useState("");
-  const ID = () => {
-    return "hot_beans_" + Math.random().toString(36).substr(2, 20);
-  };
-
-  useEffect(() => {
-    setOrderId(ID());
-  }, []);
-
   return (
     <div className="container text-center">
       <div className="row">
@@ -18,7 +10,13 @@ const SuccessPage = () => {
           <div>
             <h1 className="text-center">Order completed</h1>
             <h2 className="text-center">Thank you for your order!</h2>
-            <div className="text-center mb-5">ID: {orderID}</div>
+            <ProductConsumer>
+              {(ctx) => {
+                return (
+                  <div className="text-center mb-5">ID: {ctx.lastOrderID}</div>
+                )
+              }}
+            </ProductConsumer>
             <Link to="/" className="inline-block btn btn-outline-secondary">
               Continue shopping
             </Link>

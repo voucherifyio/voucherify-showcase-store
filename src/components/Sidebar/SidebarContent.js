@@ -7,10 +7,53 @@ import Form from "react-bootstrap/Form";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import MuiExpansionPanel from "@material-ui/core/ExpansionPanel";
+import MuiExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import MuiExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
+const ExpansionPanel = withStyles({
+  root: {
+    border: "1px solid rgba(0, 0, 0, .125)",
+    boxShadow: "none",
+    "&:not(:last-child)": {
+      borderBottom: 0,
+    },
+    "&:before": {
+      display: "none",
+    },
+    "&$expanded": {
+      margin: "auto",
+    },
+  },
+  expanded: {},
+})(MuiExpansionPanel);
+
+const ExpansionPanelSummary = withStyles({
+  root: {
+    backgroundColor: "rgba(0, 0, 0, .03)",
+    borderBottom: "1px solid rgba(0, 0, 0, .125)",
+    marginBottom: -1,
+    minHeight: 56,
+    "&$expanded": {
+      minHeight: 56,
+    },
+  },
+  content: {
+    "&$expanded": {
+      margin: "12px 0",
+    },
+  },
+  expanded: {},
+})(MuiExpansionPanelSummary);
+
+const ExpansionPanelDetails = withStyles(() => ({
+  root: {
+    padding: 20,
+  },
+}))(MuiExpansionPanelDetails);
 
 const SidebarContent = () => {
   const [expanded, setExpanded] = React.useState("panel1");
@@ -26,7 +69,6 @@ const SidebarContent = () => {
         {(ctx) => {
           let customerDate = "";
           let downloadCustomerData = "";
-          console.log(ctx.customers);
           if (ctx.customer) {
             customerDate = new Date(
               ctx.customer.summary.orders.last_order_date
@@ -111,27 +153,30 @@ const SidebarContent = () => {
                   <div className="sidebar-heading">
                     Campaings ({ctx.campaigns.length}){" "}
                   </div>
-                  {ctx.campaigns.map((campaign) => (
-                    <ExpansionPanel
-                      square
-                      key={campaign.name}
-                      expanded={expanded === `${campaign.name}`}
-                      onChange={handleChange(`${campaign.name}`)}
-                    >
-                      <ExpansionPanelSummary
-                        aria-controls="panel1d-content"
-                        id="panel1d-header"
+                  <div>
+                    {ctx.campaigns.map((campaign) => (
+                      <ExpansionPanel
+                        square
+                        key={campaign.name}
+                        expanded={expanded === `${campaign.name}`}
+                        onChange={handleChange(`${campaign.name}`)}
                       >
-                        <Typography>{campaign.name}</Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <CampaignDetails
-                          campaign={campaign}
-                          code={ctx.getCode(campaign.name)}
-                        />
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                  ))}
+                        <ExpansionPanelSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls={`${campaign.name}-content`}
+                          id={`${campaign.name}-header`}
+                        >
+                          <Typography>{campaign.name}</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                          <CampaignDetails
+                            campaign={campaign}
+                            code={ctx.getCode(campaign.name)}
+                          />
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
+                    ))}
+                  </div>
                 </>
               )}
             </>

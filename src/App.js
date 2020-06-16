@@ -36,12 +36,12 @@ const App = () => {
             <div className="mainContent">
               <Navigation sidebar={sidebar} handleSidebar={handleSidebar} />
               <Switch>
-                <Route exact path="/" component={MainPage}></Route>
-                <Route path="/store/:filterOption" component={ProductList}></Route>
-                <Route path="/details/:productId" component={Details}></Route>
-                <Route path="/cart" component={Cart}></Route>
-                <Route path="/success" component={SuccessPage}></Route>
-                <Route component={Default}></Route>
+                <Route exact path="/" component={MainPage} />
+                <Route path="/store" component={ProductList} />
+                <Route path="/details/:productId" component={Details} />
+                <Route path="/cart" component={Cart} />
+                <Route path="/success" component={SuccessPage} />
+                <Route component={Default} />
               </Switch>
               <Modal />
               <Footer />

@@ -197,8 +197,6 @@ class CustomerProvider extends Component {
     let customerCampaigns = customerVouchers.campaings.find(
       (camp) => camp.campaign === campaing
     );
-
-    console.log(customerCampaigns)
     return customerCampaigns.code;
   };
 
@@ -214,8 +212,8 @@ class CustomerProvider extends Component {
       ).then((x) => x.json());
       //Check if customer data has not updated
       if (
-        customer.summary.redemptions.total_redeemed ===
-        this.state.customer.summary.redemptions.total_redeemed
+        customer.summary.orders.total_amount ===
+        this.state.customer.summary.orders.total_amount
       ) {
         //If true -> wait
         await this.sleep(5000);

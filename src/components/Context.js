@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { detailProduct } from "../data";
 import { toast } from "react-toastify";
 import _ from "lodash";
-import axios from 'axios';
+import axios from "axios";
 
 const ProductContext = React.createContext();
 
@@ -75,6 +75,7 @@ const reducer = (action) => (state, props) => {
         readValueFromLocalStorage("cartTotalAfterPromotion") || 0,
       appliedVoucher: readValueFromLocalStorage("appliedVoucher") || {},
       products: readValueFromLocalStorage("products") | [],
+      lastOrderID: readValueFromLocalStorage("lastOrderID") | null,
     };
   };
 
@@ -103,6 +104,7 @@ class ProductProvider extends Component {
     discountedAmount: 0,
     products: [],
     fetchingProducts: true,
+    lastOrderID: null,
   };
 
   dispatch = (type, data) => {
@@ -256,6 +258,10 @@ class ProductProvider extends Component {
   };
 
   checkoutCart = async (customer = {}) => {
+    const ID = () => {
+      return "hot_beans_" + Math.random().toString(36).substr(2, 20);
+    };
+
     const prepareItemsPayload = (item) => {
       return {
         product_id: item.id,
@@ -267,51 +273,66 @@ class ProductProvider extends Component {
     const redemptionPayload = {
       customer,
       order: {
+        source_id: ID(),
         amount: this.state.cartTotalAfterPromotion * 100,
         items: this.state.cart.map(prepareItemsPayload),
       },
     };
 
+    const orderPayload = {
+      source_id: ID(),
+      items: this.state.cart.map(prepareItemsPayload),
+      amount: this.state.cartTotalAfterPromotion * 100,
+      customer,
+      status: "FULFILLED",
+    };
+
     // If voucher is not applied
     if (_.isEmpty(this.state.appliedVoucher)) {
-      redemptionPayload.status = "FULFILLED"
-      
       axios
-      .post(`${process.env.REACT_APP_API_URL}/order`, redemptionPayload)
-      .then(() => console.log('Order Created'))
-      .catch(err => {
-        console.error(err);
-      });
- 
-
-      // await fetch(`${process.env.REACT_APP_API_URL}/order`, {
-      //   include: "credentials",
-      //   method: "post",
-      //   data: redemptionPayload,
-      // }).then((order) => order.json());
-
+        .post(`${process.env.REACT_APP_API_URL}/order`, orderPayload)
+        .then(() => console.log("Order Created"))
+        .catch((err) => {
+          console.error(err);
+        });
       this.dispatch(CLEAR_CART);
       toast.success("Payment successful");
-      return;
+      this.setState({
+        lastOrderID: orderPayload.source_id,
+      });
+      localStorage.setItem(
+        "lastOrderID",
+        JSON.stringify(orderPayload.source_id)
+      );
     }
     // If voucher is applied
-    try {
-      window.Voucherify.order();
-      const code = this.state.appliedVoucher.code;
-      await new Promise((resolve, reject) => {
-        window.Voucherify.redeem(code, redemptionPayload, (response) => {
-          if (response.result === "SUCCESS") {
-            resolve(response);
-          } else {
-            reject(new Error(response.message));
-          }
+    else {
+      try {
+        // window.Voucherify.order();
+        const code = this.state.appliedVoucher.code;
+        console.log(redemptionPayload);
+        await new Promise((resolve, reject) => {
+          window.Voucherify.redeem(code, redemptionPayload, (response) => {
+            if (response.result === "SUCCESS") {
+              resolve(response);
+            } else {
+              reject(new Error(response.message));
+            }
+          });
         });
-      });
-      this.dispatch(CLEAR_CART);
-      toast.success("Payment successful");
-    } catch (e) {
-      console.error(e);
-      toast.error("There was a problem with your purchase");
+        this.dispatch(CLEAR_CART);
+        toast.success("Payment successful");
+        this.setState({
+          lastOrderID: redemptionPayload.order.source_id,
+        });
+        localStorage.setItem(
+          "lastOrderID",
+          JSON.stringify(redemptionPayload.order.source_id)
+        );
+      } catch (e) {
+        console.error(e);
+        toast.error("There was a problem with your purchase");
+      }
     }
   };
 
