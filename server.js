@@ -1,5 +1,5 @@
 require("dotenv").config();
-// const path = require("path");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const voucherifyClient = require("voucherify");
@@ -24,7 +24,7 @@ if (process.env.NODE_ENV !== "production") {
     })
   );
 } else {
-  const redisClient = redis.createClient(process.env.REDIS_URL);
+  const redisClient = redis.createClient(process.env.REDIS_URL); //REDIS_URL is provided by Heroku when using Redis Heroku Addon
   app.use(
     session({
       store: new RedisStore({ client: redisClient }),
@@ -188,10 +188,9 @@ app.post("/validate", async (request, response) => {
 });
 
 // app.get("/*", (request, response) => {
-//   response.sendFile(path.join(__dirname, "public", "index.html"));
+//   return response.sendFile(path.join(__dirname, "public", "index.html"));
 // });
-// return response.json({ test: "Test" });
-// });
+
 
 // app.get("/details/*", (request, response) => {
 //   return response.json({ test: "Test" });
@@ -199,6 +198,13 @@ app.post("/validate", async (request, response) => {
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("build"));
+  app.get("/*", (request, response) => {
+    response.sendFile(path.join(__dirname, "build", "index.html"));
+  });
+} else {
+  app.get("/*", (request, response) => {
+    response.sendFile(path.join(__dirname, "public", "index.html"));
+  });
 }
 
 const listener = app.listen(process.env.PORT, () => {
