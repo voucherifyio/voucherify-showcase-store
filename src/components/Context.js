@@ -209,24 +209,11 @@ class ProductProvider extends Component {
     toast.success("Cart cleared");
   };
 
-  validateVoucher = async (couponCode, redemptionPayload) => {
-    const validatedVoucher = await fetch(
-      `${process.env.REACT_APP_API_URL}/validate`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ couponCode, redemptionPayload }),
-      }
-    );
-    return validatedVoucher.json();
-  };
-
   addPromotionToCart = async (couponCode, customer) => {
     try {
       const prepareItemsPayload = (item) => {
         return {
-          // source_id: item.id,
+          source_id: item.id,
           product_id: item.id,
           quantity: parseInt(item.count, 10),
           price: parseInt((item.price * 100).toFixed(2), 10),
@@ -235,27 +222,83 @@ class ProductProvider extends Component {
       };
 
       const redemptionPayload = {
+        code: couponCode,
         customer,
-        order: {
-          amount: this.state.cartTotalAfterPromotion * 100,
-          items: this.state.cart.map(prepareItemsPayload),
-        },
+        amount: this.state.cartTotalAfterPromotion * 100,
+        items: this.state.cart.map(prepareItemsPayload),
       };
 
-      const voucher = await this.validateVoucher(couponCode, redemptionPayload);
-
-      if (voucher.valid) {
-        toast.success("Promotion applied");
-        this.dispatch(SET_COUPON, {
-          appliedVoucher: voucher,
+      const voucher = await new Promise((resolve, reject) => {
+        window.Voucherify.setIdentity(customer.source_id);
+        
+        window.Voucherify.validate(redemptionPayload, (response) => {
+          if (response.valid) {
+            console.log(response);
+            resolve(response);
+          } else {
+            console.log(response);
+            toast.error(response.error.message);
+            reject(new Error(response.reason));
+          }
         });
-      } else {
-        toast.error(voucher.error.message);
-      }
+      });
+      this.dispatch(SET_COUPON, {
+        appliedVoucher: voucher,
+      });
+
+      toast.success("Promotion applied");
     } catch (e) {
       console.error(e);
     }
   };
+
+  // validateVoucher = async (couponCode, redemptionPayload) => {
+  //   const validatedVoucher = await fetch(
+  //     `${process.env.REACT_APP_API_URL}/validate`,
+  //     {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       credentials: "include",
+  //       body: JSON.stringify({ couponCode, redemptionPayload }),
+  //     }
+  //   );
+  //   return validatedVoucher.json();
+  // };
+
+  // addPromotionToCart = async (couponCode, customer) => {
+  //   try {
+  //     const prepareItemsPayload = (item) => {
+  //       return {
+  //         // source_id: item.id,
+  //         product_id: item.id,
+  //         quantity: parseInt(item.count, 10),
+  //         price: parseInt((item.price * 100).toFixed(2), 10),
+  //         amount: parseInt((item.total * 100).toFixed(2), 10),
+  //       };
+  //     };
+
+  //     const redemptionPayload = {
+  //       customer,
+  //       order: {
+  //         amount: this.state.cartTotalAfterPromotion * 100,
+  //         items: this.state.cart.map(prepareItemsPayload),
+  //       },
+  //     };
+
+  //     const voucher = await this.validateVoucher(couponCode, redemptionPayload);
+
+  //     if (voucher.valid) {
+  //       toast.success("Promotion applied");
+  //       this.dispatch(SET_COUPON, {
+  //         appliedVoucher: voucher,
+  //       });
+  //     } else {
+  //       toast.error(voucher.error.message);
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
 
   sendOrder = async (orderPayload) => {
     const order = await fetch(`${process.env.REACT_APP_API_URL}/order`, {

@@ -163,10 +163,10 @@ const SidebarContent = () => {
                       >
                         <ExpansionPanelSummary
                           expandIcon={<ExpandMoreIcon />}
-                          aria-controls={`${campaign.name}-content`}
-                          id={`${campaign.name}-header`}
+                          aria-controls={`${campaign.metadata.demostoreName}-content`}
+                          id={`${campaign.metadata.demostoreName}-header`}
                         >
-                          <Typography>{campaign.name}</Typography>
+                          <Typography>{campaign.metadata.demostoreName}</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                           <CampaignDetails

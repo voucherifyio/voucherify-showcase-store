@@ -169,28 +169,6 @@ app.post("/order", async (request, response) => {
   }
 });
 
-app.post("/validate", async (request, response) => {
-  try {
-    const code = request.body.couponCode;
-    const params = request.body.redemptionPayload;
-    const validateVoucher = await voucherify.validations.validateVoucher(
-      code,
-      params
-    );
-    return response.json(validateVoucher);
-  } catch (e) {
-    console.log(e);
-  }
-});
-
-// app.get("/*", (request, response) => {
-//   return response.sendFile(path.join(__dirname, "public", "index.html"));
-// });
-
-// app.get("/details/*", (request, response) => {
-//   return response.json({ test: "Test" });
-// });
-
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("build"));
   app.get("/*", (request, response) => {

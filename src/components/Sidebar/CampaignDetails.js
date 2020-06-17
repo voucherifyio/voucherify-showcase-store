@@ -1,16 +1,16 @@
 import React from "react";
 import { CustomerConsumer } from "../CustomerContext";
-// import List from "@material-ui/core/List";
-// import ListItem from "@material-ui/core/ListItem";
-// import ListItemText from "@material-ui/core/ListItemText";
-// import ListItemIcon from "@material-ui/core/ListItemIcon";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 // import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import Button from "@material-ui/core/Button";
 // import FileCopyIcon from "@material-ui/icons/FileCopy";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
-
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 const CampaignDetails = ({ campaign, code }) => {
   const VoucherifyButton = withStyles(() => ({
     root: {
@@ -59,9 +59,7 @@ const CampaignDetails = ({ campaign, code }) => {
                       )}
                     </b>
                   </Typography>
-                  <Typography>
-                    Click on the code to copy it to checkout form
-                  </Typography>
+                  <Typography>Click code to copy</Typography>
                   <div className="d-flex justify-content-center">
                     <Tooltip title="Copy">
                       <VoucherifyButton
@@ -75,10 +73,22 @@ const CampaignDetails = ({ campaign, code }) => {
                     </Tooltip>
                   </div>
 
-                  {campaign.metadata.demostoreDescription && (
-                    <Typography>
-                      {campaign.metadata.demostoreDescription}
-                    </Typography>
+                  {campaign.metadata.demostoreSteps && (
+                    <>
+                      <Typography>Rules</Typography>
+                      <List>
+                        {campaign.metadata.demostoreSteps.map((step) => (
+                          <>
+                            <ListItem>
+                              <ListItemIcon>
+                                <ArrowRightIcon />
+                              </ListItemIcon>
+                              <ListItemText primary={step} />
+                            </ListItem>
+                          </>
+                        ))}
+                      </List>
+                    </>
                   )}
                 </div>
                 {/* <List dense={true}>
