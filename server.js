@@ -7,10 +7,10 @@ const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const redis = require("redis");
-const SQLiteStore = require("connect-sqlite3")(session);
 const voucherifyData = require("./setup/voucherifyData");
 const campaigns = voucherifyData.campaigns;
 const versionNumber = voucherifyData.versionNumber;
+const SQLiteStore = require("connect-sqlite3")(session);
 const RedisStore = require("connect-redis")(session);
 
 if (process.env.NODE_ENV !== "production") {
@@ -20,7 +20,11 @@ if (process.env.NODE_ENV !== "production") {
       secret: "keyboard cat",
       resave: true,
       saveUninitialized: false,
-      cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
+      cookie: { secure: false, maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
+    }),
+    cors({
+      credentials: true,
+      origin: "http://localhost:3001", // REACT_APP_API_URL
     })
   );
 } else {
@@ -29,20 +33,13 @@ if (process.env.NODE_ENV !== "production") {
     session({
       store: new RedisStore({ client: redisClient }),
       secret: "keyboard cat",
-      resave: false,
+      resave: true,
+      saveUninitialized: false,
+      cookie: { secure: false, maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
     })
   );
 }
 let storeCustomers = require("./src/storeCustomers.json");
-
-if (process.env.NODE_ENV !== "production") {
-  app.use(
-    cors({
-      credentials: true,
-      origin: "http://localhost:3001", // REACT_APP_API_URL
-    })
-  );
-}
 
 const voucherify = voucherifyClient({
   applicationId: process.env.APPLICATION_ID,
@@ -66,10 +63,11 @@ function publishForCustomer(id) {
 
 app.use(bodyParser.json());
 
+
 app.get("/init", async (request, response) => {
   if (request.session.views) {
     console.log(`[Re-visit] ${request.session.id} - ${request.session.views}`);
-    request.session.views++;
+    ++request.session.views;
   } else {
     request.session.views = 1;
     console.log(`[New-visit] ${request.session.id}`);
@@ -190,7 +188,6 @@ app.post("/validate", async (request, response) => {
 // app.get("/*", (request, response) => {
 //   return response.sendFile(path.join(__dirname, "public", "index.html"));
 // });
-
 
 // app.get("/details/*", (request, response) => {
 //   return response.json({ test: "Test" });
