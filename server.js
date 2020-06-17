@@ -6,11 +6,33 @@ const voucherifyClient = require("voucherify");
 const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
+const redis = require("redis");
 const SQLiteStore = require("connect-sqlite3")(session);
 const voucherifyData = require("./setup/voucherifyData");
 const campaigns = voucherifyData.campaigns;
 const versionNumber = voucherifyData.versionNumber;
+const RedisStore = require("connect-redis")(session);
 
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    session({
+      store: new SQLiteStore({ dir: ".data" }),
+      secret: "keyboard cat",
+      resave: true,
+      saveUninitialized: false,
+      cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
+    })
+  );
+} else {
+  const redisClient = redis.createClient();
+  app.use(
+    session({
+      store: new RedisStore({ client: redisClient }),
+      secret: "keyboard cat",
+      resave: false,
+    })
+  );
+}
 let storeCustomers = require("./src/storeCustomers.json");
 
 if (process.env.NODE_ENV !== "production") {
@@ -43,15 +65,6 @@ function publishForCustomer(id) {
 }
 
 app.use(bodyParser.json());
-app.use(
-  session({
-    store: new SQLiteStore({ dir: ".data" }),
-    secret: "keyboard cat",
-    resave: true,
-    saveUninitialized: false,
-    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
-  })
-);
 
 app.get("/init", async (request, response) => {
   if (request.session.views) {
@@ -162,13 +175,13 @@ app.post("/order", async (request, response) => {
 
 app.post("/validate", async (request, response) => {
   try {
-    const code = request.body.couponCode
-    const params = request.body.redemptionPayload
+    const code = request.body.couponCode;
+    const params = request.body.redemptionPayload;
     const validateVoucher = await voucherify.validations.validateVoucher(
       code,
       params
     );
-    return response.json(validateVoucher)
+    return response.json(validateVoucher);
   } catch (e) {
     console.log(e);
   }

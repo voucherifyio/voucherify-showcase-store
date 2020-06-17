@@ -12,6 +12,7 @@
     "@types/react": "^16.9.36",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.0",
+    "connect-redis": "^4.0.4",
     "connect-sqlite3": "^0.9.11",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -25,6 +26,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "react-toastify": "^6.0.5",
+    "redis": "^3.0.2",
     "typescript": "^3.9.5",
     "voucherify": "^5.1.0",
     "voucherify.js": "^1.31.0"
