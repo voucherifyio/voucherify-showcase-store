@@ -187,6 +187,14 @@ a:hover {
   z-index: 2;
 }
 
+.nav-item-link {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.nav-item-link:hover {
+  color: rgba(0, 0, 0, 0.54);
+  text-decoration: none !important;
+}
 #sidebar-wrapper .sidebar-title {
   margin-top: 1rem;
   padding: 0.4rem 1rem;

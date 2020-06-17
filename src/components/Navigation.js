@@ -10,7 +10,6 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import Badge from "@material-ui/core/Badge";
 import { withStyles } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-
 const StyledBadge = withStyles(() => ({
   badge: {
     backgroundColor: "yellow",
@@ -22,13 +21,18 @@ const Navigation = ({ handleSidebar, sidebar }) => {
   return (
     <>
       <Navbar className="m-auto navbar-sticky" collapseOnSelect expand="lg">
-        <Link to="/store">
+        <Link to="/">
           <Navbar.Brand className="m-auto">
-            <img src="/logo.svg" width="150" alt="React Bootstrap logo" />
+            <img src="/logo.svg" width="150" alt="Hot Beans" />
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto" variant="pills">
+            <Link className="nav-item-link" to="/store">
+              <Nav.Item>Store</Nav.Item>
+            </Link>
+          </Nav>
           <Nav className="ml-auto">
             <CustomerConsumer>
               {(ctx) => {

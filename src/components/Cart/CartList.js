@@ -6,9 +6,10 @@ import { ProductConsumer } from "../Context";
 import CartForm from "./CartForm";
 
 window.Voucherify.initialize(
-  "f503ecb0-c840-4748-ad75-a17694014b7f",
-  "791c2768-347c-44ee-8e67-00eecd7b89a6"
+  "9bdc4a2e-e669-4821-8901-e0106183d169",
+  "99143828-cdbc-489d-beb1-f68838d67859"
 );
+
 const CartList = () => {
   return (
     <ProductConsumer>

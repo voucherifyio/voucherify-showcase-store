@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
-import axios from "axios";
 
 const ProductContext = React.createContext();
 
@@ -145,16 +144,28 @@ class ProductProvider extends Component {
   addToCart = (id, qt) => {
     const product = this.getItem(id);
     const quantity = parseInt(qt, 10);
-    this.dispatch(SET_CART, {
-      cart: [
-        ...this.state.cart,
-        {
-          ...product,
-          count: quantity,
-          total: product.price,
-        },
-      ],
-    });
+    const cart = [...this.state.cart];
+    const item = _.cloneDeep(cart.find((item) => item.id === id));
+    if (item) {
+      const tempCart = [...this.state.cart];
+      const selectedProduct = tempCart.find((item) => item.id === id);
+      selectedProduct.count = selectedProduct.count + quantity;
+      this.dispatch(SET_CART, {
+        cart: tempCart,
+      });
+    } else {
+      this.dispatch(SET_CART, {
+        cart: [
+          ...this.state.cart,
+          {
+            ...product,
+            count: quantity,
+            total: product.price,
+          },
+        ],
+      });
+    }
+
     toast.success("Item added to cart");
   };
 
@@ -198,11 +209,24 @@ class ProductProvider extends Component {
     toast.success("Cart cleared");
   };
 
+  validateVoucher = async (couponCode, redemptionPayload) => {
+    const validatedVoucher = await fetch(
+      `${process.env.REACT_APP_API_URL}/validate`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ couponCode, redemptionPayload }),
+      }
+    );
+    return validatedVoucher.json();
+  };
+
   addPromotionToCart = async (couponCode, customer) => {
     try {
       const prepareItemsPayload = (item) => {
         return {
-          source_id: item.id,
+          // source_id: item.id,
           product_id: item.id,
           quantity: parseInt(item.count, 10),
           price: parseInt((item.price * 100).toFixed(2), 10),
@@ -211,32 +235,36 @@ class ProductProvider extends Component {
       };
 
       const redemptionPayload = {
-        code: couponCode,
         customer,
-        amount: this.state.cartTotalAfterPromotion * 100,
-        items: this.state.cart.map(prepareItemsPayload),
+        order: {
+          amount: this.state.cartTotalAfterPromotion * 100,
+          items: this.state.cart.map(prepareItemsPayload),
+        },
       };
 
-      const voucher = await new Promise((resolve, reject) => {
-        window.Voucherify.validate(redemptionPayload, (response) => {
-          if (response.valid) {
-            console.log(response);
-            resolve(response);
-          } else {
-            console.log(response);
-            toast.error(response.error.message);
-            reject(new Error(response.reason));
-          }
-        });
-      });
-      this.dispatch(SET_COUPON, {
-        appliedVoucher: voucher,
-      });
+      const voucher = await this.validateVoucher(couponCode, redemptionPayload);
 
-      toast.success("Promotion applied");
+      if (voucher.valid) {
+        toast.success("Promotion applied");
+        this.dispatch(SET_COUPON, {
+          appliedVoucher: voucher,
+        });
+      } else {
+        toast.error(voucher.error.message);
+      }
     } catch (e) {
       console.error(e);
     }
+  };
+
+  sendOrder = async (orderPayload) => {
+    const order = await fetch(`${process.env.REACT_APP_API_URL}/order`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(orderPayload),
+    });
+    return order.json();
   };
 
   checkoutCart = async (customer = {}) => {
@@ -271,8 +299,7 @@ class ProductProvider extends Component {
 
     // If voucher is not applied
     if (_.isEmpty(this.state.appliedVoucher)) {
-      axios
-        .post(`${process.env.REACT_APP_API_URL}/order`, orderPayload)
+      await this.sendOrder(orderPayload)
         .then(() => console.log("Order Created"))
         .catch((err) => {
           console.error(err);
@@ -290,7 +317,6 @@ class ProductProvider extends Component {
     // If voucher is applied
     else {
       try {
-        // window.Voucherify.order();
         const code = this.state.appliedVoucher.code;
         await new Promise((resolve, reject) => {
           window.Voucherify.redeem(code, redemptionPayload, (response) => {

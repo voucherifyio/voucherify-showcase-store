@@ -160,6 +160,20 @@ app.post("/order", async (request, response) => {
   }
 });
 
+app.post("/validate", async (request, response) => {
+  try {
+    const code = request.body.couponCode
+    const params = request.body.redemptionPayload
+    const validateVoucher = await voucherify.validations.validateVoucher(
+      code,
+      params
+    );
+    return response.json(validateVoucher)
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 // app.get("/*", (request, response) => {
 //   response.sendFile(path.join(__dirname, "public", "index.html"));
 // });

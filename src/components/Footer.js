@@ -8,7 +8,8 @@ const Footer = () => {
     <footer className="container py-5">
       <div className="row">
         <div className="col-12 col-md">
-          <h5>Hot Beans</h5>
+        <img className="mb-2" src="/logo.svg" width="150" alt="Hot Beans" />
+
           <small className="d-block mb-3 text-muted">
             © 2017-{CurrentYear}
           </small>

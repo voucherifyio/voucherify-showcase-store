@@ -25,19 +25,15 @@ const Product = (props) => {
               </div>
               <ProductConsumer>
                 {(ctx) => {
-                  const inCart = ctx.cart.find(
-                    (item) => item.id === props.product.id
-                  );
                   return (
                     <Button
                       variant="dark"
                       size="sm"
-                      disabled={inCart}
                       onClick={() => {
                         ctx.addToCart(props.product.id, 1);
                       }}
                     >
-                      {inCart ? <span>In cart</span> : <span>Add to cart</span>}
+                      <span>Add to cart</span>
                     </Button>
                   );
                 }}

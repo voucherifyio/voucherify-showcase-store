@@ -17,7 +17,6 @@ const Details = () => {
   return (
     <ProductConsumer>
       {(ctx) => {
-        const inCart = ctx.cart.find((item) => item.id === product.id);
         return (
           <main className="mt-5 pt-4">
             <div className="container dark-grey-text mt-5">
@@ -43,9 +42,8 @@ const Details = () => {
                         <Form.Control
                           as="select"
                           id="productQuantity"
-                          onChange={(e) => handleOnChange(e.target.value)}
+                          onChange={(e) => handleOnChange(e)}
                           value={quantity}
-                          disabled={inCart}
                           className="col-4"
                         >
                           {quantities.map((qty) => (
@@ -59,16 +57,11 @@ const Details = () => {
                     <div className="mb-3">
                       <Button
                         variant="dark"
-                        disabled={inCart}
                         onClick={() => {
                           ctx.addToCart(product.id, quantity);
                         }}
                       >
-                        {inCart ? (
-                          <span>In cart</span>
-                        ) : (
-                          <span>Add to cart</span>
-                        )}
+                        <span>Add to cart</span>
                       </Button>
                     </div>
                     <p className="lead font-weight-bold">Description</p>

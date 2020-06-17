@@ -1,5 +1,5 @@
 {
-  "name": "voucherify-react-demo-store-hot-beans",
+  "name": "hot-beans",
   "version": "0.1.0",
   "engines": {
     "node": "12.0.0"
@@ -10,7 +10,6 @@
     "@material-ui/icons": "^4.9.1",
     "@popperjs/core": "^2.4.2",
     "@types/react": "^16.9.36",
-    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.0",
     "connect-sqlite3": "^0.9.11",
