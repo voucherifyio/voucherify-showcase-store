@@ -24,7 +24,7 @@ if (process.env.NODE_ENV !== "production") {
     })
   );
 } else {
-  const redisClient = redis.createClient();
+  const redisClient = redis.createClient(process.env.REDIS_URL);
   app.use(
     session({
       store: new RedisStore({ client: redisClient }),
