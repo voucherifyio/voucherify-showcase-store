@@ -1,6 +1,6 @@
 ## Voucherify React Demo Store - "Hot Beans"
 
-[![Heroku](https://heroku-badge.herokuapp.com/?app=voucherify-demo-store)]
+![Heroku](https://heroku-badge.herokuapp.com/?app=voucherify-hot-beans)
 
 for production mode you should run in the project directory
 
