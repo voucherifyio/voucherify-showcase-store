@@ -28,12 +28,15 @@ const Navigation = ({ handleSidebar, sidebar }) => {
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto" variant="pills">
+          {/* <Nav className="mr-auto" variant="pills">
             <Link className="nav-item-link" to="/store">
               <Nav.Item>Store</Nav.Item>
             </Link>
-          </Nav>
+          </Nav> */}
           <Nav className="ml-auto">
+          <Link className="d-flex align-content-center nav-item-link" to="/store">
+              <Nav.Item className="navbar-account px-2">Store</Nav.Item>
+            </Link>
             <CustomerConsumer>
               {(ctx) => {
                 if (ctx.customer !== null) {
