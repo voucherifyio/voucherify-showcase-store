@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== "production") {
       secret: "keyboard cat",
       resave: true,
       saveUninitialized: false,
-      cookie: { secure: false, maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
+      cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
     }),
     cors({
       credentials: true,
@@ -33,9 +33,8 @@ if (process.env.NODE_ENV !== "production") {
     session({
       store: new RedisStore({ client: redisClient }),
       secret: "keyboard cat",
-      resave: true,
-      saveUninitialized: false,
-      cookie: { secure: false, maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
+      resave: false,
+    
     })
   );
 }
@@ -62,7 +61,6 @@ function publishForCustomer(id) {
 }
 
 app.use(bodyParser.json());
-
 
 app.get("/init", async (request, response) => {
   if (request.session.views) {
