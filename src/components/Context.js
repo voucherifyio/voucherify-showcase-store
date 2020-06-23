@@ -20,7 +20,28 @@ const reducer = (action) => (state, props) => {
     let cartTotalAfterPromotion = cartTotal;
 
     if (!_.isEmpty(voucher)) {
-      if (voucher.discount.type === "PERCENT") {
+      if (_.has(voucher, "applicable_to")) {
+        let applicableProducts = [];
+        let applicableProductInCart = "";
+        voucher.applicable_to.data.map((e) => applicableProducts.push(e.id));
+        for (let i = 0; i < applicableProducts.length; i++) {
+          applicableProductInCart = cartItems.find(
+            (item) => item.id === applicableProducts[i]
+          );
+        }
+        if (voucher.discount.type === "PERCENT") {
+          const discountAmount = voucher.discount.percent_off;
+          cartTotalAfterPromotion =
+            cartTotal - applicableProductInCart.total * (discountAmount / 100);
+          discountedAmount =
+            applicableProductInCart.total * (discountAmount / 100);
+        } else if (voucher.discount.type === "AMOUNT") {
+          const discountAmount = voucher.discount.amount_off / 100;
+          cartTotalAfterPromotion =
+            applicableProductInCart.total - discountAmount;
+          discountedAmount = discountAmount;
+        }
+      } else if (voucher.discount.type === "PERCENT") {
         const discountAmount = voucher.discount.percent_off;
         cartTotalAfterPromotion =
           cartTotal - cartTotal * (discountAmount / 100);
@@ -165,14 +186,12 @@ class ProductProvider extends Component {
         ],
       });
     }
-
-    toast.success("Item added to cart");
   };
 
-  increment = (id) => {
+  increment = (id, qt) => {
     const tempCart = [...this.state.cart];
     const selectedProduct = tempCart.find((item) => item.id === id);
-    selectedProduct.count = selectedProduct.count + 1;
+    selectedProduct.count = qt;
     this.dispatch(SET_CART, {
       cart: tempCart,
     });
@@ -230,7 +249,7 @@ class ProductProvider extends Component {
 
       const voucher = await new Promise((resolve, reject) => {
         window.Voucherify.setIdentity(customer.source_id);
-        
+
         window.Voucherify.validate(redemptionPayload, (response) => {
           if (response.valid) {
             console.log(response);

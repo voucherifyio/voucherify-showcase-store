@@ -11,7 +11,7 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-const CampaignDetails = ({ campaign, code }) => {
+const VoucherDetails = ({ voucher, code }) => {
   const [open, setOpen] = useState(false);
 
   const handleTooltipClose = () => {
@@ -35,25 +35,24 @@ const CampaignDetails = ({ campaign, code }) => {
       },
     },
   }))(Button);
+
   return (
     <div
       style={{
         width: "100%",
         "transition:": "all .5s ease-in-out",
       }}
-      key={campaign.name}
+      key={voucher.code}
     >
-      <div key={campaign.name}>
+      <div key={voucher.code}>
         <Typography>
           <b>
             Your discount voucher{" "}
-            {campaign.voucher.discount.type === "PERCENT" && (
-              <>{campaign.voucher.discount.percent_off}% off</>
+            {voucher.discount.type === "PERCENT" && (
+              <>{voucher.discount.percent_off}% off</>
             )}
-            {campaign.voucher.discount.type === "AMOUNT" && (
-              <>
-                ${(campaign.voucher.discount.amount_off / 100).toFixed(2)} off
-              </>
+            {voucher.discount.type === "AMOUNT" && (
+              <>${(voucher.discount.amount_off / 100).toFixed(2)} off</>
             )}
           </b>
         </Typography>
@@ -84,11 +83,15 @@ const CampaignDetails = ({ campaign, code }) => {
             </CopyToClipboard>
           </ClickAwayListener>
         </div>
-        {campaign.metadata.demostoreSteps && (
+        <Typography>
+          Current redemptions: {voucher.redemption.redeemed_quantity}
+        </Typography>
+
+        {voucher.metadata.demostoreSteps && (
           <>
             <Typography>Rules</Typography>
             <List>
-              {campaign.metadata.demostoreSteps.split(";").map((step) => (
+              {voucher.metadata.demostoreSteps.split(";").map((step) => (
                 <ListItem key={step}>
                   <ListItemIcon>
                     <ArrowRightIcon />
@@ -104,4 +107,4 @@ const CampaignDetails = ({ campaign, code }) => {
   );
 };
 
-export default CampaignDetails;
+export default VoucherDetails;

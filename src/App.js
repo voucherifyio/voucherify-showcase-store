@@ -21,6 +21,10 @@ const toastOptions = {
   toastClassName: "text-xl text-white bg-dark text-center p-3 shadow-none",
   progressClassName: "bg-white opacity-25",
   closeButton: false,
+  autoClose: 2000,
+  hideProgressBar: true,
+  closeOnClick: true,
+  pauseOnHover: false,
 };
 
 const App = () => {
@@ -30,26 +34,42 @@ const App = () => {
   };
   return (
     <>
-      <div className={sidebar ? "d-flex" : "d-flex toggled"} id="wrapper">
-        <div id="page-content-wrapper">
-          <React.Fragment>
-            <div className="mainContent">
-              <Navigation sidebar={sidebar} handleSidebar={handleSidebar} />
-              <Switch>
-                <Route exact path="/" component={MainPage} />
-                <Route path="/store" component={ProductList} />
-                <Route path="/details/:productId" component={Details} />
-                <Route path="/cart" component={Cart} />
-                <Route path="/success" component={SuccessPage} />
-                <Route component={Default} />
-              </Switch>
-              <Modal />
-              <Footer />
-              <ToastContainer {...toastOptions} />
-            </div>
-          </React.Fragment>
+      <div className="d-none d-md-block">
+        <div className={sidebar ? "d-flex" : "d-flex toggled"} id="wrapper">
+          <div id="page-content-wrapper">
+            <React.Fragment>
+              <div className="mainContent">
+                <Navigation sidebar={sidebar} handleSidebar={handleSidebar} />
+                <Switch>
+                  <Route exact path="/" component={MainPage} />
+                  <Route path="/store" component={ProductList} />
+                  <Route path="/details/:productId" component={Details} />
+                  <Route path="/cart" component={Cart} />
+                  <Route path="/success" component={SuccessPage} />
+                  <Route component={Default} />
+                </Switch>
+                <Modal />
+                <Footer />
+                <ToastContainer {...toastOptions} />
+              </div>
+            </React.Fragment>
+          </div>
+          <Sidebar sidebar={sidebar} />
         </div>
-        <Sidebar sidebar={sidebar} />
+      </div>
+      <div
+        id="no-mobile"
+        className="d-flex d-md-none align-content-center justify-content-center"
+      >
+        <div className="d-flex flex-column justify-content-center align-items-center mt-auto mb-auto">
+          <img className="mb-3" src="/logo.svg" width="150" alt="Hot Beans" />
+          <h2 className="text-center">
+            <a className="voucherify-link" href="https://voucherify.io">
+              <b>Voucherify</b>
+            </a>{" "}
+            demostore is only avaliable on desktop
+          </h2>
+        </div>
       </div>
     </>
   );

@@ -34,7 +34,6 @@ if (process.env.NODE_ENV !== "production") {
       store: new RedisStore({ client: redisClient }),
       secret: "keyboard cat",
       resave: false,
-    
     })
   );
 }
@@ -87,6 +86,32 @@ app.get("/init", async (request, response) => {
 
       let coupons = await createdCoupons;
 
+      //Assing validation rules for Customer unique code
+
+      const customerCoupons = [];
+
+      for (let j = 0; j < coupons.length; j++) {
+        if (
+          coupons[j].voucher.metadata.demostoreName === "Customer unique code"
+        ) {
+          customerCoupons.push(coupons[j]);
+        }
+      }
+      for (let z = 0; z < storeCustomers.length; z++) {
+        let uniqueCoupon = customerCoupons.find(
+          (coupon) => coupon.tracking_id === storeCustomers[z].source_id
+        );
+        if (typeof uniqueCoupon !== "undefined") {
+          let customerValidationRuleId =
+            storeCustomers[z].metadata.customerValidationRuleId;
+          let assignment = { voucher: uniqueCoupon.voucher.code };
+          await voucherify.validationRules.createAssignment(
+            customerValidationRuleId,
+            assignment
+          );
+        }
+      }
+
       request.session.createdCouponsList.push({
         customer: createdCustomers[i].source_id,
         campaings: coupons.map((coupon) => coupon.voucher),
@@ -121,9 +146,24 @@ app.get("/redemptions/:source_id", async (request, response) => {
     const redemptionLists = await voucherify.redemptions.list({
       customer: source_id,
     });
-    response.json(await redemptionLists.redemptions);
+    response.json(await redemptionLists);
   } catch (e) {
     console.error(`[Fetching redemptions][Error] - ${e}`);
+    response.status(500).end();
+  }
+});
+
+app.get("/vouchers", async (request, response) => {
+  try {
+    const standaloneVouchersList = await voucherify.vouchers.list({
+      category: "STANDALONE",
+    });
+    const vouchers = standaloneVouchersList.vouchers.filter(
+      (voucher) => voucher.metadata.demostoreVersion === versionNumber
+    );
+    return response.json(vouchers);
+  } catch (e) {
+    console.error(`[Fetching vouchers][Error] - ${e}`);
     response.status(500).end();
   }
 });

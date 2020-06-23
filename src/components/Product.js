@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 
 const Product = (props) => {
   return (
-    <div className="col-md-4 col-sm-6">
+    <div className="col-lg-4 col-md-12 col-sm-12">
       <div className="product-grid">
         <React.Fragment>
           <Link to={`/details/${props.product.id}`}>
@@ -33,7 +33,7 @@ const Product = (props) => {
                         ctx.addToCart(props.product.id, 1);
                       }}
                     >
-                      <span>Add to cart</span>
+                      <span>+ Cart</span>
                     </Button>
                   );
                 }}
