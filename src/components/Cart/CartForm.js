@@ -5,7 +5,6 @@ import Button from "react-bootstrap/Button";
 
 const CartForm = () => {
   const [code, setCode] = useState("");
-  console.log(code);
 
   const handleChange = (event) => {
     setCode(event.target.value);
