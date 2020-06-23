@@ -33,6 +33,37 @@ const setupCampaigns = () => {
   );
 };
 
+const setupVouchers = () => {
+  const vouchers = voucherifyData.vouchers;
+  const voucherPromises = vouchers.map((voucher) => {
+    const thisVoucher = voucherify.vouchers.create(voucher);
+
+    thisVoucher.then(
+      () => console.log(`Voucher ${voucher.code} has been succesfully set up`),
+      (problem) =>
+        console.log(
+          `There was a problem setting up ${voucher.code}`,
+          JSON.stringify(problem, null, 2)
+        )
+    );
+
+    return thisVoucher;
+  });
+
+  return Promise.all(voucherPromises).then(
+    (resp) => console.log("ALL VOUCHERS SETUP") || resp
+  );
+};
+
+const listProducts = async () => {
+  try {
+    const productList = await voucherify.products.list();
+    console.log(productList)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 const deleteProducts = async () => {
   try {
     const productsList = await voucherify.products.list();
@@ -68,6 +99,7 @@ const setupProducts = () => {
         image_url: product.metadata.imgUrl,
         metadata: {
           demostore: product.metadata.demostore,
+          demostoreOrder: product.metadata.demostoreOrder,
           company: product.metadata.company,
           categories: product.metadata.categories.join(),
           info: product.metadata.info,
@@ -155,27 +187,51 @@ const setupProducts = () => {
 const setupValidationRules = () => {
   //This code checks added Validation Rules ID's for each campaign in voucherifyData and assigns this rule to the campaign
   const campaigns = voucherifyData.campaigns;
-  const ruleAssigmentPromises = campaigns.map(async (campaign) => {
+  const vouchers = voucherifyData.vouchers;
+  const campaignsRuleAssigmentPromises = campaigns.map(async (campaign) => {
     try {
       campaign = await voucherify.campaigns.get(campaign.name);
-      for (
-        let i = 0;
-        i < campaign.metadata.demostoreAssignedValRules.length;
-        i++
-      ) {
-        const thisPromise = await voucherify.validationRules.createAssignment(
-          campaign.metadata.demostoreAssignedValRules[i],
-          { campaign: campaign.id }
+      if (campaign.metadata.demostoreAssignedValRules) {
+        let demostoreValRules = campaign.metadata.demostoreAssignedValRules.split(
+          ";"
         );
-        return thisPromise;
+        for (let i = 0; i < demostoreValRules.length; i++) {
+          const thisPromise = await voucherify.validationRules.createAssignment(
+            demostoreValRules[i],
+            { campaign: campaign.id }
+          );
+          return thisPromise;
+        }
       }
     } catch (e) {
       console.log(e);
     }
   });
-  return Promise.all(ruleAssigmentPromises).then(
-    (resp) => console.log("ALL VALIDATION RULES SETUP") || resp
-  );
+
+  const vouchersRuleAssigmentPromises = vouchers.map(async (voucher) => {
+    try {
+      voucher = await voucherify.vouchers.get(voucher.code);
+      if (voucher.metadata.demostoreAssignedValRules) {
+        let demostoreValRules = voucher.metadata.demostoreAssignedValRules.split(
+          ";"
+        );
+        for (let i = 0; i < demostoreValRules.length; i++) {
+          const thisPromise = await voucherify.validationRules.createAssignment(
+            demostoreValRules[i],
+            { voucher: voucher.id }
+          );
+          return thisPromise;
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  });
+
+  return Promise.all(
+    campaignsRuleAssigmentPromises,
+    vouchersRuleAssigmentPromises
+  ).then((resp) => console.log("ALL VALIDATION RULES SETUP") || resp);
 };
 //   const ruleCreationPromises = rules.map(async (rule) => {
 //     const thisPromise = voucherify.validationRules.create(rule);
@@ -200,8 +256,5 @@ const setupValidationRules = () => {
 // };
 
 // setupCustomerSegments()
-// deleteProducts();
-// setupProducts();
-setupCampaigns().then(setupValidationRules);
-// setupValidationRules()
-// deleteProducts();
+// deleteProducts().then(setupProducts) // You need to setup Validation rules in dashboard!
+setupCampaigns().then(setupVouchers).then(setupValidationRules);

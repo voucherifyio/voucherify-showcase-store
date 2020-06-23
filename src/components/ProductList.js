@@ -21,11 +21,17 @@ const ProductList = () => {
     "Decaffeinated",
     "Coffee Machines",
     "Accessories",
-    "Grinders",
-    "Electronic Grinders",
-    "Hand Grinders",
-    "Cups",
   ];
+
+  const sortData = (a, b) => {
+    if (parseInt(a.source_id, 10) < parseInt(b.source_id,10)) {
+      return -1;
+    } else if (parseInt(a.source_id, 10) > parseInt(b.source_id,10)) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
 
   return (
     <div>
@@ -35,13 +41,13 @@ const ProductList = () => {
             <div className="col-10 mx-auto my-2 text-center">
               <h1>Our products {filterCategory && `- ${filterCategory}`}</h1>
             </div>
-            <div className="search-products">
+            <div className="col-lg-12 col-md-12 col-sm-12">
               <Form.Control
                 as="select"
                 id="storeProducts"
                 onChange={(e) => handleSelectCategory(e.target.value)}
                 value={filterCategory || "DEFAULT"}
-                className="col-3"
+                className=""
               >
                 <option key="DEFAULT" value="DEFAULT" disabled>
                   Select product category
@@ -81,7 +87,7 @@ const ProductList = () => {
                   ) : (
                     <>
                       <div className="row">
-                        {filteredList.map((product) => (
+                        {filteredList.sort(sortData).map((product) => (
                           <React.Fragment key={product.id}>
                             <Product
                               key={product.id}

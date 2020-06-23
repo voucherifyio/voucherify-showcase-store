@@ -18,6 +18,8 @@ const loadItemsFromLocalStorage = () => {
     customerRedemptions:
       readValueFromLocalStorage("customerRedemptions") || null,
     publishedVouchers: readValueFromLocalStorage("publishedVouchers") || null,
+    uniqueVoucher: readValueFromLocalStorage("vouchers") || null,
+    campaigns: readValueFromLocalStorage("campaigns") || null,
   };
 };
 
@@ -27,12 +29,12 @@ class CustomerProvider extends Component {
     sidebar: true,
     customers: [],
     fetchingCustomer: true,
-    fetchingCampaign: true,
     customerRedemptions: null,
     fetchingCampaigns: true,
     sessionCode: "",
     publishedVouchers: null,
-    campaign: null,
+    campaigns: null,
+    vouchers: null,
     copiedCode: null,
   };
 
@@ -60,6 +62,7 @@ class CustomerProvider extends Component {
       );
       this.getCustomers();
       this.getCampaigns();
+      this.getUniqueVoucher();
     } catch (e) {
       console.log(e);
     }
@@ -91,7 +94,7 @@ class CustomerProvider extends Component {
         storeCustomers.map((customer) => {
           return fetch(
             `${process.env.REACT_APP_API_URL}/customer/${this.state.sessionCode}${customer.source_id}`,
-            {
+            { 
               include: "credentials",
             }
           ).then((cust) => cust.json());
@@ -147,7 +150,7 @@ class CustomerProvider extends Component {
       }
     ).then((redemptions) => redemptions.json());
 
-    //Count reedemed codes
+    // Count reedemed codes
     for (let i = 0; i < redemptions.length; i++) {
       customerRedemptions[redemptions[i].voucher.code] =
         (customerRedemptions[redemptions[i].voucher.code] || 0) + 1;
@@ -156,9 +159,29 @@ class CustomerProvider extends Component {
       [key]: customerRedemptions[key],
     }));
 
-    return customerRedemptions;
+    return redemptions;
   };
 
+  getUniqueVoucher = async () => {
+    try {
+      this.setState({ fetchingCampaigns: true });
+      const vouchers = await fetch(
+        `${process.env.REACT_APP_API_URL}/vouchers`,
+        {
+          include: "credentials",
+        }
+      ).then((resp) => resp.json());
+
+      this.setState({
+        vouchers: vouchers,
+        fetchingCampaigns: false,
+      });
+
+      localStorage.setItem("vouchers", JSON.stringify(vouchers));
+    } catch (e) {
+      console.log(e);
+    }
+  };
   setCustomer = async (id) => {
     try {
       //Get customer data, start spinner
@@ -245,6 +268,7 @@ class CustomerProvider extends Component {
           getCode: this.getCode,
           getCampaigns: this.getCampaigns,
           getCopiedCode: this.getCopiedCode,
+          getUniqueVoucher: this.getUniqueVoucher,
         }}
       >
         {this.props.children}

@@ -244,18 +244,40 @@ button:focus {
   padding-left: 15px;
 }
 
-@media (max-width: 1200px) {
-  .navbar-brand {
-    position: static;
-    margin-left: 0px !important;
-  }
+#no-mobile {
+  height: 100vh !important;
+  width: 100vw !important;
 }
-@media (max-width: 768px) {
+
+.voucherify-link, .voucherify-link:hover{
+  text-transform: none;
+  text-decoration: none;
+  color: #25abb7;
+}
+
+@media (max-width: 767px) {
   #sidebar-wrapper {
     display: none;
   }
   #wrapper.toggled #sidebar-wrapper {
     margin-right: -25rem;
+  }
+}
+@media (max-width: 1400px) {
+  .navbar-brand {
+    position: static;
+    margin-left: 0px !important;
+  }
+  .navbar-icon {
+    display: none !important;
+  }
+}
+@media (min-width: 1450px) {
+  .navbar-brand {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 @media (min-width: 768px) {
@@ -272,20 +294,12 @@ button:focus {
     margin-right: -25rem;
   }
 
-  .navbar-brand {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+ 
 }
 
-@media (max-width: 990px) {
+@media (max-width: 991px) {
   .product-grid {
     margin-bottom: 30px;
-  }
-  .navbar-icon {
-    display: none !important;
   }
 
   .navbar-account {

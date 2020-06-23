@@ -40,7 +40,7 @@ const Navigation = ({ handleSidebar, sidebar }) => {
                     <>
                       <Nav.Item className="navbar-account px-2">
                         <AccountCircleIcon className="navbar-icon mx-2" />
-                        Hello, <b>{firstName}</b>
+                        Hi, <b>{firstName}</b>
                       </Nav.Item>
                     </>
                   );

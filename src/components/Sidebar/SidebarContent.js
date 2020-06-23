@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CustomerConsumer } from "../CustomerContext";
 import _ from "lodash";
 import CampaignDetails from "./CampaignDetails";
+import VoucherDetails from "./VoucherDetails";
 import Spinner from "react-bootstrap/Spinner";
 import Form from "react-bootstrap/Form";
 import GetAppIcon from "@material-ui/icons/GetApp";
@@ -60,6 +61,16 @@ const SidebarContent = () => {
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
+  };
+
+  const sortData = (a, b) => {
+    if (a.metadata.demostoreOrder < b.metadata.demostoreOrder) {
+      return -1;
+    } else if (a.metadata.demostoreOrder > b.metadata.demostoreOrder) {
+      return 1;
+    } else {
+      return 0;
+    }
   };
 
   const [select] = useState(localStorage.getItem("customer"));
@@ -148,37 +159,90 @@ const SidebarContent = () => {
                   )}
                 </>
               )}
-              {!_.isEmpty(ctx.campaigns) && !_.isEmpty(ctx.customer) && (
-                <>
-                  <div className="sidebar-heading">
-                    Campaings ({ctx.campaigns.length}){" "}
-                  </div>
-                  <div>
-                    {ctx.campaigns.map((campaign) => (
-                      <ExpansionPanel
-                        square
-                        key={campaign.name}
-                        expanded={expanded === `${campaign.name}`}
-                        onChange={handleChange(`${campaign.name}`)}
-                      >
-                        <ExpansionPanelSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls={`${campaign.metadata.demostoreName}-content`}
-                          id={`${campaign.metadata.demostoreName}-header`}
-                        >
-                          <Typography>{campaign.metadata.demostoreName}</Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                          <CampaignDetails
-                            campaign={campaign}
-                            code={ctx.getCode(campaign.name)}
-                          />
-                        </ExpansionPanelDetails>
-                      </ExpansionPanel>
-                    ))}
-                  </div>
-                </>
-              )}
+              {!_.isEmpty(ctx.campaigns) &&
+                !_.isEmpty(ctx.vouchers) &&
+                !_.isEmpty(ctx.customer) && (
+                  <>
+                    <div className="sidebar-heading">
+                      <b>Vouchers</b> ({ctx.vouchers.length})
+                    </div>
+                    {ctx.fetchingCampaigns ? (
+                      <div className="d-flex justify-content-center">
+                        <Spinner animation="border" role="status">
+                          <span className="sr-only">Loading...</span>
+                        </Spinner>
+                      </div>
+                    ) : (
+                      <div>
+                        {ctx.vouchers.sort(sortData).map((voucher) => (
+                          <ExpansionPanel
+                            square
+                            key={voucher.metadata.demostoreName}
+                            expanded={
+                              expanded === `${voucher.metadata.demostoreName}`
+                            }
+                            onChange={handleChange(
+                              `${voucher.metadata.demostoreName}`
+                            )}
+                          >
+                            <ExpansionPanelSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls={`${voucher.metadata.demostoreName}-content`}
+                              id={`${voucher.metadata.demostoreName}-header`}
+                            >
+                              <Typography>
+                                {voucher.metadata.demostoreName}
+                              </Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                              <VoucherDetails
+                                voucher={voucher}
+                                code={voucher.code}
+                              />
+                            </ExpansionPanelDetails>
+                          </ExpansionPanel>
+                        ))}
+                      </div>
+                    )}
+                    <div className="sidebar-heading">
+                      <b>Campaigns</b> ({ctx.campaigns.length}){" "}
+                    </div>
+                    {ctx.fetchingCampaigns ? (
+                      <div className="d-flex justify-content-center">
+                        <Spinner animation="border" role="status">
+                          <span className="sr-only">Loading...</span>
+                        </Spinner>
+                      </div>
+                    ) : (
+                      <div>
+                        {ctx.campaigns.sort(sortData).map((campaign) => (
+                          <ExpansionPanel
+                            square
+                            key={campaign.name}
+                            expanded={expanded === `${campaign.name}`}
+                            onChange={handleChange(`${campaign.name}`)}
+                          >
+                            <ExpansionPanelSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls={`${campaign.metadata.demostoreName}-content`}
+                              id={`${campaign.metadata.demostoreName}-header`}
+                            >
+                              <Typography>
+                                {campaign.metadata.demostoreName}
+                              </Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                              <CampaignDetails
+                                campaign={campaign}
+                                code={ctx.getCode(campaign.name)}
+                              />
+                            </ExpansionPanelDetails>
+                          </ExpansionPanel>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
             </>
           );
         }}
