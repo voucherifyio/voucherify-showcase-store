@@ -5,7 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 const CartItem = ({ item, value }) => {
   const { id, name, count, price, total } = item;
-  const { increment, removeItem } = value;
+  const { increment, removeItem, } = value;
   const quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const handleOnChange = (e) => {
     increment(id, parseInt(e.target.value, 10));

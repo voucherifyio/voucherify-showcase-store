@@ -16,6 +16,7 @@ exports.vouchers = [
       demostoreDescription: "Global coupon",
       demostoreSteps: "Only one redemption per customer",
       demostoreOrder: 1,
+      demostoreCategory: "VOUCHER",
     },
   },
   {
@@ -31,6 +32,7 @@ exports.vouchers = [
       demostoreDescription: "Global coupon",
       demostoreSteps: "",
       demostoreOrder: 3,
+      demostoreCategory: "VOUCHER",
     },
   },
 ];
@@ -50,6 +52,7 @@ exports.campaigns = [
       demostoreDescription: "Only current customer can validate the coupon",
       demostoreSteps: "Customer: Current customer",
       demostoreOrder: 1,
+      demostoreCategory: "CAMPAIGN",
     },
   },
   {
@@ -64,8 +67,10 @@ exports.campaigns = [
       demostoreAssignedValRules: "val_qIRy7h0VKyge",
       demostoreVersion: versionNumber,
       demostoreDescription: "Add to items to cart to use this coupon",
-      demostoreSteps: "Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g",
+      demostoreSteps:
+        "Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g",
       demostoreOrder: 1,
+      demostoreCategory: "CAMPAIGN",
     },
   },
   {
@@ -85,6 +90,7 @@ exports.campaigns = [
       demostoreSteps:
         "Cart value: > $50;Cart contains: Illy Arabica Selection - Guatemala",
       demostoreOrder: 2,
+      demostoreCategory: "CAMPAIGN",
     },
   },
   {
@@ -102,6 +108,7 @@ exports.campaigns = [
         "You must have 2 of Johan & Nyström - Bourbon Jungle in cart",
       demostoreSteps: "Cart contains: 2x Johan & Nyström - Bourbon Jungle",
       demostoreOrder: 3,
+      demostoreCategory: "CAMPAIGN",
     },
   },
   {
@@ -118,6 +125,7 @@ exports.campaigns = [
       demostoreDescription: "Only for Polish customers",
       demostoreSteps: "Customers segment: Customers from Poland",
       demostoreOrder: 5,
+      demostoreCategory: "CAMPAIGN",
     },
   },
   // {
