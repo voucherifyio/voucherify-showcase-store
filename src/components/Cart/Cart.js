@@ -25,8 +25,11 @@ const Cart = () => {
                             <>
                               <CartList
                                 value={value}
+                                customerValue={CustomerValue}
                               />
-                              <CustomerAddress customer={CustomerValue.customer} />
+                              <CustomerAddress
+                                customer={CustomerValue.customer}
+                              />
                             </>
                           ) : (
                             <Alert variant="dark">Select customer first!</Alert>

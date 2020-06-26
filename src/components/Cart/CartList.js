@@ -2,7 +2,6 @@ import React from "react";
 import CartItem from "./CartItem";
 import _ from "lodash";
 import "voucherify.js";
-import { CustomerConsumer } from "../CustomerContext";
 import CartForm from "./CartForm";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
@@ -17,7 +16,7 @@ window.Voucherify.initialize(
   "99143828-cdbc-489d-beb1-f68838d67859"
 );
 
-const CartList = ({ value }) => {
+const CartList = ({ value, customerValue }) => {
   const {
     cart,
     appliedVoucher,
@@ -27,6 +26,7 @@ const CartList = ({ value }) => {
     clearCart,
   } = value;
 
+  console.log(customerValue);
   return (
     <div className="col-md-12 col-lg-9 order-2">
       <h4 className="d-flex justify-content-between align-items-center mb-3">
@@ -34,13 +34,7 @@ const CartList = ({ value }) => {
       </h4>
       <ul className="list-group mb-3">
         {cart.map((item) => {
-          return (
-            <CartItem
-              key={item.id}
-              item={item}
-              value={value}
-            />
-          );
+          return <CartItem key={item.id} item={item} value={value} />;
         })}
         {!_.isEmpty(value.appliedVoucher) ? (
           <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
@@ -66,7 +60,7 @@ const CartList = ({ value }) => {
             </div>
           </li>
         ) : (
-          <CartForm value={value} />
+          <CartForm value={value} customer={customerValue.customer} />
         )}
         <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
           <Tooltip title="Clear cart">
@@ -80,36 +74,28 @@ const CartList = ({ value }) => {
         </li>
       </ul>
       <>
-        <CustomerConsumer>
-          {(CustomerValue) => {
-            return (
-              <>
-                {CustomerValue.customer ? (
-                  <Link
-                    to="/success"
-                    className="link-unstyled"
-                    style={{ textDecoration: "none" }}
-                  >
-                    <Button
-                      variant="dark"
-                      onClick={() => {
-                        value.checkoutCart(CustomerValue.customer);
-                        CustomerValue.updateCustomerData(
-                          CustomerValue.customer.source_id
-                        );
-                      }}
-                      className="w-100 p-2"
-                    >
-                      Proceed to checkout
-                    </Button>
-                  </Link>
-                ) : (
-                  <Alert variant="dark">Select customer first!</Alert>
-                )}
-              </>
-            );
-          }}
-        </CustomerConsumer>
+        {customerValue.customer ? (
+          <Link
+            to="/success"
+            className="link-unstyled"
+            style={{ textDecoration: "none" }}
+          >
+            <Button
+              variant="dark"
+              onClick={() => {
+                value.checkoutCart(customerValue.customer);
+                customerValue.updateCustomerData(
+                  customerValue.customer.source_id
+                );
+              }}
+              className="w-100 p-2"
+            >
+              Proceed to checkout
+            </Button>
+          </Link>
+        ) : (
+          <Alert variant="dark">Select customer first!</Alert>
+        )}
       </>
     </div>
   );

@@ -190,7 +190,7 @@ class ProductProvider extends Component {
     if (this.state.appliedVoucher) {
       // eslint-disable-next-line
       const revalidate = true;
-      console.log("Voucher applied");
+      console.log("Voucher applied. Item added - Remove voucher");
       this.removePromotionFromCart();
     }
   };
@@ -206,7 +206,7 @@ class ProductProvider extends Component {
     if (this.state.appliedVoucher) {
       // eslint-disable-next-line
       const revalidate = true;
-      console.log("Voucher applied");
+      console.log("Voucher applied. Item quantity changed - Remove voucher");
       this.removePromotionFromCart();
     }
   };
@@ -225,7 +225,9 @@ class ProductProvider extends Component {
     if (this.state.appliedVoucher) {
       // eslint-disable-next-line
       const revalidate = true;
-      console.log("Voucher applied");
+      console.log("Voucher applied. Item removed - Remove voucher");
+      this.removePromotionFromCart();
+
     }
   };
 

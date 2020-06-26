@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { CustomerConsumer } from "../CustomerContext";
 import Button from "react-bootstrap/Button";
 
-const CartForm = ({ value }) => {
+const CartForm = ({ value, customer }) => {
   const [code, setCode] = useState("");
   const { addPromotionToCart } = value;
 
@@ -21,39 +20,33 @@ const CartForm = ({ value }) => {
   };
 
   return (
-    <CustomerConsumer>
-      {(ctx) => {
-        return (
-          <li className="list-group-item d-flex lh-condensed">
-            <div className="d-flex my-auto col-4">Discount code</div>
-            <div className="d-flex flex-column justify-content-center col-8">
-              <form onSubmit={handleSubmit}>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Voucher"
-                    value={code}
-                    onChange={handleChange}
-                  />
-                  <div className="input-group-append">
-                    <Button
-                      type="submit"
-                      variant="dark"
-                      onClick={() => {
-                        handleValidate(code, ctx.customer);
-                      }}
-                    >
-                      Validate
-                    </Button>
-                  </div>
-                </div>
-              </form>
+    <li className="list-group-item d-flex lh-condensed">
+      <div className="d-flex my-auto col-4">Discount code</div>
+      <div className="d-flex flex-column justify-content-center col-8">
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Voucher"
+              value={code}
+              onChange={handleChange}
+            />
+            <div className="input-group-append">
+              <Button
+                type="submit"
+                variant="dark"
+                onClick={() => {
+                  handleValidate(code, customer);
+                }}
+              >
+                Validate
+              </Button>
             </div>
-          </li>
-        );
-      }}
-    </CustomerConsumer>
+          </div>
+        </form>
+      </div>
+    </li>
   );
 };
 export default CartForm;
