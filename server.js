@@ -68,12 +68,34 @@ app.get("/init", async (request, response) => {
   } else {
     request.session.views = 1;
     console.log(`[New-visit] ${request.session.id}`);
+
     //Create new customers if this is a new session
     const createdCustomers = await Promise.all(
-      storeCustomers.map((customer) => {
+      storeCustomers.map(async (customer) => {
         let customerID = `${request.session.id}${customer.metadata.demostore_id}`;
         customer.source_id = customerID;
         let createdCustomer = voucherify.customers.create(customer);
+
+        //We're setting up dummy order for one of the customers
+        if (customer.source_id === `${request.session.id}danielwieszcz`) {
+          const dummyOrderPayload = {
+            source_id: "hot_beans_dummyorder",
+            items: [
+              {
+                quantity: 1,
+                price: 30000,
+                amount: 30000,
+              },
+            ],
+            amount: 30000,
+            customer: {
+              source_id: customer.source_id,
+            },
+            status: "FULFILLED",
+          };
+
+          await voucherify.orders.create(dummyOrderPayload);
+        }
         return createdCustomer;
       })
     );
@@ -86,10 +108,8 @@ app.get("/init", async (request, response) => {
 
       let coupons = await createdCoupons;
 
-      //Assing validation rules for Customer unique code
-
+      //Assing validation rules for voucher "Customer unique code"
       const customerCoupons = [];
-
       for (let j = 0; j < coupons.length; j++) {
         if (
           coupons[j].voucher.metadata.demostoreName === "Customer unique code"

@@ -3,6 +3,7 @@ import { ProductConsumer } from "../Context";
 import { CustomerConsumer } from "../CustomerContext";
 import CartList from "./CartList";
 import CustomerAddress from "./CustomerAddress";
+import Alert from "react-bootstrap/Alert";
 const Cart = () => {
   return (
     <div className="container">
@@ -16,13 +17,22 @@ const Cart = () => {
                   <h2>Checkout form</h2>
                 </div>
                 <div className="d-flex flex-lg-row flex-md-column justify-content-center">
-                  <CartList value={value} />
                   <CustomerConsumer>
                     {(CustomerValue) => {
                       return (
                         <>
-                          {CustomerValue.customer && (
-                            <CustomerAddress customer={CustomerValue} />
+                          {CustomerValue.customer ? (
+                            <>
+                              <CartList
+                                value={value}
+                                customerValue={CustomerValue}
+                              />
+                              <CustomerAddress
+                                customer={CustomerValue.customer}
+                              />
+                            </>
+                          ) : (
+                            <Alert variant="dark">Select customer first!</Alert>
                           )}
                         </>
                       );

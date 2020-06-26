@@ -8,8 +8,7 @@ const MainPage = () => {
       <div className="col-md-5 p-lg-5 mx-auto my-5">
         <h1 className="display-4 font-weight-normal">Hot Beans</h1>
         <p className="lead font-weight-normal">
-          Jumpstart your marketing efforts with this example based on Apple's
-          marketing pages.
+          Get your coffee. Now.
         </p>
         <Link to="/store">
           <Button variant="dark">Store</Button>

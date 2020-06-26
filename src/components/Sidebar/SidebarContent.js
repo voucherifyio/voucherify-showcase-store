@@ -149,9 +149,9 @@ const SidebarContent = () => {
                           <span className="sidebar-content-data">
                             {("0" + customerDate.getDate()).slice(-2)}.
                             {("0" + (customerDate.getMonth() + 1)).slice(-2)}.
-                            {customerDate.getFullYear()} at{" "}
-                            {customerDate.getHours()}:
-                            {customerDate.getMinutes()}
+                            {customerDate.getFullYear()} @{" "}
+                            {("0" + customerDate.getHours()).slice(-2)}:
+                            {("0" + customerDate.getMinutes()).slice(-2)}
                           </span>
                         </p>
                       </div>

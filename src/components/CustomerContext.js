@@ -36,6 +36,7 @@ class CustomerProvider extends Component {
     campaigns: null,
     vouchers: null,
     copiedCode: null,
+    voucherOrCampaing: null,
   };
 
   componentDidMount() {
@@ -62,7 +63,7 @@ class CustomerProvider extends Component {
       );
       this.getCustomers();
       this.getCampaigns();
-      this.getUniqueVoucher();
+      this.getVouchers();
     } catch (e) {
       console.log(e);
     }
@@ -94,7 +95,7 @@ class CustomerProvider extends Component {
         storeCustomers.map((customer) => {
           return fetch(
             `${process.env.REACT_APP_API_URL}/customer/${this.state.sessionCode}${customer.source_id}`,
-            { 
+            {
               include: "credentials",
             }
           ).then((cust) => cust.json());
@@ -162,7 +163,7 @@ class CustomerProvider extends Component {
     return redemptions;
   };
 
-  getUniqueVoucher = async () => {
+  getVouchers = async () => {
     try {
       this.setState({ fetchingCampaigns: true });
       const vouchers = await fetch(
@@ -182,6 +183,11 @@ class CustomerProvider extends Component {
       console.log(e);
     }
   };
+
+  setVoucherOrCampaing = (name) => {
+    this.setState({ voucherOrCampaing: name });
+  };
+
   setCustomer = async (id) => {
     try {
       //Get customer data, start spinner
@@ -204,6 +210,7 @@ class CustomerProvider extends Component {
         "customerRedemptions",
         JSON.stringify(customerRedemptionsList)
       );
+      console.log(customer)
     } catch (e) {
       console.log(e);
     }
@@ -226,7 +233,7 @@ class CustomerProvider extends Component {
   updateCustomerData = async (id) => {
     try {
       //Get customer data, start spinner
-      this.setState({ fetchingCustomer: true });
+      this.setState({ fetchingCustomer: true, fetchingCampaigns: true });
       let customer = await fetch(
         `${process.env.REACT_APP_API_URL}/customer/${id}`,
         {
@@ -243,6 +250,8 @@ class CustomerProvider extends Component {
         this.updateCustomerData(id);
       } else {
         this.setCustomer(id);
+        this.getCampaigns();
+        this.getVouchers();
       }
     } catch (e) {
       console.log(e);
@@ -268,7 +277,8 @@ class CustomerProvider extends Component {
           getCode: this.getCode,
           getCampaigns: this.getCampaigns,
           getCopiedCode: this.getCopiedCode,
-          getUniqueVoucher: this.getUniqueVoucher,
+          getVouchers: this.getVouchers,
+          setVoucherOrCampaing: this.setVoucherOrCampaing,
         }}
       >
         {this.props.children}

@@ -7,19 +7,19 @@ const CustomerAddress = ({ customer }) => {
       <ul className="list-group mb-3">
         <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
           <div className="d-block justify-content-center col-12 text-truncate">
-            {customer.customer.name.split(" ")[0]}{" "}
-            {customer.customer.name.split(" ")[1]}{" "}
-            <p className="mb-0 text-truncate">{customer.customer.email}</p>
+            {customer.name.split(" ")[0]}{" "}
+            {customer.name.split(" ")[1]}{" "}
+            <p className="mb-0 text-truncate">{customer.email}</p>
             <p className="mb-0 text-truncate">
-              {customer.customer.address.line_1}
+              {customer.address.line_1}
             </p>
             <p className="mb-0 text-truncate">
-              {customer.customer.address.postal_code}{" "}
-              {customer.customer.address.city}
+              {customer.address.postal_code}{" "}
+              {customer.address.city}
             </p>
             <p className="mb-0 text-truncate">
-              {customer.customer.address.state},{" "}
-              {customer.customer.address.country}
+              {customer.address.state},{" "}
+              {customer.address.country}
             </p>
           </div>
         </li>

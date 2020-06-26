@@ -15,7 +15,7 @@ const reducer = (action) => (state, props) => {
       cartItem.total = cartItem.count * (cartItem.price / 100);
     });
 
-    const cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+    let cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
     let discountedAmount = 0;
     let cartTotalAfterPromotion = cartTotal;
 
@@ -92,7 +92,7 @@ const reducer = (action) => (state, props) => {
       cartTotal: readValueFromLocalStorage("cartTotal") || 0,
       cartTotalAfterPromotion:
         readValueFromLocalStorage("cartTotalAfterPromotion") || 0,
-      appliedVoucher: readValueFromLocalStorage("appliedVoucher") || {},
+      appliedVoucher: readValueFromLocalStorage("appliedVoucher") || null,
       products: readValueFromLocalStorage("products") | [],
       lastOrderID: readValueFromLocalStorage("lastOrderID") | null,
     };
@@ -117,7 +117,7 @@ class ProductProvider extends Component {
     cart: [],
     cartTotal: 0,
     cartTotalAfterPromotion: 0,
-    appliedVoucher: {},
+    appliedVoucher: null,
     discountedAmount: 0,
     products: [],
     fetchingProducts: true,
@@ -186,6 +186,13 @@ class ProductProvider extends Component {
         ],
       });
     }
+    //Coupon revalidation logic
+    if (this.state.appliedVoucher) {
+      // eslint-disable-next-line
+      const revalidate = true;
+      console.log("Voucher applied. Item added - Remove voucher");
+      this.removePromotionFromCart();
+    }
   };
 
   increment = (id, qt) => {
@@ -195,19 +202,12 @@ class ProductProvider extends Component {
     this.dispatch(SET_CART, {
       cart: tempCart,
     });
-  };
-
-  decrement = (id) => {
-    let tempCart = [...this.state.cart];
-    const selectedProduct = tempCart.find((item) => item.id === id);
-    selectedProduct.count = selectedProduct.count - 1;
-
-    if (selectedProduct.count === 0) {
-      this.removeItem(id);
-    } else {
-      this.dispatch(SET_CART, {
-        cart: tempCart,
-      });
+    //Coupon revalidation logic
+    if (this.state.appliedVoucher) {
+      // eslint-disable-next-line
+      const revalidate = true;
+      console.log("Voucher applied. Item quantity changed - Remove voucher");
+      this.removePromotionFromCart();
     }
   };
 
@@ -221,6 +221,14 @@ class ProductProvider extends Component {
         cart: tempCart,
       });
     }
+    //Coupon revalidation logic
+    if (this.state.appliedVoucher) {
+      // eslint-disable-next-line
+      const revalidate = true;
+      console.log("Voucher applied. Item removed - Remove voucher");
+      this.removePromotionFromCart();
+
+    }
   };
 
   clearCart = () => {
@@ -228,8 +236,11 @@ class ProductProvider extends Component {
     toast.success("Cart cleared");
   };
 
-  addPromotionToCart = async (couponCode, customer) => {
+  addPromotionToCart = async (couponCode, customer, revalidate = false) => {
     try {
+      if (revalidate) {
+        console.log(this.state.cartTotal);
+      }
       const prepareItemsPayload = (item) => {
         return {
           source_id: item.id,
@@ -243,7 +254,7 @@ class ProductProvider extends Component {
       const redemptionPayload = {
         code: couponCode,
         customer,
-        amount: this.state.cartTotalAfterPromotion * 100,
+        amount: this.state.cartTotalAfterPromotion.toFixed(2) * 100,
         items: this.state.cart.map(prepareItemsPayload),
       };
 
@@ -252,10 +263,8 @@ class ProductProvider extends Component {
 
         window.Voucherify.validate(redemptionPayload, (response) => {
           if (response.valid) {
-            console.log(response);
             resolve(response);
           } else {
-            console.log(response);
             toast.error(response.error.message);
             reject(new Error(response.reason));
           }
@@ -264,60 +273,11 @@ class ProductProvider extends Component {
       this.dispatch(SET_COUPON, {
         appliedVoucher: voucher,
       });
-
-      toast.success("Promotion applied");
+      toast.success("Coupon applied");
     } catch (e) {
       console.error(e);
     }
   };
-
-  // validateVoucher = async (couponCode, redemptionPayload) => {
-  //   const validatedVoucher = await fetch(
-  //     `${process.env.REACT_APP_API_URL}/validate`,
-  //     {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       credentials: "include",
-  //       body: JSON.stringify({ couponCode, redemptionPayload }),
-  //     }
-  //   );
-  //   return validatedVoucher.json();
-  // };
-
-  // addPromotionToCart = async (couponCode, customer) => {
-  //   try {
-  //     const prepareItemsPayload = (item) => {
-  //       return {
-  //         // source_id: item.id,
-  //         product_id: item.id,
-  //         quantity: parseInt(item.count, 10),
-  //         price: parseInt((item.price * 100).toFixed(2), 10),
-  //         amount: parseInt((item.total * 100).toFixed(2), 10),
-  //       };
-  //     };
-
-  //     const redemptionPayload = {
-  //       customer,
-  //       order: {
-  //         amount: this.state.cartTotalAfterPromotion * 100,
-  //         items: this.state.cart.map(prepareItemsPayload),
-  //       },
-  //     };
-
-  //     const voucher = await this.validateVoucher(couponCode, redemptionPayload);
-
-  //     if (voucher.valid) {
-  //       toast.success("Promotion applied");
-  //       this.dispatch(SET_COUPON, {
-  //         appliedVoucher: voucher,
-  //       });
-  //     } else {
-  //       toast.error(voucher.error.message);
-  //     }
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
 
   sendOrder = async (orderPayload) => {
     const order = await fetch(`${process.env.REACT_APP_API_URL}/order`, {
@@ -361,11 +321,9 @@ class ProductProvider extends Component {
 
     // If voucher is not applied
     if (_.isEmpty(this.state.appliedVoucher)) {
-      await this.sendOrder(orderPayload)
-        .then(() => console.log("Order Created"))
-        .catch((err) => {
-          console.error(err);
-        });
+      await this.sendOrder(orderPayload).catch((err) => {
+        console.error(err);
+      });
       this.dispatch(CLEAR_CART);
       toast.success("Payment successful");
       this.setState({
@@ -419,7 +377,6 @@ class ProductProvider extends Component {
           handleDetail: this.handleDetail,
           addToCart: this.addToCart,
           increment: this.increment,
-          decrement: this.decrement,
           removeItem: this.removeItem,
           clearCart: this.clearCart,
           getItem: this.getItem,

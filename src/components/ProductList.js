@@ -92,6 +92,7 @@ const ProductList = () => {
                             <Product
                               key={product.id}
                               product={product}
+                              value={ctx}
                             ></Product>
                           </React.Fragment>
                         ))}
