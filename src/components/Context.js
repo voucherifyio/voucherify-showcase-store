@@ -186,12 +186,10 @@ class ProductProvider extends Component {
         ],
       });
     }
-    //Coupon revalidation logic
+    // Coupon revalidation logic
     if (this.state.appliedVoucher) {
-      // eslint-disable-next-line
-      const revalidate = true;
-      console.log("Voucher applied. Item added - Remove voucher");
-      this.removePromotionFromCart();
+      console.log("Voucher applied. Item added - revalidate voucher");
+      this.addPromotionToCart(this.state.appliedVoucher.code, this.state.appliedVoucher.customer);
     }
   };
 
@@ -202,12 +200,11 @@ class ProductProvider extends Component {
     this.dispatch(SET_CART, {
       cart: tempCart,
     });
-    //Coupon revalidation logic
+
+    // Coupon revalidation logic
     if (this.state.appliedVoucher) {
-      // eslint-disable-next-line
-      const revalidate = true;
-      console.log("Voucher applied. Item quantity changed - Remove voucher");
-      this.removePromotionFromCart();
+      console.log("Voucher applied. Item quantity changed - revalidate voucher");
+      this.addPromotionToCart(this.state.appliedVoucher.code, this.state.appliedVoucher.customer);
     }
   };
 
@@ -221,13 +218,11 @@ class ProductProvider extends Component {
         cart: tempCart,
       });
     }
-    //Coupon revalidation logic
-    if (this.state.appliedVoucher) {
-      // eslint-disable-next-line
-      const revalidate = true;
-      console.log("Voucher applied. Item removed - Remove voucher");
-      this.removePromotionFromCart();
 
+    // Coupon revalidation logic
+    if (this.state.appliedVoucher) {
+      console.log("Voucher applied. Item removed - revalidate voucher");
+      this.addPromotionToCart(this.state.appliedVoucher.code, this.state.appliedVoucher.customer);
     }
   };
 
@@ -236,11 +231,8 @@ class ProductProvider extends Component {
     toast.success("Cart cleared");
   };
 
-  addPromotionToCart = async (couponCode, customer, revalidate = false) => {
+  addPromotionToCart = async (couponCode, customer) => {
     try {
-      if (revalidate) {
-        console.log(this.state.cartTotal);
-      }
       const prepareItemsPayload = (item) => {
         return {
           source_id: item.id,
@@ -271,7 +263,8 @@ class ProductProvider extends Component {
         });
       });
       this.dispatch(SET_COUPON, {
-        appliedVoucher: voucher,
+        // NOTE: we cache `customer` in appliedVoucher object for the sake of coupon revalidation on cart changes
+        appliedVoucher: { ...voucher, customer },
       });
       toast.success("Coupon applied");
     } catch (e) {
