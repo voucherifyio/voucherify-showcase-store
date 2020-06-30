@@ -62,6 +62,8 @@ function publishForCustomer(id) {
 app.use(bodyParser.json());
 
 app.get("/init", async (request, response) => {
+  const createdCouponsList = [];
+
   if (request.session.views) {
     console.log(`[Re-visit] ${request.session.id} - ${request.session.views}`);
     ++request.session.views;
@@ -100,48 +102,47 @@ app.get("/init", async (request, response) => {
       })
     );
 
-    request.session.createdCouponsList = [];
-    for (let i = 0; i < createdCustomers.length; i++) {
-      const createdCoupons = Promise.all(
-        publishForCustomer(createdCustomers[i].source_id)
-      ).catch((e) => console.error(`[Publishing coupons][Error] - ${e}`));
+    for await (const createdCustomer of createdCustomers) {
+      try {
+        const customerCoupons = [];
+        const createdCoupons = Promise.all(
+          publishForCustomer(createdCustomer.source_id)
+        ).catch((e) => console.error(`[Publishing coupons][Error] - ${e}`));
+        let coupons = await createdCoupons;
+        //Assing validation rules for voucher "Customer unique code"
+        coupons.forEach((coupon) => {
+          if (
+            coupon.voucher.metadata.demostoreName === "Customer unique code"
+          ) {
+            customerCoupons.push(coupon);
+          }
+        });
 
-      let coupons = await createdCoupons;
-
-      //Assing validation rules for voucher "Customer unique code"
-      const customerCoupons = [];
-      for (let j = 0; j < coupons.length; j++) {
-        if (
-          coupons[j].voucher.metadata.demostoreName === "Customer unique code"
-        ) {
-          customerCoupons.push(coupons[j]);
-        }
-      }
-      for (let z = 0; z < storeCustomers.length; z++) {
         let uniqueCoupon = customerCoupons.find(
-          (coupon) => coupon.tracking_id === storeCustomers[z].source_id
+          (coupon) => coupon.tracking_id === createdCustomer.source_id
         );
         if (typeof uniqueCoupon !== "undefined") {
           let customerValidationRuleId =
-            storeCustomers[z].metadata.customerValidationRuleId;
+            createdCustomer.metadata.customerValidationRuleId;
           let assignment = { voucher: uniqueCoupon.voucher.code };
           await voucherify.validationRules.createAssignment(
             customerValidationRuleId,
             assignment
           );
         }
+        createdCouponsList.push({
+          customer: createdCustomer.source_id,
+          campaigns: coupons.map((coupon) => coupon.voucher),
+        });
+      } catch (e) {
+        console.log(e);
       }
-
-      request.session.createdCouponsList.push({
-        customer: createdCustomers[i].source_id,
-        campaings: coupons.map((coupon) => coupon.voucher),
-      });
     }
   }
 
   response.json({
     session: request.session.id,
-    coupons: request.session.createdCouponsList,
+    coupons: createdCouponsList,
   });
 });
 
