@@ -9,7 +9,6 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 const CampaignDetails = ({ campaign, code }) => {
   const [open, setOpen] = useState(false);
 
-  console.log(campaign);
   const handleTooltipClose = () => {
     setOpen(false);
   };

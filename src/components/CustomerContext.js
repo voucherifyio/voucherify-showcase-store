@@ -204,12 +204,10 @@ class CustomerProvider extends Component {
         this.state.customer.summary.orders.total_amount
       ) {
         //If true -> wait
-        await this.sleep(5000);
-        this.updateCustomerData(id);
+        await this.sleep(5000).then(this.updateCustomerData(id));
       } else {
-        this.setCustomer(id);
-        this.getCampaigns();
-        this.getVouchers();
+        await this.setCustomer(id).then(this.getCampaigns).then(this.getVouchers);
+        
       }
     } catch (e) {
       console.log(e);
