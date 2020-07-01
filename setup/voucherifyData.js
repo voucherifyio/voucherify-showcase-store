@@ -1,4 +1,4 @@
-const versionNumber = 70;
+const versionNumber = 80;
 
 exports.versionNumber = versionNumber;
 
@@ -39,14 +39,14 @@ exports.vouchers = [
 
 exports.campaigns = [
   {
-    name: `Customer unique code #${versionNumber}`,
+    name: `Welcome wave 5%off #${versionNumber}`,
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
       discount: { percent_off: 5, type: "PERCENT" },
     },
     metadata: {
-      demostoreName: "Customer unique code",
+      demostoreName: "Welcome wave 5%off",
       demostoreAssignedValRules: "",
       demostoreVersion: versionNumber,
       demostoreDescription: "Only current customer can validate the coupon",
@@ -74,15 +74,14 @@ exports.campaigns = [
     },
   },
   {
-    name: `More than $50 in cart and Illy Arabica Selection - Guatemala #${versionNumber}`,
+    name: `5% off for Illy Arabica Selection - Guatemala #${versionNumber}`,
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
       discount: { percent_off: 5, type: "PERCENT" },
     },
     metadata: {
-      demostoreName:
-        "More than $50 in cart and Illy Arabica Selection - Guatemala",
+      demostoreName: "5% off for Illy Arabica Selection - Guatemala",
       demostoreAssignedValRules: "val_l6k6T16xpQYN",
       demostoreVersion: versionNumber,
       demostoreDescription:
@@ -94,14 +93,15 @@ exports.campaigns = [
     },
   },
   {
-    name: `Cart includes 2 of Johan & Nyström - Bourbon Jungle #${versionNumber}`,
+    name: `$15 off for Johan & Nystrom - Bourbon Jungle double-pack #${versionNumber}`,
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
-      discount: { amount_off: 500, type: "AMOUNT" },
+      discount: { amount_off: 1500, type: "AMOUNT" },
     },
     metadata: {
-      demostoreName: "Cart includes 2 of Johan & Nyström - Bourbon Jungle",
+      demostoreName:
+        "$15 off for Johan & Nystrom - Bourbon Jungle double-pack",
       demostoreAssignedValRules: "val_phBbhUNtDFHj",
       demostoreVersion: versionNumber,
       demostoreDescription:
@@ -112,11 +112,11 @@ exports.campaigns = [
     },
   },
   {
-    name: `Only for Polish customers #${versionNumber}`,
+    name: `13% off - Local promotion (Poland) #${versionNumber}`,
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
-      discount: { amount_off: 500, type: "AMOUNT" },
+      discount: { percent_off: 13, type: "PERCENT" },
     },
     metadata: {
       demostoreName: "Only for Polish customers",
@@ -128,22 +128,6 @@ exports.campaigns = [
       demostoreCategory: "CAMPAIGN",
     },
   },
-  // {
-  //   name: `Without Nivona CafeRomatica 759 in cart #${versionNumber}`,
-  //   type: "AUTO_UPDATE",
-  //   voucher: {
-  //     type: "DISCOUNT_VOUCHER",
-  //     discount: { percent_off: 5, type: "PERCENT" },
-  //   },
-  //   metadata: {
-  //     demostoreName: "Without Nivona CafeRomatica 759 in cart",
-  //     demostoreAssignedValRules: "val_Ms2F2wUgzafw",
-  //     demostoreVersion: versionNumber,
-  //     demostoreDescription: "You can't have Nivona CafeRomatica 759 in cart",
-  //     demostoreSteps: "Cart not contains: Nivona CafeRomatica 759",
-  //     demostoreOrder: 4,
-  //   },
-  // },
 ];
 
 exports.segments = [
