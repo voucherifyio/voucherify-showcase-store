@@ -15,11 +15,10 @@ const loadItemsFromLocalStorage = () => {
   return {
     customer: readValueFromLocalStorage("customer") || null,
     fetchingCustomer: readValueFromLocalStorage("fetchingCustomer") || false,
-    customerRedemptions:
-      readValueFromLocalStorage("customerRedemptions") || null,
     publishedVouchers: readValueFromLocalStorage("publishedVouchers") || null,
     uniqueVoucher: readValueFromLocalStorage("vouchers") || null,
     campaigns: readValueFromLocalStorage("campaigns") || null,
+    sessionCode: readValueFromLocalStorage("sessionCode") || null,
   };
 };
 
@@ -27,16 +26,15 @@ class CustomerProvider extends Component {
   state = {
     customer: null,
     sidebar: true,
-    customers: [],
+    customers: null,
     fetchingCustomer: true,
-    customerRedemptions: null,
     fetchingCampaigns: true,
-    sessionCode: "",
+    sessionCode: null,
     publishedVouchers: null,
     campaigns: null,
     vouchers: null,
     copiedCode: null,
-    voucherOrCampaing: null,
+    voucherOrCampaign: null,
   };
 
   componentDidMount() {
@@ -50,42 +48,32 @@ class CustomerProvider extends Component {
         credentials: "include",
       }).then((response) => response.json());
 
-      let sessionCode = session.session;
-      let publishedVouchers = session.coupons;
-      this.setState({
-        sessionCode: sessionCode,
-        publishedVouchers: publishedVouchers,
-      });
-      localStorage.setItem("sessionCode", JSON.stringify(sessionCode));
-      localStorage.setItem(
-        "publishedVouchers",
-        JSON.stringify(publishedVouchers)
-      );
+      if (session.coupons.length === 0) {
+        console.log("Here!");
+        this.setState({
+          sessionCode: session.session,
+          publishedVouchers: readValueFromLocalStorage("publishedVouchers"),
+        });
+      } else {
+        this.setState({
+          sessionCode: session.session,
+          publishedVouchers: session.coupons,
+        });
+        localStorage.setItem(
+          "sessionCode",
+          JSON.stringify(this.state.sessionCode)
+        );
+        localStorage.setItem(
+          "publishedVouchers",
+          JSON.stringify(this.state.publishedVouchers)
+        );
+      }
       this.getCustomers();
       this.getCampaigns();
       this.getVouchers();
     } catch (e) {
       console.log(e);
     }
-  };
-
-  createCustomers = async () => {
-    try {
-      storeCustomers.forEach(async (customer) => {
-        await fetch(
-          `${process.env.REACT_APP_API_URL}/create-customer/${this.state.sessionCode}${customer.source_id}`,
-          {
-            credentials: "include",
-          }
-        );
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  getCopiedCode = (code) => {
-    this.setState({ copiedCode: code });
   };
 
   getCustomers = async () => {
@@ -105,7 +93,6 @@ class CustomerProvider extends Component {
         customers: customers,
         fetchingCustomer: false,
       });
-
       localStorage.setItem("customers", JSON.stringify(customers));
     } catch (e) {
       console.log(e);
@@ -142,27 +129,6 @@ class CustomerProvider extends Component {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
-  getRedemptions = async (id) => {
-    const customerRedemptions = {};
-    let redemptions = await fetch(
-      `${process.env.REACT_APP_API_URL}/redemptions/${id}`,
-      {
-        credentials: "include",
-      }
-    ).then((redemptions) => redemptions.json());
-
-    // Count reedemed codes
-    for (let i = 0; i < redemptions.length; i++) {
-      customerRedemptions[redemptions[i].voucher.code] =
-        (customerRedemptions[redemptions[i].voucher.code] || 0) + 1;
-    }
-    Object.keys(customerRedemptions).map((key) => ({
-      [key]: customerRedemptions[key],
-    }));
-
-    return redemptions;
-  };
-
   getVouchers = async () => {
     try {
       this.setState({ fetchingCampaigns: true });
@@ -184,8 +150,8 @@ class CustomerProvider extends Component {
     }
   };
 
-  setVoucherOrCampaing = (name) => {
-    this.setState({ voucherOrCampaing: name });
+  setVoucherOrCampaign = (name) => {
+    this.setState({ voucherOrCampaign: name });
   };
 
   setCustomer = async (id) => {
@@ -198,34 +164,26 @@ class CustomerProvider extends Component {
           credentials: "include",
         }
       ).then((x) => x.json());
-      let customerRedemptionsList = await this.getRedemptions(id);
       this.setState({
         customer: customer,
         fetchingCustomer: false,
-        customerRedemptions: customerRedemptionsList,
       });
       localStorage.setItem("customer", JSON.stringify(customer));
       localStorage.setItem("fetchingCustomer", JSON.stringify(false));
-      localStorage.setItem(
-        "customerRedemptions",
-        JSON.stringify(customerRedemptionsList)
-      );
-      console.log(customer)
     } catch (e) {
       console.log(e);
     }
   };
 
-  getCode = (camp_name) => {
+  getCode = (campaign) => {
     let customer = this.state.customer.source_id;
-    let campaing = camp_name;
+    let publishedVouchers = this.state.publishedVouchers;
 
-    let customerVouchers = this.state.publishedVouchers.find(
+    let customerVouchers = publishedVouchers.find(
       (voucher) => voucher.customer === customer
     );
-
-    let customerCampaigns = customerVouchers.campaings.find(
-      (camp) => camp.campaign === campaing
+    let customerCampaigns = customerVouchers.campaigns.find(
+      (camp) => camp.campaign === campaign
     );
     return customerCampaigns.code;
   };
@@ -258,27 +216,19 @@ class CustomerProvider extends Component {
     }
   };
 
-  getCustomer = () => {
-    return this.state.customers.find(
-      (customer) => this.state.customer === customer.name
-    );
-  };
-
   render() {
     return (
       <CustomerContext.Provider
         value={{
           ...this.state,
           setCustomer: this.setCustomer,
-          getCustomer: this.getCustomer,
           getCustomers: this.getCustomers,
           getRedemptions: this.getRedemptions,
           updateCustomerData: this.updateCustomerData,
           getCode: this.getCode,
           getCampaigns: this.getCampaigns,
-          getCopiedCode: this.getCopiedCode,
           getVouchers: this.getVouchers,
-          setVoucherOrCampaing: this.setVoucherOrCampaing,
+          setVoucherOrCampaign: this.setVoucherOrCampaign,
         }}
       >
         {this.props.children}

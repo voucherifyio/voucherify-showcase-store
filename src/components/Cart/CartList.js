@@ -25,8 +25,6 @@ const CartList = ({ value, customerValue }) => {
     cartTotalAfterPromotion,
     clearCart,
   } = value;
-
-  console.log(customerValue);
   return (
     <div className="col-md-12 col-lg-9 order-2">
       <h4 className="d-flex justify-content-between align-items-center mb-3">
@@ -47,7 +45,7 @@ const CartList = ({ value, customerValue }) => {
             <div className="d-flex flex-column justify-content-center my-auto mx-auto align-items-center col-2">
               <small className="text-success">Discount</small>
               <span className="text-success">
-                -${discountedAmount.toFixed(2)}
+                -${(discountedAmount / 100).toFixed(2)}
               </span>
             </div>
             <div className="d-flex flex-column justify-content-center">
@@ -69,7 +67,9 @@ const CartList = ({ value, customerValue }) => {
             </IconButton>
           </Tooltip>
           <div className="d-flex flex-column justify-content-center my-auto ml-auto align-items-center col-4">
-            <h4 className="mb-0">${cartTotalAfterPromotion.toFixed(2)}</h4>
+            <h4 className="mb-0">
+              ${(cartTotalAfterPromotion / 100).toFixed(2)}
+            </h4>
           </div>
         </li>
       </ul>

@@ -10,33 +10,46 @@ const redis = require("redis");
 const voucherifyData = require("./setup/voucherifyData");
 const campaigns = voucherifyData.campaigns;
 const versionNumber = voucherifyData.versionNumber;
-const SQLiteStore = require("connect-sqlite3")(session);
 const RedisStore = require("connect-redis")(session);
 
-if (process.env.NODE_ENV !== "production") {
-  app.use(
-    session({
-      store: new SQLiteStore({ dir: ".data" }),
-      secret: "keyboard cat",
-      resave: true,
-      saveUninitialized: false,
-      cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
-    }),
-    cors({
-      credentials: true,
-      origin: "http://localhost:3001", // REACT_APP_API_URL
-    })
-  );
-} else {
-  const redisClient = redis.createClient(process.env.REDIS_URL); //REDIS_URL is provided by Heroku when using Redis Heroku Addon
-  app.use(
-    session({
-      store: new RedisStore({ client: redisClient }),
-      secret: "keyboard cat",
-      resave: false,
-    })
-  );
-}
+const redisClient = redis.createClient(process.env.REDIS_URL);
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient }),
+    secret: "keyboard cat",
+    resave: true,
+    saveUninitialized: false,
+  }),
+  cors({
+    credentials: true,
+    origin: "http://localhost:3001", // REACT_APP_API_URL
+  })
+);
+
+// if (process.env.NODE_ENV !== "production") {
+//   app.use(
+//     session({
+//       store: new SQLiteStore({ dir: ".data" }),
+//       secret: "keyboard cat",
+//       resave: true,
+//       saveUninitialized: false,
+//       cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
+//     }),
+//     cors({
+//       credentials: true,
+//       origin: "http://localhost:3001", // REACT_APP_API_URL
+//     })
+//   );
+// } else {
+//   const redisClient = redis.createClient(process.env.REDIS_URL); //REDIS_URL is provided by Heroku when using Redis Heroku Addon
+//   app.use(
+//     session({
+//       store: new RedisStore({ client: redisClient }),
+//       secret: "keyboard cat",
+//       resave: false,
+//     })
+//   );
+// }
 let storeCustomers = require("./src/storeCustomers.json");
 
 const voucherify = voucherifyClient({
@@ -92,6 +105,22 @@ app.get("/init", async (request, response) => {
             amount: 30000,
             customer: {
               source_id: customer.source_id,
+              name: customer.name,
+              email: customer.email,
+              metadata: {
+                country: customer.metadata.country,
+                gender: customer.metadata.gender,
+                demostore_id: customer.metadata.demostore_id,
+                customerValidationRuleId:
+                  customer.metadata.customerValidationRuleId,
+              },
+              address: {
+                city: customer.address.city,
+                state: customer.address.state,
+                line_1: customer.address.line_1,
+                country: customer.address.country,
+                postal_code: customer.address.postal_code,
+              },
             },
             status: "FULFILLED",
           };
@@ -139,8 +168,7 @@ app.get("/init", async (request, response) => {
       }
     }
   }
-
-  response.json({
+  return response.json({
     session: request.session.id,
     coupons: createdCouponsList,
   });
@@ -225,6 +253,18 @@ app.post("/order", async (request, response) => {
   try {
     const order = await voucherify.orders.create(request.body);
     return response.json(order);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+app.post("/redeem", async (request, response) => {
+  console.log("Backend redemption");
+  const { code } = request.body;
+  console.log(code);
+  try {
+    const redemption = await voucherify.redemptions.redeem(code, request.body);
+    return response.json(redemption);
   } catch (e) {
     console.log(e);
   }

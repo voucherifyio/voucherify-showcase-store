@@ -39,7 +39,7 @@ const CartItem = ({ item, value }) => {
         </div>
       </div>
       <div className="d-flex flex-column justify-content-center my-auto mx-auto align-items-center col-2">
-        <small className="text-muted">Price</small>${total.toFixed(2)}
+        <small className="text-muted">Price</small>${(total / 100).toFixed(2)}
       </div>
       <div className="d-flex flex-column justify-content-center">
         <IconButton className="mx-2" onClick={() => removeItem(id)}>

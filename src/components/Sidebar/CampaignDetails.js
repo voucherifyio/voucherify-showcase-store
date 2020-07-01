@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -14,6 +9,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 const CampaignDetails = ({ campaign, code }) => {
   const [open, setOpen] = useState(false);
 
+  console.log(campaign);
   const handleTooltipClose = () => {
     setOpen(false);
   };
@@ -24,9 +20,11 @@ const CampaignDetails = ({ campaign, code }) => {
   const VoucherifyButton = withStyles(() => ({
     root: {
       color: "white",
+      fontFamily: "Lato",
+      fontSize: "0.875rem",
       backgroundColor: "#ff8b5c",
       borderRadius: "20em",
-      padding: "1em 3em",
+      padding: "5px 20px",
       marginTop: "15px",
       marginBottom: "15px",
       textTransform: "none",
@@ -44,20 +42,18 @@ const CampaignDetails = ({ campaign, code }) => {
       key={campaign.name}
     >
       <div key={campaign.name}>
-        <Typography>
-          <b>
-            Your discount voucher{" "}
-            {campaign.voucher.discount.type === "PERCENT" && (
-              <>{campaign.voucher.discount.percent_off}% off</>
-            )}
-            {campaign.voucher.discount.type === "AMOUNT" && (
-              <>
-                ${(campaign.voucher.discount.amount_off / 100).toFixed(2)} off
-              </>
-            )}
-          </b>
-        </Typography>
-        <Typography>Click to copy</Typography>
+        <p className="campaign-description section-heading">
+          Your discount voucher{" "}
+          {campaign.voucher.discount.type === "PERCENT" && (
+            <>{campaign.voucher.discount.percent_off}% off</>
+          )}
+          {campaign.voucher.discount.type === "AMOUNT" && (
+            <>${(campaign.voucher.discount.amount_off / 100).toFixed(2)} off</>
+          )}
+          {campaign.metadata.demostoreBOGO &&
+            ` for ${campaign.metadata.demostoreBOGO}`}
+        </p>
+        <p className="campaign-description">Click to copy</p>
         <div className="d-flex justify-content-center">
           <ClickAwayListener onClickAway={handleTooltipClose}>
             <CopyToClipboard text={code}>
@@ -86,17 +82,22 @@ const CampaignDetails = ({ campaign, code }) => {
         </div>
         {campaign.metadata.demostoreSteps && (
           <>
-            <Typography>Rules</Typography>
-            <List>
-              {campaign.metadata.demostoreSteps.split(";").map((step) => (
-                <ListItem key={step}>
-                  <ListItemIcon>
-                    <ArrowRightIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={step} />
-                </ListItem>
-              ))}
-            </List>
+            <p className="campaign-description section-heading redemption-rules">
+              Redemption rules:
+            </p>
+            {campaign.metadata.demostoreSteps.split(";").map((step) => (
+              <div
+                key={step}
+                className="campaign-step d-flex flex-row align-items-center"
+              >
+                <div className="campaign-step-icon">
+                  <ArrowRightIcon />
+                </div>
+                <div className="campaign-step-description">
+                  <p className="campaign-step-text">{step}</p>
+                </div>
+              </div>
+            ))}
           </>
         )}
       </div>

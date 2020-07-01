@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { CustomerConsumer } from "../CustomerContext";
 import _ from "lodash";
 import CampaignDetails from "./CampaignDetails";
@@ -8,7 +8,6 @@ import Form from "react-bootstrap/Form";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import MuiExpansionPanel from "@material-ui/core/ExpansionPanel";
 import MuiExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
@@ -73,7 +72,6 @@ const SidebarContent = () => {
     }
   };
 
-  const [select] = useState(localStorage.getItem("customer"));
   return (
     <div className="list-group list-group-flush">
       <CustomerConsumer>
@@ -91,7 +89,7 @@ const SidebarContent = () => {
 
           return (
             <>
-              {ctx.fetchingCustomer ? (
+              {!ctx.customers || ctx.fetchingCustomer ? (
                 <div className="d-flex justify-content-center">
                   <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
@@ -103,10 +101,10 @@ const SidebarContent = () => {
                     <Form.Control
                       as="select"
                       id="storeCustomers"
-                      onChange={(e) => ctx.setCustomer(e.target.value)}
-                      value={
-                        (ctx.customer || {}).source_id || select || "DEFAULT"
-                      }
+                      onChange={(e) => {
+                        ctx.setCustomer(e.target.value);
+                      }}
+                      value={(ctx.customer || {}).source_id || "DEFAULT"}
                       className=""
                     >
                       <option value="DEFAULT" disabled>
@@ -163,9 +161,12 @@ const SidebarContent = () => {
                 !_.isEmpty(ctx.vouchers) &&
                 !_.isEmpty(ctx.customer) && (
                   <>
-                    <div className="sidebar-heading">
-                      <b>Vouchers</b> ({ctx.vouchers.length})
-                    </div>
+                    <p className="sidebar-heading">
+                      Public Codes{" "}
+                      <span className="campaigns-count">
+                        ({ctx.vouchers.length})
+                      </span>
+                    </p>
                     {ctx.fetchingCampaigns ? (
                       <div className="d-flex justify-content-center">
                         <Spinner animation="border" role="status">
@@ -189,12 +190,13 @@ const SidebarContent = () => {
                               expandIcon={<ExpandMoreIcon />}
                               aria-controls={`${voucher.metadata.demostoreName}-content`}
                               id={`${voucher.metadata.demostoreName}-header`}
+                              className="campaign-box"
                             >
-                              <Typography>
+                              <p className="campaign-name">
                                 {voucher.metadata.demostoreName}
-                              </Typography>
+                              </p>
                             </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
+                            <ExpansionPanelDetails className="bg-light">
                               <VoucherDetails
                                 voucher={voucher}
                                 code={voucher.code}
@@ -204,9 +206,12 @@ const SidebarContent = () => {
                         ))}
                       </div>
                     )}
-                    <div className="sidebar-heading">
-                      <b>Campaigns</b> ({ctx.campaigns.length}){" "}
-                    </div>
+                    <p className="sidebar-heading">
+                      Personal Codes{" "}
+                      <span className="campaigns-count">
+                        ({ctx.campaigns.length})
+                      </span>
+                    </p>
                     {ctx.fetchingCampaigns ? (
                       <div className="d-flex justify-content-center">
                         <Spinner animation="border" role="status">
@@ -226,12 +231,13 @@ const SidebarContent = () => {
                               expandIcon={<ExpandMoreIcon />}
                               aria-controls={`${campaign.metadata.demostoreName}-content`}
                               id={`${campaign.metadata.demostoreName}-header`}
+                              className="campaign-box"
                             >
-                              <Typography>
+                              <p className="campaign-name">
                                 {campaign.metadata.demostoreName}
-                              </Typography>
+                              </p>
                             </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
+                            <ExpansionPanelDetails className="bg-light">
                               <CampaignDetails
                                 campaign={campaign}
                                 code={ctx.getCode(campaign.name)}

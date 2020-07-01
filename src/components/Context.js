@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
-
 const ProductContext = React.createContext();
 
 const SET_CART = "SET_CART";
@@ -12,10 +11,11 @@ const SET_COUPON = "SET_COUPON";
 const reducer = (action) => (state, props) => {
   const calc = (cartItems, voucher) => {
     cartItems.forEach((cartItem) => {
-      cartItem.total = cartItem.count * (cartItem.price / 100);
+      cartItem.total = cartItem.count * cartItem.price;
     });
 
     let cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+    console.log(cartTotal);
     let discountedAmount = 0;
     let cartTotalAfterPromotion = cartTotal;
 
@@ -36,7 +36,7 @@ const reducer = (action) => (state, props) => {
           discountedAmount =
             applicableProductInCart.total * (discountAmount / 100);
         } else if (voucher.discount.type === "AMOUNT") {
-          const discountAmount = voucher.discount.amount_off / 100;
+          const discountAmount = voucher.discount.amount_off;
           cartTotalAfterPromotion =
             applicableProductInCart.total - discountAmount;
           discountedAmount = discountAmount;
@@ -47,7 +47,7 @@ const reducer = (action) => (state, props) => {
           cartTotal - cartTotal * (discountAmount / 100);
         discountedAmount = cartTotal * (discountAmount / 100);
       } else if (voucher.discount.type === "AMOUNT") {
-        const discountAmount = voucher.discount.amount_off / 100;
+        const discountAmount = voucher.discount.amount_off;
         cartTotalAfterPromotion = cartTotal - discountAmount;
         discountedAmount = discountAmount;
       }
@@ -66,6 +66,12 @@ const reducer = (action) => (state, props) => {
       JSON.stringify(cartTotalAfterPromotion)
     );
     localStorage.setItem("appliedVoucher", JSON.stringify(voucher));
+
+    console.log("Cart Payload");
+    console.log({
+      amount: cartTotal,
+      items: cartItems,
+    });
 
     return {
       cart: cartItems,
@@ -168,20 +174,19 @@ class ProductProvider extends Component {
     const cart = [...this.state.cart];
     const item = _.cloneDeep(cart.find((item) => item.id === id));
     if (item) {
-      const tempCart = [...this.state.cart];
-      const selectedProduct = tempCart.find((item) => item.id === id);
+      const selectedProduct = cart.find((item) => item.id === id);
       selectedProduct.count = selectedProduct.count + quantity;
       this.dispatch(SET_CART, {
-        cart: tempCart,
+        cart: cart,
       });
     } else {
       this.dispatch(SET_CART, {
         cart: [
-          ...this.state.cart,
+          ...cart,
           {
             ...product,
             count: quantity,
-            total: product.price,
+            total: product.price * quantity * 100,
           },
         ],
       });
@@ -189,22 +194,33 @@ class ProductProvider extends Component {
     // Coupon revalidation logic
     if (this.state.appliedVoucher) {
       console.log("Voucher applied. Item added - revalidate voucher");
-      this.addPromotionToCart(this.state.appliedVoucher.code, this.state.appliedVoucher.customer);
+      this.addPromotionToCart(
+        this.state.appliedVoucher.code,
+        this.state.appliedVoucher.customer
+      );
     }
   };
 
   increment = (id, qt) => {
-    const tempCart = [...this.state.cart];
-    const selectedProduct = tempCart.find((item) => item.id === id);
+    // const tempCart = [...this.state.cart];
+    const selectedProduct = this.state.cart.find((item) => item.id === id);
     selectedProduct.count = qt;
+    selectedProduct.total = selectedProduct.price * qt
     this.dispatch(SET_CART, {
-      cart: tempCart,
+      cart: this.state.cart,
     });
 
     // Coupon revalidation logic
     if (this.state.appliedVoucher) {
-      console.log("Voucher applied. Item quantity changed - revalidate voucher");
-      this.addPromotionToCart(this.state.appliedVoucher.code, this.state.appliedVoucher.customer);
+      console.log(
+        "Voucher applied. Item quantity changed - revalidate voucher"
+      );
+      console.log(this.state.cartTotal);
+      this.addPromotionToCart(
+        this.state.appliedVoucher.code,
+        this.state.appliedVoucher.customer,
+        this.state.cartTotal
+      );
     }
   };
 
@@ -222,7 +238,10 @@ class ProductProvider extends Component {
     // Coupon revalidation logic
     if (this.state.appliedVoucher) {
       console.log("Voucher applied. Item removed - revalidate voucher");
-      this.addPromotionToCart(this.state.appliedVoucher.code, this.state.appliedVoucher.customer);
+      this.addPromotionToCart(
+        this.state.appliedVoucher.code,
+        this.state.appliedVoucher.customer
+      );
     }
   };
 
@@ -237,18 +256,21 @@ class ProductProvider extends Component {
         return {
           source_id: item.id,
           product_id: item.id,
-          quantity: parseInt(item.count, 10),
-          price: parseInt((item.price * 100).toFixed(2), 10),
-          amount: parseInt((item.total * 100).toFixed(2), 10),
+          quantity: item.count,
+          price: item.price,
+          amount: item.total,
         };
       };
 
       const redemptionPayload = {
         code: couponCode,
         customer,
-        amount: this.state.cartTotalAfterPromotion.toFixed(2) * 100,
+        amount: this.state.cartTotal,
         items: this.state.cart.map(prepareItemsPayload),
       };
+
+      console.log("Redemption Payload");
+      console.log(redemptionPayload);
 
       const voucher = await new Promise((resolve, reject) => {
         window.Voucherify.setIdentity(customer.source_id);
@@ -257,7 +279,11 @@ class ProductProvider extends Component {
           if (response.valid) {
             resolve(response);
           } else {
-            toast.error(response.error.message);
+            if (response.error) {
+              toast.error(response.error.message);
+            } else {
+              toast.error(response.reason);
+            }
             reject(new Error(response.reason));
           }
         });
@@ -268,7 +294,8 @@ class ProductProvider extends Component {
       });
       toast.success("Coupon applied");
     } catch (e) {
-      console.error(e);
+      console.log(e);
+      this.removePromotionFromCart();
     }
   };
 
@@ -280,6 +307,16 @@ class ProductProvider extends Component {
       body: JSON.stringify(orderPayload),
     });
     return order.json();
+  };
+
+  sendRedemption = async (redemptionPayload) => {
+    const redemption = await fetch(`${process.env.REACT_APP_API_URL}/redeem`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(redemptionPayload),
+    });
+    return redemption.json();
   };
 
   checkoutCart = async (customer = {}) => {
@@ -295,25 +332,16 @@ class ProductProvider extends Component {
         amount: item.total * 100,
       };
     };
-    const redemptionPayload = {
-      customer,
-      order: {
-        source_id: ID(),
-        amount: this.state.cartTotalAfterPromotion * 100,
-        items: this.state.cart.map(prepareItemsPayload),
-      },
-    };
-
-    const orderPayload = {
-      source_id: ID(),
-      items: this.state.cart.map(prepareItemsPayload),
-      amount: this.state.cartTotalAfterPromotion * 100,
-      customer,
-      status: "FULFILLED",
-    };
 
     // If voucher is not applied
     if (_.isEmpty(this.state.appliedVoucher)) {
+      const orderPayload = {
+        source_id: ID(),
+        items: this.state.cart.map(prepareItemsPayload),
+        amount: this.state.cartTotalAfterPromotion * 100,
+        customer,
+        status: "FULFILLED",
+      };
       await this.sendOrder(orderPayload).catch((err) => {
         console.error(err);
       });
@@ -331,14 +359,19 @@ class ProductProvider extends Component {
     else {
       try {
         const code = this.state.appliedVoucher.code;
-        await new Promise((resolve, reject) => {
-          window.Voucherify.redeem(code, redemptionPayload, (response) => {
-            if (response.result === "SUCCESS") {
-              resolve(response);
-            } else {
-              reject(new Error(response.message));
-            }
-          });
+
+        const redemptionPayload = {
+          code,
+          customer,
+          order: {
+            source_id: ID(),
+            amount: this.state.cartTotalAfterPromotion * 100,
+            items: this.state.cart.map(prepareItemsPayload),
+          },
+        };
+
+        await this.sendRedemption(redemptionPayload).catch((err) => {
+          console.error(err);
         });
         this.dispatch(CLEAR_CART);
         toast.success("Payment successful");
@@ -377,6 +410,7 @@ class ProductProvider extends Component {
           addPromotionToCart: this.addPromotionToCart,
           removePromotionFromCart: this.removePromotionFromCart,
           loadProducts: this.loadProducts,
+          prepareRedemptionPayload: this.prepareRedemptionPayload,
         }}
       >
         {this.props.children}

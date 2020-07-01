@@ -54,7 +54,7 @@ const App = () => {
               </div>
             </React.Fragment>
           </div>
-          <Sidebar sidebar={sidebar} />
+          <Sidebar />
         </div>
       </div>
       <div

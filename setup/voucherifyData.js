@@ -1,4 +1,4 @@
-const versionNumber = 80;
+const versionNumber = 110;
 
 exports.versionNumber = versionNumber;
 
@@ -39,14 +39,14 @@ exports.vouchers = [
 
 exports.campaigns = [
   {
-    name: `Welcome wave 5%off #${versionNumber}`,
+    name: `Welcome wave 5% off #${versionNumber}`,
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
       discount: { percent_off: 5, type: "PERCENT" },
     },
     metadata: {
-      demostoreName: "Welcome wave 5%off",
+      demostoreName: "Welcome wave 5% off",
       demostoreAssignedValRules: "",
       demostoreVersion: versionNumber,
       demostoreDescription: "Only current customer can validate the coupon",
@@ -70,6 +70,7 @@ exports.campaigns = [
       demostoreSteps:
         "Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g",
       demostoreOrder: 1,
+      demostoreBOGO: "1x Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g",
       demostoreCategory: "CAMPAIGN",
     },
   },

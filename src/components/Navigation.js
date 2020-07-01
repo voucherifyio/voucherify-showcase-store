@@ -64,7 +64,7 @@ const Navigation = ({ handleSidebar, sidebar }) => {
                           </StyledBadge>
                         </IconButton>
                       </Link>
-                      <b>${ctx.cartTotalAfterPromotion.toFixed(2)}</b>
+                      <b>${(ctx.cartTotalAfterPromotion / 100).toFixed(2)}</b>
                     </Nav.Item>
                   </>
                 );

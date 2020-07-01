@@ -7,6 +7,7 @@
 }
 
 body {
+  font-family: "Lato", sans-serif !important;
   background: var(--mainWhite) !important;
   color: var(--mainDark) !important;
   font-size: 14px;
@@ -136,6 +137,118 @@ a:hover {
   text-decoration: none;
 }
 
+.navbar-sticky {
+  background-color: white;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
+  z-index: 2;
+}
+
+.nav-item-link {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.nav-item-link:hover {
+  color: rgba(0, 0, 0, 0.54);
+  text-decoration: none !important;
+}
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+button:focus {
+  outline: none !important;
+  border: 0 !important;
+}
+
+.navbar-account {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.search-products {
+  display: flex;
+  width: 100%;
+  padding-left: 15px;
+}
+
+#no-mobile {
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+.voucherify-link,
+.voucherify-link:hover {
+  text-transform: none;
+  text-decoration: none;
+  color: #25abb7;
+}
+
+/* Sidebar styles */
+
+#sidebar-wrapper {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  max-height: 100vh;
+  -webkit-transition: margin 0.25s ease-out;
+  -moz-transition: margin 0.25s ease-out;
+  -o-transition: margin 0.25s ease-out;
+  transition: margin 0.25s ease-out;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+  width: 25rem;
+  z-index: 3;
+}
+
+#sidebar-wrapper .sidebar-heading {
+  margin-top: 1rem;
+  padding: 0.4rem 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+#sidebar-wrapper .campaigns-count {
+  font-weight: 200;
+}
+
+#sidebar-wrapper .campaign-box {
+  height: 80px;
+}
+
+#sidebar-wrapper .campaign-name {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0px;
+}
+
+#sidebar-wrapper .campaign-description {
+  font-size: 0.875rem;
+  margin-bottom: 0px;
+}
+
+#sidebar-wrapper .section-heading {
+  font-weight: 700;
+}
+#sidebar-wrapper .redemption-rules {
+  margin-bottom: 0px;
+}
+
+#sidebar-wrapper .campaign-step {
+}
+
+#sidebar-wrapper .campaign-step-icon {
+}
+
+#sidebar-wrapper .campaign-step-description {
+  margin-left: 10px;
+}
+#sidebar-wrapper .campaign-step-text {
+  margin-bottom: 0px;
+}
 #storeCustomers {
   width: 100%;
 }
@@ -162,53 +275,6 @@ a:hover {
   text-decoration: none;
 }
 
-#sidebar-wrapper {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  max-height: 100vh;
-  -webkit-transition: margin 0.25s ease-out;
-  -moz-transition: margin 0.25s ease-out;
-  -o-transition: margin 0.25s ease-out;
-  transition: margin 0.25s ease-out;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  overflow-y: auto;
-  min-height: 100vh;
-  overflow-x: hidden;
-  width: 25rem;
-  z-index: 3;
-}
-
-.navbar-sticky {
-  background-color: white;
-  position: -webkit-sticky !important;
-  position: sticky !important;
-  top: 0;
-  z-index: 2;
-}
-
-.nav-item-link {
-  color: rgba(0, 0, 0, 0.54);
-}
-
-.nav-item-link:hover {
-  color: rgba(0, 0, 0, 0.54);
-  text-decoration: none !important;
-}
-#sidebar-wrapper .sidebar-title {
-  margin-top: 1rem;
-  padding: 0.4rem 1rem;
-  font-size: 1.2rem;
-}
-
-#sidebar-wrapper .sidebar-heading {
-  padding: 0.875rem 1.25rem;
-  font-size: 1.2rem;
-}
-
-#page-content-wrapper {
-  min-width: 100vw;
-}
 .sidebar-content {
   padding: 0.875rem 1.25rem;
   font-size: 1rem;
@@ -225,34 +291,13 @@ a:hover {
   padding: 0.875rem 1.25rem;
   font-size: 1rem;
 }
-button:focus {
-  outline: none !important;
-  border: 0 !important;
-}
 
 #wrapper.toggled #sidebar-wrapper {
   margin-right: 0;
 }
 
-.navbar-account {
-  margin-top: auto;
-  margin-bottom: auto;
-}
-.search-products {
-  display: flex;
-  width: 100%;
-  padding-left: 15px;
-}
-
-#no-mobile {
-  height: 100vh !important;
-  width: 100vw !important;
-}
-
-.voucherify-link, .voucherify-link:hover{
-  text-transform: none;
-  text-decoration: none;
-  color: #25abb7;
+.sidebar-selected {
+  border-left: solid 5px black;
 }
 
 @media (max-width: 767px) {
@@ -293,8 +338,6 @@ button:focus {
   #wrapper.toggled #sidebar-wrapper {
     margin-right: -25rem;
   }
-
- 
 }
 
 @media (max-width: 991px) {
