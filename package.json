@@ -33,7 +33,7 @@
     "voucherify.js": "^1.31.0"
   },
   "scripts": {
-    "postinstall": "react-scripts build",
+    "postinstall": "react-scripts build && node ./setup/setup.js",
     "setup": "node ./setup/setup.js",
     "dev": "react-scripts start",
     "dev-server": "NODE_ENV=development nodemon server.js",
