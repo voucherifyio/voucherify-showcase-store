@@ -99,27 +99,27 @@ const CampaignDetails = ({ campaign, code }) => {
             ))}
           </>
         )}
-        <p className="campaign-description section-heading redemption-rules mt-4">
+        {/* <p className="campaign-description section-heading redemption-rules mt-4">
           Campaign statistics
         </p>
         <p className="campaign-description redemption-rules my-1">
           Total number of redemptions:{" "}
           <span className="section-heading">
-            {/* {voucher.redemption.redeemed_quantity} */}
+            {voucher.redemption.redeemed_quantity}
           </span>
         </p>
         <p className="campaign-description redemption-rules my-1">
           Discounted amount:{" "}
           <span className="section-heading">
-            {/* {voucher.redemption.redeemed_quantity} */}
+            {voucher.redemption.redeemed_quantity}
           </span>
         </p>
         <p className="campaign-description redemption-rules my-1">
           Total orders value:{" "}
           <span className="section-heading">
-            {/* {voucher.redemption.redeemed_quantity} */}
+            {voucher.redemption.redeemed_quantity}
           </span>
-        </p>
+        </p> */}
       </div>
     </div>
   );
