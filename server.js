@@ -22,7 +22,7 @@ app.use(
   }),
   cors({
     credentials: true,
-    origin: "http://localhost:3001", // REACT_APP_API_URL
+    origin: process.env.REACT_APP_API_URL,
   })
 );
 
@@ -98,7 +98,7 @@ app.get("/init", async (request, response) => {
                 postal_code: customer.address.postal_code,
               },
             },
-            status: "FULFILLED",
+            status: "PAID",
           };
 
           await voucherify.orders.create(dummyOrderPayload);

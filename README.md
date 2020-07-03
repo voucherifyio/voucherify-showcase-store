@@ -6,6 +6,13 @@ for production mode you should run in the project directory
 
 Add your `Application ID` and `Application Secret Key` to your environment variables. We're using Heroku Redis to set up client sessions. Provide `REDIS_URL` to your environment settings.
 
+if you're using Heroku set add Redis extension and set up variables:
+
+PORT=3000
+REACT_APP_APPLICATION_ID="YOUR APPLICATION ID"
+REACT_APP_CLIENT_SECRET_KEY="YOUR SECRET KEY"
+REACT_APP_API_URL="YOUR APP URL"
+
 Then run `npm install` to set up the Application. After that, run `npm run setup` to create Campaigns, Products Validation Rules, and Validation Rules assignment.
 
 Validation rules based on the customer segment are created when a new user enters the site.
