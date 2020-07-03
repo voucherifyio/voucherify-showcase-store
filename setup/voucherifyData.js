@@ -4,14 +4,14 @@ exports.versionNumber = versionNumber;
 
 exports.vouchers = [
   {
-    code: `BLCKFRDY#${versionNumber}`,
+    code: "BLCKFRDY",
     object: "voucher",
     type: "DISCOUNT_VOUCHER",
     category: "STANDALONE",
     discount: { type: "AMOUNT", amount_off: 1000 },
     metadata: {
-      demostoreName: `Black Friday Coupon`,
-      demostoreAssignedValRules: "val_voD2pK2M8biX",
+      demostoreName: "Black Friday Coupon",
+      demostoreAssignedValRules: "Black Friday Coupon",
       demostoreVersion: versionNumber,
       demostoreDescription: "Global coupon",
       demostoreSteps: "Only one redemption per customer",
@@ -20,13 +20,13 @@ exports.vouchers = [
     },
   },
   {
-    code: `50%OFF#${versionNumber}`,
+    code: "50%OFF",
     object: "voucher",
     type: "DISCOUNT_VOUCHER",
     category: "STANDALONE",
     discount: { type: "PERCENT", percent_off: 50 },
     metadata: {
-      demostoreName: `50%OFF`,
+      demostoreName: "50%OFF",
       demostoreAssignedValRules: "",
       demostoreVersion: versionNumber,
       demostoreDescription: "Global coupon",
@@ -39,7 +39,7 @@ exports.vouchers = [
 
 exports.campaigns = [
   {
-    name: `Welcome wave 5% off #${versionNumber}`,
+    name: "Welcome wave 5% off",
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
@@ -47,7 +47,7 @@ exports.campaigns = [
     },
     metadata: {
       demostoreName: "Welcome wave 5% off",
-      demostoreAssignedValRules: "",
+      demostoreAssignedValRules: "Welcome wave 5% off Daniel Wieszcz; Welcome wave 5% off Alice Morgan; Welcome wave 5% off JD",
       demostoreVersion: versionNumber,
       demostoreDescription: "Only current customer can validate the coupon",
       demostoreSteps: "Customer: Current customer",
@@ -56,7 +56,7 @@ exports.campaigns = [
     },
   },
   {
-    name: `Buy One - Get One #${versionNumber}`,
+    name: "Buy One - Get One",
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
@@ -64,64 +64,64 @@ exports.campaigns = [
     },
     metadata: {
       demostoreName: "Buy One - Get One",
-      demostoreAssignedValRules: "val_qIRy7h0VKyge",
+      demostoreAssignedValRules: "Buy One - Get One",
       demostoreVersion: versionNumber,
       demostoreDescription: "Add to items to cart to use this coupon",
       demostoreSteps:
-        "Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g",
+        "Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra",
       demostoreOrder: 1,
-      demostoreBOGO: "1x Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g",
+      demostoreBOGO:
+        "1x Johan & Nyström - Sumatra",
       demostoreCategory: "CAMPAIGN",
     },
   },
   {
-    name: `5% off for Illy Arabica Selection - Guatemala #${versionNumber}`,
+    name: "5% off for Illy Arabica - Guatemala",
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
       discount: { percent_off: 5, type: "PERCENT" },
     },
     metadata: {
-      demostoreName: "5% off for Illy Arabica Selection - Guatemala",
-      demostoreAssignedValRules: "val_l6k6T16xpQYN",
+      demostoreName: "5% off for Illy Arabica - Guatemala",
+      demostoreAssignedValRules: "5% off for Illy Arabica - Guatemala",
       demostoreVersion: versionNumber,
       demostoreDescription:
-        "Total cart value must be greater than $50 and you must have a Illy Arabica Selection - Guatemala in it",
+        "Total cart value must be greater than $50 and you must have a Illy Arabica - Guatemala in it",
       demostoreSteps:
-        "Cart value: > $50;Cart contains: Illy Arabica Selection - Guatemala",
+        "Cart value: > $50;Cart contains: Illy Arabica - Guatemala",
       demostoreOrder: 2,
       demostoreCategory: "CAMPAIGN",
     },
   },
   {
-    name: `$15 off for Johan & Nystrom - Bourbon Jungle double-pack #${versionNumber}`,
+    name: "$15 off for Johan & Nystrom - Bourbon double-pack",
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
       discount: { amount_off: 1500, type: "AMOUNT" },
     },
     metadata: {
-      demostoreName:
-        "$15 off for Johan & Nystrom - Bourbon Jungle double-pack",
-      demostoreAssignedValRules: "val_phBbhUNtDFHj",
+      demostoreName: "$15 off for Johan & Nystrom - Bourbon double-pack",
+      demostoreAssignedValRules: "$15 off for Johan & Nystrom - Bourbon double-pack",
       demostoreVersion: versionNumber,
       demostoreDescription:
-        "You must have 2 of Johan & Nyström - Bourbon Jungle in cart",
-      demostoreSteps: "Cart contains: 2x Johan & Nyström - Bourbon Jungle",
+        "You must have 2 of Johan & Nyström - Bourbon in cart",
+      demostoreSteps: "Cart contains: 2x Johan & Nyström - Bourbon",
       demostoreOrder: 3,
       demostoreCategory: "CAMPAIGN",
     },
   },
   {
-    name: `13% off - Local promotion (Poland) #${versionNumber}`,
+    name: "13% off - Local promotion",
     type: "AUTO_UPDATE",
     voucher: {
       type: "DISCOUNT_VOUCHER",
       discount: { percent_off: 13, type: "PERCENT" },
     },
     metadata: {
-      demostoreName: "Only for Polish customers",
-      demostoreAssignedValRules: "val_AHvj4CKkJmJq",
+      demostoreName: "13% off - Local promotion",
+      demostoreAssignedValRules: "13% off - Local promotion",
       demostoreVersion: versionNumber,
       demostoreDescription: "Only for Polish customers",
       demostoreSteps: "Customers segment: Customers from Poland",
@@ -134,7 +134,7 @@ exports.campaigns = [
 exports.segments = [
   {
     type: "auto-update",
-    name: "Poland",
+    name: "13% off - Local promotion",
     filter: {
       "address.country": {
         conditions: {
@@ -145,9 +145,207 @@ exports.segments = [
   },
 ];
 
+exports.validationRules = [
+  {
+    name: "Buy One - Get One",
+    error: { message: "Check campaing rules" },
+    rules: {
+      "1": {
+        name: "product.id",
+        error: {
+          message:
+            "Cart must contain Johan & Nyström - Fika and Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g",
+        },
+        rules: {},
+        conditions: {
+          $is: [
+            {
+              source_id: "14",
+            },
+          ],
+        },
+      },
+      "2": {
+        name: "product.id",
+        error: {
+          message:
+            "Cart must contain Johan & Nyström - Fika and Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g",
+        },
+        rules: {
+          "1": {
+            name: "product.discount_applicable",
+            rules: {},
+            conditions: { $is: [true] },
+          },
+          logic: "1",
+        },
+        conditions: {
+          $is: [
+            {
+              source_id: "15",
+            },
+          ],
+        },
+      },
+      logic: "(1 and 2)",
+    },
+  },
+  {
+    name: "Voucher - One redemption per customer",
+    error: { message: "Customer can redeem this voucher only once" },
+    rules: {
+      "1": {
+        name: "redemption.count.per_customer",
+        error: { message: "Customer can redeem this voucher only once" },
+        rules: {},
+        conditions: { $less_than_or_equal: [1] },
+      },
+      logic: "1",
+    },
+  },
+  {
+    name: "Voucher - Only for Daniel Wieszcz",
+    error: { message: "Only Daniel Wieszcz can use this coupon" },
+    rules: {
+      "1": {
+        name: "customer.metadata",
+        error: { message: "Only Daniel Wieszcz can use this coupon" },
+        rules: {},
+        property: "demostore_id",
+        conditions: { $is: ["danielwieszcz"] },
+      },
+      logic: "1",
+    },
+  },
+  {
+    name: "Voucher - Only for Alice Morgan",
+    error: { message: "Only Alice Morgan can use this coupon" },
+    rules: {
+      "1": {
+        name: "customer.metadata",
+        error: { message: "Only Alice Morgan can use this coupon" },
+        rules: {},
+        property: "demostore_id",
+        conditions: { $is: ["alicemorgan"] },
+      },
+      logic: "1",
+    },
+  },
+  {
+    name: "Voucher - Only for JD",
+    error: { message: "Only JD can validate this coupon" },
+    rules: {
+      "1": {
+        name: "customer.metadata",
+        error: { message: "Only JD can validate this coupon" },
+        rules: {},
+        property: "demostore_id",
+        conditions: { $is: ["jd"] },
+      },
+      logic: "1",
+    },
+  },
+  {
+    name: "Without Nivona CafeRomatica 759",
+    error: { message: "Check campaign rules" },
+    rules: {
+      "1": {
+        name: "product.id",
+        error: {
+          message: "Your cart can't include Nivona CafeRomatica 759",
+        },
+        rules: {},
+        conditions: {
+          $is_not: [
+            {
+              source_id: "13",
+            },
+          ],
+        },
+      },
+      logic: "1",
+    },
+  },
+  {
+    name: "Only for Polish customers",
+    error: { message: "Check campaign rules" },
+    rules: {
+      "1": {
+        name: "customer.segment",
+        error: { message: "Customer must be from Poland" },
+        rules: {},
+        conditions: { $is: [{ name: "Customers from Poland" }] },
+      },
+      logic: "1",
+    },
+    assignments_count: "20",
+  },
+  {
+    name: "Cart includes 2 of Johan & Nyström - Bourbon Jungle",
+    error: { message: "Check the campaign rules" },
+    rules: {
+      "1": {
+        name: "product.id",
+        error: {
+          message: "You must add 2 or more Johan & Nyström - Bourbon Jungle",
+        },
+        rules: {
+          "1": {
+            name: "product.quantity",
+            rules: {},
+            conditions: { $more_than_or_equal: [2] },
+          },
+          logic: "1",
+        },
+        conditions: {
+          $is: [
+            {
+              source_id: "12",
+            },
+          ],
+        },
+      },
+      logic: "1",
+    },
+    assignments_count: "23",
+  },
+  {
+  
+    name: "More than $50 in cart and Illy Arabica Selection - Guatemala",
+    error: { message: "Check the campaign rules" },
+    rules: {
+      "1": {
+        name: "product.id",
+        error: {
+          message:
+            "You have to add Illy Arabica Selection - Guatemala to your cart",
+        },
+        rules: {},
+        conditions: {
+          $is: [
+            {
+              id: "prod_AthoW9hhqEpYC0",
+              object: "product",
+              source_id: "11",
+            },
+          ],
+        },
+      },
+      "2": {
+        name: "order.amount",
+        error: { message: "Total cart value must be more than $50" },
+        rules: {},
+        conditions: { $more_than: [5000] },
+      },
+      logic: "(1) and (2)",
+    },
+    assignments_count: "24",
+  },
+];
+
 exports.products = [
   {
-    name: "Illy Arabica Selection - Guatemala",
+    name: "Illy Arabica - Guatemala",
     source_id: "11",
     price: 830,
     metadata: {
@@ -158,7 +356,7 @@ exports.products = [
       imgUrl:
         "https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Illy+Arabica+Selection+-+Guatemala.jpg",
       info:
-        "Illy Arabica Selection is a new line of single origin coffee from Illy's roaster. The beans from Guatemala is characterized by a complex flavour with the delicate hints of caramel, chocolate and honey.\n\nIn Guatemala, Coffee is grown on the fertile soil high in the mountains. Suitable temperatures are the result of the hot air current from Mexico. That, along with farmers' care, results in the beans with intense aroma, complex flavour and pleasant sweetness.",
+        "Illy Arabica is a new line of single origin coffee from Illy's roaster. The beans from Guatemala is characterized by a complex flavour with the delicate hints of caramel, chocolate and honey.\n\nIn Guatemala, Coffee is grown on the fertile soil high in the mountains. Suitable temperatures are the result of the hot air current from Mexico. That, along with farmers' care, results in the beans with intense aroma, complex flavour and pleasant sweetness.",
       weight: 250,
       slug: "8003753970073",
       sku: "8003753970073",
@@ -168,7 +366,7 @@ exports.products = [
     },
   },
   {
-    name: "Johan & Nyström - Bourbon Jungle",
+    name: "Johan & Nyström - Bourbon",
     source_id: "12",
     price: 1750,
     metadata: {
@@ -231,7 +429,7 @@ exports.products = [
     },
   },
   {
-    name: "Johan & Nyström - Sumatra Gayo Mountain",
+    name: "Johan & Nyström - Sumatra",
     source_id: "15",
     price: 1900,
     metadata: {
@@ -241,7 +439,7 @@ exports.products = [
       imgUrl:
         "https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Johan+%26+Nyström+-+Sumatra+Gayo+Mountain+Fairtrade+500g.jpg",
       info:
-        "Sumatra Gayo Mountain comes from the province of Ache located in the northern part of Sumatra. This is dark roasted coffee with the intense aroma of spices and fresh figs. Its rich, well-balanced flavour will satisfy even the most demanding palate.\n\nThis coffee comes from Koptan Gayo Megah Bersiri cooperative, which currently has 545 members. The cooperative started to operate in January 2012 and, as soon as in November of the same year, it received the full status of an organic coffee producer and Fair Trade certificate.",
+        "Sumatra comes from the province of Ache located in the northern part of Sumatra. This is dark roasted coffee with the intense aroma of spices and fresh figs. Its rich, well-balanced flavour will satisfy even the most demanding palate.\n\nThis coffee comes from Koptan Gayo Megah Bersiri cooperative, which currently has 545 members. The cooperative started to operate in January 2012 and, as soon as in November of the same year, it received the full status of an organic coffee producer and Fair Trade certificate.",
       weight: 500,
       slug: "857354768463",
       sku: "857354768463",
@@ -271,7 +469,7 @@ exports.products = [
     },
   },
   {
-    name: "Johan & Nyström - Urban Juice",
+    name: "Johan & Nyström - Urban",
     source_id: "17",
     price: 1800,
     metadata: {
@@ -291,7 +489,7 @@ exports.products = [
     },
   },
   {
-    name: "Hard Beans - Brazil Samambaia",
+    name: "Hard Beans - Brazil",
     source_id: "18",
     price: 3000,
     metadata: {
@@ -311,7 +509,7 @@ exports.products = [
     },
   },
   {
-    name: "Johan & Nyström - Buena Vista",
+    name: "Johan & Nyström - Bueno",
     source_id: "19",
     price: 1900,
     metadata: {
@@ -321,7 +519,7 @@ exports.products = [
       imgUrl:
         "https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Johan+%26+Nyström+-+Buena+Vista+Fairtrade.jpg",
       info:
-        "Buena Vista is Fair Trade coffee. It contains 100% organic and certified coffee beans. This healthy blend tastes best when brewed using French Press or filter coffee maker.",
+        "Bueno is Fair Trade coffee. It contains 100% organic and certified coffee beans. This healthy blend tastes best when brewed using French Press or filter coffee maker.",
       weight: 500,
       slug: "7350045060808",
       sku: "7350045060808",
@@ -331,7 +529,7 @@ exports.products = [
     },
   },
   {
-    name: "Johan & Nyström - Espresso Fairtrade",
+    name: "Johan & Nyström - Espresso",
     source_id: "20",
     price: 1900,
     metadata: {
@@ -351,7 +549,7 @@ exports.products = [
     },
   },
   {
-    name: "Illy Espresso Decaffeinato - ground coffee",
+    name: "Illy Espresso Decaffeinato",
     source_id: "21",
     price: 760,
     metadata: {
@@ -370,28 +568,28 @@ exports.products = [
       total: 0,
     },
   },
+  // {
+  //   name: "Illy Espresso Decaffeinato - coffee beans",
+  //   source_id: "22",
+  //   price: 760,
+  //   metadata: {
+  //     demostore: "moltin",
+  //     company: "Illy",
+  //     categories: ["Coffee", "Whole Bean", "Decaffeinated"],
+  //     imgUrl:
+  //       "https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Illy+Espresso+Decaffeinato+-+Decaffeinated+coffee+beans.jpg",
+  //     info:
+  //       "According to the Illy's roaster, caffeine content in the blend is less than 0.05%, which makes it very gentle on your stomach so you can drink it without having to worry in case of any medical contraindications for drinking of traditional coffee.\n\nIlly espresso is coffee with thick chestnut crema. Its taste offers many flavours such as nuts, fruit and pleasant wood notes.",
+  //     weight: 250,
+  //     slug: "8003753900551",
+  //     sku: "8003753900551",
+  //     inCart: false,
+  //     count: 0,
+  //     total: 0,
+  //   },
+  // },
   {
-    name: "Illy Espresso Decaffeinato - coffee beans",
-    source_id: "22",
-    price: 760,
-    metadata: {
-      demostore: "moltin",
-      company: "Illy",
-      categories: ["Coffee", "Whole Bean", "Decaffeinated"],
-      imgUrl:
-        "https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Illy+Espresso+Decaffeinato+-+Decaffeinated+coffee+beans.jpg",
-      info:
-        "According to the Illy's roaster, caffeine content in the blend is less than 0.05%, which makes it very gentle on your stomach so you can drink it without having to worry in case of any medical contraindications for drinking of traditional coffee.\n\nIlly espresso is coffee with thick chestnut crema. Its taste offers many flavours such as nuts, fruit and pleasant wood notes.",
-      weight: 250,
-      slug: "8003753900551",
-      sku: "8003753900551",
-      inCart: false,
-      count: 0,
-      total: 0,
-    },
-  },
-  {
-    name: "Hario Cafe Press Slim S Black",
+    name: "Hario Cafe Press Slim S",
     source_id: "23",
     price: 3000,
     metadata: {
@@ -410,28 +608,28 @@ exports.products = [
       total: 0,
     },
   },
+  // {
+  //   name: "Hario Cafe Press Slim S Red",
+  //   source_id: "24",
+  //   price: 3000,
+  //   metadata: {
+  //     demostore: "moltin",
+  //     company: "Hario",
+  //     categories: ["Coffee Machines"],
+  //     imgUrl:
+  //       "https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Hario+Cafe+Press+Slim+S+Red.jpg",
+  //     info:
+  //       "Hario Cafe Press Slim is a typical French Press, red version, made in Japan. Capacity: 240 ml Colour: red.\nSmall and handy, used to brew 2 cups of tea or coffee. Just pour hot water over ground coffee, press the brew and, in a few minutes, you can enjoy your favourite coffee! How to prepare coffee with French Press? You can find the answer in our Knowledge Base: French Press.",
+  //     weight: 0,
+  //     slug: "4977642153615",
+  //     sku: "4977642153615",
+  //     inCart: false,
+  //     count: 0,
+  //     total: 0,
+  //   },
+  // },
   {
-    name: "Hario Cafe Press Slim S Red",
-    source_id: "24",
-    price: 3000,
-    metadata: {
-      demostore: "moltin",
-      company: "Hario",
-      categories: ["Coffee Machines"],
-      imgUrl:
-        "https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Hario+Cafe+Press+Slim+S+Red.jpg",
-      info:
-        "Hario Cafe Press Slim is a typical French Press, red version, made in Japan. Capacity: 240 ml Colour: red.\nSmall and handy, used to brew 2 cups of tea or coffee. Just pour hot water over ground coffee, press the brew and, in a few minutes, you can enjoy your favourite coffee! How to prepare coffee with French Press? You can find the answer in our Knowledge Base: French Press.",
-      weight: 0,
-      slug: "4977642153615",
-      sku: "4977642153615",
-      inCart: false,
-      count: 0,
-      total: 0,
-    },
-  },
-  {
-    name: "Hario V60-01 Plastic Dripper White",
+    name: "Hario V60-01 Plastic Dripper",
     source_id: "25",
     price: 520,
     metadata: {
@@ -451,7 +649,7 @@ exports.products = [
     },
   },
   {
-    name: "Hario V60-01 Plastic Dripper Red",
+    name: "Hario V60-02 Plastic Dripper",
     source_id: "26",
     price: 520,
     metadata: {
@@ -471,7 +669,7 @@ exports.products = [
     },
   },
   {
-    name: "Hario V60 Plastic Dripper 01 clear",
+    name: "Hario V60 Plastic Dripper 01",
     source_id: "27",
     price: 520,
     metadata: {
@@ -491,7 +689,7 @@ exports.products = [
     },
   },
   {
-    name: "Hario Love Dori - Loveripper",
+    name: "Hario Love Dori",
     source_id: "28",
     price: 450,
     metadata: {
@@ -511,7 +709,7 @@ exports.products = [
     },
   },
   {
-    name: "Hario V60-02 paper filters",
+    name: "Hario V60-02 filters",
     source_id: "29",
     price: 570,
     metadata: {
@@ -531,7 +729,7 @@ exports.products = [
     },
   },
   {
-    name: "Glowbeans - The Gabi Master A",
+    name: "Glowbeans",
     source_id: "30",
     price: 790,
     metadata: {

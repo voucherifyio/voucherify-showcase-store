@@ -4,15 +4,15 @@ import Button from "react-bootstrap/Button";
 
 const Product = ({ product, value }) => {
   return (
-    <div className="col-lg-4 col-md-12 col-sm-12">
+    <div className="col-lg-4 p-4 col-md-12 col-sm-12">
       <div className="product-grid">
         <React.Fragment>
           <Link to={`/details/${product.id}`}>
-            <div className="product-image" id={product.id}>
+            <div className="product-image p-4" id={product.id}>
               <img
                 className="pic-1"
                 src={product.image_url}
-                alt="productImage"
+                alt={product.name}
               />
             </div>
           </Link>

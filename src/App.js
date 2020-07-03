@@ -14,6 +14,7 @@ import Modal from "./components/Modal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./components/Sidebar/Sidebar";
+import "voucherify.js";
 
 const toastOptions = {
   position: "bottom-center",
@@ -32,6 +33,11 @@ const App = () => {
   const handleSidebar = () => {
     setSidebar(!sidebar);
   };
+
+  window.Voucherify.initialize(
+    process.env.REACT_APP_APPLICATION_ID,
+    process.env.REACT_APP_CLIENT_SECRET_KEY)
+
   return (
     <>
       <div className="d-none d-md-block">
@@ -40,6 +46,7 @@ const App = () => {
             <React.Fragment>
               <div className="mainContent">
                 <Navigation sidebar={sidebar} handleSidebar={handleSidebar} />
+
                 <Switch>
                   <Route exact path="/" component={MainPage} />
                   <Route path="/store" component={ProductList} />

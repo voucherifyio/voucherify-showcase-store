@@ -49,7 +49,6 @@ class CustomerProvider extends Component {
       }).then((response) => response.json());
 
       if (session.coupons.length === 0) {
-        console.log("Here!");
         this.setState({
           sessionCode: session.session,
           publishedVouchers: readValueFromLocalStorage("publishedVouchers"),

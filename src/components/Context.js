@@ -15,7 +15,6 @@ const reducer = (action) => (state, props) => {
     });
 
     let cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
-    console.log(cartTotal);
     let discountedAmount = 0;
     let cartTotalAfterPromotion = cartTotal;
 
@@ -67,12 +66,6 @@ const reducer = (action) => (state, props) => {
     );
     localStorage.setItem("appliedVoucher", JSON.stringify(voucher));
 
-    console.log("Cart Payload");
-    console.log({
-      amount: cartTotal,
-      items: cartItems,
-    });
-
     return {
       cart: cartItems,
       discountedAmount,
@@ -99,8 +92,8 @@ const reducer = (action) => (state, props) => {
       cartTotalAfterPromotion:
         readValueFromLocalStorage("cartTotalAfterPromotion") || 0,
       appliedVoucher: readValueFromLocalStorage("appliedVoucher") || null,
-      products: readValueFromLocalStorage("products") | [],
-      lastOrderID: readValueFromLocalStorage("lastOrderID") | null,
+      products: readValueFromLocalStorage("products") || [],
+      lastOrderID: readValueFromLocalStorage("lastOrderID") || null,
     };
   };
 
@@ -193,11 +186,11 @@ class ProductProvider extends Component {
     }
     // Coupon revalidation logic
     if (this.state.appliedVoucher) {
-      console.log("Voucher applied. Item added - revalidate voucher");
-      this.addPromotionToCart(
-        this.state.appliedVoucher.code,
-        this.state.appliedVoucher.customer
-      );
+      // this.addPromotionToCart(
+      //   this.state.appliedVoucher.code,
+      //   this.state.appliedVoucher.customer
+      // );
+      this.removePromotionFromCart();
     }
   };
 
@@ -205,22 +198,19 @@ class ProductProvider extends Component {
     // const tempCart = [...this.state.cart];
     const selectedProduct = this.state.cart.find((item) => item.id === id);
     selectedProduct.count = qt;
-    selectedProduct.total = selectedProduct.price * qt
+    selectedProduct.total = selectedProduct.price * qt;
     this.dispatch(SET_CART, {
       cart: this.state.cart,
     });
 
     // Coupon revalidation logic
     if (this.state.appliedVoucher) {
-      console.log(
-        "Voucher applied. Item quantity changed - revalidate voucher"
-      );
-      console.log(this.state.cartTotal);
-      this.addPromotionToCart(
-        this.state.appliedVoucher.code,
-        this.state.appliedVoucher.customer,
-        this.state.cartTotal
-      );
+      // this.addPromotionToCart(
+      //   this.state.appliedVoucher.code,
+      //   this.state.appliedVoucher.customer,
+      //   this.state.cartTotal
+      // );
+      this.removePromotionFromCart();
     }
   };
 
@@ -237,11 +227,11 @@ class ProductProvider extends Component {
 
     // Coupon revalidation logic
     if (this.state.appliedVoucher) {
-      console.log("Voucher applied. Item removed - revalidate voucher");
-      this.addPromotionToCart(
-        this.state.appliedVoucher.code,
-        this.state.appliedVoucher.customer
-      );
+      // this.addPromotionToCart(
+      //   this.state.appliedVoucher.code,
+      //   this.state.appliedVoucher.customer
+      // );
+      this.removePromotionFromCart();
     }
   };
 
@@ -268,9 +258,6 @@ class ProductProvider extends Component {
         amount: this.state.cartTotal,
         items: this.state.cart.map(prepareItemsPayload),
       };
-
-      console.log("Redemption Payload");
-      console.log(redemptionPayload);
 
       const voucher = await new Promise((resolve, reject) => {
         window.Voucherify.setIdentity(customer.source_id);
@@ -328,8 +315,8 @@ class ProductProvider extends Component {
       return {
         product_id: item.id,
         quantity: item.count,
-        price: item.price * 100,
-        amount: item.total * 100,
+        price: item.price,
+        amount: item.total,
       };
     };
 
@@ -338,7 +325,7 @@ class ProductProvider extends Component {
       const orderPayload = {
         source_id: ID(),
         items: this.state.cart.map(prepareItemsPayload),
-        amount: this.state.cartTotalAfterPromotion * 100,
+        amount: this.state.cartTotal,
         customer,
         status: "FULFILLED",
       };
@@ -365,7 +352,7 @@ class ProductProvider extends Component {
           customer,
           order: {
             source_id: ID(),
-            amount: this.state.cartTotalAfterPromotion * 100,
+            amount: this.state.cartTotal,
             items: this.state.cart.map(prepareItemsPayload),
           },
         };

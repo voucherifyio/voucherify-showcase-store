@@ -1,7 +1,6 @@
 import React from "react";
 import CartItem from "./CartItem";
 import _ from "lodash";
-import "voucherify.js";
 import CartForm from "./CartForm";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
@@ -11,10 +10,8 @@ import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
 import Tooltip from "@material-ui/core/Tooltip";
 
-window.Voucherify.initialize(
-  "9bdc4a2e-e669-4821-8901-e0106183d169",
-  "99143828-cdbc-489d-beb1-f68838d67859"
-);
+
+
 
 const CartList = ({ value, customerValue }) => {
   const {

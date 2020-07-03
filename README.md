@@ -4,6 +4,16 @@
 
 for production mode you should run in the project directory
 
+Add your `Application ID` and `Application Secret Key` to your environment variables. We're using Heroku Redis to set up client sessions. Provide `REDIS_URL` to your environment settings.
+
+Then run `npm install` to set up the Application. After that, run `npm run setup` to create Campaigns, Products Validation Rules, and Validation Rules assignment.
+
+Validation rules based on the customer segment are created when a new user enters the site.
+
+Remember to add `Your website URL` or `*` to Client-side Settings of your project.
+
+After setting up run:
+
 `npm start`
 
 and the entire app is served from port 3000

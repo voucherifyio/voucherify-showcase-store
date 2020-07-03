@@ -26,35 +26,11 @@ app.use(
   })
 );
 
-// if (process.env.NODE_ENV !== "production") {
-//   app.use(
-//     session({
-//       store: new SQLiteStore({ dir: ".data" }),
-//       secret: "keyboard cat",
-//       resave: true,
-//       saveUninitialized: false,
-//       cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // month
-//     }),
-//     cors({
-//       credentials: true,
-//       origin: "http://localhost:3001", // REACT_APP_API_URL
-//     })
-//   );
-// } else {
-//   const redisClient = redis.createClient(process.env.REDIS_URL); //REDIS_URL is provided by Heroku when using Redis Heroku Addon
-//   app.use(
-//     session({
-//       store: new RedisStore({ client: redisClient }),
-//       secret: "keyboard cat",
-//       resave: false,
-//     })
-//   );
-// }
 let storeCustomers = require("./src/storeCustomers.json");
 
 const voucherify = voucherifyClient({
-  applicationId: process.env.APPLICATION_ID,
-  clientSecretKey: process.env.CLIENT_SECRET_KEY,
+  applicationId: process.env.REACT_APP_APPLICATION_ID,
+  clientSecretKey: process.env.REACT_APP_CLIENT_SECRET_KEY,
 });
 
 function publishForCustomer(id) {
@@ -111,8 +87,8 @@ app.get("/init", async (request, response) => {
                 country: customer.metadata.country,
                 gender: customer.metadata.gender,
                 demostore_id: customer.metadata.demostore_id,
-                customerValidationRuleId:
-                  customer.metadata.customerValidationRuleId,
+                customerValidationRuleName:
+                  customer.metadata.customerValidationRuleName,
               },
               address: {
                 city: customer.address.city,
@@ -138,11 +114,9 @@ app.get("/init", async (request, response) => {
           publishForCustomer(createdCustomer.source_id)
         ).catch((e) => console.error(`[Publishing coupons][Error] - ${e}`));
         let coupons = await createdCoupons;
-        //Assing validation rules for voucher "Customer unique code"
+        //Assing validation rules for voucher "Welcome wave 5% off"
         coupons.forEach((coupon) => {
-          if (
-            coupon.voucher.metadata.demostoreName === "Customer unique code"
-          ) {
+          if (coupon.voucher.metadata.demostoreName === "Welcome wave 5% off") {
             customerCoupons.push(coupon);
           }
         });
@@ -151,8 +125,16 @@ app.get("/init", async (request, response) => {
           (coupon) => coupon.tracking_id === createdCustomer.source_id
         );
         if (typeof uniqueCoupon !== "undefined") {
-          let customerValidationRuleId =
-            createdCustomer.metadata.customerValidationRuleId;
+          let customerValidationRuleName =
+            createdCustomer.metadata.customerValidationRuleName;
+
+          let ValidationRulesList = await voucherify.validationRules.list();
+
+          let customerValidationRuleId = ValidationRulesList.data.find(
+            (ValidationRule) =>
+              ValidationRule.name === customerValidationRuleName
+          ).id;
+
           let assignment = { voucher: uniqueCoupon.voucher.code };
           await voucherify.validationRules.createAssignment(
             customerValidationRuleId,
@@ -236,10 +218,13 @@ app.get("/products", async (request, response) => {
   try {
     const productsList = await voucherify.products.list();
 
-    //Filter out 'Shipping" - default Voucherify product
+    //Filter out default Voucherify products
 
     const products = productsList.products.filter(
-      (product) => product.name !== "Shipping"
+      (product) =>
+        product.name !== "Shipping" &&
+        product.name !== "Watchflix" &&
+        product.name !== "Apple iPhone 8"
     );
 
     return response.json(products);
@@ -259,9 +244,7 @@ app.post("/order", async (request, response) => {
 });
 
 app.post("/redeem", async (request, response) => {
-  console.log("Backend redemption");
   const { code } = request.body;
-  console.log(code);
   try {
     const redemption = await voucherify.redemptions.redeem(code, request.body);
     return response.json(redemption);

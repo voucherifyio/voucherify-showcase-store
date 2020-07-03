@@ -8,7 +8,7 @@
       "country": "UK",
       "gender": "F",
       "demostore_id": "alicemorgan",
-      "customerValidationRuleId": "val_65KWyfD3XBTP"
+      "customerValidationRuleName": "Welcome wave 5% off Alice Morgan"
     },
     "created_at": "2017-08-08T07:58:09.635Z",
     "address": {
@@ -46,7 +46,7 @@
       "country": "USA",
       "gender": "M",
       "demostore_id": "danielwieszcz",
-      "customerValidationRuleId": "val_ykxVjIUrePLa"
+      "customerValidationRuleName": "Welcome wave 5% off Daniel Wieszcz"
     },
     "created_at": "2018-08-08T07:58:09.635Z",
     "address": {
@@ -75,7 +75,7 @@
       "country": "Poland",
       "gender": "M",
       "demostore_id": "jd",
-      "customerValidationRuleId": "val_XX9NnCjfApaE"
+      "customerValidationRuleName": "Welcome wave 5% off JD"
     },
     "created_at": "2017-08-08T07:58:09.635Z",
     "address": {

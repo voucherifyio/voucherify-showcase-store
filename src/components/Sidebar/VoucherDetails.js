@@ -76,13 +76,10 @@ const VoucherDetails = ({ voucher, code }) => {
             </CopyToClipboard>
           </ClickAwayListener>
         </div>
-        <p className="campaign-description section-heading redemption-rules">
-          Current redemptions: {voucher.redemption.redeemed_quantity}
-        </p>
         {voucher.metadata.demostoreSteps && (
           <>
             <p className="campaign-description section-heading redemption-rules">
-              Redemption rules:
+              Redemption rules
             </p>
             {voucher.metadata.demostoreSteps.split(";").map((step) => (
               <div
@@ -99,6 +96,15 @@ const VoucherDetails = ({ voucher, code }) => {
             ))}
           </>
         )}
+        <p className="campaign-description section-heading redemption-rules mt-4">
+          Voucher statistics
+        </p>
+        <p className="campaign-description redemption-rules my-1">
+          Total number of redemptions:{" "}
+          <span className="section-heading">
+            {voucher.redemption.redeemed_quantity}
+          </span>
+        </p>
       </div>
     </div>
   );

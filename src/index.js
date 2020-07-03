@@ -9,16 +9,16 @@ import { CustomerProvider } from "./components/CustomerContext";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 ReactDOM.render(
-    <CustomerProvider>
-      <ProductProvider>
-        <Router>
-          <React.StrictMode>
-            <CssBaseline />
-            <App />
-          </React.StrictMode>
-        </Router>
-      </ProductProvider>
-    </CustomerProvider>,
+  <CustomerProvider>
+    <ProductProvider>
+      <Router>
+        <React.StrictMode>
+          <CssBaseline />
+          <App />
+        </React.StrictMode>
+      </Router>
+    </ProductProvider>
+  </CustomerProvider>,
   document.getElementById("root")
 );
 
