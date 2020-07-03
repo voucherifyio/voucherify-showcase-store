@@ -11,13 +11,8 @@ const voucherifyData = require("./setup/voucherifyData");
 const campaigns = voucherifyData.campaigns;
 const versionNumber = voucherifyData.versionNumber;
 const RedisStore = require("connect-redis")(session);
-const redisClient = redis.createClient(process.env.REDIS_URL);
-const voucherify = voucherifyClient({
-  applicationId: process.env.REACT_APP_APPLICATION_ID,
-  clientSecretKey: process.env.REACT_APP_CLIENT_SECRET_KEY,
-});
-let storeCustomers = require("./src/storeCustomers.json");
 
+const redisClient = redis.createClient(process.env.REDIS_URL);
 app.use(
   session({
     store: new RedisStore({ client: redisClient }),
@@ -27,9 +22,16 @@ app.use(
   }),
   cors({
     credentials: true,
-    origin: process.env.REACT_APP_API_URL,
+    origin: "http://localhost:3001", // REACT_APP_API_URL
   })
 );
+
+let storeCustomers = require("./src/storeCustomers.json");
+
+const voucherify = voucherifyClient({
+  applicationId: process.env.REACT_APP_APPLICATION_ID,
+  clientSecretKey: process.env.REACT_APP_CLIENT_SECRET_KEY,
+});
 
 function publishForCustomer(id) {
   const params = {
@@ -96,7 +98,7 @@ app.get("/init", async (request, response) => {
                 postal_code: customer.address.postal_code,
               },
             },
-            status: "PAID",
+            status: "FULFILLED",
           };
 
           await voucherify.orders.create(dummyOrderPayload);
@@ -152,6 +154,10 @@ app.get("/init", async (request, response) => {
     session: request.session.id,
     coupons: createdCouponsList,
   });
+});
+
+app.get("/ping", (req, res) => {
+  res.send("pong");
 });
 
 app.get("/customer/:source_id", async (request, response) => {
