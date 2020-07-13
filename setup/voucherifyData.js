@@ -53,7 +53,7 @@ exports.campaigns = [
       demostoreAssignedValRules:
         "Welcome wave 5% off Daniel Wieszcz; Welcome wave 5% off Alice Morgan; Welcome wave 5% off JD",
       demostoreVersion: versionNumber,
-      demostoreDescription: "Only current customer can validate the coupon",
+      demostoreDescription: "Only current customer can validate the coupon. Redeemable only once",
       demostoreSteps: "Customer: Current customer",
       demostoreOrder: 1,
       demostoreCategory: "CAMPAIGN",
