@@ -31,9 +31,9 @@ const reducer = (action) => (state, props) => {
         if (voucher.discount.type === "PERCENT") {
           const discountAmount = voucher.discount.percent_off;
           cartTotalAfterPromotion =
-            cartTotal - applicableProductInCart.total * (discountAmount / 100);
+            cartTotal - applicableProductInCart.price * (discountAmount / 100);
           discountedAmount =
-            applicableProductInCart.total * (discountAmount / 100);
+            applicableProductInCart.price * (discountAmount / 100);
         } else if (voucher.discount.type === "AMOUNT") {
           const discountAmount = voucher.discount.amount_off;
           cartTotalAfterPromotion =
@@ -254,11 +254,12 @@ class ProductProvider extends Component {
 
       const redemptionPayload = {
         code: couponCode,
-        customer,
+        customer: {id: customer.id, source_id: customer.source_id},
         amount: this.state.cartTotal,
         items: this.state.cart.map(prepareItemsPayload),
       };
 
+    
       const voucher = await new Promise((resolve, reject) => {
         window.Voucherify.setIdentity(customer.source_id);
 

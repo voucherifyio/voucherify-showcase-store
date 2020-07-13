@@ -44,10 +44,14 @@ exports.campaigns = [
     voucher: {
       type: "DISCOUNT_VOUCHER",
       discount: { percent_off: 5, type: "PERCENT" },
+      redemption: {
+        quantity: 1,
+      },
     },
     metadata: {
       demostoreName: "Welcome wave 5% off",
-      demostoreAssignedValRules: "Welcome wave 5% off Daniel Wieszcz; Welcome wave 5% off Alice Morgan; Welcome wave 5% off JD",
+      demostoreAssignedValRules:
+        "Welcome wave 5% off Daniel Wieszcz; Welcome wave 5% off Alice Morgan; Welcome wave 5% off JD",
       demostoreVersion: versionNumber,
       demostoreDescription: "Only current customer can validate the coupon",
       demostoreSteps: "Customer: Current customer",
@@ -70,8 +74,7 @@ exports.campaigns = [
       demostoreSteps:
         "Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra",
       demostoreOrder: 1,
-      demostoreBOGO:
-        "1x Johan & Nyström - Sumatra",
+      demostoreBOGO: "1x Johan & Nyström - Sumatra",
       demostoreCategory: "CAMPAIGN",
     },
   },
@@ -103,7 +106,8 @@ exports.campaigns = [
     },
     metadata: {
       demostoreName: "$15 off for Johan & Nystrom - Bourbon double-pack",
-      demostoreAssignedValRules: "$15 off for Johan & Nystrom - Bourbon double-pack",
+      demostoreAssignedValRules:
+        "$15 off for Johan & Nystrom - Bourbon double-pack",
       demostoreVersion: versionNumber,
       demostoreDescription:
         "You must have 2 of Johan & Nyström - Bourbon in cart",
@@ -310,7 +314,6 @@ exports.validationRules = [
     assignments_count: "23",
   },
   {
-  
     name: "More than $50 in cart and Illy Arabica Selection - Guatemala",
     error: { message: "Check the campaign rules" },
     rules: {

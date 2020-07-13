@@ -38,6 +38,7 @@ const App = () => {
     process.env.REACT_APP_APPLICATION_ID,
     process.env.REACT_APP_CLIENT_SECRET_KEY)
 
+
   return (
     <>
       <div className="d-none d-md-block">
