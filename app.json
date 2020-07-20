@@ -15,5 +15,10 @@
       "value": "3000",
       "required": false
     }
-  }
+  },
+  "addons": [
+    {
+      "plan": "heroku-redis:dev-hobby",
+    }
+  ]
 }
