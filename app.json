@@ -1,0 +1,22 @@
+{
+  "name": "Voucherify Reac Demo Store - 'Hot Beans'",
+  "description": "Set up your own Voucherify demo store to learn our API",
+  "keywords": ["voucherify", "API"],
+  "website": "https://www.voucherify.io",
+  "repository": "https://github.com/rspective/voucherify-react-demo-store",
+  "env": {
+    "REACT_APP_APPLICATION_ID": {
+      "description": "Your Voucherify Application ID"
+    },
+    "REACT_APP_CLIENT_SECRET_KEY": {
+      "description": "Your Voucherify Client Secret Key"
+    },
+    "REACT_APP_API_URL": {
+      "value": ""
+    },
+    "PORT": {
+      "value": "3000"
+    }
+  },
+  "addons": ["heroku-redis"]
+}
