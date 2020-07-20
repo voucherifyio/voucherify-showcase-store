@@ -4,6 +4,7 @@
   "keywords": ["voucherify", "API"],
   "website": "https://www.voucherify.io",
   "repository": "https://github.com/rspective/voucherify-react-demo-store",
+  "scripts": {},
   "env": {
     "REACT_APP_APPLICATION_ID": {
       "description": "Your Voucherify Application ID"
