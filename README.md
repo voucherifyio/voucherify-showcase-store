@@ -1,4 +1,4 @@
-# Voucherify React Demo Store - "Hot Beans"
+# Voucherify React Demo Store - "Hot Beans" [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 Simple react demo store for showcasing Voucherify abilities. 
 
