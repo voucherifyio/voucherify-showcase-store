@@ -11,10 +11,6 @@
     "REACT_APP_CLIENT_SECRET_KEY": {
       "description": "Your Voucherify Client Secret Key"
     },
-    "REACT_APP_API_URL": {
-      "value": "",
-      "required": false
-    },
     "PORT": {
       "value": "3000",
       "required": false
