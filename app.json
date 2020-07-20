@@ -16,12 +16,10 @@
       "required": false
     }
   },
-  "addons": [
-    {
-      "plan": "heroku-redis",
-      "options": 
-        "version": "5.0.9"S
-      }
+  "addons": [{
+    "plan": "heroku-redis:hobby-dev",
+    "options": {
+      "version": "5"
     }
-  ]
+  }]
 }
