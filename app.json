@@ -12,10 +12,12 @@
       "description": "Your Voucherify Client Secret Key"
     },
     "REACT_APP_API_URL": {
-      "value": ""
+      "value": "",
+      "required": false
     },
     "PORT": {
-      "value": "3000"
+      "value": "3000",
+      "required": false
     }
   },
   "addons": ["heroku-redis"]
