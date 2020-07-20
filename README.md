@@ -14,11 +14,11 @@ Add your Voucherify `Application ID` and `Application Secret Key` to your enviro
 
 Your environment variables should look like this:
 
-PORT=3000
-REACT_APP_APPLICATION_ID="YOUR APPLICATION ID"
-REACT_APP_CLIENT_SECRET_KEY="YOUR SECRET KEY"
-REACT_APP_API_URL=
-REDIS_URL="YOUR REDIS URL"
+* PORT=3000
+* REACT_APP_APPLICATION_ID="YOUR APPLICATION ID"
+* REACT_APP_CLIENT_SECRET_KEY="YOUR SECRET KEY"
+* REACT_APP_API_URL=
+* REDIS_URL="YOUR REDIS URL"
 
 The fastest way to install the demo store is to clone this project, set up a Heroku web application, add Heroku Redis extension, and then configure environment variables. After that, you can deploy this cloned store directly into your Heroku web application.
 
@@ -30,19 +30,19 @@ Setup correct env and env.development values:
 
 env:
 
-PORT=3000
-REACT_APP_APPLICATION_ID="YOUR APPLICATION ID"
-REACT_APP_CLIENT_SECRET_KEY="YOUR SECRET KEY"
-REACT_APP_API_URL=
-REDIS_URL="YOUR REDIS URL"
+* PORT=3000
+* REACT_APP_APPLICATION_ID="YOUR APPLICATION ID"
+* REACT_APP_CLIENT_SECRET_KEY="YOUR SECRET KEY"
+* REACT_APP_API_URL=
+* REDIS_URL="YOUR REDIS URL"
 
 env.development:
 
-PORT=3000
-REACT_APP_APPLICATION_ID="YOUR APPLICATION ID"
-REACT_APP_CLIENT_SECRET_KEY="YOUR SECRET KEY"
-REACT_APP_API_URL="http://localhost:3000"
-REDIS_URL="YOUR REDIS URL"
+* PORT=3000
+* REACT_APP_APPLICATION_ID="YOUR APPLICATION ID"
+* REACT_APP_CLIENT_SECRET_KEY="YOUR SECRET KEY"
+* REACT_APP_API_URL="http://localhost:3000"
+* REDIS_URL="YOUR REDIS URL"
 
 In the project folder run, `npm install` to set up the Application. After that, run `npm run setup` to create Campaigns, Products Validation Rules, and Validation Rules assignment.
 
