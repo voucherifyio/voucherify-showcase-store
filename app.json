@@ -18,7 +18,7 @@
   },
   "addons": [
     {
-      "plan": "heroku-redis:dev-hobby",
+      "plan": "heroku-redis:dev-hobby"
     }
   ]
 }
