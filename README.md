@@ -15,10 +15,13 @@ Add your Voucherify `Application ID` and `Application Secret Key` to your enviro
 Your environment variables should look like this:
 
 * PORT=3000
-* REACT_APP_APPLICATION_ID="YOUR APPLICATION ID"
-* REACT_APP_CLIENT_SECRET_KEY="YOUR SECRET KEY"
 * REACT_APP_API_URL=
 * REDIS_URL="YOUR REDIS URL"
+* REACT_APP_BACKEND_APPLICATION_ID="YOUR 'Application Keys' APPLICATION ID"
+* REACT_APP_BACKEND_CLIENT_SECRET_KEY="YOUR 'Application Keys' SECRET KEY"
+* REACT_APP_FRONTEND_APPLICATION_ID="YOUR 'Client-side Keys' APPLICATION ID"
+* REACT_APP_FRONTEND_CLIENT_SECRET_KEY="YOUR 'Client-side Keys' SECRET KEY"
+
 
 The fastest way to install the demo store is to clone this project, set up a Heroku web application, add Heroku Redis extension, and then configure environment variables. After that, you can deploy this cloned store directly into your Heroku web application.
 
@@ -31,16 +34,20 @@ Setup correct env and env.development values:
 env:
 
 * PORT=3000
-* REACT_APP_APPLICATION_ID="YOUR APPLICATION ID"
-* REACT_APP_CLIENT_SECRET_KEY="YOUR SECRET KEY"
+* REACT_APP_BACKEND_APPLICATION_ID="YOUR 'Application Keys' APPLICATION ID"
+* REACT_APP_BACKEND_CLIENT_SECRET_KEY="YOUR 'Application Keys' SECRET KEY"
+* REACT_APP_FRONTEND_APPLICATION_ID="YOUR 'Client-side Keys' APPLICATION ID"
+* REACT_APP_FRONTEND_CLIENT_SECRET_KEY="YOUR 'Client-side Keys' SECRET KEY"
 * REACT_APP_API_URL=
 * REDIS_URL="YOUR REDIS URL"
 
 env.development:
 
 * PORT=3000
-* REACT_APP_APPLICATION_ID="YOUR APPLICATION ID"
-* REACT_APP_CLIENT_SECRET_KEY="YOUR SECRET KEY"
+* REACT_APP_BACKEND_APPLICATION_ID="YOUR 'Application Keys' APPLICATION ID"
+* REACT_APP_BACKEND_CLIENT_SECRET_KEY="YOUR 'Application Keys' SECRET KEY"
+* REACT_APP_FRONTEND_APPLICATION_ID="YOUR 'Client-side Keys' APPLICATION ID"
+* REACT_APP_FRONTEND_CLIENT_SECRET_KEY="YOUR 'Client-side Keys' SECRET KEY"
 * REACT_APP_API_URL="http://localhost:3000"
 * REDIS_URL="YOUR REDIS URL"
 

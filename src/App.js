@@ -35,8 +35,8 @@ const App = () => {
   };
 
   window.Voucherify.initialize(
-    process.env.REACT_APP_APPLICATION_ID,
-    process.env.REACT_APP_CLIENT_SECRET_KEY)
+    process.env.REACT_APP_FRONTEND_APPLICATION_ID,
+    process.env.REACT_APP_FRONTEND_CLIENT_SECRET_KEY)
 
 
   return (

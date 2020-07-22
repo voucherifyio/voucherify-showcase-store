@@ -1,8 +1,8 @@
 require("dotenv").config();
 const voucherifyData = require("./voucherifyData");
 const voucherify = require("voucherify")({
-  applicationId: process.env.REACT_APP_APPLICATION_ID,
-  clientSecretKey: process.env.REACT_APP_CLIENT_SECRET_KEY,
+  applicationId: process.env.REACT_APP_BACKEND_APPLICATION_ID,
+  clientSecretKey: process.env.REACT_APP_BACKEND_CLIENT_SECRET_KEY,
 });
 const fs = require("fs");
 const dataDir = "./.data";
