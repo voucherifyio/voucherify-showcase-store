@@ -9,7 +9,7 @@ Simple react demo store for showcasing Voucherify abilities.
 
 ## Heroku installation
 
-Add your Voucherify `Application ID` and `Application Secret Key` to your environment variables. We're using Heroku Redis to store client sessions. Provide 
+Add your Voucherify `Application ID` and `Application Secret Key` for both your Application Keys and Client-side Keys to your environment variables. We're using Heroku Redis to store client sessions - provide 
 `REDIS_URL` to your environment variables or use another method to store session data.
 
 Your environment variables should look like this:
@@ -51,17 +51,16 @@ env.development:
 * REACT_APP_API_URL="http://localhost:3000"
 * REDIS_URL="YOUR REDIS URL"
 
-In the project folder run, `npm install` to set up the Application. After that, run `npm run setup` to create Campaigns, Products Validation Rules, and Validation Rules assignment.
+In the project folder run, `npm install` to set up the Application. After that, the app runs postinstall script to create Campaigns, Products Validation Rules, and Validation Rules assignment.
 
 After setting up run `npm start` to serve the entire application from port 3000
 
 ## Local development mode
 
-for development mode you now need to run two processes (i.e. 2 terminal tabs) `npm run dev-server` - this will start your server at localhost:3000 (it'll restart automatically upon any changes in server.js)
+for development mode you now need to run two processes (i.e. 2 terminal tabs):
 
-`npm run dev`
-
-this will start the react-scripts server at localhost:3001 => which is how you open up the app in the browser
+* `npm run dev-server` - this will start your server at localhost:3000 (it will restart automatically upon any changes in server.js)
+* `npm run dev` - this will start the react-scripts server at localhost:3001 (which is how you open up the app in the browser)
 
 ## Usage
 
