@@ -165,7 +165,7 @@ class ProductProvider extends Component {
     const product = this.getItem(id);
     const quantity = parseInt(qt, 10);
     const cart = [...this.state.cart];
-    const item = _.cloneDeep(cart.find((item) => item.id === id));
+    const item = _.cloneDeep(cart.find((item) => item.id === id)); // let's use _.cloneDeep only when we intend to modify the object; let's review other usages of this method
     if (item) {
       const selectedProduct = cart.find((item) => item.id === id);
       selectedProduct.count = selectedProduct.count + quantity;
@@ -205,6 +205,9 @@ class ProductProvider extends Component {
 
     // Coupon revalidation logic
     if (this.state.appliedVoucher) {
+
+      // can we remove these comments?
+  
       // this.addPromotionToCart(
       //   this.state.appliedVoucher.code,
       //   this.state.appliedVoucher.customer,
@@ -215,13 +218,12 @@ class ProductProvider extends Component {
   };
 
   removeItem = (id) => {
-    let tempCart = [...this.state.cart];
-    tempCart = tempCart.filter((item) => item.id !== id);
-    if (tempCart.length === 0) {
+    const updatedCart = this.state.cart.filter((item) => item.id !== id);
+    if (updatedCart.length === 0) {
       this.clearCart();
     } else {
       this.dispatch(SET_CART, {
-        cart: tempCart,
+        cart: updatedCart,
       });
     }
 
@@ -331,7 +333,7 @@ class ProductProvider extends Component {
         status: "FULFILLED",
       };
       await this.sendOrder(orderPayload).catch((err) => {
-        console.error(err);
+        console.error(err); // why don't we handle the error properly, rather than hiding it?
       });
       this.dispatch(CLEAR_CART);
       toast.success("Payment successful");

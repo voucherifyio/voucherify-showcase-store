@@ -1,5 +1,5 @@
 require("dotenv").config();
-const voucherifyData = require("./voucherifyData");
+const { campaigns, vouchers, products, segments } = require("./voucherifyData");
 const voucherify = require("voucherify")({
   applicationId: process.env.REACT_APP_BACKEND_APPLICATION_ID,
   clientSecretKey: process.env.REACT_APP_BACKEND_CLIENT_SECRET_KEY,
@@ -10,31 +10,19 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir);
 }
 
-let campaigns = voucherifyData.campaigns;
-let vouchers = voucherifyData.vouchers;
-let products = voucherifyData.products;
-let segments = voucherifyData.segments;
-
 const setupCampaigns = () => {
-  const campaignPromises = campaigns.map((campaign) => {
-    const thisCampaign = voucherify.campaigns.create(campaign);
-
-    thisCampaign.then(
-      (camp) => {
+  // lets refactor the other methods similarly
+  const campaignPromises = campaigns.map((campaign) =>
+    voucherify.campaigns.create(campaign)
+      .then((camp) => {
         const needsId = campaigns.find((c) => c.name === camp.name);
         needsId.voucherifyId = camp.id;
-        console.log(
-          `Campaign ${needsId.name} - ${needsId.voucherifyId} created`
-        );
-      },
-      (problem) =>
-        console.log(
-          `There was a problem creating product ${campaign.name}`,
-          JSON.stringify(problem, null, 2)
-        )
-    );
-    return thisCampaign;
-  });
+        console.log(`Campaign ${needsId.name} - ${needsId.voucherifyId} created`);
+      })
+      .catch((error) => {
+        console.log(`There was a problem creating product ${campaign.name}`, error)
+      })
+  );
 
   return Promise.all(campaignPromises)
     .then((resp) => console.log("ALL CAMPAIGNS SETUP") || resp)
@@ -43,14 +31,14 @@ const setupCampaigns = () => {
         fs.writeFile(
           "./.data/createdCampaigns.json",
           JSON.stringify(
-            r.map((sr) => sr),
+            r.map((sr) => sr), // wut?
             null,
             2
           ),
           () => {}
         ) || r
     )
-    .then(() => console.log("SAVED"));
+    .then(() => console.log("SAVED")); // well, not true. let's either log it in the fs.writeFile callback, or let's switch to fs.promises.writeFile().then(... SAVED ...)
 };
 
 const setupVouchers = () => {
@@ -61,6 +49,7 @@ const setupVouchers = () => {
       (vouch) => {
         const needsId = vouchers.find((v) => v.code === vouch.code);
         needsId.voucherifyId = vouch.id;
+        // voucher, thisVoucher, vouch, v .... do we need all these variables?
         console.log(
           `Voucher ${needsId.code} - ${needsId.voucherifyId} created`
         );
@@ -160,7 +149,7 @@ const setupCustomerSegments = () => {
       })
       .catch((problem) =>
         console.log(
-          `PROBLEM SETTING SEGMENT ${segment.name}`,
+          `PROBLEM SETTING SEGMENT ${segment.name}`, // can we make the logging statements a bit less LOUD? please iterate on this script a few times - run it, see if the logs make sense, if it doesnt log too much or too little, refactor, run again, until we have a nice, concise and uniform console output
           JSON.stringify(problem, null, 2)
         )
       );
@@ -190,7 +179,7 @@ const setupValidationRules = async () => {
   const rules = [
     {
       name: "Buy One - Get One",
-      error: { message: "Check campaing rules" },
+      error: { message: "Check campaign rules" },
       rules: {
         "1": {
           name: "product.id",
@@ -491,3 +480,7 @@ setupCampaigns()
   .then(setupVouchers)
   .then(setupCustomerSegments)
   .then(setupValidationRules);
+
+// if it's a list of step-by-step operations, why don't we use await?
+
+// anyhow, we need error handling at the end ;)

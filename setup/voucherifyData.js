@@ -152,7 +152,7 @@ exports.segments = [
 exports.validationRules = [
   {
     name: "Buy One - Get One",
-    error: { message: "Check campaing rules" },
+    error: { message: "Check campaign rules" },
     rules: {
       "1": {
         name: "product.id",
@@ -352,8 +352,8 @@ exports.products = [
     source_id: "11",
     price: 830,
     metadata: {
-      demostore: "moltin",
-      demostoreOrder: 1,
+      demostore: "moltin", /// why?
+      demostoreOrder: 1, // do we use that?
       company: "Illy",
       categories: ["Coffee", "Whole Bean", "Single Origin"],
       imgUrl:
@@ -363,9 +363,9 @@ exports.products = [
       weight: 250,
       slug: "8003753970073",
       sku: "8003753970073",
-      inCart: false,
-      count: 0,
-      total: 0,
+      inCart: false, // ?
+      count: 0, // ?
+      total: 0, // ?
     },
   },
   {
@@ -571,6 +571,10 @@ exports.products = [
       total: 0,
     },
   },
+
+
+  // whats the point of keeping all these here?
+
   // {
   //   name: "Illy Espresso Decaffeinato - coffee beans",
   //   source_id: "22",

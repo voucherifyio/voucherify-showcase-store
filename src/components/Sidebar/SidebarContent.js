@@ -62,7 +62,7 @@ const SidebarContent = () => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  const sortData = (a, b) => {
+  const sortData = (a, b) => { // I've seen these sorting algorithms in a few places now, can we move them all to some utils? or... perhaps we could use _.sortBy(vouchers, v => v.metadata.demostoreOrder) ?
     if (a.metadata.demostoreOrder < b.metadata.demostoreOrder) {
       return -1;
     } else if (a.metadata.demostoreOrder > b.metadata.demostoreOrder) {

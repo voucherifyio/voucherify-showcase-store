@@ -7,10 +7,6 @@ import Form from "react-bootstrap/Form";
 const ProductList = () => {
   const [filterCategory, setFilterCategory] = useState("");
 
-  const handleSelectCategory = (name) => {
-    setFilterCategory(name);
-  };
-
   const categories = [
     "All",
     "Coffee",
@@ -45,7 +41,7 @@ const ProductList = () => {
               <Form.Control
                 as="select"
                 id="storeProducts"
-                onChange={(e) => handleSelectCategory(e.target.value)}
+                onChange={(e) => setFilterCategory(e.target.value)}
                 value={filterCategory || "DEFAULT"}
                 className=""
               >

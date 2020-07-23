@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
-const Product = ({ product, value }) => {
+const Product = ({ product, value }) => { // can we rename this `value` to something more meaningful?
   return (
     <div className="col-lg-4 p-4 col-md-12 col-sm-12">
       <div className="product-grid">

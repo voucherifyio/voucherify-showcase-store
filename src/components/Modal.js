@@ -4,6 +4,8 @@ import {ProductConsumer} from './Context'
 
 // This will be used for pop-up banners
 
+// can we delete this file?
+
 export default class Modal extends Component {
     render() {
         return (

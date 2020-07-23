@@ -30,14 +30,13 @@ const toastOptions = {
 
 const App = () => {
   const [sidebar, setSidebar] = useState(true);
-  const handleSidebar = () => {
+  const toggleSidebar = () => {
     setSidebar(!sidebar);
   };
 
   window.Voucherify.initialize(
     process.env.REACT_APP_FRONTEND_APPLICATION_ID,
-    process.env.REACT_APP_FRONTEND_CLIENT_SECRET_KEY)
-
+    process.env.REACT_APP_FRONTEND_CLIENT_SECRET_KEY); // let's move it before App. Now voucherify is initialized on EVERY App render.
 
   return (
     <>
@@ -46,7 +45,7 @@ const App = () => {
           <div id="page-content-wrapper">
             <React.Fragment>
               <div className="mainContent">
-                <Navigation sidebar={sidebar} handleSidebar={handleSidebar} />
+                <Navigation sidebar={sidebar} handleSidebar={toggleSidebar} />
 
                 <Switch>
                   <Route exact path="/" component={MainPage} />

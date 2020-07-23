@@ -67,11 +67,11 @@ class CustomerProvider extends Component {
           JSON.stringify(this.state.publishedVouchers)
         );
       }
-      this.getCustomers();
+      this.getCustomers(); // catch() won't catch these errors. shall we await on these?
       this.getCampaigns();
       this.getVouchers();
     } catch (e) {
-      console.log(e);
+      console.log(e); // does it say what method caused the error? same question for the other console.logs below
     }
   };
 
@@ -153,7 +153,7 @@ class CustomerProvider extends Component {
     this.setState({ voucherOrCampaign: name });
   };
 
-  setCustomer = async (id) => {
+  setCustomer = async (id) => { // why is it called setCustomer if it GETs a customer from the server? loadCustomer(id)  or fetchCustomer(id)?
     try {
       //Get customer data, start spinner
       this.setState({ fetchingCustomer: true });
@@ -203,10 +203,12 @@ class CustomerProvider extends Component {
         this.state.customer.summary.orders.total_amount
       ) {
         //If true -> wait
-        await this.sleep(5000).then(this.updateCustomerData(id));
+        await this.sleep(5000);
+        await this.updateCustomerData(id);
       } else {
-        await this.setCustomer(id).then(this.getCampaigns).then(this.getVouchers);
-        
+        await this.setCustomer(id);
+        await this.getCampaigns();
+        await this.getVouchers();
       }
     } catch (e) {
       console.log(e);
