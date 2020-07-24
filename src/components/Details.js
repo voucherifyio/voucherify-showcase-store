@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { ProductConsumer } from "./Context";
-import { useParams } from "react-router";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import React, {useState} from 'react';
+import {ProductConsumer} from './Context';
+import {useParams} from 'react-router';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 const Details = () => {
-  let { productId } = useParams();
+  const {productId} = useParams();
   const quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const [quantity, setQuantity] = useState("1");
+  const [quantity, setQuantity] = useState('1');
   const handleOnChange = (e) => {
     setQuantity(e.target.value);
   };

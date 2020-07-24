@@ -1,8 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Button from "react-bootstrap/Button";
+import React from 'react';
+import {Link} from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import PropTypes from 'prop-types';
 
-const Product = ({ product, value }) => {
+const Product = ({product, storeLogic}) => {
   return (
     <div className="col-lg-4 p-4 col-md-12 col-sm-12">
       <div className="product-grid">
@@ -26,7 +27,7 @@ const Product = ({ product, value }) => {
                 variant="dark"
                 size="sm"
                 onClick={() => {
-                  value.addToCart(product.id, 1);
+                  storeLogic.addToCart(product.id, 1);
                 }}
               >
                 <span>+ Cart</span>
@@ -40,3 +41,8 @@ const Product = ({ product, value }) => {
 };
 
 export default Product;
+
+Product.propTypes = {
+  product: PropTypes.object.isRequired,
+  storeLogic: PropTypes.object.isRequired,
+};

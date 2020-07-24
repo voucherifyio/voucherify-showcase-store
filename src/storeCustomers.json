@@ -38,15 +38,15 @@
     "birthday": null
   },
   {
-    "source_id": "danielwieszcz",
-    "name": "Daniel Wieszcz",
+    "source_id": "lewismarshall",
+    "name": "Lewis Marshall",
     "description": null,
-    "email": "daniel_wieszcz@gmail.com",
+    "email": "lewis_marshall@gmail.com",
     "metadata": {
       "country": "USA",
       "gender": "M",
-      "demostore_id": "danielwieszcz",
-      "customerValidationRuleName": "Welcome wave 5% off Daniel Wieszcz"
+      "demostore_id": "lewismarshall",
+      "customerValidationRuleName": "Welcome wave 5% off Lewis Marshall"
     },
     "created_at": "2018-08-08T07:58:09.635Z",
     "address": {
@@ -67,15 +67,15 @@
     "birthday": null
   },
   {
-    "source_id": "jd",
-    "name": "JD",
+    "source_id": "johndorian",
+    "name": "John Dorian",
     "description": null,
-    "email": "jd@scrubs.net",
+    "email": "john_d@scrubs.net",
     "metadata": {
-      "country": "Poland",
+      "country": "PL",
       "gender": "M",
-      "demostore_id": "jd",
-      "customerValidationRuleName": "Welcome wave 5% off JD"
+      "demostore_id": "johndorian",
+      "customerValidationRuleName": "Welcome wave 5% off John Dorian"
     },
     "created_at": "2017-08-08T07:58:09.635Z",
     "address": {

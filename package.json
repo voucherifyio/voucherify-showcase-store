@@ -20,6 +20,7 @@
     "jquery": "^3.5.1",
     "lodash": "^4.17.15",
     "popper.js": "^1.16.1",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-copy-to-clipboard": "^5.0.2",
@@ -35,8 +36,8 @@
   "scripts": {
     "postinstall": "node ./setup/setup.js && react-scripts build",
     "setup": "node ./setup/setup.js",
-    "dev": "react-scripts start",
-    "dev-server": "NODE_ENV=development nodemon server.js",
+    "dev": "NODE_ENV=development react-scripts start",
+    "dev-server": "NODE_ENV=development REACT_APP_URL=http://localhost:3001 nodemon server.js",
     "start": "NODE_ENV=production node server.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

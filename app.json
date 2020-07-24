@@ -17,9 +17,17 @@
     "REACT_APP_FRONTEND_CLIENT_SECRET_KEY": {
       "description": "YOUR 'Client-side Keys' SECRET KEY"
     },
-    "PORT": {
+    "API_PORT": {
       "value": "3000",
-      "required": false
+      "required": true
+    },
+    "PORT": {
+      "value": "3001",
+      "required": true
+    },
+    "SESSION_SECRET": {
+      "description": "Session secret password",
+      "required": true
     }
   },
   "addons": [

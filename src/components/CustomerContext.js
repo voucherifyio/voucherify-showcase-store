@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import storeCustomers from "../storeCustomers.json";
+import React, {Component} from 'react';
+import storeCustomers from '../storeCustomers.json';
 const CustomerContext = React.createContext();
 
 const readValueFromLocalStorage = (key) => {
@@ -7,21 +7,22 @@ const readValueFromLocalStorage = (key) => {
   if (value) {
     try {
       return JSON.parse(value);
-    } catch (e) {}
+    } catch (e) {
+      console.log('[Reading local storage][Error]', e)
+    }
   }
 };
 
 const loadItemsFromLocalStorage = () => {
   return {
-    customer: readValueFromLocalStorage("customer") || null,
-    fetchingCustomer: readValueFromLocalStorage("fetchingCustomer") || false,
-    publishedVouchers: readValueFromLocalStorage("publishedVouchers") || null,
-    uniqueVoucher: readValueFromLocalStorage("vouchers") || null,
-    campaigns: readValueFromLocalStorage("campaigns") || null,
-    sessionCode: readValueFromLocalStorage("sessionCode") || null,
+    customer: readValueFromLocalStorage('customer') || null,
+    fetchingCustomer: readValueFromLocalStorage('fetchingCustomer') || false,
+    publishedVouchers: readValueFromLocalStorage('publishedVouchers') || null,
+    uniqueVoucher: readValueFromLocalStorage('vouchers') || null,
+    campaigns: readValueFromLocalStorage('campaigns') || null,
+    sessionCode: readValueFromLocalStorage('sessionCode') || null,
   };
 };
-
 class CustomerProvider extends Component {
   state = {
     customer: null,
@@ -45,13 +46,13 @@ class CustomerProvider extends Component {
   init = async () => {
     try {
       const session = await fetch(`${process.env.REACT_APP_API_URL}/init`, {
-        credentials: "include",
+        credentials: 'include',
       }).then((response) => response.json());
 
       if (session.coupons.length === 0) {
         this.setState({
           sessionCode: session.session,
-          publishedVouchers: readValueFromLocalStorage("publishedVouchers"),
+          publishedVouchers: readValueFromLocalStorage('publishedVouchers'),
         });
       } else {
         this.setState({
@@ -59,53 +60,53 @@ class CustomerProvider extends Component {
           publishedVouchers: session.coupons,
         });
         localStorage.setItem(
-          "sessionCode",
-          JSON.stringify(this.state.sessionCode)
+            'sessionCode',
+            JSON.stringify(this.state.sessionCode),
         );
         localStorage.setItem(
-          "publishedVouchers",
-          JSON.stringify(this.state.publishedVouchers)
+            'publishedVouchers',
+            JSON.stringify(this.state.publishedVouchers),
         );
       }
-      this.getCustomers();
-      this.getCampaigns();
-      this.getVouchers();
+      await this.getCustomers();
+      await this.getCampaigns();
+      await this.getVouchers();
     } catch (e) {
-      console.log(e);
+      console.log('[Init]', e);
     }
   };
 
   getCustomers = async () => {
     try {
-      this.setState({ fetchingCustomer: true });
+      this.setState({fetchingCustomer: true});
       const customers = await Promise.all(
-        storeCustomers.map((customer) => {
-          return fetch(
-            `${process.env.REACT_APP_API_URL}/customer/${this.state.sessionCode}${customer.source_id}`,
-            {
-              include: "credentials",
-            }
-          ).then((cust) => cust.json());
-        })
+          storeCustomers.map(async (customer) => {
+            const cust = await fetch(
+              `${process.env.REACT_APP_API_URL}/customer/${this.state.sessionCode}${customer.source_id}`,
+              {
+                include: 'credentials',
+              });
+            return await cust.json();
+          }),
       );
       this.setState({
         customers: customers,
         fetchingCustomer: false,
       });
-      localStorage.setItem("customers", JSON.stringify(customers));
+      localStorage.setItem('customers', JSON.stringify(customers));
     } catch (e) {
-      console.log(e);
+      console.log('[getCustomers]', e);
     }
   };
 
   getCampaigns = async () => {
     try {
-      this.setState({ fetchingCampaigns: true });
+      this.setState({fetchingCampaigns: true});
       const campaigns = await fetch(
-        `${process.env.REACT_APP_API_URL}/campaigns`,
-        {
-          include: "credentials",
-        }
+          `${process.env.REACT_APP_API_URL}/campaigns`,
+          {
+            include: 'credentials',
+          },
       ).then((camps) => camps.json());
 
       // const campaigns = allCampaigns.campaigns.filter(
@@ -117,25 +118,25 @@ class CustomerProvider extends Component {
         fetchingCampaigns: false,
       });
 
-      localStorage.setItem("campaigns", JSON.stringify(campaigns));
+      localStorage.setItem('campaigns', JSON.stringify(campaigns));
     } catch (e) {
-      console.log(e);
+      console.log('[getCampaigns]', e);
     }
   };
 
-  //Simple sleep function for fetching data
+  // Simple sleep function for fetching data
   sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
   getVouchers = async () => {
     try {
-      this.setState({ fetchingCampaigns: true });
+      this.setState({fetchingCampaigns: true});
       const vouchers = await fetch(
-        `${process.env.REACT_APP_API_URL}/vouchers`,
-        {
-          include: "credentials",
-        }
+          `${process.env.REACT_APP_API_URL}/vouchers`,
+          {
+            include: 'credentials',
+          },
       ).then((resp) => resp.json());
 
       this.setState({
@@ -143,73 +144,75 @@ class CustomerProvider extends Component {
         fetchingCampaigns: false,
       });
 
-      localStorage.setItem("vouchers", JSON.stringify(vouchers));
+      localStorage.setItem('vouchers', JSON.stringify(vouchers));
     } catch (e) {
       console.log(e);
     }
   };
 
   setVoucherOrCampaign = (name) => {
-    this.setState({ voucherOrCampaign: name });
+    this.setState({voucherOrCampaign: name});
   };
 
-  setCustomer = async (id) => {
+  loadCustomer = async (id) => {
     try {
-      //Get customer data, start spinner
-      this.setState({ fetchingCustomer: true });
-      let customer = await fetch(
-        `${process.env.REACT_APP_API_URL}/customer/${id}`,
-        {
-          credentials: "include",
-        }
+      // Get customer data, start spinner
+      this.setState({fetchingCustomer: true});
+      const customer = await fetch(
+          `${process.env.REACT_APP_API_URL}/customer/${id}`,
+          {
+            credentials: 'include',
+          },
       ).then((x) => x.json());
       this.setState({
         customer: customer,
         fetchingCustomer: false,
       });
-      localStorage.setItem("customer", JSON.stringify(customer));
-      localStorage.setItem("fetchingCustomer", JSON.stringify(false));
+      localStorage.setItem('customer', JSON.stringify(customer));
+      localStorage.setItem('fetchingCustomer', JSON.stringify(false));
     } catch (e) {
       console.log(e);
     }
   };
 
   getCode = (campaign) => {
-    let customer = this.state.customer.source_id;
-    let publishedVouchers = this.state.publishedVouchers;
+    const customer = this.state.customer.source_id;
+    const publishedVouchers = this.state.publishedVouchers;
 
-    let customerVouchers = publishedVouchers.find(
-      (voucher) => voucher.customer === customer
+    const customerVouchers = publishedVouchers.find(
+        (voucher) => voucher.customer === customer,
     );
-    let customerCampaigns = customerVouchers.campaigns.find(
-      (camp) => camp.campaign === campaign
+    const customerCampaigns = customerVouchers.campaigns.find(
+        (camp) => camp.campaign === campaign,
     );
     return customerCampaigns.code;
   };
 
   updateCustomerData = async (id) => {
     try {
-      //Get customer data, start spinner
-      this.setState({ fetchingCustomer: true, fetchingCampaigns: true });
-      let customer = await fetch(
-        `${process.env.REACT_APP_API_URL}/customer/${id}`,
-        {
-          credentials: "include",
-        }
+      // Get customer data, start spinner
+      this.setState({fetchingCustomer: true, fetchingCampaigns: true});
+      const customer = await fetch(
+          `${process.env.REACT_APP_API_URL}/customer/${id}`,
+          {
+            credentials: 'include',
+          },
       ).then((x) => x.json());
-      //Check if customer data has not updated
+      // Check if customer data has not updated
       if (
         customer.summary.orders.total_amount ===
         this.state.customer.summary.orders.total_amount
       ) {
-        //If true -> wait
-        await this.sleep(5000).then(this.updateCustomerData(id));
+        // If true -> wait
+        await this.sleep(5000)
+        await this.updateCustomerData(id);
       } else {
-        await this.setCustomer(id).then(this.getCampaigns).then(this.getVouchers);
-        
+        await this.loadCustomer(id)
+        await this.getCampaigns();
+        await this.getVouchers();
       }
     } catch (e) {
-      console.log(e);
+      console.log('[updateCustomerData]', e);
     }
   };
 
@@ -218,7 +221,7 @@ class CustomerProvider extends Component {
       <CustomerContext.Provider
         value={{
           ...this.state,
-          setCustomer: this.setCustomer,
+          loadCustomer: this.loadCustomer,
           getCustomers: this.getCustomers,
           getRedemptions: this.getRedemptions,
           updateCustomerData: this.updateCustomerData,
@@ -228,6 +231,7 @@ class CustomerProvider extends Component {
           setVoucherOrCampaign: this.setVoucherOrCampaign,
         }}
       >
+        {/* eslint-disable-next-line react/prop-types */}
         {this.props.children}
       </CustomerContext.Provider>
     );
@@ -236,4 +240,4 @@ class CustomerProvider extends Component {
 
 const CustomerConsumer = CustomerContext.Consumer;
 
-export { CustomerProvider, CustomerConsumer };
+export {CustomerProvider, CustomerConsumer};

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import Tooltip from "@material-ui/core/Tooltip";
-import { withStyles } from "@material-ui/core/styles";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import React, {useState} from 'react';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
+import {withStyles} from '@material-ui/core/styles';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import PropTypes from 'prop-types';
 
-const CampaignDetails = ({ campaign, code }) => {
+const CampaignDetails = ({campaign, code}) => {
   const [open, setOpen] = useState(false);
 
   const handleTooltipClose = () => {
@@ -18,35 +19,35 @@ const CampaignDetails = ({ campaign, code }) => {
   };
   const VoucherifyButton = withStyles(() => ({
     root: {
-      color: "white",
-      fontFamily: "Lato",
-      fontSize: "0.875rem",
-      backgroundColor: "#ff8b5c",
-      borderRadius: "20em",
-      padding: "5px 20px",
-      marginTop: "15px",
-      marginBottom: "15px",
-      textTransform: "none",
-      "&:hover": {
-        backgroundColor: "#ff8b5c",
+      'color': 'white',
+      'fontFamily': 'Lato',
+      'fontSize': '0.875rem',
+      'backgroundColor': '#ff8b5c',
+      'borderRadius': '20em',
+      'padding': '5px 20px',
+      'marginTop': '15px',
+      'marginBottom': '15px',
+      'textTransform': 'none',
+      '&:hover': {
+        backgroundColor: '#ff8b5c',
       },
     },
   }))(Button);
   return (
     <div
       style={{
-        width: "100%",
-        "transition:": "all .5s ease-in-out",
+        'width': '100%',
+        'transition:': 'all .5s ease-in-out',
       }}
       key={campaign.name}
     >
       <div key={campaign.name}>
         <p className="campaign-description section-heading">
-          Your discount voucher{" "}
-          {campaign.voucher.discount.type === "PERCENT" && (
+          Your discount voucher{' '}
+          {campaign.voucher.discount.type === 'PERCENT' && (
             <>{campaign.voucher.discount.percent_off}% off</>
           )}
-          {campaign.voucher.discount.type === "AMOUNT" && (
+          {campaign.voucher.discount.type === 'AMOUNT' && (
             <>${(campaign.voucher.discount.amount_off / 100).toFixed(2)} off</>
           )}
           {campaign.metadata.demostoreBOGO &&
@@ -84,7 +85,7 @@ const CampaignDetails = ({ campaign, code }) => {
             <p className="campaign-description section-heading redemption-rules">
               Redemption rules
             </p>
-            {campaign.metadata.demostoreSteps.split(";").map((step) => (
+            {campaign.metadata.demostoreSteps.split(';').map((step) => (
               <div
                 key={step}
                 className="campaign-step d-flex flex-row align-items-center"
@@ -99,30 +100,15 @@ const CampaignDetails = ({ campaign, code }) => {
             ))}
           </>
         )}
-        {/* <p className="campaign-description section-heading redemption-rules mt-4">
-          Campaign statistics
-        </p>
-        <p className="campaign-description redemption-rules my-1">
-          Total number of redemptions:{" "}
-          <span className="section-heading">
-            {voucher.redemption.redeemed_quantity}
-          </span>
-        </p>
-        <p className="campaign-description redemption-rules my-1">
-          Discounted amount:{" "}
-          <span className="section-heading">
-            {voucher.redemption.redeemed_quantity}
-          </span>
-        </p>
-        <p className="campaign-description redemption-rules my-1">
-          Total orders value:{" "}
-          <span className="section-heading">
-            {voucher.redemption.redeemed_quantity}
-          </span>
-        </p> */}
       </div>
     </div>
   );
 };
 
 export default CampaignDetails;
+
+
+CampaignDetails.propTypes = {
+  campaign: PropTypes.object.isRequired,
+  code: PropTypes.string.isRequired,
+};

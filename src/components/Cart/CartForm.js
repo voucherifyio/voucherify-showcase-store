@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
+import React, {useState} from 'react';
+import Button from 'react-bootstrap/Button';
+import PropTypes from 'prop-types';
 
-const CartForm = ({ value, customer }) => {
-  const [code, setCode] = useState("");
-  const { addPromotionToCart } = value;
+const CartForm = ({value, customer}) => {
+  const [code, setCode] = useState('');
+  const {addPromotionToCart} = value;
 
   const handleChange = (event) => {
     setCode(event.target.value);
@@ -14,7 +15,7 @@ const CartForm = ({ value, customer }) => {
   };
 
   const handleValidate = (code, customer) => {
-    if (code !== "") {
+    if (code !== '') {
       addPromotionToCart(code, customer);
     }
   };
@@ -50,3 +51,8 @@ const CartForm = ({ value, customer }) => {
   );
 };
 export default CartForm;
+
+CartForm.propTypes = {
+  value: PropTypes.object.isRequired,
+  customer: PropTypes.object.isRequired,
+};

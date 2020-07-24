@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { toast } from "react-toastify";
-import _ from "lodash";
+import React, {Component} from 'react';
+import {toast} from 'react-toastify';
+import _ from 'lodash';
 const ProductContext = React.createContext();
 
-const SET_CART = "SET_CART";
-const CLEAR_CART = "CLEAR_CART";
-const LOAD_CART = "LOAD_CART";
-const SET_COUPON = "SET_COUPON";
+const SET_CART = 'SET_CART';
+const CLEAR_CART = 'CLEAR_CART';
+const LOAD_CART = 'LOAD_CART';
+const SET_COUPON = 'SET_COUPON';
 
 const reducer = (action) => (state, props) => {
   const calc = (cartItems, voucher) => {
@@ -14,38 +14,38 @@ const reducer = (action) => (state, props) => {
       cartItem.total = cartItem.count * cartItem.price;
     });
 
-    let cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+    const cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
     let discountedAmount = 0;
     let cartTotalAfterPromotion = cartTotal;
 
     if (!_.isEmpty(voucher)) {
-      if (_.has(voucher, "applicable_to")) {
-        let applicableProducts = [];
-        let applicableProductInCart = "";
+      if (_.has(voucher, 'applicable_to')) {
+        const applicableProducts = [];
+        let applicableProductInCart = '';
         voucher.applicable_to.data.map((e) => applicableProducts.push(e.id));
         for (let i = 0; i < applicableProducts.length; i++) {
           applicableProductInCart = cartItems.find(
-            (item) => item.id === applicableProducts[i]
+              (item) => item.id === applicableProducts[i],
           );
         }
-        if (voucher.discount.type === "PERCENT") {
+        if (voucher.discount.type === 'PERCENT') {
           const discountAmount = voucher.discount.percent_off;
           cartTotalAfterPromotion =
             cartTotal - applicableProductInCart.price * (discountAmount / 100);
           discountedAmount =
             applicableProductInCart.price * (discountAmount / 100);
-        } else if (voucher.discount.type === "AMOUNT") {
+        } else if (voucher.discount.type === 'AMOUNT') {
           const discountAmount = voucher.discount.amount_off;
           cartTotalAfterPromotion =
             applicableProductInCart.total - discountAmount;
           discountedAmount = discountAmount;
         }
-      } else if (voucher.discount.type === "PERCENT") {
+      } else if (voucher.discount.type === 'PERCENT') {
         const discountAmount = voucher.discount.percent_off;
         cartTotalAfterPromotion =
           cartTotal - cartTotal * (discountAmount / 100);
         discountedAmount = cartTotal * (discountAmount / 100);
-      } else if (voucher.discount.type === "AMOUNT") {
+      } else if (voucher.discount.type === 'AMOUNT') {
         const discountAmount = voucher.discount.amount_off;
         cartTotalAfterPromotion = cartTotal - discountAmount;
         discountedAmount = discountAmount;
@@ -57,14 +57,14 @@ const reducer = (action) => (state, props) => {
       }
     }
 
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-    localStorage.setItem("discountedAmount", JSON.stringify(discountedAmount));
-    localStorage.setItem("cartTotal", JSON.stringify(cartTotal));
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    localStorage.setItem('discountedAmount', JSON.stringify(discountedAmount));
+    localStorage.setItem('cartTotal', JSON.stringify(cartTotal));
     localStorage.setItem(
-      "cartTotalAfterPromotion",
-      JSON.stringify(cartTotalAfterPromotion)
+        'cartTotalAfterPromotion',
+        JSON.stringify(cartTotalAfterPromotion),
     );
-    localStorage.setItem("appliedVoucher", JSON.stringify(voucher));
+    localStorage.setItem('appliedVoucher', JSON.stringify(voucher));
 
     return {
       cart: cartItems,
@@ -86,14 +86,14 @@ const reducer = (action) => (state, props) => {
 
   const loadItemsFromLocalStorage = () => {
     return {
-      cart: readValueFromLocalStorage("cart") || [],
-      discountedAmount: readValueFromLocalStorage("discountedAmount") || 0,
-      cartTotal: readValueFromLocalStorage("cartTotal") || 0,
+      cart: readValueFromLocalStorage('cart') || [],
+      discountedAmount: readValueFromLocalStorage('discountedAmount') || 0,
+      cartTotal: readValueFromLocalStorage('cartTotal') || 0,
       cartTotalAfterPromotion:
-        readValueFromLocalStorage("cartTotalAfterPromotion") || 0,
-      appliedVoucher: readValueFromLocalStorage("appliedVoucher") || null,
-      products: readValueFromLocalStorage("products") || [],
-      lastOrderID: readValueFromLocalStorage("lastOrderID") || null,
+        readValueFromLocalStorage('cartTotalAfterPromotion') || 0,
+      appliedVoucher: readValueFromLocalStorage('appliedVoucher') || null,
+      products: readValueFromLocalStorage('products') || [],
+      lastOrderID: readValueFromLocalStorage('lastOrderID') || null,
     };
   };
 
@@ -125,10 +125,10 @@ class ProductProvider extends Component {
 
   dispatch = (type, data) => {
     this.setState(
-      reducer({
-        type,
-        ...data,
-      })
+        reducer({
+          type,
+          ...data,
+        }),
     );
   };
 
@@ -140,16 +140,16 @@ class ProductProvider extends Component {
   loadProducts = async () => {
     try {
       const products = await fetch(
-        `${process.env.REACT_APP_API_URL}/products`,
-        {
-          credentials: "include",
-        }
+          `${process.env.REACT_APP_API_URL}/products`,
+          {
+            credentials: 'include',
+          },
       ).then((response) => response.json());
       this.setState({
         products: products,
         fetchingProducts: false,
       });
-      localStorage.setItem("products", JSON.stringify(products));
+      localStorage.setItem('products', JSON.stringify(products));
     } catch (e) {
       console.log(e);
     }
@@ -165,6 +165,7 @@ class ProductProvider extends Component {
     const product = this.getItem(id);
     const quantity = parseInt(qt, 10);
     const cart = [...this.state.cart];
+    //TODO
     const item = _.cloneDeep(cart.find((item) => item.id === id));
     if (item) {
       const selectedProduct = cart.find((item) => item.id === id);
@@ -186,58 +187,41 @@ class ProductProvider extends Component {
     }
     // Coupon revalidation logic
     if (this.state.appliedVoucher) {
-      // this.addPromotionToCart(
-      //   this.state.appliedVoucher.code,
-      //   this.state.appliedVoucher.customer
-      // );
       this.removePromotionFromCart();
     }
   };
 
   increment = (id, qt) => {
-    // const tempCart = [...this.state.cart];
     const selectedProduct = this.state.cart.find((item) => item.id === id);
     selectedProduct.count = qt;
     selectedProduct.total = selectedProduct.price * qt;
     this.dispatch(SET_CART, {
       cart: this.state.cart,
     });
-
     // Coupon revalidation logic
     if (this.state.appliedVoucher) {
-      // this.addPromotionToCart(
-      //   this.state.appliedVoucher.code,
-      //   this.state.appliedVoucher.customer,
-      //   this.state.cartTotal
-      // );
       this.removePromotionFromCart();
     }
   };
 
   removeItem = (id) => {
-    let tempCart = [...this.state.cart];
-    tempCart = tempCart.filter((item) => item.id !== id);
-    if (tempCart.length === 0) {
+    const updatedCart = this.state.cart.filter((item) => item.id !== id);
+    if (updatedCart.length === 0) {
       this.clearCart();
     } else {
       this.dispatch(SET_CART, {
-        cart: tempCart,
+        cart: updatedCart,
       });
     }
-
     // Coupon revalidation logic
     if (this.state.appliedVoucher) {
-      // this.addPromotionToCart(
-      //   this.state.appliedVoucher.code,
-      //   this.state.appliedVoucher.customer
-      // );
       this.removePromotionFromCart();
     }
   };
 
   clearCart = () => {
     this.dispatch(CLEAR_CART);
-    toast.success("Cart cleared");
+    toast.success('Cart cleared');
   };
 
   addPromotionToCart = async (couponCode, customer) => {
@@ -259,7 +243,6 @@ class ProductProvider extends Component {
         items: this.state.cart.map(prepareItemsPayload),
       };
 
-    
       const voucher = await new Promise((resolve, reject) => {
         window.Voucherify.setIdentity(customer.source_id);
 
@@ -277,10 +260,11 @@ class ProductProvider extends Component {
         });
       });
       this.dispatch(SET_COUPON, {
-        // NOTE: we cache `customer` in appliedVoucher object for the sake of coupon revalidation on cart changes
-        appliedVoucher: { ...voucher, customer },
+        // NOTE: we cache `customer` in appliedVoucher
+        // object for the sake of coupon revalidation on cart changes
+        appliedVoucher: {...voucher, customer},
       });
-      toast.success("Coupon applied");
+      toast.success('Coupon applied');
     } catch (e) {
       console.log(e);
       this.removePromotionFromCart();
@@ -289,9 +273,9 @@ class ProductProvider extends Component {
 
   sendOrder = async (orderPayload) => {
     const order = await fetch(`${process.env.REACT_APP_API_URL}/order`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      credentials: 'include',
       body: JSON.stringify(orderPayload),
     });
     return order.json();
@@ -299,17 +283,17 @@ class ProductProvider extends Component {
 
   sendRedemption = async (redemptionPayload) => {
     const redemption = await fetch(`${process.env.REACT_APP_API_URL}/redeem`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      credentials: 'include',
       body: JSON.stringify(redemptionPayload),
     });
     return redemption.json();
   };
 
   checkoutCart = async (customer = {}) => {
-    const ID = () => {
-      return "hot_beans_" + Math.random().toString(36).substr(2, 20);
+    const id = () => {
+      return 'hot_beans_' + Math.random().toString(36).substr(2, 20);
     };
 
     const prepareItemsPayload = (item) => {
@@ -324,27 +308,27 @@ class ProductProvider extends Component {
     // If voucher is not applied
     if (_.isEmpty(this.state.appliedVoucher)) {
       const orderPayload = {
-        source_id: ID(),
+        source_id: id(),
         items: this.state.cart.map(prepareItemsPayload),
         amount: this.state.cartTotal,
         customer,
-        status: "FULFILLED",
+        status: 'FULFILLED',
       };
       await this.sendOrder(orderPayload).catch((err) => {
-        console.error(err);
+        toast.error('There was a problem with your purchase');
+        console.log(err)
       });
       this.dispatch(CLEAR_CART);
-      toast.success("Payment successful");
+      toast.success('Payment successful');
       this.setState({
         lastOrderID: orderPayload.source_id,
       });
       localStorage.setItem(
-        "lastOrderID",
-        JSON.stringify(orderPayload.source_id)
+          'lastOrderID',
+          JSON.stringify(orderPayload.source_id),
       );
-    }
     // If voucher is applied
-    else {
+    } else {
       try {
         const code = this.state.appliedVoucher.code;
 
@@ -352,7 +336,7 @@ class ProductProvider extends Component {
           code,
           customer,
           order: {
-            source_id: ID(),
+            source_id: id(),
             amount: this.state.cartTotal,
             items: this.state.cart.map(prepareItemsPayload),
           },
@@ -362,17 +346,17 @@ class ProductProvider extends Component {
           console.error(err);
         });
         this.dispatch(CLEAR_CART);
-        toast.success("Payment successful");
+        toast.success('Payment successful');
         this.setState({
           lastOrderID: redemptionPayload.order.source_id,
         });
         localStorage.setItem(
-          "lastOrderID",
-          JSON.stringify(redemptionPayload.order.source_id)
+            'lastOrderID',
+            JSON.stringify(redemptionPayload.order.source_id),
         );
       } catch (e) {
         console.error(e);
-        toast.error("There was a problem with your purchase");
+        toast.error('There was a problem with your purchase');
       }
     }
   };
@@ -401,6 +385,7 @@ class ProductProvider extends Component {
           prepareRedemptionPayload: this.prepareRedemptionPayload,
         }}
       >
+        {/* eslint-disable-next-line react/prop-types */}
         {this.props.children}
       </ProductContext.Provider>
     );
@@ -409,4 +394,4 @@ class ProductProvider extends Component {
 
 const ProductConsumer = ProductContext.Consumer;
 
-export { ProductProvider, ProductConsumer, ProductContext };
+export {ProductProvider, ProductConsumer, ProductContext};

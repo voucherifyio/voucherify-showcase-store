@@ -1,18 +1,20 @@
-import React from "react";
-import Form from "react-bootstrap/Form";
-import DeleteIcon from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
+import React from 'react';
+import Form from 'react-bootstrap/Form';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import PropTypes from 'prop-types';
 
-const CartItem = ({ item, value }) => {
-  const { id, name, count, price, total } = item;
-  const { increment, removeItem, } = value;
+const CartItem = ({item, value}) => {
+  const {id, name, count, price, total} = item;
+  const {increment, removeItem} = value;
   const quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const handleOnChange = (e) => {
     increment(id, parseInt(e.target.value, 10));
   };
 
   return (
-    <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
+    <li className="list-group-item d-flex
+      flex-row justify-content-between lh-condensed">
       <div className="d-flex flex-column justify-content-center col-4">
         {name}
       </div>
@@ -38,7 +40,8 @@ const CartItem = ({ item, value }) => {
           </Form.Control>
         </div>
       </div>
-      <div className="d-flex flex-column justify-content-center my-auto mx-auto align-items-center col-2">
+      <div className="d-flex flex-column justify-content-center
+        my-auto mx-auto align-items-center col-2">
         <small className="text-muted">Price</small>${(total / 100).toFixed(2)}
       </div>
       <div className="d-flex flex-column justify-content-center">
@@ -51,3 +54,8 @@ const CartItem = ({ item, value }) => {
 };
 
 export default CartItem;
+
+CartItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  value: PropTypes.object.isRequired,
+};

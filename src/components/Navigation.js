@@ -1,23 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { ProductConsumer } from "./Context";
-import { CustomerConsumer } from "./CustomerContext";
-import SettingsIcon from "@material-ui/icons/Settings";
-import IconButton from "@material-ui/core/IconButton";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import Badge from "@material-ui/core/Badge";
-import { withStyles } from "@material-ui/core/styles";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import React from 'react';
+import {Link} from 'react-router-dom';
+import {ProductConsumer} from './Context';
+import {CustomerConsumer} from './CustomerContext';
+import SettingsIcon from '@material-ui/icons/Settings';
+import IconButton from '@material-ui/core/IconButton';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import Badge from '@material-ui/core/Badge';
+import {withStyles} from '@material-ui/core/styles';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import PropTypes from 'prop-types';
+
 const StyledBadge = withStyles(() => ({
   badge: {
-    backgroundColor: "yellow",
-    color: "black",
+    backgroundColor: 'yellow',
+    color: 'black',
   },
 }))(Badge);
 
-const Navigation = ({ handleSidebar, sidebar }) => {
+const Navigation = ({toggleSidebar, sidebar}) => {
   return (
     <>
       <Navbar className="m-auto navbar-sticky" collapseOnSelect expand="lg">
@@ -29,13 +31,13 @@ const Navigation = ({ handleSidebar, sidebar }) => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
-          <Link className="d-flex align-content-center nav-item-link" to="/store">
+            <Link className="d-flex align-content-center nav-item-link" to="/store">
               <Nav.Item className="navbar-account px-2">Store</Nav.Item>
             </Link>
             <CustomerConsumer>
               {(ctx) => {
                 if (ctx.customer !== null) {
-                  const firstName = ctx.customer.name.split(" ")[0];
+                  const firstName = ctx.customer.name.split(' ')[0];
                   return (
                     <>
                       <Nav.Item className="navbar-account px-2">
@@ -50,8 +52,8 @@ const Navigation = ({ handleSidebar, sidebar }) => {
             <ProductConsumer>
               {(ctx) => {
                 const countTotalItems = ctx.cart.reduce(
-                  (acc, curr) => acc + curr.count,
-                  0
+                    (acc, curr) => acc + curr.count,
+                    0,
                 );
 
                 return (
@@ -72,8 +74,8 @@ const Navigation = ({ handleSidebar, sidebar }) => {
             </ProductConsumer>
             <Nav.Item className="px-2">
               <IconButton
-                className={sidebar ? "mx-2 icon-selected" : "mx-2"}
-                onClick={handleSidebar}
+                className={sidebar ? 'mx-2 icon-selected' : 'mx-2'}
+                onClick={toggleSidebar}
               >
                 <SettingsIcon />
               </IconButton>
@@ -86,3 +88,9 @@ const Navigation = ({ handleSidebar, sidebar }) => {
 };
 
 export default Navigation;
+
+
+Navigation.propTypes = {
+  sidebar: PropTypes.bool.isRequired,
+  toggleSidebar: PropTypes.func.isRequired,
+};

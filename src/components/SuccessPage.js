@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import {ProductConsumer} from './Context'
+import React from 'react';
+import {Link} from 'react-router-dom';
+import {ProductConsumer} from './Context';
 
 const SuccessPage = () => {
   return (
@@ -14,7 +14,7 @@ const SuccessPage = () => {
               {(ctx) => {
                 return (
                   <div className="text-center mb-5">ID: {ctx.lastOrderID}</div>
-                )
+                );
               }}
             </ProductConsumer>
             <Link to="/" className="inline-block btn btn-outline-secondary">
