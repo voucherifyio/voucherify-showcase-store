@@ -33,22 +33,14 @@ Setup correct env and env.development values:
 
 env:
 
-* PORT=3000
+* API_PORT=3000
+* PORT = 3001
 * REACT_APP_BACKEND_APPLICATION_ID="YOUR 'Application Keys' APPLICATION ID"
 * REACT_APP_BACKEND_CLIENT_SECRET_KEY="YOUR 'Application Keys' SECRET KEY"
 * REACT_APP_FRONTEND_APPLICATION_ID="YOUR 'Client-side Keys' APPLICATION ID"
 * REACT_APP_FRONTEND_CLIENT_SECRET_KEY="YOUR 'Client-side Keys' SECRET KEY"
-* REACT_APP_API_URL=
-* REDIS_URL="YOUR REDIS URL"
-
-env.development:
-
-* PORT=3000
-* REACT_APP_BACKEND_APPLICATION_ID="YOUR 'Application Keys' APPLICATION ID"
-* REACT_APP_BACKEND_CLIENT_SECRET_KEY="YOUR 'Application Keys' SECRET KEY"
-* REACT_APP_FRONTEND_APPLICATION_ID="YOUR 'Client-side Keys' APPLICATION ID"
-* REACT_APP_FRONTEND_CLIENT_SECRET_KEY="YOUR 'Client-side Keys' SECRET KEY"
-* REACT_APP_API_URL="http://localhost:3000"
+* REACT_APP_API_URL=http://localhost:3000
+* SESSION_SECRET="YOUR SESSION SECRET"
 * REDIS_URL="YOUR REDIS URL"
 
 In the project folder run, `npm install` to set up the Application. After that, the app runs postinstall script to create Campaigns, Products Validation Rules, and Validation Rules assignment.
