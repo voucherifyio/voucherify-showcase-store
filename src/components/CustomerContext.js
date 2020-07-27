@@ -94,6 +94,15 @@ class CustomerProvider extends Component {
         fetchingCustomer: false,
       });
       localStorage.setItem('customers', JSON.stringify(customers));
+
+      //Check current customer for errors
+      const customer = JSON.parse(localStorage.getItem('customer'))
+      
+      //If there is an error with current selected customer -> set customer to null and hide campaigns
+      if (!JSON.stringify(customers).includes(JSON.stringify(customer))) {
+        this.setState({customer: null, fetchingCampaigns: true})
+        localStorage.setItem('customer', null)
+      }
     } catch (e) {
       console.log('[getCustomers]', e);
     }

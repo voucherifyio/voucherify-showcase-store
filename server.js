@@ -23,13 +23,15 @@ app.use(
       secret: process.env.SESSION_SECRET,
       resave: true,
       saveUninitialized: false,
+      cookie: {
+        maxAge: 60000,
+      },
     }),
     cors({
       credentials: true,
       origin: process.env.REACT_APP_URL,
     }),
 );
-
 
 const voucherify = voucherifyClient({
   applicationId: process.env.REACT_APP_BACKEND_APPLICATION_ID,
