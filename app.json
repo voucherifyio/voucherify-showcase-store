@@ -20,6 +20,11 @@
     "SESSION_SECRET": {
       "description": "Session secret password",
       "required": true
+    },
+    "API_PORT": {
+      "description": "PORT",
+      "value": 3000,
+      "required": true
     }
   },
   "addons": [
