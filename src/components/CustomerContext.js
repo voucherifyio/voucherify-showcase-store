@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import storeCustomers from '../storeCustomers.json';
+import _ from 'lodash';
+
 const CustomerContext = React.createContext();
 
 const readValueFromLocalStorage = (key) => {
@@ -99,7 +101,8 @@ class CustomerProvider extends Component {
       const customer = JSON.parse(localStorage.getItem('customer'))
       
       //If there is an error with current selected customer -> set customer to null and hide campaigns
-      if (!JSON.stringify(customers).includes(JSON.stringify(customer))) {
+      
+      if (!_.map(customers, 'source_id', []).includes(_.get(customer, 'source_id'))) {
         this.setState({customer: null, fetchingCampaigns: true})
         localStorage.setItem('customer', null)
       }

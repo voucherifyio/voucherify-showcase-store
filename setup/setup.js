@@ -1,14 +1,10 @@
 require('dotenv').config();
-const { campaigns, vouchers, products, segments } = require('./voucherifyData');
+const _ = require('lodash');
 const voucherify = require('voucherify')({
   applicationId: process.env.REACT_APP_BACKEND_APPLICATION_ID,
   clientSecretKey: process.env.REACT_APP_BACKEND_CLIENT_SECRET_KEY,
 });
-const fs = require('fs');
-const dataDir = './.data';
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir);
-}
+const { campaigns, vouchers, products, segments } = require('./voucherifyData');
 
 const setupCampaigns = () => {
   const campaignPromises = campaigns.map((campaign) => {
@@ -23,25 +19,15 @@ const setupCampaigns = () => {
       })
       .catch((error) =>
         console.log(
-          `[ERROR] There was a error creating campaign ${campaign.name}`, error
+          `[ERROR] There was an error creating campaign ${campaign.name}`, error
         )
       );
     return thisCampaign;
   });
 
   return Promise.all(campaignPromises)
-    .then(
-      (response) =>
-        fs.writeFile(
-          './.data/createdCampaigns.json',
-          JSON.stringify(
-            response.map((element) => element),
-          ),
-          (error) => {
-            if (error) throw error;
-            console.log('[SUCCESS] All campaigns setup');
-          }) || response
-    ).catch((error) => console.log('[ERROR] There was a error creating campaigns', error));
+  .then(() => console.log('[SUCCESS] All campaigns setup'))
+  .catch((error) => console.log('[ERROR] There was an error creating campaigns', error))
 };
 
 const setupVouchers = () => {
@@ -57,25 +43,15 @@ const setupVouchers = () => {
       },
       (error) =>
         console.log(
-          `[ERROR] There was a error creating voucher ${voucher.code}`, error
+          `[ERROR] There was an error creating voucher ${voucher.code}`, error
         )
     );
     return thisVoucher;
   });
 
   return Promise.all(voucherPromises)
-    .then(
-      (response) =>
-        fs.writeFile(
-          './.data/createdVouchers.json',
-          JSON.stringify(
-            response.map((element) => element)
-          ),
-          (error) => {
-            if (error) throw error;
-            console.log('[SUCCESS] All vouchers setup');
-          }) || response      
-    ).catch((error) => console.log('[ERROR] There was a error creating vouchers', error));
+  .then(() => console.log('[SUCCESS] All vouchers setup'))
+  .catch((error) => console.log('[ERROR] There was an error creating vouchers', error));
 };
 
 const setupProducts = () => {
@@ -99,30 +75,16 @@ const setupProducts = () => {
       (prod) => {
         const needsId = products.find((p) => p.source_id === prod.source_id);
         needsId.voucherifyId = prod.id;
-        console.log(
-          `[SUCCESS] Product created ${needsId.name}`
-        );
+        console.log(`[SUCCESS] Product created ${needsId.name}`);
       })
       .catch((error) =>
-        console.log(
-          `[ERROR] There was a error creating product ${product.name}`, error
-        )
+        console.log(`[ERROR] There was an error creating product ${product.name}`, error)
       );
     return thisProduct;
   });
   return Promise.all(productCreationPromises)
-    .then(
-      (response) =>
-        fs.writeFile(
-          './.data/createdProducts.json',
-          JSON.stringify(
-            response.map((element) => element),
-          ),
-          (error) => {
-            if (error) throw error;
-            console.log('[SUCCESS] All products setup');
-          }) || response
-    ).catch((error) => console.log('[ERROR] There was a error creating products', error));
+  .then(() => console.log('[SUCCESS] All products setup'))
+  .catch((error) => console.log('[ERROR] There was an error creating products', error));
 };
 
 const setupCustomerSegments = () => {
@@ -132,32 +94,17 @@ const setupCustomerSegments = () => {
       .then((seg) => {
         const needsId = segments.find((s) => s.name === segment.name);
         needsId.voucherifyId = seg.id;
-        console.log(
-          `[SUCCESS] Segment created ${needsId.name}`
-        );
+        console.log(`[SUCCESS] Segment created ${needsId.name}`);
         return seg;
       })
       .catch((error) =>
-        console.log(
-          `[ERROR] There was a error creating segment ${segment.name}`, error
-        )
+        console.log(`[ERROR] There was an error creating segment ${segment.name}`, error)
       );
     return thisSegment;
   });
-
   return Promise.all(segmentCreationPromises)
-    .then(
-      (response) =>
-        fs.writeFile(
-          './.data/createdSegments.json',
-          JSON.stringify(
-            response.map((element) => element),
-          ),
-          (error) => {
-            if (error) throw error;
-            console.log('[SUCCESS] All segments setup');
-          }) || response
-    ).catch((error) => console.log('[ERROR] There was a error creating segments', error));
+  .then(() => console.log('[SUCCESS] All segments setup'))
+  .catch((error) => console.log('[ERROR] There was an error creating segments', error));
 };
 
 const setupValidationRules = async () => {
@@ -361,89 +308,68 @@ const setupValidationRules = async () => {
       },
     },
   ];
-  const ruleCreationPromises = rules.map(async (rule) => {
-    const thisRule = await voucherify.validationRules
-      .create(rule)
-      .then((rul) => {
-        const needsId = rules.find((response) => response.name === rule.name);
-        needsId.voucherifyId = rul.id;
-        console.log(
-          `[SUCCESS] Validation rule created ${needsId.name}`
-        );
-        return rul;
+  const ruleCreationPromises = rules.map((ruleDefinition) => {
+    return voucherify.validationRules
+      .create(ruleDefinition)
+      .then((rule) => {
+        const needsId = rules.find((response) => response.name === ruleDefinition.name);
+        needsId.voucherifyId = rule.id;
+        console.log(`[SUCCESS] Validation rule created ${needsId.name}`);
+        return rule;
       })
-      .catch((error) => console.log(`[ERROR] There was a error creating validation rule ${needsId.name}`, error));
-    return thisRule;
+      .catch((error) => console.log(`[ERROR] There was an error creating validation rule ${needsId.name}`, error));
   });
 
-  const campaignsRuleAssigmentPromises = () =>
-    campaigns.map(async (campaign) => {
-      if (
-        campaign.metadata.demostoreAssignedValRules &&
-        campaign.metadata.demostoreName !== 'Welcome wave 5% off'
-      ) {
-        const demostoreValRules = campaign.metadata.demostoreAssignedValRules.split(
-          '; '
-        );
-        demostoreValRules.forEach(async (demostoreValRule) => {
-          const campaignAssigment = await voucherify.validationRules
-            .createAssignment(
-              rules.find((response) => response.name === demostoreValRule).voucherifyId,
-              {
-                campaign: campaign.voucherifyId,
-              }
-            )
-            .then((assigment) => {
-              console.log(`[SUCCESS] Campaign assigment created ${assigment.id}`);
-              return assigment;
-            })
-            .catch((error) => console.log(`[ERROR] There was a error creating campaign assigment ${assigment.id}`, error));
-          return campaignAssigment;
-        });
+  const campaignsRuleAssigmentPromises = () => {
+    const assignmentsPerCampaign = campaigns.map((campaign) => {
+      const m = campaign.metadata;
+      if (!m.demostoreAssignedValRules || m.demostoreName === 'Welcome wave 5% off') {
+        return [];
       }
+      const demostoreValRules = campaign.metadata.demostoreAssignedValRules.split('; ');
+      return demostoreValRules.map((demostoreValRule) => {
+        const needsId = rules.find((response) => response.name === demostoreValRule).voucherifyId;
+        return voucherify.validationRules
+          .createAssignment(needsId, { campaign: campaign.voucherifyId })
+          .then((assigment) => {
+            console.log(`[SUCCESS] Campaign assigment created ${assigment.id}`);
+            return assigment;
+          })
+          .catch((error) => console.log(`[ERROR] There was an error creating campaign assigment ${needsId}`, error));
+      });
     });
+    return _.flatten(assignmentsPerCampaign);
+  };
 
-  const vouchersRuleAssigmentPromises = () =>
-    vouchers.map(async (voucher) => {
-      if (voucher.metadata.demostoreAssignedValRules) {
-        const demostoreValRules = voucher.metadata.demostoreAssignedValRules.split(
-          '; '
-        );
-        demostoreValRules.forEach(async (demostoreValRule) => {
-          const voucherAssigment = await voucherify.validationRules
-            .createAssignment(
-              rules.find((response) => response.name === demostoreValRule).voucherifyId,
-              {
-                voucher: voucher.code,
-              }
-            )
-            .then((assigment) => {
-              console.log(`[SUCCESS] Voucher assigment created ${assigment.id}`);
-              return assigment;
-            })
-            .catch((error) => console.log(`[ERROR] There was a error creating voucher assigment ${assigment.id}`, error));
-          return voucherAssigment;
-        });
+  const vouchersRuleAssigmentPromises = () => {
+    const valRulesPerVoucher = vouchers.map((voucher) => {
+      if (!voucher.metadata.demostoreAssignedValRules) {
+        return [];
       }
+      const demostoreValRules = voucher.metadata.demostoreAssignedValRules.split('; ');
+      return demostoreValRules.map((demostoreValRule) => {
+        const needsId = rules.find((response) => response.name === demostoreValRule).voucherifyId;
+        return voucherify.validationRules
+          .createAssignment(needsId, { voucher: voucher.code })
+          .then((assigment) => {
+            console.log(`[SUCCESS] Voucher assigment created ${assigment.id}`);
+            return assigment;
+          })
+          .catch((error) => console.log(`[ERROR] There was an error creating voucher assigment ${needsId}`, error));
+      });
     });
+    return _.flatten(valRulesPerVoucher);
+  };
 
-  Promise.all(ruleCreationPromises)
-    .then(
-      (response) =>
-        fs.writeFile(
-          './.data/createdValidationRules.json',
-          JSON.stringify(
-            response.map((element) => element),
-          ),
-          (error) => {
-            if (error) throw error;
-            console.log('[SUCCESS] All validation rules setup');
-          }) || response
-    ).then(() => campaignsRuleAssigmentPromises())
-    .then(() => vouchersRuleAssigmentPromises())
-    .catch((error) => console.log('[ERROR] There was a error creating validation rules', error));
-
-  return console.log('[SUCCESS] Setup finished');
+  try {
+    const createdValidationRules = await Promise.all(ruleCreationPromises);
+    console.log('[SUCCESS] All validation rules setup');
+    await Promise.all(campaignsRuleAssigmentPromises());
+    await Promise.all(vouchersRuleAssigmentPromises());
+    console.log('[SUCCESS] All validation rule assignments created');
+  } catch (error) {
+    console.log('[ERROR] There was an error creating validation rules', error);
+  }
 };
 
 setupCampaigns()
@@ -451,4 +377,5 @@ setupCampaigns()
   .then(setupVouchers)
   .then(setupCustomerSegments)
   .then(setupValidationRules)
-  .catch((error) => console.log('[ERROR] There was a error creating project', error))
+  .then(() => console.log('[SUCCESS] Setup finished'))
+  .catch((error) => console.log('[ERROR] There was an error creating project', error))

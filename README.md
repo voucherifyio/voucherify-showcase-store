@@ -14,8 +14,6 @@ Add your Voucherify `Application ID` and `Application Secret Key` for both your 
 
 Your environment variables should look like this:
 
-* PORT=3000
-* REACT_APP_API_URL=
 * REDIS_URL="YOUR REDIS URL"
 * REACT_APP_BACKEND_APPLICATION_ID="YOUR 'Application Keys' APPLICATION ID"
 * REACT_APP_BACKEND_CLIENT_SECRET_KEY="YOUR 'Application Keys' SECRET KEY"
