@@ -242,6 +242,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const listener = app.listen(process.env.API_PORT, () => {
+const listener = app.listen(process.env.PORT || 3000, () => {
   console.log(`Your server is listening on port ${listener.address().port}`);
 });
