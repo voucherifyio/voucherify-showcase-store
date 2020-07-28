@@ -47,7 +47,7 @@ class CustomerProvider extends Component {
 
   init = async () => {
     try {
-      const session = await fetch(`${process.env.REACT_APP_API_URL}/init`, {
+      const session = await fetch(`${process.env.REACT_APP_API_URL || ''}/init`, {
         credentials: 'include',
       }).then((response) => response.json());
 
@@ -84,7 +84,7 @@ class CustomerProvider extends Component {
       const customers = await Promise.all(
           storeCustomers.map(async (customer) => {
             const cust = await fetch(
-              `${process.env.REACT_APP_API_URL}/customer/${this.state.sessionCode}${customer.source_id}`,
+              `${process.env.REACT_APP_API_URL || ''}/customer/${this.state.sessionCode}${customer.source_id}`,
               {
                 include: 'credentials',
               });
@@ -115,7 +115,7 @@ class CustomerProvider extends Component {
     try {
       this.setState({fetchingCampaigns: true});
       const campaigns = await fetch(
-          `${process.env.REACT_APP_API_URL}/campaigns`,
+          `${process.env.REACT_APP_API_URL || ''}/campaigns`,
           {
             include: 'credentials',
           },
@@ -145,7 +145,7 @@ class CustomerProvider extends Component {
     try {
       this.setState({fetchingCampaigns: true});
       const vouchers = await fetch(
-          `${process.env.REACT_APP_API_URL}/vouchers`,
+          `${process.env.REACT_APP_API_URL || ''}/vouchers`,
           {
             include: 'credentials',
           },
@@ -171,7 +171,7 @@ class CustomerProvider extends Component {
       // Get customer data, start spinner
       this.setState({fetchingCustomer: true});
       const customer = await fetch(
-          `${process.env.REACT_APP_API_URL}/customer/${id}`,
+          `${process.env.REACT_APP_API_URL || ''}/customer/${id}`,
           {
             credentials: 'include',
           },
@@ -205,7 +205,7 @@ class CustomerProvider extends Component {
       // Get customer data, start spinner
       this.setState({fetchingCustomer: true, fetchingCampaigns: true});
       const customer = await fetch(
-          `${process.env.REACT_APP_API_URL}/customer/${id}`,
+          `${process.env.REACT_APP_API_URL || ''}/customer/${id}`,
           {
             credentials: 'include',
           },

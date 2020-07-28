@@ -140,7 +140,7 @@ class ProductProvider extends Component {
   loadProducts = async () => {
     try {
       const products = await fetch(
-          `${process.env.REACT_APP_API_URL}/products`,
+          `${process.env.REACT_APP_API_URL || ''}/products`,
           {
             credentials: 'include',
           },
@@ -272,7 +272,7 @@ class ProductProvider extends Component {
   };
 
   sendOrder = async (orderPayload) => {
-    const order = await fetch(`${process.env.REACT_APP_API_URL}/order`, {
+    const order = await fetch(`${process.env.REACT_APP_API_URL || ''}/order`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       credentials: 'include',
@@ -282,7 +282,7 @@ class ProductProvider extends Component {
   };
 
   sendRedemption = async (redemptionPayload) => {
-    const redemption = await fetch(`${process.env.REACT_APP_API_URL}/redeem`, {
+    const redemption = await fetch(`${process.env.REACT_APP_API_URL || ''}/redeem`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       credentials: 'include',
