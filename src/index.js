@@ -5,11 +5,9 @@ import App from './App';
 import {BrowserRouter as Router} from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import {ProductProvider} from './components/Context/Context';
-// import {CustomerProvider} from './components/CustomerContext';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 ReactDOM.render(
-    // <CustomerProvider>
       <ProductProvider>
         <Router>
           <React.StrictMode>
@@ -18,7 +16,6 @@ ReactDOM.render(
           </React.StrictMode>
         </Router>
       </ProductProvider>,
-    // </CustomerProvider>,
     document.getElementById('root'),
 );
 
