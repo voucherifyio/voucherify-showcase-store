@@ -187,7 +187,7 @@ button:focus {
 
 /* Sidebar styles */
 
-#sidebar-wrapper {
+#storeSidebar-wrapper {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   max-height: 100vh;
   -webkit-transition: margin 0.25s ease-out;
@@ -204,49 +204,49 @@ button:focus {
   z-index: 3;
 }
 
-#sidebar-wrapper .sidebar-heading {
+#storeSidebar-wrapper .storeSidebar-heading {
   margin-top: 1rem;
   padding: 0.4rem 1rem;
   font-size: 1.25rem;
   font-weight: 700;
 }
 
-#sidebar-wrapper .campaigns-count {
+#storeSidebar-wrapper .campaigns-count {
   font-weight: 200;
 }
 
-#sidebar-wrapper .campaign-box {
+#storeSidebar-wrapper .campaign-box {
   height: 80px;
 }
 
-#sidebar-wrapper .campaign-name {
+#storeSidebar-wrapper .campaign-name {
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 0px;
 }
 
-#sidebar-wrapper .campaign-description {
+#storeSidebar-wrapper .campaign-description {
   font-size: 0.875rem;
   margin-bottom: 0px;
 }
 
-#sidebar-wrapper .section-heading {
+#storeSidebar-wrapper .section-heading {
   font-weight: 700;
 }
-#sidebar-wrapper .redemption-rules {
+#storeSidebar-wrapper .redemption-rules {
   margin-bottom: 0px;
 }
 
-#sidebar-wrapper .campaign-step {
+#storeSidebar-wrapper .campaign-step {
 }
 
-#sidebar-wrapper .campaign-step-icon {
+#storeSidebar-wrapper .campaign-step-icon {
 }
 
-#sidebar-wrapper .campaign-step-description {
+#storeSidebar-wrapper .campaign-step-description {
   margin-left: 10px;
 }
-#sidebar-wrapper .campaign-step-text {
+#storeSidebar-wrapper .campaign-step-text {
   margin-bottom: 0px;
 }
 
@@ -277,16 +277,16 @@ button:focus {
   text-decoration: none;
 }
 
-.sidebar-content {
+.storeSidebar-content {
   padding: 0.875rem 1.25rem;
   font-size: 1rem;
 }
 
-.sidebar-content-data {
+.storeSidebar-content-data {
   font-weight: 700;
 }
 
-.sidebar-select-customer {
+.storeSidebar-select-customer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -294,19 +294,30 @@ button:focus {
   font-size: 1rem;
 }
 
-#wrapper.toggled #sidebar-wrapper {
+#wrapper.toggled #storeSidebar-wrapper {
   margin-right: 0;
 }
 
-.sidebar-selected {
+.storeSidebar-selected {
   border-left: solid 5px black;
 }
 
+.chips {
+  padding: 0.875rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chips > * {
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
 @media (max-width: 767px) {
-  #sidebar-wrapper {
+  #storeSidebar-wrapper {
     display: none;
   }
-  #wrapper.toggled #sidebar-wrapper {
+  #wrapper.toggled #storeSidebar-wrapper {
     margin-right: -25rem;
   }
 }
@@ -328,7 +339,7 @@ button:focus {
   }
 }
 @media (min-width: 768px) {
-  #sidebar-wrapper {
+  #storeSidebar-wrapper {
     margin-right: 0;
   }
 
@@ -337,7 +348,7 @@ button:focus {
     width: 100%;
   }
 
-  #wrapper.toggled #sidebar-wrapper {
+  #wrapper.toggled #storeSidebar-wrapper {
     margin-right: -25rem;
   }
 }

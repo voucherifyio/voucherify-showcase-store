@@ -7,9 +7,8 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
 
-const CampaignDetails = ({campaign, code}) => {
+const SidebarVoucherDetails = ({voucher, code}) => {
   const [open, setOpen] = useState(false);
-
   const handleTooltipClose = () => {
     setOpen(false);
   };
@@ -39,19 +38,17 @@ const CampaignDetails = ({campaign, code}) => {
         'width': '100%',
         'transition:': 'all .5s ease-in-out',
       }}
-      key={campaign.name}
+      key={voucher.name}
     >
-      <div key={campaign.name}>
+      <div key={voucher.name}>
         <p className="campaign-description section-heading">
           Your discount voucher{' '}
-          {campaign.voucher.discount.type === 'PERCENT' && (
-            <>{campaign.voucher.discount.percent_off}% off</>
+          {voucher.discount.type === 'PERCENT' && (
+            <>{voucher.discount.percent_off}% off</>
           )}
-          {campaign.voucher.discount.type === 'AMOUNT' && (
-            <>${(campaign.voucher.discount.amount_off / 100).toFixed(2)} off</>
+          {voucher.discount.type === 'AMOUNT' && (
+            <>${(voucher.discount.amount_off / 100).toFixed(2)} off</>
           )}
-          {campaign.metadata.demostoreBOGO &&
-            ` for ${campaign.metadata.demostoreBOGO}`}
         </p>
         <p className="campaign-description">Click to copy</p>
         <div className="d-flex justify-content-center">
@@ -80,12 +77,12 @@ const CampaignDetails = ({campaign, code}) => {
             </CopyToClipboard>
           </ClickAwayListener>
         </div>
-        {campaign.metadata.demostoreSteps && (
+        {voucher.metadata.demostoreSteps && (
           <>
             <p className="campaign-description section-heading redemption-rules">
               Redemption rules
             </p>
-            {campaign.metadata.demostoreSteps.split(';').map((step) => (
+            {voucher.metadata.demostoreSteps.split(';').map((step) => (
               <div
                 key={step}
                 className="campaign-step d-flex flex-row align-items-center"
@@ -100,15 +97,24 @@ const CampaignDetails = ({campaign, code}) => {
             ))}
           </>
         )}
+        <p className="campaign-description section-heading redemption-rules mt-4">
+          Voucher statistics
+        </p>
+        <p className="campaign-description redemption-rules my-1">
+          Total number of redemptions:{' '}
+          <span className="section-heading">
+            {voucher.redemption.redeemed_quantity}
+          </span>
+        </p>
       </div>
     </div>
   );
 };
 
-export default CampaignDetails;
+export default SidebarVoucherDetails;
 
 
-CampaignDetails.propTypes = {
-  campaign: PropTypes.object.isRequired,
+SidebarVoucherDetails.propTypes = {
+  voucher: PropTypes.object.isRequired,
   code: PropTypes.string.isRequired,
 };

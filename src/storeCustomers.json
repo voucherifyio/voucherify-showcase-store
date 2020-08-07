@@ -2,7 +2,6 @@
   {
     "source_id": "alicemorgan",
     "name": "Alice Morgan",
-    "description": null,
     "email": "alice@morgan.io",
     "metadata": {
       "country": "UK",
@@ -10,37 +9,17 @@
       "demostore_id": "alicemorgan",
       "customerValidationRuleName": "Welcome wave 5% off Alice Morgan"
     },
-    "created_at": "2017-08-08T07:58:09.635Z",
     "address": {
       "city": "London",
       "state": "Greater London",
       "line_1": "10 Downing Street",
       "country": "England",
       "postal_code": "E1 7AA"
-    },
-    "summary": {
-      "orders": {
-        "total_amount": 0,
-        "last_order_date": "2020-04-15T10:56:50.513Z"
-      }
-    },
-    "loyalty": {
-      "points": 0,
-      "referred_customers": 4,
-      "campaigns": {
-        "Yohan-Refarral": {
-          "referred_customers": 4
-        }
-      }
-    },
-    "updated_at": "2017-10-11T09:29:49.336Z",
-    "phone": null,
-    "birthday": null
+    }
   },
   {
     "source_id": "lewismarshall",
     "name": "Lewis Marshall",
-    "description": null,
     "email": "lewis_marshall@gmail.com",
     "metadata": {
       "country": "USA",
@@ -48,28 +27,17 @@
       "demostore_id": "lewismarshall",
       "customerValidationRuleName": "Welcome wave 5% off Lewis Marshall"
     },
-    "created_at": "2018-08-08T07:58:09.635Z",
     "address": {
       "city": "Los Angeles",
       "state": "California",
       "line_1": "4302  Norman Street",
       "country": "USA",
       "postal_code": "90015"
-    },
-    "summary": {
-      "orders": {
-        "total_amount": 0,
-        "last_order_date": "2020-01-15T10:56:50.513Z"
-      }
-    },
-    "updated_at": "2019-10-11T09:29:49.336Z",
-    "phone": null,
-    "birthday": null
+    }
   },
   {
     "source_id": "johndorian",
     "name": "John Dorian",
-    "description": null,
     "email": "john_d@scrubs.net",
     "metadata": {
       "country": "PL",
@@ -77,22 +45,12 @@
       "demostore_id": "johndorian",
       "customerValidationRuleName": "Welcome wave 5% off John Dorian"
     },
-    "created_at": "2017-08-08T07:58:09.635Z",
     "address": {
       "city": "Warsaw",
       "state": "Masovian Voivodeship",
       "line_1": "Wspólna 2/24",
       "country": "Poland",
       "postal_code": "01-002"
-    },
-    "summary": {
-      "orders": {
-        "total_amount": 0,
-        "last_order_date": "2020-06-15T10:56:50.513Z"
-      }
-    },
-    "updated_at": "2020-01-11T09:29:49.336Z",
-    "phone": null,
-    "birthday": null
+    }
   }
 ]

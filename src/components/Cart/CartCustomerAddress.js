@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CustomerAddress = ({customer}) => {
+const CartCustomerAddress = ({customer}) => {
   return (
     <div className="col-md-12 col-lg-3 order-1">
       <h4 className="mb-3">Address</h4>
@@ -29,8 +29,8 @@ const CustomerAddress = ({customer}) => {
   );
 };
 
-export default CustomerAddress;
+export default CartCustomerAddress;
 
-CustomerAddress.propTypes = {
+CartCustomerAddress.propTypes = {
   customer: PropTypes.object.isRequired,
 };

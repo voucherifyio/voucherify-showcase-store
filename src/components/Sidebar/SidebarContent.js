@@ -1,23 +1,25 @@
 import React from 'react';
-import {CustomerConsumer} from '../CustomerContext';
+import { ProductConsumer } from '../Context/Context';
 import _ from 'lodash';
-import CampaignDetails from './CampaignDetails';
-import VoucherDetails from './VoucherDetails';
+import SidebarCampaignDetails from './SidebarCampaignDetails';
+import SidebarVoucherDetails from './SidebarVoucherDetails';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import SidebarQualifications from './SidebarQualifications';
 
 const Accordion = withStyles({
   root: {
-    'border': '1px solid rgba(0, 0, 0, .125)',
-    'boxShadow': 'none',
+    border: '1px solid rgba(0, 0, 0, .125)',
+    boxShadow: 'none',
+    width: '100%',
     '&:not(:last-child)': {
       borderBottom: 0,
     },
@@ -33,10 +35,10 @@ const Accordion = withStyles({
 
 const AccordionSummary = withStyles({
   root: {
-    'backgroundColor': 'rgba(0, 0, 0, .03)',
-    'borderBottom': '1px solid rgba(0, 0, 0, .125)',
-    'marginBottom': -1,
-    'minHeight': 56,
+    backgroundColor: 'rgba(0, 0, 0, .03)',
+    borderBottom: '1px solid rgba(0, 0, 0, .125)',
+    marginBottom: -1,
+    minHeight: 56,
     '&$expanded': {
       minHeight: 56,
     },
@@ -61,27 +63,36 @@ const SidebarContent = () => {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-  
+
   return (
     <div className="list-group list-group-flush">
-      <CustomerConsumer>
+      <ProductConsumer>
         {(ctx) => {
           let customerDate = '';
           let downloadCustomerData = '';
-          if (ctx.customer) {
+          if (ctx.customerSelectedCustomer) {
             customerDate = new Date(
-                ctx.customer.summary.orders.last_order_date,
+              ctx.customerSelectedCustomer.summary.orders.last_order_date
             );
             downloadCustomerData =
               'data: text/json;charset=utf-8,' +
-              encodeURIComponent(JSON.stringify(ctx.customer));
+              encodeURIComponent(JSON.stringify(ctx.customerSelectedCustomer));
           }
-          const vouchers = _.orderBy(ctx.vouchers, ['metadata']['demostoreOrder'],['asc']);
-          const campaigns = _.orderBy(ctx.campaigns, ['metadata']['demostoreOrder'],['asc']);
+          const customerVouchers = _.orderBy(
+            ctx.customerVouchers,
+            ['metadata']['demostoreOrder'],
+            ['asc']
+          );
+          const customerCampaigns = _.orderBy(
+            ctx.customerCampaigns,
+            ['metadata']['demostoreOrder'],
+            ['asc']
+          );
 
           return (
             <>
-              {!ctx.customers || ctx.fetchingCustomer ? (
+              {!ctx.customerAvailableCustomers ||
+              ctx.fetchingCustomer ? (
                 <div className="d-flex justify-content-center">
                   <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
@@ -89,20 +100,21 @@ const SidebarContent = () => {
                 </div>
               ) : (
                 <>
-                  <div className="sidebar-select-customer">
+                  <div className="storeSidebar-select-customer">
                     <Form.Control
                       as="select"
                       id="storeCustomers"
                       onChange={(e) => {
-                        ctx.loadCustomer(e.target.value);
+                        ctx.getCustomer(e.target.value);
                       }}
-                      value={(ctx.customer || {}).source_id || 'DEFAULT'}
-                      className=""
+                      value={
+                        (ctx.customerSelectedCustomer || {}).source_id || 'DEFAULT'
+                      }
                     >
                       <option value="DEFAULT" disabled>
                         Select customer
                       </option>
-                      {ctx.customers.map((customer) => (
+                      {ctx.customerAvailableCustomers.map((customer) => (
                         <option key={customer.name} value={customer.source_id}>
                           {customer.name} ({customer.metadata.country})
                         </option>
@@ -116,27 +128,28 @@ const SidebarContent = () => {
                       </Tooltip>
                     </a>
                   </div>
-                  {!_.isEmpty(ctx.customer) && (
+                  {!_.isEmpty(ctx.customerSelectedCustomer) && (
                     <>
-                      <div className="sidebar-content">
+                      <div className="storeSidebar-content">
                         <p>
                           Location:{' '}
-                          <span className="sidebar-content-data">
-                            {ctx.customer.address.country}
+                          <span className="storeSidebar-content-data">
+                            {ctx.customerSelectedCustomer.address.country}
                           </span>
                         </p>
                         <p>
                           Total amount spent:{' '}
-                          <span className="sidebar-content-data">
+                          <span className="storeSidebar-content-data">
                             $
                             {(
-                              ctx.customer.summary.orders.total_amount / 100
+                              ctx.customerSelectedCustomer.summary.orders
+                                .total_amount / 100
                             ).toFixed(2)}
                           </span>
                         </p>
                         <p>
                           Last order date:{' '}
-                          <span className="sidebar-content-data">
+                          <span className="storeSidebar-content-data">
                             {('0' + customerDate.getDate()).slice(-2)}.
                             {('0' + (customerDate.getMonth() + 1)).slice(-2)}.
                             {customerDate.getFullYear()} @{' '}
@@ -149,17 +162,19 @@ const SidebarContent = () => {
                   )}
                 </>
               )}
-              {!_.isEmpty(ctx.campaigns) &&
-                !_.isEmpty(ctx.vouchers) &&
-                !_.isEmpty(ctx.customer) && (
-                <>
-                  <p className="sidebar-heading">
+              {!_.isEmpty(ctx.customerCampaigns) &&
+                !_.isEmpty(ctx.customerVouchers) &&
+                !_.isEmpty(ctx.customerSelectedCustomer) && 
+                (
+                  <>
+                    <SidebarQualifications ctx={ctx} />
+                    <p className="storeSidebar-heading">
                       Public Codes{' '}
-                    <span className="campaigns-count">
-                        ({ctx.vouchers.length})
-                    </span>
-                  </p>
-                  {ctx.fetchingCampaigns ? (
+                      <span className="campaigns-count">
+                        ({ctx.customerVouchers.length})
+                      </span>
+                    </p>
+                    {ctx.fetchingCampaigns ? (
                       <div className="d-flex justify-content-center">
                         <Spinner animation="border" role="status">
                           <span className="sr-only">Loading...</span>
@@ -167,7 +182,7 @@ const SidebarContent = () => {
                       </div>
                     ) : (
                       <div>
-                        {vouchers.map((voucher) => (
+                        {customerVouchers.map((voucher) => (
                           <Accordion
                             square
                             key={voucher.metadata.demostoreName}
@@ -175,7 +190,7 @@ const SidebarContent = () => {
                               expanded === `${voucher.metadata.demostoreName}`
                             }
                             onChange={handleChange(
-                                `${voucher.metadata.demostoreName}`,
+                              `${voucher.metadata.demostoreName}`
                             )}
                           >
                             <AccordionSummary
@@ -189,7 +204,7 @@ const SidebarContent = () => {
                               </p>
                             </AccordionSummary>
                             <AccordionDetails className="bg-light">
-                              <VoucherDetails
+                              <SidebarVoucherDetails
                                 voucher={voucher}
                                 code={voucher.code}
                               />
@@ -198,13 +213,13 @@ const SidebarContent = () => {
                         ))}
                       </div>
                     )}
-                  <p className="sidebar-heading">
+                    <p className="storeSidebar-heading">
                       Personal Codes{' '}
-                    <span className="campaigns-count">
-                        ({ctx.campaigns.length})
-                    </span>
-                  </p>
-                  {ctx.fetchingCampaigns ? (
+                      <span className="campaigns-count">
+                        ({ctx.customerCampaigns.length})
+                      </span>
+                    </p>
+                    {ctx.fetchingCampaigns ? (
                       <div className="d-flex justify-content-center">
                         <Spinner animation="border" role="status">
                           <span className="sr-only">Loading...</span>
@@ -212,7 +227,7 @@ const SidebarContent = () => {
                       </div>
                     ) : (
                       <div>
-                        {campaigns.map((campaign) => (
+                        {customerCampaigns.map((campaign) => (
                           <Accordion
                             square
                             key={campaign.name}
@@ -230,21 +245,27 @@ const SidebarContent = () => {
                               </p>
                             </AccordionSummary>
                             <AccordionDetails className="bg-light">
-                              <CampaignDetails
+                              <SidebarCampaignDetails
                                 campaign={campaign}
-                                code={ctx.getCode(campaign.name)}
+                                code={
+                                  campaign.coupons.find(
+                                    (coupon) =>
+                                      coupon.customerSelectedCustomer ===
+                                      ctx.customerSelectedCustomer.source_id
+                                  ).customerDataCoupon
+                                }
                               />
                             </AccordionDetails>
                           </Accordion>
                         ))}
                       </div>
                     )}
-                </>
-              )}
+                  </>
+                )}
             </>
           );
         }}
-      </CustomerConsumer>
+      </ProductConsumer>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Product from './Product';
-import {ProductConsumer} from './Context';
+import {ProductConsumer} from '../Context/Context';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 import _ from 'lodash';
@@ -54,10 +54,10 @@ const ProductList = () => {
                 switch (filterCategory) {
                   case '':
                   case 'All':
-                    filteredList = ctx.products;
+                    filteredList = ctx.storeProducts;
                     break;
                   default:
-                    filteredList = ctx.products.filter((product) =>
+                    filteredList = ctx.storeProducts.filter((product) =>
                       product.metadata.categories.includes(filterCategory),
                     );
                     break;

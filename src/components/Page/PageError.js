@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Default = () => {
+const PageError = () => {
   return (
     <div className="container ">
       <div className="row">
@@ -18,4 +18,4 @@ const Default = () => {
   );
 };
 
-export default Default;
+export default PageError;

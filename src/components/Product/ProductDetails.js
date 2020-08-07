@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
-import {ProductConsumer} from './Context';
+import {ProductConsumer} from '../Context/Context';
 import {useParams} from 'react-router';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-const Details = () => {
+const ProductDetails = () => {
   const {productId} = useParams();
   const quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const [quantity, setQuantity] = useState('1');
   const handleOnChange = (e) => {
     setQuantity(e.target.value);
   };
-  const products = JSON.parse(localStorage.products);
+  const products = JSON.parse(localStorage.storeProducts);
 
   const product = products.find((product) => product.id === productId);
   return (
@@ -77,4 +77,4 @@ const Details = () => {
   );
 };
 
-export default Details;
+export default ProductDetails;
