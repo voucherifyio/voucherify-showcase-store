@@ -218,7 +218,7 @@ class ProductProvider extends Component {
 
   getCustomers = async () => {
     try {
-      this.setState({ fetchingCustomer: true});
+      this.setState({ fetchingCustomer: true, fetchingQualifications: true, fetchingCampaigns: true});
       const customerAvailableCustomers = await Promise.all(
         storeCustomers.map(async (customer) => {
           const cust = await fetch(
