@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {ProductConsumer} from './Context';
+import {ProductConsumer} from '../Context/Context';
 
-const SuccessPage = () => {
+const PageSuccess = () => {
   return (
     <div className="container text-center">
       <div className="row">
@@ -13,7 +13,7 @@ const SuccessPage = () => {
             <ProductConsumer>
               {(ctx) => {
                 return (
-                  <div className="text-center mb-5">ID: {ctx.lastOrderID}</div>
+                  <div className="text-center mb-5">ID: {ctx.cartOrderId}</div>
                 );
               }}
             </ProductConsumer>
@@ -27,4 +27,4 @@ const SuccessPage = () => {
   );
 };
 
-export default SuccessPage;
+export default PageSuccess;

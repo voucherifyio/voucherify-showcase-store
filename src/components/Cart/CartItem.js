@@ -4,12 +4,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
 
-const CartItem = ({item, value}) => {
+const CartItem = ({item, ctx}) => {
   const {id, name, count, price, total} = item;
-  const {increment, removeItem} = value;
   const quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const handleOnChange = (e) => {
-    increment(id, parseInt(e.target.value, 10));
+    ctx.increment(id, parseInt(e.target.value, 10));
   };
 
   return (
@@ -45,7 +44,7 @@ const CartItem = ({item, value}) => {
         <small className="text-muted">Price</small>${(total / 100).toFixed(2)}
       </div>
       <div className="d-flex flex-column justify-content-center">
-        <IconButton className="mx-2" onClick={() => removeItem(id)}>
+        <IconButton className="mx-2" onClick={() => ctx.removeItem(id)}>
           <DeleteIcon />
         </IconButton>
       </div>
@@ -57,5 +56,5 @@ export default CartItem;
 
 CartItem.propTypes = {
   item: PropTypes.object.isRequired,
-  value: PropTypes.object.isRequired,
+  ctx: PropTypes.object.isRequired,
 };

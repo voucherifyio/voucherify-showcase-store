@@ -3,13 +3,13 @@ import {Switch, Route} from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navigation from './components/Navigation';
-import ProductList from './components/ProductList';
-import Cart from './components/Cart/Cart';
-import Default from './components/Default';
-import Details from './components/Details';
 import Footer from './components/Footer';
-import MainPage from './components/MainPage';
-import SuccessPage from './components/SuccessPage';
+import ProductList from './components/Product/ProductList';
+import ProductDetails from './components/Product/ProductDetails';
+import Cart from './components/Cart/Cart';
+import PageMain from './components/Page/PageMain';
+import PageSuccess from './components/Page/PageSuccess';
+import PageError from './components/Page/PageError';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -32,26 +32,26 @@ window.Voucherify.initialize(
     process.env.REACT_APP_FRONTEND_CLIENT_SECRET_KEY);
 
 const App = () => {
-  const [sidebar, setSidebar] = useState(true);
+  const [storeSidebar, setSidebar] = useState(true);
   const toggleSidebar = () => {
-    setSidebar(!sidebar);
+    setSidebar(!storeSidebar);
   };
 
   return (
     <>
       <div className="d-none d-md-block">
-        <div className={sidebar ? 'd-flex' : 'd-flex toggled'} id="wrapper">
+        <div className={storeSidebar ? 'd-flex' : 'd-flex toggled'} id="wrapper">
           <div id="page-content-wrapper">
             <React.Fragment>
               <div className="mainContent">
-                <Navigation sidebar={sidebar} toggleSidebar={toggleSidebar} />
+                <Navigation storeSidebar={storeSidebar} toggleSidebar={toggleSidebar} />
                 <Switch>
-                  <Route exact path="/" component={MainPage} />
+                  <Route exact path="/" component={PageMain} />
                   <Route path="/store" component={ProductList} />
-                  <Route path="/details/:productId" component={Details} />
+                  <Route path="/details/:productId" component={ProductDetails} />
                   <Route path="/cart" component={Cart} />
-                  <Route path="/success" component={SuccessPage} />
-                  <Route component={Default} />
+                  <Route path="/success" component={PageSuccess} />
+                  <Route component={PageError} />
                 </Switch>
                 <Footer />
                 <ToastContainer {...toastOptions} />

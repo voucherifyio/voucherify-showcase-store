@@ -1,14 +1,13 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {ProductConsumer} from './Context';
-import {CustomerConsumer} from './CustomerContext';
+import { Link } from 'react-router-dom';
+import { ProductConsumer } from './Context/Context';
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from '@material-ui/core/IconButton';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Badge from '@material-ui/core/Badge';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PropTypes from 'prop-types';
 
@@ -19,7 +18,7 @@ const StyledBadge = withStyles(() => ({
   },
 }))(Badge);
 
-const Navigation = ({toggleSidebar, sidebar}) => {
+const Navigation = ({ toggleSidebar, storeSidebar }) => {
   return (
     <>
       <Navbar className="m-auto navbar-sticky" collapseOnSelect expand="lg">
@@ -31,33 +30,26 @@ const Navigation = ({toggleSidebar, sidebar}) => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
-            <Link className="d-flex align-content-center nav-item-link" to="/store">
+            <Link
+              className="d-flex align-content-center nav-item-link"
+              to="/store"
+            >
               <Nav.Item className="navbar-account px-2">Store</Nav.Item>
             </Link>
-            <CustomerConsumer>
-              {(ctx) => {
-                if (ctx.customer !== null) {
-                  const firstName = ctx.customer.name.split(' ')[0];
-                  return (
-                    <>
-                      <Nav.Item className="navbar-account px-2">
-                        <AccountCircleIcon className="navbar-icon mx-2" />
-                        Hi, <b>{firstName}</b>
-                      </Nav.Item>
-                    </>
-                  );
-                }
-              }}
-            </CustomerConsumer>
             <ProductConsumer>
               {(ctx) => {
-                const countTotalItems = ctx.cart.reduce(
-                    (acc, curr) => acc + curr.count,
-                    0,
+                const countTotalItems = ctx.cartItems.reduce(
+                  (acc, curr) => acc + curr.count,
+                  0
                 );
-
                 return (
                   <>
+                    {ctx.customerSelectedCustomer !== null && (
+                      <Nav.Item className="navbar-account px-2">
+                        <AccountCircleIcon className="navbar-icon mx-2" />
+                        Hi, <b>{ctx.customerSelectedCustomer.name.split(' ')[0]}</b>
+                      </Nav.Item>
+                    )}
                     <Nav.Item className="px-2">
                       <Link to="/cart">
                         <IconButton className="mx-2">
@@ -66,7 +58,10 @@ const Navigation = ({toggleSidebar, sidebar}) => {
                           </StyledBadge>
                         </IconButton>
                       </Link>
-                      <b>${(ctx.cartTotalAfterPromotion / 100).toFixed(2)}</b>
+                      <b>
+                        $
+                        {(ctx.cartTotalAfterPromotion / 100).toFixed(2)}
+                      </b>
                     </Nav.Item>
                   </>
                 );
@@ -74,7 +69,7 @@ const Navigation = ({toggleSidebar, sidebar}) => {
             </ProductConsumer>
             <Nav.Item className="px-2">
               <IconButton
-                className={sidebar ? 'mx-2 icon-selected' : 'mx-2'}
+                className={storeSidebar ? 'mx-2 icon-selected' : 'mx-2'}
                 onClick={toggleSidebar}
               >
                 <SettingsIcon />
@@ -89,8 +84,7 @@ const Navigation = ({toggleSidebar, sidebar}) => {
 
 export default Navigation;
 
-
 Navigation.propTypes = {
-  sidebar: PropTypes.bool.isRequired,
+  storeSidebar: PropTypes.bool.isRequired,
   toggleSidebar: PropTypes.func.isRequired,
 };

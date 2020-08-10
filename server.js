@@ -124,7 +124,7 @@ app.get('/init', async (request, response) => {
             );
           }
           return {
-            customer: customer.source_id,
+            customerSelectedCustomer: customer.source_id,
             campaigns: coupons.map((coupon) => coupon.voucher),
           };
         }));
@@ -187,6 +187,27 @@ app.get('/campaigns', async (request, response) => {
     return response.json(campaigns);
   } catch (e) {
     console.error(`[Campaigns][Error] - ${e}`);
+    response.status(500).end();
+  }
+});
+
+app.post('/qualifications', async (request, response) => {
+  try {
+    const data = request.body
+    const examinedVouchers = await voucherify.vouchers.qualifications.examine(data)
+    const examinedCampaigns = await voucherify.campaigns.qualifications.examine(data)
+
+    let qualifications = examinedCampaigns.data.concat(examinedVouchers.data).filter(
+      (qlt) => qlt.hasOwnProperty('metadata')
+    );
+
+    qualifications = qualifications.filter(
+      (qlt) => qlt.metadata.hasOwnProperty('demostoreName')
+    );
+
+    return response.json(qualifications);
+  } catch (e) {
+    console.error(`[Qualification][Error] - ${e}`);
     response.status(500).end();
   }
 });

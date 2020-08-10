@@ -1,6 +1,6 @@
 {
-  "short_name": "Demostore",
-  "name": "Voucherify Demostore",
+  "short_name": "Hot Beans",
+  "name": "Hot Beans - Voucherify Demostore",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,13 +8,13 @@
       "type": "image/x-icon"
     },
     {
-      "src": "coffee-cup.png",
-      "type": "image/png",
+      "src": "AppIcon.svg",
+      "type": "image/svg+xml",
       "sizes": "192x192"
     },
     {
-      "src": "coffee-cup.png",
-      "type": "image/png",
+      "src": "AppIcon.svg",
+      "type": "image/svg+xml",
       "sizes": "512x512"
     }
   ],

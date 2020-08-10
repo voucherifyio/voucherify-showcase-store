@@ -4,9 +4,9 @@ import SidebarContent from './SidebarContent';
 const Sidebar = () => {
   return (
     <>
-      <div className="bg-light" id="sidebar-wrapper">
-        <div className="sidebar-selected">
-          <p className="sidebar-heading">Control panel</p>
+      <div className="bg-light" id="storeSidebar-wrapper">
+        <div className="storeSidebar-selected">
+          <p className="storeSidebar-heading">Control panel</p>
         </div>
         <SidebarContent />
       </div>
