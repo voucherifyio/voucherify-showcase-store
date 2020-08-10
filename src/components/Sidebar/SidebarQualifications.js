@@ -19,7 +19,6 @@ const SidebarQualifications = ({ ctx }) => {
       borderRadius: "20em",
       padding: "5px 20px",
       marginTop: "15px",
-      marginBottom: "15px",
       textTransform: "none",
       "&:hover": {
         backgroundColor: "#ff8b5c",
@@ -27,10 +26,12 @@ const SidebarQualifications = ({ ctx }) => {
     },
   }))(Button);
 
+  const qualificationsToolTip = "The qualification endpoint returns all promotions available to the given customer profile and orders that meet predefined validation rules such as total order value or the minimum number of items in the cart."
+
   return (
     <>
       <div className="d-flex flex-column">
-        <div className="w-100 d-flex justify-content-center">
+        <div className="d-flex flex-column justify-content-center align-items-center">
           <VoucherifyButton
             variant="contained"
             onClick={() => {
@@ -43,18 +44,15 @@ const SidebarQualifications = ({ ctx }) => {
           >
             Check Qualifications
           </VoucherifyButton>
-          
-        </div>
-        <div className="w-100 storeSidebar-content d-flex align-items-center">
-            <p className="my-0">How Qualifications API works?</p>
-            <Tooltip title="This sends a request to display all vouchers and campaigns qualified to the current customer and context (e.g., order)">
+          <div className="d-flex justify-content-center align-items-center">
+            <p className="qualifications-description">Learn how qualification API works</p>
+            <Tooltip title={qualificationsToolTip}>
             <IconButton>
-              <InfoIcon />
+              <InfoIcon style={{ fontSize: 14 }}  />
             </IconButton>
           </Tooltip>
         </div>
-        
-        
+        </div>
       </div>
 
       {ctx.fetchingQualifications ? (

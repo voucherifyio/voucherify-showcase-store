@@ -302,6 +302,12 @@ button:focus {
   border-left: solid 5px black;
 }
 
+.qualifications-description {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 12px;
+}
+
 .chips {
   padding: 0.875rem 1.25rem;
   display: flex;

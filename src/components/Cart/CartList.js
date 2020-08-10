@@ -50,7 +50,7 @@ const CartList = ({ ctx }) => {
             </div>
           </li>
         ) : (
-          <CartForm value={ctx} customer={ctx.customerSelectedCustomer} />
+          <CartForm ctx={ctx} />
         )}
         <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
           <Tooltip title="Clear cart">

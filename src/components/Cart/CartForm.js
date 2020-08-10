@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 
-const CartForm = (ctx) => {
+const CartForm = ({ctx}) => {
   const [code, setCode] = useState('');
-  const {addPromotionToCart} = ctx;
 
   const handleChange = (event) => {
     setCode(event.target.value);
@@ -16,7 +15,7 @@ const CartForm = (ctx) => {
 
   const handleValidate = (code) => {
     if (code !== '') {
-      addPromotionToCart(code);
+      ctx.addPromotionToCart(code);
     }
   };
 
