@@ -93,7 +93,7 @@ const SidebarContent = () => {
             <>
               {!ctx.customerAvailableCustomers ||
               ctx.fetchingCustomer ? (
-                <div className="d-flex justify-content-center">
+                <div className="d-flex my-3 justify-content-center">
                   <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
                   </Spinner>
@@ -167,7 +167,10 @@ const SidebarContent = () => {
                 !_.isEmpty(ctx.customerSelectedCustomer) && 
                 (
                   <>
-                    <SidebarQualifications ctx={ctx} />
+                  <p className="storeSidebar-heading my-1">
+                      Customer Qualifications
+                    </p>
+                    <SidebarQualifications key="qualifications" ctx={ctx} />
                     <p className="storeSidebar-heading">
                       Public Codes{' '}
                       <span className="campaigns-count">
