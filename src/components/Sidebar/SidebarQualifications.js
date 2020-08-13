@@ -50,7 +50,8 @@ const SidebarQualifications = ({ ctx }) => {
             ctx.getQualifications(
               ctx.customerSelectedCustomer,
               ctx.cartTotal,
-              ctx.cartItems
+              ctx.cartItems,
+              ctx.customerPaymentMethod
             );
           }}
         />
