@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CartItem from './CartItem';
 import _ from 'lodash';
 import CartForm from './CartForm';
+// import CartLevelPromotions from './CartLevelPromotions'
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
@@ -10,8 +11,11 @@ import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
 import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
+import Chip from '@material-ui/core/Chip';
 
 const CartList = ({ ctx }) => {
+  const [card, setCard] = useState('Other')
+
   return (
     <div className="col-md-12 col-lg-9 order-2">
       <h4 className="d-flex justify-content-between align-items-center mb-3">
@@ -21,14 +25,39 @@ const CartList = ({ ctx }) => {
         {ctx.cartItems.map((item) => {
           return <CartItem key={item.id} item={item} ctx={ctx} />;
         })}
-        {!_.isEmpty(ctx.cartSelectedVoucher) ? (
-          <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
-            <div className="d-inline my-auto col-4">
-              Discount code{' '}
-              <span className="text-success">
-                {ctx.cartSelectedVoucher.code}
-              </span>
+        <li className="list-group-item d-flex lh-condensed">
+            <div className="my-auto col-4">Payment method: <strong>{card}</strong></div>
+            <div className="d-flex my-auto col-4">
+              <Chip className="mr-1" onClick={() => setCard('Visa')} label="Visa"></Chip>
+              <Chip className="mr-1"  onClick={() => setCard('MasterCard')} label="MasterCard"></Chip>
             </div>
+        </li>
+        {!_.isEmpty(ctx.cartSelectedVoucher) || !_.isEmpty(ctx.cartSelectedPromotion) ? (
+          <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
+            {!_.isEmpty(ctx.cartSelectedVoucher) && ctx.cartSelectedVoucher.hasOwnProperty('code') && 
+              (
+              <>
+                <div className="d-inline my-auto col-4">
+                  Discount code{' '}
+                  <span className="text-success">
+                    {ctx.cartSelectedVoucher.code}
+                  </span>
+                </div>
+              </>
+            )
+          }
+          {/* {!_.isEmpty(ctx.cartSelectedVoucher) && ctx.cartSelectedVoucher.hasOwnProperty('banner') &&
+              (
+              <>
+                <div className="d-inline my-auto col-4">
+                  <span className="text-success">
+                    {ctx.cartSelectedVoucher.banner}
+                  </span>
+                </div>
+              </>
+            )
+          } */}
+            
             <div className="d-none d-lg-block my-auto mx-auto col-2"></div>
             <div className="d-none d-lg-block my-auto mx-auto col-2"></div>
             <div
@@ -41,16 +70,19 @@ const CartList = ({ ctx }) => {
               </span>
             </div>
             <div className="d-flex flex-column justify-content-center">
-              <IconButton
+            <IconButton
                 className="mx-2"
-                onClick={() => ctx.removePromotionFromCart()}
+                onClick={() => ctx.removePromotionFromCart('promotion')}
               >
                 <DeleteIcon />
-              </IconButton>
+              </IconButton>  
             </div>
           </li>
         ) : (
-          <CartForm ctx={ctx} />
+          <>
+            <CartForm ctx={ctx} card={card}/>
+            {/* <CartLevelPromotions ctx={ctx} /> */}
+          </>
         )}
         <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
           <Tooltip title="Clear cart">
@@ -78,7 +110,7 @@ const CartList = ({ ctx }) => {
             <Button
               variant="dark"
               onClick={() => {
-                ctx.checkoutCart(ctx.customerSelectedCustomer);
+                ctx.checkoutCart(ctx.customerSelectedCustomer, card);
                 ctx.updateCustomerData(ctx.customerSelectedCustomer.source_id);
               }}
               className="w-100 p-2"

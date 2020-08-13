@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 
-const CartForm = ({ctx}) => {
+const CartForm = ({ctx, card}) => {
   const [code, setCode] = useState('');
-
   const handleChange = (event) => {
     setCode(event.target.value);
   };
@@ -15,7 +14,7 @@ const CartForm = ({ctx}) => {
 
   const handleValidate = (code) => {
     if (code !== '') {
-      ctx.addPromotionToCart(code);
+      ctx.addPromotionToCart(code, card);
     }
   };
 
@@ -36,6 +35,7 @@ const CartForm = ({ctx}) => {
               <Button
                 type="submit"
                 variant="dark"
+                disabled={code.replace(/^\s+/, '').replace(/\s+$/, '') === ''}
                 onClick={() => {
                   handleValidate(code);
                 }}

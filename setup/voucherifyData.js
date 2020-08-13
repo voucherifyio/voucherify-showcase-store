@@ -1,22 +1,16 @@
-const versionNumber = 110;
-
-exports.versionNumber = versionNumber;
-
 exports.vouchers = [
   {
     code: 'BLCKFRDY',
     object: 'voucher',
     type: 'DISCOUNT_VOUCHER',
     category: 'STANDALONE',
-    discount: {type: 'AMOUNT', amount_off: 1000},
+    discount: { type: 'AMOUNT', amount_off: 1000 },
     metadata: {
       demostoreName: 'Black Friday Coupon',
       demostoreAssignedValRules: 'Black Friday Coupon',
-      demostoreVersion: versionNumber,
       demostoreDescription: 'Global coupon',
       demostoreSteps: 'Only one redemption per customer',
       demostoreOrder: 1,
-      demostoreCategory: 'VOUCHER',
     },
   },
   {
@@ -24,15 +18,27 @@ exports.vouchers = [
     object: 'voucher',
     type: 'DISCOUNT_VOUCHER',
     category: 'STANDALONE',
-    discount: {type: 'PERCENT', percent_off: 50},
+    discount: { type: 'PERCENT', percent_off: 50 },
     metadata: {
       demostoreName: '50%OFF',
       demostoreAssignedValRules: '',
-      demostoreVersion: versionNumber,
       demostoreDescription: 'Global coupon',
       demostoreSteps: '',
       demostoreOrder: 3,
-      demostoreCategory: 'VOUCHER',
+    },
+  },
+  {
+    code: '15%VISA',
+    object: 'voucher',
+    type: 'DISCOUNT_VOUCHER',
+    category: 'STANDALONE',
+    discount: { type: 'PERCENT', percent_off: 15 },
+    metadata: {
+      demostoreName: 'Visa Voucher',
+      demostoreAssignedValRules: 'Visa Voucher',
+      demostoreDescription: 'Global coupon',
+      demostoreSteps: 'Cart value: >= $100;Payment method: Visa',
+      demostoreOrder: 3,
     },
   },
 ];
@@ -43,7 +49,7 @@ exports.campaigns = [
     type: 'AUTO_UPDATE',
     voucher: {
       type: 'DISCOUNT_VOUCHER',
-      discount: {percent_off: 5, type: 'PERCENT'},
+      discount: { percent_off: 5, type: 'PERCENT' },
       redemption: {
         quantity: 1,
       },
@@ -52,11 +58,10 @@ exports.campaigns = [
       demostoreName: 'Welcome wave 5% off',
       demostoreAssignedValRules:
         'Welcome wave 5% off Lewis Marshall; Welcome wave 5% off Alice Morgan; Welcome wave 5% off John Dorian',
-      demostoreVersion: versionNumber,
-      demostoreDescription: 'Only current customer can validate the coupon. Redeemable only once',
+      demostoreDescription:
+        'Only current customer can validate the coupon. Redeemable only once',
       demostoreSteps: 'Customer: Current customer',
       demostoreOrder: 1,
-      demostoreCategory: 'CAMPAIGN',
     },
   },
   {
@@ -64,18 +69,16 @@ exports.campaigns = [
     type: 'AUTO_UPDATE',
     voucher: {
       type: 'DISCOUNT_VOUCHER',
-      discount: {percent_off: 100, type: 'PERCENT'},
+      discount: { percent_off: 100, type: 'PERCENT' },
     },
     metadata: {
       demostoreName: 'Buy One - Get One',
       demostoreAssignedValRules: 'Buy One - Get One',
-      demostoreVersion: versionNumber,
       demostoreDescription: 'Add to items to cart to use this coupon',
       demostoreSteps:
         'Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra',
       demostoreOrder: 1,
       demostoreBOGO: '1x Johan & Nyström - Sumatra',
-      demostoreCategory: 'CAMPAIGN',
     },
   },
   {
@@ -83,18 +86,16 @@ exports.campaigns = [
     type: 'AUTO_UPDATE',
     voucher: {
       type: 'DISCOUNT_VOUCHER',
-      discount: {percent_off: 5, type: 'PERCENT'},
+      discount: { percent_off: 5, type: 'PERCENT' },
     },
     metadata: {
       demostoreName: '5% off for Illy Arabica - Guatemala',
       demostoreAssignedValRules: '5% off for Illy Arabica - Guatemala',
-      demostoreVersion: versionNumber,
       demostoreDescription:
         'Total cart value must be greater than $50 and you must have a Illy Arabica - Guatemala in it',
       demostoreSteps:
         'Cart value: > $50;Cart contains: Illy Arabica - Guatemala',
       demostoreOrder: 2,
-      demostoreCategory: 'CAMPAIGN',
     },
   },
   {
@@ -102,18 +103,16 @@ exports.campaigns = [
     type: 'AUTO_UPDATE',
     voucher: {
       type: 'DISCOUNT_VOUCHER',
-      discount: {amount_off: 1500, type: 'AMOUNT'},
+      discount: { amount_off: 1500, type: 'AMOUNT' },
     },
     metadata: {
       demostoreName: '$15 off for Johan & Nystrom - Bourbon double-pack',
       demostoreAssignedValRules:
         '$15 off for Johan & Nystrom - Bourbon double-pack',
-      demostoreVersion: versionNumber,
       demostoreDescription:
         'You must have 2 of Johan & Nyström - Bourbon in cart',
       demostoreSteps: 'Cart contains: 2x Johan & Nyström - Bourbon',
       demostoreOrder: 3,
-      demostoreCategory: 'CAMPAIGN',
     },
   },
   {
@@ -121,18 +120,55 @@ exports.campaigns = [
     type: 'AUTO_UPDATE',
     voucher: {
       type: 'DISCOUNT_VOUCHER',
-      discount: {percent_off: 13, type: 'PERCENT'},
+      discount: { percent_off: 13, type: 'PERCENT' },
     },
     metadata: {
       demostoreName: '13% off - Local promotion',
       demostoreAssignedValRules: '13% off - Local promotion',
-      demostoreVersion: versionNumber,
       demostoreDescription: 'Only for Polish customers',
       demostoreSteps: 'Customers segment: Customers from Poland',
       demostoreOrder: 5,
-      demostoreCategory: 'CAMPAIGN',
     },
   },
+  {
+    name: 'Cart Level Discounts',
+    campaign_type: 'PROMOTION',
+    metadata: {
+      demostoreAssignedValRules: '$10 off for orders above $100, $3 off for orders above $30',
+      demostoreName: 'Cart Level Discounts',
+    },
+    promotion: {
+      tiers: [
+        {
+          name: '$10 off for orders above $100',
+          banner: 'Congratulations, you get $10 off.',
+          action: {
+            discount: {
+              type: 'AMOUNT',
+              amount_off: 1000,
+            },
+          
+          },
+          metadata: {
+            name: '$10 off'
+          }
+        },
+        {
+          name: '$3 off for orders above $30',
+          banner: 'Congratulations, you get $3 off.',
+          action: {
+            discount: {
+              type: 'AMOUNT',
+              amount_off: 300,
+            },
+          },
+          metadata: {
+            name: '$3 off'
+          }
+        },
+      ],
+    },
+  }
 ];
 
 exports.segments = [
@@ -146,203 +182,6 @@ exports.segments = [
         },
       },
     },
-  },
-];
-
-exports.validationRules = [
-  {
-    name: 'Buy One - Get One',
-    error: {message: 'Check campaign rules'},
-    rules: {
-      '1': {
-        name: 'product.id',
-        error: {
-          message:
-            'Cart must contain Johan & Nyström - Fika and Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g',
-        },
-        rules: {},
-        conditions: {
-          $is: [
-            {
-              source_id: '14',
-            },
-          ],
-        },
-      },
-      '2': {
-        name: 'product.id',
-        error: {
-          message:
-            'Cart must contain Johan & Nyström - Fika and Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g',
-        },
-        rules: {
-          '1': {
-            name: 'product.discount_applicable',
-            rules: {},
-            conditions: {$is: [true]},
-          },
-          'logic': '1',
-        },
-        conditions: {
-          $is: [
-            {
-              source_id: '15',
-            },
-          ],
-        },
-      },
-      'logic': '(1 and 2)',
-    },
-  },
-  {
-    name: 'Voucher - One redemption per customer',
-    error: {message: 'Customer can redeem this voucher only once'},
-    rules: {
-      '1': {
-        name: 'redemption.count.per_customer',
-        error: {message: 'Customer can redeem this voucher only once'},
-        rules: {},
-        conditions: {$less_than_or_equal: [1]},
-      },
-      'logic': '1',
-    },
-  },
-  {
-    name: 'Voucher - Only for Lewis Marshall',
-    error: {message: 'Only Lewis Marshall can use this coupon'},
-    rules: {
-      '1': {
-        name: 'customer.metadata',
-        error: {message: 'Only Lewis Marshall can use this coupon'},
-        rules: {},
-        property: 'demostore_id',
-        conditions: {$is: ['lewismarshall']},
-      },
-      'logic': '1',
-    },
-  },
-  {
-    name: 'Voucher - Only for Alice Morgan',
-    error: {message: 'Only Alice Morgan can use this coupon'},
-    rules: {
-      '1': {
-        name: 'customer.metadata',
-        error: {message: 'Only Alice Morgan can use this coupon'},
-        rules: {},
-        property: 'demostore_id',
-        conditions: {$is: ['alicemorgan']},
-      },
-      'logic': '1',
-    },
-  },
-  {
-    name: 'Voucher - Only for John Dorian',
-    error: {message: 'Only John Dorian can validate this coupon'},
-    rules: {
-      '1': {
-        name: 'customer.metadata',
-        error: {message: 'Only John Dorian can validate this coupon'},
-        rules: {},
-        property: 'demostore_id',
-        conditions: {$is: ['johndorian']},
-      },
-      'logic': '1',
-    },
-  },
-  {
-    name: 'Without Nivona CafeRomatica 759',
-    error: {message: 'Check campaign rules'},
-    rules: {
-      '1': {
-        name: 'product.id',
-        error: {
-          message: 'Your cart can\'t include Nivona CafeRomatica 759',
-        },
-        rules: {},
-        conditions: {
-          $is_not: [
-            {
-              source_id: '13',
-            },
-          ],
-        },
-      },
-      'logic': '1',
-    },
-  },
-  {
-    name: 'Only for Polish customers',
-    error: {message: 'Check campaign rules'},
-    rules: {
-      '1': {
-        name: 'customer.segment',
-        error: {message: 'Customer must be from Poland'},
-        rules: {},
-        conditions: {$is: [{name: 'Customers from Poland'}]},
-      },
-      'logic': '1',
-    },
-    assignments_count: '20',
-  },
-  {
-    name: 'Cart includes 2 of Johan & Nyström - Bourbon Jungle',
-    error: {message: 'Check the campaign rules'},
-    rules: {
-      '1': {
-        name: 'product.id',
-        error: {
-          message: 'You must add 2 or more Johan & Nyström - Bourbon Jungle',
-        },
-        rules: {
-          '1': {
-            name: 'product.quantity',
-            rules: {},
-            conditions: {$more_than_or_equal: [2]},
-          },
-          'logic': '1',
-        },
-        conditions: {
-          $is: [
-            {
-              source_id: '12',
-            },
-          ],
-        },
-      },
-      'logic': '1',
-    },
-    assignments_count: '23',
-  },
-  {
-    name: 'More than $50 in cart and Illy Arabica Selection - Guatemala',
-    error: {message: 'Check the campaign rules'},
-    rules: {
-      '1': {
-        name: 'product.id',
-        error: {
-          message:
-            'You have to add Illy Arabica Selection - Guatemala to your cart',
-        },
-        rules: {},
-        conditions: {
-          $is: [
-            {
-              id: 'prod_AthoW9hhqEpYC0',
-              object: 'product',
-              source_id: '11',
-            },
-          ],
-        },
-      },
-      '2': {
-        name: 'order.amount',
-        error: {message: 'Total cart value must be more than $50'},
-        rules: {},
-        conditions: {$more_than: [5000]},
-      },
-      'logic': '(1) and (2)',
-    },
-    assignments_count: '24',
   },
 ];
 
@@ -493,7 +332,7 @@ exports.products = [
       weight: 500,
       slug: '7350045060808',
       sku: '7350045060808',
-      },
+    },
   },
   {
     name: 'Johan & Nyström - Espresso',
