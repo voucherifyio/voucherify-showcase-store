@@ -143,6 +143,8 @@ const reducer = (action) => (state, props) => {
         readValueFromLocalStorage('customerCampaigns') || null,
       customerQualifications: 
         readValueFromLocalStorage('customerQualifications') || null,
+      customerPaymentMethod:
+        readValueFromLocalStorage('customerPaymentMethod') || 'Other',
       storeSessionId:
         readValueFromLocalStorage('storeSessionId') || null,
     };
@@ -179,6 +181,7 @@ class ProductProvider extends Component {
     customerPromotions: null,
     customerVouchers: null,
     customerQualifications: null,
+    customerPaymentMethod: 'Other',
     storeSidebar: true,
     storeProducts: [],
     storeSessionId: null,
@@ -510,6 +513,16 @@ class ProductProvider extends Component {
     }
   };
 
+  setCard = (card) => {
+    this.setState(({
+      customerPaymentMethod: card
+    }))
+    localStorage.setItem(
+      'customerPaymentMethod',
+      JSON.stringify(card)
+    );
+  }
+
   clearCart = () => {
     this.dispatch(CLEAR_CART);
     toast.success('Cart cleared');
@@ -606,7 +619,7 @@ class ProductProvider extends Component {
       toast.success(promotion.banner);
   }
 
-  getQualifications = async (customerSelectedCustomer, cartTotal, cartItems) => {
+  getQualifications = async (customerSelectedCustomer, cartTotal, cartItems, customerPaymentMethod) => {
     this.setState({fetchingQualifications: true})
     
     const qtPayload = {
@@ -614,6 +627,9 @@ class ProductProvider extends Component {
       order: {
         amount: cartTotal,
         items: cartItems.map(this.prepareItemsPayload),
+      },
+      metadata: {
+        card: customerPaymentMethod
       }
     };
     
@@ -795,7 +811,8 @@ class ProductProvider extends Component {
           prepareItemsPayload: this.prepareItemsPayload,
           getPromotions: this.getPromotions,
           getCartLevelPromotions: this.getCartLevelPromotions,
-          validatePromotion: this.validatePromotion
+          validatePromotion: this.validatePromotion,
+          setCard: this.setCard
         }}
       >
         {/* eslint-disable-next-line react/prop-types */}

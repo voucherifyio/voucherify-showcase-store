@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 
-const CartForm = ({ctx, card}) => {
+const CartForm = ({ctx}) => {
   const [code, setCode] = useState('');
   const handleChange = (event) => {
     setCode(event.target.value);
@@ -14,7 +14,7 @@ const CartForm = ({ctx, card}) => {
 
   const handleValidate = (code) => {
     if (code !== '') {
-      ctx.addPromotionToCart(code, card);
+      ctx.addPromotionToCart(code, ctx.customerPaymentMethod);
     }
   };
 

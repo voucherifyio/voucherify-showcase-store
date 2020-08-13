@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import CartItem from './CartItem';
 import _ from 'lodash';
 import CartForm from './CartForm';
@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
 
 const CartList = ({ ctx }) => {
-  const [card, setCard] = useState('Other')
+  // const [card, setCard] = useState('Other')
 
   return (
     <div className="col-md-12 col-lg-9 order-2">
@@ -26,10 +26,10 @@ const CartList = ({ ctx }) => {
           return <CartItem key={item.id} item={item} ctx={ctx} />;
         })}
         <li className="list-group-item d-flex lh-condensed">
-            <div className="my-auto col-4">Payment method: <strong>{card}</strong></div>
+            <div className="my-auto col-4">Payment method: <strong>{ctx.customerPaymentMethod}</strong></div>
             <div className="d-flex my-auto col-4">
-              <Chip className="mr-1" onClick={() => setCard('Visa')} label="Visa"></Chip>
-              <Chip className="mr-1"  onClick={() => setCard('MasterCard')} label="MasterCard"></Chip>
+              <Chip className="mr-1" onClick={() => ctx.setCard('Visa')} label="Visa"></Chip>
+              <Chip className="mr-1"  onClick={() => ctx.setCard('MasterCard')} label="MasterCard"></Chip>
             </div>
         </li>
         {!_.isEmpty(ctx.cartSelectedVoucher) || !_.isEmpty(ctx.cartSelectedPromotion) ? (
@@ -80,7 +80,7 @@ const CartList = ({ ctx }) => {
           </li>
         ) : (
           <>
-            <CartForm ctx={ctx} card={card}/>
+            <CartForm ctx={ctx}/>
             {/* <CartLevelPromotions ctx={ctx} /> */}
           </>
         )}
@@ -110,7 +110,7 @@ const CartList = ({ ctx }) => {
             <Button
               variant="dark"
               onClick={() => {
-                ctx.checkoutCart(ctx.customerSelectedCustomer, card);
+                ctx.checkoutCart(ctx.customerSelectedCustomer, ctx.customerPaymentMethod);
                 ctx.updateCustomerData(ctx.customerSelectedCustomer.source_id);
               }}
               className="w-100 p-2"
