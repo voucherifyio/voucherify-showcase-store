@@ -12,7 +12,7 @@ const RedisStore = require('connect-redis')(session);
 
 const storeCustomers = require('./src/storeCustomers.json');
 const voucherifyData = require('./setup/voucherifyData');
-const campaigns = voucherifyData.campaigns;
+const campaigns = voucherifyData.campaigns.filter((campaign) => campaign.campaign_type !== 'PROMOTION');
 const versionNumber = voucherifyData.versionNumber;
 
 const redisClient = redis.createClient(process.env.REDIS_URL);
@@ -169,7 +169,7 @@ app.get('/vouchers', async (request, response) => {
       category: 'STANDALONE',
     });
     const vouchers = allStandaloneVouchers.vouchers.filter(
-        (voucher) => voucher.metadata.demostoreVersion === versionNumber,
+        (voucher) => voucher.metadata.hasOwnProperty('demostoreName'),
     );
     return response.json(vouchers);
   } catch (e) {
@@ -181,8 +181,9 @@ app.get('/vouchers', async (request, response) => {
 app.get('/campaigns', async (request, response) => {
   try {
     const allCampaigns = await voucherify.campaigns.list();
+    // Filter out campaigns not created by setup.js and filter out Cart Level Promotion
     const campaigns = allCampaigns.campaigns.filter(
-        (campaign) => campaign.metadata.demostoreVersion === versionNumber,
+        (campaign) => campaign.metadata.hasOwnProperty('demostoreName') && campaign.metadata.demostoreName !== 'Cart Level Discounts',
     );
     return response.json(campaigns);
   } catch (e) {
@@ -242,10 +243,16 @@ app.post('/order', async (request, response) => {
 });
 
 app.post('/redeem', async (request, response) => {
-  const {code} = request.body;
+  const {code, promotionId} = request.body;
   try {
-    const redemption = await voucherify.redemptions.redeem(code, request.body);
-    return response.json(redemption);
+    if (code) {
+      const redemption = await voucherify.redemptions.redeem(code, request.body);
+      return response.json(redemption);
+    } else {
+      const redemption = await voucherify.promotions.tiers.redeem(promotionId, request.body);
+      return response.json(redemption);
+    }
+    
   } catch (e) {
     console.error(`[Redeem][Error] - ${e}`);
     response.status(500).end();

@@ -10,7 +10,7 @@ const CartItem = ({item, ctx}) => {
   const handleOnChange = (e) => {
     ctx.increment(id, parseInt(e.target.value, 10));
   };
-
+  
   return (
     <li className="list-group-item d-flex
       flex-row justify-content-between lh-condensed">
