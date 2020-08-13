@@ -10,7 +10,7 @@ exports.vouchers = [
       demostoreAssignedValRules: 'Black Friday Coupon',
       demostoreDescription: 'Global coupon',
       demostoreSteps: 'Only one redemption per customer',
-      demostoreOrder: 1,
+      demostoreOrder: 2,
     },
   },
   {
@@ -37,8 +37,8 @@ exports.vouchers = [
       demostoreName: 'Visa Voucher',
       demostoreAssignedValRules: 'Visa Voucher',
       demostoreDescription: 'Global coupon',
-      demostoreSteps: 'Cart value: >= $100;Payment method: Visa',
-      demostoreOrder: 3,
+      demostoreSteps: 'Cart value: > $100;Payment method: Visa',
+      demostoreOrder: 1,
     },
   },
 ];
