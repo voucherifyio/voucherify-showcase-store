@@ -19,11 +19,8 @@ const campaigns = voucherifyData.campaigns.filter(
 
 const redisClient = redis.createClient(process.env.REDIS_URL);
 
-if (process.env.NODE_ENV !== 'development') {
-  app.use(sslRedirect());
-}
-
 app.use(
+  sslRedirect(),
   // function (req, res, next) {
   //   if (req.secure || process.env.NODE_ENV === 'development' ) {
   //     next();
