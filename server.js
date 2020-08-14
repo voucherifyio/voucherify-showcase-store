@@ -9,7 +9,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const redis = require('redis');
 const RedisStore = require('connect-redis')(session);
-const sslRedirect = require('heroku-ssl-redirect');
 const enforce = require('express-sslify');
 
 const storeCustomers = require('./src/storeCustomers.json');
@@ -19,8 +18,9 @@ const campaigns = voucherifyData.campaigns.filter(
 );
 
 const redisClient = redis.createClient(process.env.REDIS_URL);
-
-app.use(enforce.HTTPS({ trustProtoHeader: true }))
+if (process.env.NODE_ENV !== 'development') {
+  app.use(enforce.HTTPS({ trustProtoHeader: true }))
+}
 
 app.use(
   session({
