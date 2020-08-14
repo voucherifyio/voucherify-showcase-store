@@ -12,23 +12,34 @@ const RedisStore = require('connect-redis')(session);
 
 const storeCustomers = require('./src/storeCustomers.json');
 const voucherifyData = require('./setup/voucherifyData');
-const campaigns = voucherifyData.campaigns.filter((campaign) => campaign.campaign_type !== 'PROMOTION');
-const versionNumber = voucherifyData.versionNumber;
+const campaigns = voucherifyData.campaigns.filter(
+  (campaign) => campaign.campaign_type !== 'PROMOTION'
+);
 
 const redisClient = redis.createClient(process.env.REDIS_URL);
 
+app.use(function (req, res, next) {
+  if (req.secure) {
+    next();
+  } else if (process.env.NODE_ENV !== 'development') {
+    res.redirect('https://' + req.headers.host + req.url);
+  } else {
+    next();
+  }
+});
+
 app.use(
-    session({
-      store: new RedisStore({client: redisClient}),
-      secret: process.env.SESSION_SECRET,
-      resave: true,
-      saveUninitialized: false,
-      cookie: { maxAge: 1000 * 3600 * 24 * 30 },
-    }),
-    cors({
-      credentials: true,
-      origin: process.env.REACT_APP_URL,
-    }),
+  session({
+    store: new RedisStore({ client: redisClient }),
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 3600 * 24 * 30 },
+  }),
+  cors({
+    credentials: true,
+    origin: process.env.REACT_APP_URL,
+  })
 );
 
 const voucherify = voucherifyClient({
@@ -43,12 +54,12 @@ function publishCouponsForCustomer(id) {
     },
   };
   return campaigns
-      .map((campaign) => campaign.name)
-      .map((campaign) =>
-        voucherify.distributions.publications.create(
-            Object.assign(params, {campaign}),
-        ),
-      );
+    .map((campaign) => campaign.name)
+    .map((campaign) =>
+      voucherify.distributions.publications.create(
+        Object.assign(params, { campaign })
+      )
+    );
 }
 
 app.use(bodyParser.json());
@@ -70,14 +81,16 @@ app.get('/init', async (request, response) => {
   try {
     // Create new customers if this is a new session
     const createdCustomers = await Promise.all(
-        storeCustomers.map((customer) => {customer.source_id = `${request.session.id}${customer.metadata.demostore_id}`;
-          return voucherify.customers.create(customer);
-        }),
+      storeCustomers.map((customer) => {
+        customer.source_id = `${request.session.id}${customer.metadata.demostore_id}`;
+        return voucherify.customers.create(customer);
+      })
     );
 
     // We're setting up dummy order for one of the customers
-    const dummyOrderCustomer = _.find(storeCustomers,
-        {source_id: `${request.session.id}lewismarshall`});
+    const dummyOrderCustomer = _.find(storeCustomers, {
+      source_id: `${request.session.id}lewismarshall`,
+    });
     await voucherify.orders.create({
       source_id: 'hot_beans_dummyorder',
       items: [
@@ -92,42 +105,44 @@ app.get('/init', async (request, response) => {
       status: 'FULFILLED',
     });
 
-    const createdCoupons = await Promise.all(createdCustomers.map(
-        async (customer) => {
-          const coupons = await Promise.all(
-              publishCouponsForCustomer(customer.source_id),
-          ).catch((e) => console.error(
-              `[Publishing coupons][Error] - ${e}`));
+    const createdCoupons = await Promise.all(
+      createdCustomers.map(async (customer) => {
+        const coupons = await Promise.all(
+          publishCouponsForCustomer(customer.source_id)
+        ).catch((e) => console.error(`[Publishing coupons][Error] - ${e}`));
 
-          // Assing validation rules for voucher "Welcome wave 5% off"
-          const customerCoupons = coupons.filter((coupon) =>
-            coupon.voucher.metadata.demostoreName === 'Welcome wave 5% off');
+        // Assing validation rules for voucher "Welcome wave 5% off"
+        const customerCoupons = coupons.filter(
+          (coupon) =>
+            coupon.voucher.metadata.demostoreName === 'Welcome wave 5% off'
+        );
 
-          const uniqueCoupon = customerCoupons.find(
-              (coupon) => coupon.tracking_id === customer.source_id,
+        const uniqueCoupon = customerCoupons.find(
+          (coupon) => coupon.tracking_id === customer.source_id
+        );
+        if (typeof uniqueCoupon !== 'undefined') {
+          const customerValidationRuleName =
+            customer.metadata.customerValidationRuleName;
+
+          const validationRulesList = await voucherify.validationRules.list();
+
+          const customerValidationRuleId = validationRulesList.data.find(
+            (ValidationRule) =>
+              ValidationRule.name === customerValidationRuleName
+          ).id;
+
+          const assignment = { voucher: uniqueCoupon.voucher.code };
+          await voucherify.validationRules.createAssignment(
+            customerValidationRuleId,
+            assignment
           );
-          if (typeof uniqueCoupon !== 'undefined') {
-            const customerValidationRuleName =
-          customer.metadata.customerValidationRuleName;
-
-            const validationRulesList = await voucherify.validationRules.list();
-
-            const customerValidationRuleId = validationRulesList.data.find(
-                (ValidationRule) =>
-                  ValidationRule.name === customerValidationRuleName,
-            ).id;
-
-            const assignment = {voucher: uniqueCoupon.voucher.code};
-            await voucherify.validationRules.createAssignment(
-                customerValidationRuleId,
-                assignment,
-            );
-          }
-          return {
-            customerSelectedCustomer: customer.source_id,
-            campaigns: coupons.map((coupon) => coupon.voucher),
-          };
-        }));
+        }
+        return {
+          customerSelectedCustomer: customer.source_id,
+          campaigns: coupons.map((coupon) => coupon.voucher),
+        };
+      })
+    );
 
     return response.json({
       session: request.session.id,
@@ -168,8 +183,8 @@ app.get('/vouchers', async (request, response) => {
     const allStandaloneVouchers = await voucherify.vouchers.list({
       category: 'STANDALONE',
     });
-    const vouchers = allStandaloneVouchers.vouchers.filter(
-        (voucher) => voucher.metadata.hasOwnProperty('demostoreName'),
+    const vouchers = allStandaloneVouchers.vouchers.filter((voucher) =>
+      voucher.metadata.hasOwnProperty('demostoreName')
     );
     return response.json(vouchers);
   } catch (e) {
@@ -183,7 +198,9 @@ app.get('/campaigns', async (request, response) => {
     const allCampaigns = await voucherify.campaigns.list();
     // Filter out campaigns not created by setup.js and filter out Cart Level Promotion
     const campaigns = allCampaigns.campaigns.filter(
-        (campaign) => campaign.metadata.hasOwnProperty('demostoreName') && campaign.metadata.demostoreName !== 'Cart Level Discounts',
+      (campaign) =>
+        campaign.metadata.hasOwnProperty('demostoreName') &&
+        campaign.metadata.demostoreName !== 'Cart Level Discounts'
     );
     return response.json(campaigns);
   } catch (e) {
@@ -194,16 +211,20 @@ app.get('/campaigns', async (request, response) => {
 
 app.post('/qualifications', async (request, response) => {
   try {
-    const data = request.body
-    const examinedVouchers = await voucherify.vouchers.qualifications.examine(data)
-    const examinedCampaigns = await voucherify.campaigns.qualifications.examine(data)
-
-    let qualifications = examinedCampaigns.data.concat(examinedVouchers.data).filter(
-      (qlt) => qlt.hasOwnProperty('metadata')
+    const data = request.body;
+    const examinedVouchers = await voucherify.vouchers.qualifications.examine(
+      data
+    );
+    const examinedCampaigns = await voucherify.campaigns.qualifications.examine(
+      data
     );
 
-    qualifications = qualifications.filter(
-      (qlt) => qlt.metadata.hasOwnProperty('demostoreName')
+    let qualifications = examinedCampaigns.data
+      .concat(examinedVouchers.data)
+      .filter((qlt) => qlt.hasOwnProperty('metadata'));
+
+    qualifications = qualifications.filter((qlt) =>
+      qlt.metadata.hasOwnProperty('demostoreName')
     );
 
     return response.json(qualifications);
@@ -219,10 +240,10 @@ app.get('/products', async (request, response) => {
 
     // Filter out default Voucherify products
     const products = allProducts.products.filter(
-        (product) =>
+      (product) =>
         product.name !== 'Shipping' &&
         product.name !== 'Watchflix' &&
-        product.name !== 'Apple iPhone 8',
+        product.name !== 'Apple iPhone 8'
     );
 
     return response.json(products);
@@ -243,16 +264,21 @@ app.post('/order', async (request, response) => {
 });
 
 app.post('/redeem', async (request, response) => {
-  const {code, promotionId} = request.body;
+  const { code, promotionId } = request.body;
   try {
     if (code) {
-      const redemption = await voucherify.redemptions.redeem(code, request.body);
+      const redemption = await voucherify.redemptions.redeem(
+        code,
+        request.body
+      );
       return response.json(redemption);
     } else {
-      const redemption = await voucherify.promotions.tiers.redeem(promotionId, request.body);
+      const redemption = await voucherify.promotions.tiers.redeem(
+        promotionId,
+        request.body
+      );
       return response.json(redemption);
     }
-    
   } catch (e) {
     console.error(`[Redeem][Error] - ${e}`);
     response.status(500).end();
