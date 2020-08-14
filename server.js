@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const redis = require('redis');
 const RedisStore = require('connect-redis')(session);
+const sslRedirect = require('heroku-ssl-redirect');
 
 const storeCustomers = require('./src/storeCustomers.json');
 const voucherifyData = require('./setup/voucherifyData');
@@ -18,14 +19,18 @@ const campaigns = voucherifyData.campaigns.filter(
 
 const redisClient = redis.createClient(process.env.REDIS_URL);
 
+if (process.env.NODE_ENV !== 'development') {
+  app.use(sslRedirect());
+}
+
 app.use(
-  function (req, res, next) {
-    if (req.secure || process.env.NODE_ENV === 'development' ) {
-      next();
-    } else if (process.env.NODE_ENV !== 'development') {
-      res.redirect('https://' + req.headers.host + req.url);
-    } 
-  },
+  // function (req, res, next) {
+  //   if (req.secure || process.env.NODE_ENV === 'development' ) {
+  //     next();
+  //   } else if (process.env.NODE_ENV !== 'development') {
+  //     res.redirect('https://' + req.headers.host + req.url);
+  //   } 
+  // },
   session({
     store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET,
