@@ -18,17 +18,14 @@ const campaigns = voucherifyData.campaigns.filter(
 
 const redisClient = redis.createClient(process.env.REDIS_URL);
 
-app.use(function (req, res, next) {
-  if (req.secure) {
-    next();
-  } else if (process.env.NODE_ENV !== 'development') {
-    res.redirect('https://' + req.headers.host + req.url);
-  } else {
-    next();
-  }
-});
-
 app.use(
+  function (req, res, next) {
+    if (req.secure || process.env.NODE_ENV === 'development' ) {
+      next();
+    } else if (process.env.NODE_ENV !== 'development') {
+      res.redirect('https://' + req.headers.host + req.url);
+    } 
+  },
   session({
     store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET,
