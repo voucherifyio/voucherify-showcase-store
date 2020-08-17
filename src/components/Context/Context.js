@@ -307,7 +307,7 @@ class ProductProvider extends Component {
         }
       ).then((camps) => camps.json());
 
-      customerCampaigns.forEach((camps) => {
+      customerCampaigns.forEach(async(camps) => {
         camps.coupons = [];
         this.state.customerPublishedCodes.forEach((code) => {
           code.campaigns.forEach((camp) => {
@@ -319,6 +319,15 @@ class ProductProvider extends Component {
             }
           });
         });
+        if (camps.campaign_type === 'PROMOTION') {          
+          const campaignPromotionTiers = await fetch(
+            `${process.env.REACT_APP_API_URL || ''}/promotions/${camps.id}`,
+            {
+              include: 'credentials',
+            }
+          ).then((promos) => promos.json());
+          camps.tiers = campaignPromotionTiers.tiers
+        }
       });
 
       this.setState({

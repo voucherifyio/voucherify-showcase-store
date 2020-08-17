@@ -58,7 +58,7 @@ const AccordionDetails = withStyles(() => ({
 }))(MuiAccordionDetails);
 
 const SidebarContent = () => {
-  const [expanded, setExpanded] = React.useState('panel1');
+  const [expanded, setExpanded] = React.useState('');
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -230,7 +230,7 @@ const SidebarContent = () => {
                       </div>
                     ) : (
                       <div>
-                        {customerCampaigns.map((campaign) => (
+                        {customerCampaigns.filter((camp) => !_.isEmpty(camp.coupons)).map((campaign) => (
                           <Accordion
                             square
                             key={campaign.name}
@@ -257,6 +257,31 @@ const SidebarContent = () => {
                                       ctx.customerSelectedCustomer.source_id
                                   ).customerDataCoupon
                                 }
+                              />
+                            </AccordionDetails>
+                          </Accordion>
+                        ))}
+                        {customerCampaigns.filter((camp) => _.isEmpty(camp.coupons)).map((campaign) => (
+                          <Accordion
+                            square
+                            key={campaign.name}
+                            expanded={expanded === `${campaign.name}`}
+                            onChange={handleChange(`${campaign.name}`)}
+                          >
+                            <AccordionSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls={`${campaign.metadata.demostoreName}-content`}
+                              id={`${campaign.metadata.demostoreName}-header`}
+                              className="campaign-box"
+                            >
+                              <p className="campaign-name">
+                                {campaign.metadata.demostoreName}
+                              </p>
+                            </AccordionSummary>
+                            <AccordionDetails className="bg-light">
+                              <SidebarCampaignDetails
+                                campaign={campaign}
+                                
                               />
                             </AccordionDetails>
                           </Accordion>

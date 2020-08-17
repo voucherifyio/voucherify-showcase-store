@@ -134,7 +134,8 @@ exports.campaigns = [
     name: 'Cart Level Promotions',
     campaign_type: 'PROMOTION',
     metadata: {
-      demostoreAssignedValRules: '$10 off for orders above $100, $3 off for orders above $30',
+      demostoreAssignedValRules:
+        '$10 off for orders above $100, $3 off for orders above $30',
       demostoreName: 'Cart Level Promotions',
     },
     promotion: {
@@ -147,11 +148,12 @@ exports.campaigns = [
               type: 'AMOUNT',
               amount_off: 1000,
             },
-          
           },
           metadata: {
-            demostoreName: '$10 off CLP'
-          }
+            demostoreName: '$10 off CLP',
+            demostoreTierName: 'Tier 1',
+            demostoreSteps: 'Cart value: > $100',
+          },
         },
         {
           name: '$3 off for orders above $30',
@@ -163,12 +165,14 @@ exports.campaigns = [
             },
           },
           metadata: {
-            demostoreName: '$3 off CLP'
-          }
+            demostoreName: '$3 off CLP',
+            demostoreTierName: 'Tier 2',
+            demostoreSteps: 'Cart value: > $30',
+          },
         },
       ],
     },
-  }
+  },
 ];
 
 exports.segments = [
@@ -197,7 +201,7 @@ exports.products = [
       imgUrl:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Illy+Arabica+Selection+-+Guatemala.jpg',
       info:
-        'Illy Arabica is a new line of single origin coffee from Illy\'s roaster. The beans from Guatemala is characterized by a complex flavour with the delicate hints of caramel, chocolate and honey.\n\nIn Guatemala, Coffee is grown on the fertile soil high in the mountains. Suitable temperatures are the result of the hot air current from Mexico. That, along with farmers\' care, results in the beans with intense aroma, complex flavour and pleasant sweetness.',
+        "Illy Arabica is a new line of single origin coffee from Illy's roaster. The beans from Guatemala is characterized by a complex flavour with the delicate hints of caramel, chocolate and honey.\n\nIn Guatemala, Coffee is grown on the fertile soil high in the mountains. Suitable temperatures are the result of the hot air current from Mexico. That, along with farmers' care, results in the beans with intense aroma, complex flavour and pleasant sweetness.",
       weight: 250,
       slug: '8003753970073',
       sku: '8003753970073',
@@ -280,7 +284,7 @@ exports.products = [
       imgUrl:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Johan+%26+Nyström+-+Caravan.jpg',
       info:
-        'We have created a blend of beans from some of the world\'s top countries producing coffee. To create classic dark-roasted coffee, we combined the softness of Mogiana from Brazil, the consistency of Lintung from Sumatra and the freshness of Ethiopia and Colombia. Caravan is a blend created for dark-roasted coffee lovers. Strong, with well-defined aroma and long lasting flavour.',
+        "We have created a blend of beans from some of the world's top countries producing coffee. To create classic dark-roasted coffee, we combined the softness of Mogiana from Brazil, the consistency of Lintung from Sumatra and the freshness of Ethiopia and Colombia. Caravan is a blend created for dark-roasted coffee lovers. Strong, with well-defined aroma and long lasting flavour.",
       weight: 500,
       slug: '7350045061225',
       sku: '7350045061225',
@@ -360,7 +364,7 @@ exports.products = [
       imgUrl:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Illy+Espresso+Decaffeinato+-+Decaffeinated+ground+coffee.jpg',
       info:
-        'Illy espresso is coffee with thick chestnut crema. Its taste offers many flavours such as nuts, fruit and pleasant wood notes.\n\nAccording to the Illy\'s roaster, caffeine content in the blend is less than 0.05%, which makes it very gentle on your stomach so you can drink it without having to worry in case of any medical contraindications for drinking of traditional coffee.',
+        "Illy espresso is coffee with thick chestnut crema. Its taste offers many flavours such as nuts, fruit and pleasant wood notes.\n\nAccording to the Illy's roaster, caffeine content in the blend is less than 0.05%, which makes it very gentle on your stomach so you can drink it without having to worry in case of any medical contraindications for drinking of traditional coffee.",
       weight: 250,
       slug: '8003753900490',
       sku: '8003753900490',

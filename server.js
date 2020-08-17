@@ -193,8 +193,8 @@ app.get('/campaigns', async (request, response) => {
     // Filter out campaigns not created by setup.js and filter out Cart Level Promotion
     const campaigns = allCampaigns.campaigns.filter(
       (campaign) =>
-        campaign.metadata.hasOwnProperty('demostoreName') &&
-        campaign.metadata.demostoreName !== 'Cart Level Promotions'
+        campaign.metadata.hasOwnProperty('demostoreName') 
+        // && campaign.metadata.demostoreName !== 'Cart Level Promotions'
     );
     return response.json(campaigns);
   } catch (e) {
@@ -245,6 +245,17 @@ app.get('/products', async (request, response) => {
     return response.json(products);
   } catch (e) {
     console.error(`[Products][Error] - ${e}`);
+    response.status(500).end();
+  }
+});
+
+app.get('/promotions/:campaignId', async (request, response) => {
+  const campaignId = request.params.campaignId;
+  try {
+    const campaignPromotionTiers = await voucherify.promotions.tiers.list(campaignId);
+    response.json(campaignPromotionTiers);
+  } catch (e) {
+    console.error(`[Promotions][Error] - ${e}`);
     response.status(500).end();
   }
 });
