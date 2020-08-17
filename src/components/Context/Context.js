@@ -596,7 +596,7 @@ class ProductProvider extends Component {
       this.dispatch(SET_PROMOTION, {
         cartSelectedVoucher: { ...activePromotion, customer },
       });
-      toast.success(promotion.banner);
+      toast.success(activePromotion.banner);
     } catch (e) {
       console.log('[getCartLevelPromotions]', e);
       this.removePromotionFromCart();
