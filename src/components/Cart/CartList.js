@@ -38,6 +38,11 @@ const CartList = ({ ctx }) => {
               onClick={() => ctx.setCard('MasterCard')}
               label="MasterCard"
             ></Chip>
+            <Chip
+              className="mr-1"
+              onClick={() => ctx.setCard('Other')}
+              label="Other"
+            ></Chip>
           </div>
         </li>
         {!_.isEmpty(ctx.cartSelectedVoucher) ||
