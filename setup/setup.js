@@ -378,7 +378,7 @@ const setupValidationRules = async () => {
         m.demostoreName === 'Welcome wave 5% off'
       ) {
         return [];
-      } else if (m.demostoreName === 'Cart Level Discounts') {
+      } else if (m.demostoreName === 'Cart Level Promotions') {
         return campaign.promotion.tiers.map((tier) => {
           const needsId = rules.find((rule) => rule.name === tier.name).voucherifyId;
           return voucherify.validationRules

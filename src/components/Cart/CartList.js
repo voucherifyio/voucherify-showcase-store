@@ -2,7 +2,7 @@ import React from 'react';
 import CartItem from './CartItem';
 import _ from 'lodash';
 import CartForm from './CartForm';
-// import CartLevelPromotions from './CartLevelPromotions'
+import CartLevelPromotions from './CartLevelPromotions'
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
@@ -46,17 +46,17 @@ const CartList = ({ ctx }) => {
               </>
             )
           }
-          {/* {!_.isEmpty(ctx.cartSelectedVoucher) && ctx.cartSelectedVoucher.hasOwnProperty('banner') &&
+          {!_.isEmpty(ctx.cartSelectedVoucher) && ctx.cartSelectedVoucher.hasOwnProperty('banner') &&
               (
               <>
                 <div className="d-inline my-auto col-4">
                   <span className="text-success">
-                    {ctx.cartSelectedVoucher.banner}
+                    {ctx.cartSelectedVoucher.metadata.demostoreName }
                   </span>
                 </div>
               </>
             )
-          } */}
+          }
             
             <div className="d-none d-lg-block my-auto mx-auto col-2"></div>
             <div className="d-none d-lg-block my-auto mx-auto col-2"></div>
@@ -81,7 +81,7 @@ const CartList = ({ ctx }) => {
         ) : (
           <>
             <CartForm ctx={ctx}/>
-            {/* <CartLevelPromotions ctx={ctx} /> */}
+            <CartLevelPromotions ctx={ctx} />
           </>
         )}
         <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">

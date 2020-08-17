@@ -194,7 +194,7 @@ app.get('/campaigns', async (request, response) => {
     const campaigns = allCampaigns.campaigns.filter(
       (campaign) =>
         campaign.metadata.hasOwnProperty('demostoreName') &&
-        campaign.metadata.demostoreName !== 'Cart Level Discounts'
+        campaign.metadata.demostoreName !== 'Cart Level Promotions'
     );
     return response.json(campaigns);
   } catch (e) {
@@ -212,9 +212,11 @@ app.post('/qualifications', async (request, response) => {
     const examinedCampaigns = await voucherify.campaigns.qualifications.examine(
       data
     );
+    const examinedCampaingnsPromotion = (await voucherify.promotions.validate(data)).promotions
 
     let qualifications = examinedCampaigns.data
       .concat(examinedVouchers.data)
+      .concat(examinedCampaingnsPromotion)
       .filter((qlt) => qlt.hasOwnProperty('metadata'));
 
     qualifications = qualifications.filter((qlt) =>

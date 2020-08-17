@@ -9,7 +9,7 @@ const SET_CART = 'SET_CART';
 const CLEAR_CART = 'CLEAR_CART';
 const LOAD_CART = 'LOAD_CART';
 const SET_COUPON = 'SET_COUPON';
-const SET_PROMOTION = 'SET_PROMOTION'
+const SET_PROMOTION = 'SET_PROMOTION';
 
 const reducer = (action) => (state, props) => {
   const calc = (cartItems, cartSelectedVoucher) => {
@@ -17,7 +17,7 @@ const reducer = (action) => (state, props) => {
       cartItem.total = cartItem.count * cartItem.price;
     });
 
-    const cartTotal = cartItems.reduce((sum, item) => sum + item.total,0);
+    const cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
     let cartDiscountedAmount = 0;
     let cartTotalAfterPromotion = cartTotal;
 
@@ -25,7 +25,9 @@ const reducer = (action) => (state, props) => {
       if (_.has(cartSelectedVoucher, 'applicable_to')) {
         const applicableProducts = [];
         let applicableProductInCart = '';
-        cartSelectedVoucher.applicable_to.data.map((e) => applicableProducts.push(e.id));
+        cartSelectedVoucher.applicable_to.data.map((e) =>
+          applicableProducts.push(e.id)
+        );
         for (let i = 0; i < applicableProducts.length; i++) {
           applicableProductInCart = cartItems.find(
             (item) => item.id === applicableProducts[i]
@@ -34,8 +36,7 @@ const reducer = (action) => (state, props) => {
         if (cartSelectedVoucher.discount.type === 'PERCENT') {
           const discountAmount = cartSelectedVoucher.discount.percent_off;
           cartTotalAfterPromotion =
-            cartTotal -
-            applicableProductInCart.price * (discountAmount / 100);
+            cartTotal - applicableProductInCart.price * (discountAmount / 100);
           cartDiscountedAmount =
             applicableProductInCart.price * (discountAmount / 100);
         } else if (cartSelectedVoucher.discount.type === 'AMOUNT') {
@@ -66,16 +67,19 @@ const reducer = (action) => (state, props) => {
       'cartDiscountedAmount',
       JSON.stringify(cartDiscountedAmount)
     );
-    localStorage.setItem(
-      'cartTotal',
-      JSON.stringify(cartTotal)
-    );
+    localStorage.setItem('cartTotal', JSON.stringify(cartTotal));
     localStorage.setItem(
       'cartTotalAfterPromotion',
       JSON.stringify(cartTotalAfterPromotion)
     );
-    if (cartSelectedVoucher !== null && cartSelectedVoucher.hasOwnProperty('banner')) {
-      localStorage.setItem('cartSelectedVoucher', JSON.stringify(cartSelectedVoucher));
+    if (
+      cartSelectedVoucher !== null &&
+      cartSelectedVoucher.hasOwnProperty('banner')
+    ) {
+      localStorage.setItem(
+        'cartSelectedVoucher',
+        JSON.stringify(cartSelectedVoucher)
+      );
 
       return {
         cartItems,
@@ -85,25 +89,27 @@ const reducer = (action) => (state, props) => {
         cartSelectedVoucher,
       };
     } else if (cartSelectedVoucher === null) {
-        localStorage.setItem('cartSelectedVoucher', JSON.stringify(null));
+      localStorage.setItem('cartSelectedVoucher', JSON.stringify(null));
       return {
         cartItems,
         cartDiscountedAmount,
         cartTotal,
         cartTotalAfterPromotion,
         cartSelectedVoucher: null,
-      }; 
+      };
     } else {
-      localStorage.setItem('cartSelectedVoucher', JSON.stringify(cartSelectedVoucher));
+      localStorage.setItem(
+        'cartSelectedVoucher',
+        JSON.stringify(cartSelectedVoucher)
+      );
       return {
         cartItems,
         cartDiscountedAmount,
         cartTotal,
         cartTotalAfterPromotion,
         cartSelectedVoucher,
-      }
+      };
     }
-    
   };
 
   const readValueFromLocalStorage = (key) => {
@@ -112,7 +118,7 @@ const reducer = (action) => (state, props) => {
       try {
         return JSON.parse(value);
       } catch (e) {
-        console.log('[readValueFromLocalStorage]', e)
+        console.log('[readValueFromLocalStorage]', e);
       }
     }
   };
@@ -131,22 +137,18 @@ const reducer = (action) => (state, props) => {
       storeProducts: readValueFromLocalStorage('storeProducts') || [],
       customerSelectedCustomer:
         readValueFromLocalStorage('customerSelectedCustomer') || null,
-      fetchingCustomer:
-        readValueFromLocalStorage('fetchingCustomer') || false,
+      fetchingCustomer: readValueFromLocalStorage('fetchingCustomer') || false,
       customerPublishedCodes:
         readValueFromLocalStorage('customerPublishedCodes') || null,
-      customerVouchers:
-        readValueFromLocalStorage('customerVouchers') || null,
-        customerPromotions:
+      customerVouchers: readValueFromLocalStorage('customerVouchers') || null,
+      customerPromotions:
         readValueFromLocalStorage('customerPromotions') || null,
-      customerCampaigns:
-        readValueFromLocalStorage('customerCampaigns') || null,
-      customerQualifications: 
+      customerCampaigns: readValueFromLocalStorage('customerCampaigns') || null,
+      customerQualifications:
         readValueFromLocalStorage('customerQualifications') || null,
       customerPaymentMethod:
         readValueFromLocalStorage('customerPaymentMethod') || 'Other',
-      storeSessionId:
-        readValueFromLocalStorage('storeSessionId') || null,
+      storeSessionId: readValueFromLocalStorage('storeSessionId') || null,
     };
   };
 
@@ -246,7 +248,11 @@ class ProductProvider extends Component {
 
   getCustomers = async () => {
     try {
-      this.setState({ fetchingCustomer: true, fetchingQualifications: true, fetchingCampaigns: true});
+      this.setState({
+        fetchingCustomer: true,
+        fetchingQualifications: true,
+        fetchingCampaigns: true,
+      });
       const customerAvailableCustomers = await Promise.all(
         storeCustomers.map(async (customer) => {
           const cust = await fetch(
@@ -293,25 +299,27 @@ class ProductProvider extends Component {
 
   getCampaigns = async () => {
     try {
-      this.setState({ fetchingCampaigns: true});
+      this.setState({ fetchingCampaigns: true });
       const customerCampaigns = await fetch(
         `${process.env.REACT_APP_API_URL || ''}/campaigns`,
         {
           include: 'credentials',
         }
       ).then((camps) => camps.json());
-      
+
       customerCampaigns.forEach((camps) => {
-        camps.coupons = []
+        camps.coupons = [];
         this.state.customerPublishedCodes.forEach((code) => {
           code.campaigns.forEach((camp) => {
             if (camp.campaign === camps.name) {
-              camps.coupons.push({customerSelectedCustomer: code.customerSelectedCustomer, customerDataCoupon: camp.code})
+              camps.coupons.push({
+                customerSelectedCustomer: code.customerSelectedCustomer,
+                customerDataCoupon: camp.code,
+              });
             }
-          })
-         
-        })
-      })
+          });
+        });
+      });
 
       this.setState({
         customerCampaigns: customerCampaigns,
@@ -334,7 +342,7 @@ class ProductProvider extends Component {
 
   getVouchers = async () => {
     try {
-      this.setState({ fetchingCampaigns: true});
+      this.setState({ fetchingCampaigns: true });
       const customerVouchers = await fetch(
         `${process.env.REACT_APP_API_URL || ''}/vouchers`,
         {
@@ -369,10 +377,7 @@ class ProductProvider extends Component {
         storeProducts: storeProducts,
         fetchingProducts: false,
       });
-      localStorage.setItem(
-        'storeProducts',
-        JSON.stringify(storeProducts)
-      );
+      localStorage.setItem('storeProducts', JSON.stringify(storeProducts));
     } catch (e) {
       console.log('[loadProducts]', e);
     }
@@ -381,7 +386,7 @@ class ProductProvider extends Component {
   getCustomer = async (id) => {
     try {
       // Get customer data, start spinner
-      this.setState({ fetchingCustomer: true, customerQualifications: null});
+      this.setState({ fetchingCustomer: true, customerQualifications: null });
       const customerSelectedCustomer = await fetch(
         `${process.env.REACT_APP_API_URL || ''}/customer/${id}`,
         {
@@ -396,14 +401,8 @@ class ProductProvider extends Component {
         'customerSelectedCustomer',
         JSON.stringify(customerSelectedCustomer)
       );
-      localStorage.setItem(
-        'fetchingCustomer',
-        JSON.stringify(false)
-      );
-      localStorage.setItem(
-        'customerQualifications',
-        JSON.stringify(null)
-      );
+      localStorage.setItem('fetchingCustomer', JSON.stringify(false));
+      localStorage.setItem('customerQualifications', JSON.stringify(null));
     } catch (e) {
       console.log('[getCustomer]', e);
     }
@@ -469,26 +468,18 @@ class ProductProvider extends Component {
       });
     }
     // Coupon revalidation logic
-    if (this.state.cartSelectedVoucher ) {
+    if (this.state.cartSelectedVoucher) {
       this.removePromotionFromCart();
-    }
-    if (this.state.customerValidatedPromotions) {
-      this.setState({customerValidatedPromotions: null, })
     }
   };
 
   increment = (id, qt) => {
-    const selectedProduct = this.state.cartItems.find(
-      (item) => item.id === id
-    );
+    const selectedProduct = this.state.cartItems.find((item) => item.id === id);
     selectedProduct.count = qt;
     selectedProduct.total = selectedProduct.price * qt;
     this.dispatch(SET_CART, {
       cartItems: this.state.cartItems,
     });
-    if (this.state.customerValidatedPromotions) {
-      this.setState({customerValidatedPromotions: null, })
-    }
     // Coupon revalidation logic
     if (this.state.cartSelectedVoucher) {
       this.removePromotionFromCart();
@@ -496,9 +487,7 @@ class ProductProvider extends Component {
   };
 
   removeItem = (id) => {
-    const updatedCart = this.state.cartItems.filter(
-      (item) => item.id !== id
-    );
+    const updatedCart = this.state.cartItems.filter((item) => item.id !== id);
     if (updatedCart.length === 0) {
       this.clearCart();
     } else {
@@ -508,27 +497,18 @@ class ProductProvider extends Component {
     if (this.state.cartSelectedVoucher) {
       this.removePromotionFromCart();
     }
-    if (this.state.customerValidatedPromotions) {
-      this.setState({customerValidatedPromotions: null, })
-    }
   };
 
   setCard = (card) => {
-    this.setState(({
-      customerPaymentMethod: card
-    }))
-    localStorage.setItem(
-      'customerPaymentMethod',
-      JSON.stringify(card)
-    );
-  }
+    this.setState({
+      customerPaymentMethod: card,
+    });
+    localStorage.setItem('customerPaymentMethod', JSON.stringify(card));
+  };
 
   clearCart = () => {
     this.dispatch(CLEAR_CART);
     toast.success('Cart cleared');
-    if (this.state.customerValidatedPromotions) {
-      this.setState({customerValidatedPromotions: null, })
-    }
   };
 
   prepareItemsPayload = (item) => {
@@ -539,18 +519,18 @@ class ProductProvider extends Component {
       amount: item.total,
     };
   };
-  
+
   addPromotionToCart = async (couponCode, card) => {
     try {
-      const customer = this.state.customerSelectedCustomer
+      const customer = this.state.customerSelectedCustomer;
       const redemptionPayload = {
         code: couponCode,
         customer: { id: customer.id, source_id: customer.source_id },
         amount: this.state.cartTotal,
         items: this.state.cartItems.map(this.prepareItemsPayload),
         metadata: {
-          card
-        }
+          card,
+        },
       };
 
       const voucher = await new Promise((resolve, reject) => {
@@ -581,8 +561,8 @@ class ProductProvider extends Component {
 
   getCartLevelPromotions = async () => {
     try {
-      const customer = this.state.customerSelectedCustomer
-      
+      const customer = this.state.customerSelectedCustomer;
+
       const redemptionPayload = {
         customer: { id: customer.id, source_id: customer.source_id },
         amount: this.state.cartTotal,
@@ -596,32 +576,32 @@ class ProductProvider extends Component {
           if (response.valid) {
             resolve(response);
           } else {
-            toast.error('There are no promotions');
+            toast.error('No Cart Level Promotions available');
             reject(new Error(response.reason));
           }
         });
       });
-      this.setState({
-        customerValidatedPromotions: promotion.promotions
-      })
+
+      const activePromotion = promotion.promotions[0];
+
+      this.dispatch(SET_PROMOTION, {
+        cartSelectedVoucher: { ...activePromotion, customer },
+      });
+      toast.success(promotion.banner);
     } catch (e) {
       console.log('[getCartLevelPromotions]', e);
       this.removePromotionFromCart();
     }
   };
 
-  validatePromotion = (promotion) => {
-    const customer = this.state.customerSelectedCustomer
+  getQualifications = async (
+    customerSelectedCustomer,
+    cartTotal,
+    cartItems,
+    customerPaymentMethod
+  ) => {
+    this.setState({ fetchingQualifications: true });
 
-    this.dispatch(SET_PROMOTION, {
-        cartSelectedVoucher: { ...promotion, customer },
-      });
-      toast.success(promotion.banner);
-  }
-
-  getQualifications = async (customerSelectedCustomer, cartTotal, cartItems, customerPaymentMethod) => {
-    this.setState({fetchingQualifications: true})
-    
     const qtPayload = {
       customer: { id: customerSelectedCustomer.id },
       order: {
@@ -629,10 +609,10 @@ class ProductProvider extends Component {
         items: cartItems.map(this.prepareItemsPayload),
       },
       metadata: {
-        card: customerPaymentMethod
-      }
+        card: customerPaymentMethod,
+      },
     };
-    
+
     const customerQualifications = await fetch(
       `${process.env.REACT_APP_API_URL || ''}/qualifications`,
       {
@@ -641,10 +621,10 @@ class ProductProvider extends Component {
         credentials: 'include',
         body: JSON.stringify(qtPayload),
       }
-    ).then((resp) => resp.json())
+    ).then((resp) => resp.json());
 
     this.setState({
-      customerQualifications: customerQualifications, 
+      customerQualifications: customerQualifications,
       fetchingQualifications: false,
     });
     localStorage.setItem(
@@ -690,8 +670,8 @@ class ProductProvider extends Component {
         customer,
         status: 'FULFILLED',
         metadata: {
-          card
-        }
+          card,
+        },
       };
       await this.sendOrder(orderPayload).catch((e) => {
         toast.error('There was a problem with your purchase');
@@ -707,7 +687,7 @@ class ProductProvider extends Component {
         JSON.stringify(orderPayload.source_id)
       );
       // If voucher is applied
-    } else if (this.state.cartSelectedVoucher.hasOwnProperty('code')){
+    } else if (this.state.cartSelectedVoucher.hasOwnProperty('code')) {
       try {
         const code = this.state.cartSelectedVoucher.code;
         const redemptionPayload = {
@@ -719,8 +699,8 @@ class ProductProvider extends Component {
             items: this.state.cartItems.map(this.prepareItemsPayload),
           },
           metadata: {
-            card
-          }
+            card,
+          },
         };
 
         await this.sendRedemption(redemptionPayload).catch((err) => {
@@ -752,8 +732,8 @@ class ProductProvider extends Component {
             items: this.state.cartItems.map(this.prepareItemsPayload),
           },
           metadata: {
-            card
-          }
+            card,
+          },
         };
 
         await this.sendRedemption(redemptionPayload).catch((err) => {
@@ -809,10 +789,8 @@ class ProductProvider extends Component {
           setVoucherOrCampaign: this.setVoucherOrCampaign,
           getQualifications: this.getQualifications,
           prepareItemsPayload: this.prepareItemsPayload,
-          getPromotions: this.getPromotions,
           getCartLevelPromotions: this.getCartLevelPromotions,
-          validatePromotion: this.validatePromotion,
-          setCard: this.setCard
+          setCard: this.setCard,
         }}
       >
         {/* eslint-disable-next-line react/prop-types */}

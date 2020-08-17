@@ -131,11 +131,11 @@ exports.campaigns = [
     },
   },
   {
-    name: 'Cart Level Discounts',
+    name: 'Cart Level Promotions',
     campaign_type: 'PROMOTION',
     metadata: {
       demostoreAssignedValRules: '$10 off for orders above $100, $3 off for orders above $30',
-      demostoreName: 'Cart Level Discounts',
+      demostoreName: 'Cart Level Promotions',
     },
     promotion: {
       tiers: [
@@ -150,7 +150,7 @@ exports.campaigns = [
           
           },
           metadata: {
-            name: '$10 off'
+            demostoreName: '$10 off CLP'
           }
         },
         {
@@ -163,7 +163,7 @@ exports.campaigns = [
             },
           },
           metadata: {
-            name: '$3 off'
+            demostoreName: '$3 off CLP'
           }
         },
       ],

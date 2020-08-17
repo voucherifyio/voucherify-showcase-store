@@ -3,8 +3,6 @@ import Spinner from 'react-bootstrap/Spinner';
 import Chip from '@material-ui/core/Chip';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import InfoIcon from '@material-ui/icons/Info';
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const SidebarQualifications = ({ ctx }) => {
@@ -27,8 +25,6 @@ const SidebarQualifications = ({ ctx }) => {
                 {ctx.customerQualifications.map((qualification) => (
                   <Chip
                     key={`${qualification.metadata.demostoreName}`}
-                    size="small"
-                    variant="outlined"
                     style={{ maxWidth: '100%' }}
                     label={qualification.metadata.demostoreName}
                   />
@@ -37,34 +33,24 @@ const SidebarQualifications = ({ ctx }) => {
             )}
           </>
         )}
-        <Chip
-          size="small"
-          variant="outlined"
-          label="Check qualifications"
-          style={{
-            backgroundColor: '#ff8b5c',
-            color: 'white',
-            maxWidth: '100%',
-          }}
-          onClick={() => {
-            ctx.getQualifications(
-              ctx.customerSelectedCustomer,
-              ctx.cartTotal,
-              ctx.cartItems,
-              ctx.customerPaymentMethod
-            );
-          }}
-        />
-        <div className="d-flex justify-content-center align-items-center">
-          <p className="qualifications-description">
-            Learn how qualification API works
-          </p>
-          <Tooltip title={qualificationsToolTip}>
-            <IconButton>
-              <InfoIcon style={{ fontSize: 14 }} />
-            </IconButton>
-          </Tooltip>
-        </div>
+        <Tooltip title={qualificationsToolTip}>
+          <Chip
+            label="Check qualifications"
+            style={{
+              backgroundColor: '#ff8b5c',
+              color: 'white',
+              maxWidth: '100%',
+            }}
+            onClick={() => {
+              ctx.getQualifications(
+                ctx.customerSelectedCustomer,
+                ctx.cartTotal,
+                ctx.cartItems,
+                ctx.customerPaymentMethod
+              );
+            }}
+          />
+        </Tooltip>
       </div>
     </>
   );
