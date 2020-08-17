@@ -179,5 +179,5 @@ export default SidebarCampaignDetails;
 
 SidebarCampaignDetails.propTypes = {
   campaign: PropTypes.object.isRequired,
-  code: PropTypes.string.isRequired,
+  code: PropTypes.string,
 };
