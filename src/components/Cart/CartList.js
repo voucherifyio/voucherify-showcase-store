@@ -14,8 +14,6 @@ import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
 
 const CartList = ({ ctx }) => {
-  // const [card, setCard] = useState('Other')
-
   return (
     <div className="col-md-12 col-lg-9 order-2">
       <h4 className="d-flex justify-content-between align-items-center mb-3">
