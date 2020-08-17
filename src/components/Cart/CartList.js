@@ -50,6 +50,7 @@ const CartList = ({ ctx }) => {
               (
               <>
                 <div className="d-inline my-auto col-4">
+                Active Promotion{' '}
                   <span className="text-success">
                     {ctx.cartSelectedVoucher.metadata.demostoreName }
                   </span>
