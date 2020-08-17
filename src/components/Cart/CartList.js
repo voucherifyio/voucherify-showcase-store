@@ -2,7 +2,7 @@ import React from 'react';
 import CartItem from './CartItem';
 import _ from 'lodash';
 import CartForm from './CartForm';
-import CartLevelPromotions from './CartLevelPromotions'
+import CartLevelPromotions from './CartLevelPromotions';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
@@ -26,39 +26,48 @@ const CartList = ({ ctx }) => {
           return <CartItem key={item.id} item={item} ctx={ctx} />;
         })}
         <li className="list-group-item d-flex lh-condensed">
-            <div className="my-auto col-4">Payment method: <strong>{ctx.customerPaymentMethod}</strong></div>
-            <div className="d-flex my-auto col-4">
-              <Chip className="mr-1" onClick={() => ctx.setCard('Visa')} label="Visa"></Chip>
-              <Chip className="mr-1"  onClick={() => ctx.setCard('MasterCard')} label="MasterCard"></Chip>
-            </div>
+          <div className="my-auto col-4">
+            Payment method: <strong>{ctx.customerPaymentMethod}</strong>
+          </div>
+          <div className="d-flex my-auto col-4">
+            <Chip
+              className="mr-1"
+              onClick={() => ctx.setCard('Visa')}
+              label="Visa"
+            ></Chip>
+            <Chip
+              className="mr-1"
+              onClick={() => ctx.setCard('MasterCard')}
+              label="MasterCard"
+            ></Chip>
+          </div>
         </li>
-        {!_.isEmpty(ctx.cartSelectedVoucher) || !_.isEmpty(ctx.cartSelectedPromotion) ? (
+        {!_.isEmpty(ctx.cartSelectedVoucher) ||
+        !_.isEmpty(ctx.cartSelectedPromotion) ? (
           <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
-            {!_.isEmpty(ctx.cartSelectedVoucher) && ctx.cartSelectedVoucher.hasOwnProperty('code') && 
-              (
-              <>
-                <div className="d-inline my-auto col-4">
-                  Discount code{' '}
-                  <span className="text-success">
-                    {ctx.cartSelectedVoucher.code}
-                  </span>
-                </div>
-              </>
-            )
-          }
-          {!_.isEmpty(ctx.cartSelectedVoucher) && ctx.cartSelectedVoucher.hasOwnProperty('banner') &&
-              (
-              <>
-                <div className="d-inline my-auto col-4">
-                Active Promotion{' '}
-                  <span className="text-success">
-                    {ctx.cartSelectedVoucher.metadata.demostoreName }
-                  </span>
-                </div>
-              </>
-            )
-          }
-            
+            {!_.isEmpty(ctx.cartSelectedVoucher) &&
+              ctx.cartSelectedVoucher.hasOwnProperty('code') && (
+                <>
+                  <div className="d-inline my-auto col-4">
+                    Discount code{' '}
+                    <span className="text-success">
+                      {ctx.cartSelectedVoucher.code}
+                    </span>
+                  </div>
+                </>
+              )}
+            {!_.isEmpty(ctx.cartSelectedVoucher) &&
+              ctx.cartSelectedVoucher.hasOwnProperty('banner') && (
+                <>
+                  <div className="d-inline my-auto col-4">
+                    Active Promotion{' '}
+                    <span className="text-success">
+                      {ctx.cartSelectedVoucher.metadata.demostoreName}
+                    </span>
+                  </div>
+                </>
+              )}
+
             <div className="d-none d-lg-block my-auto mx-auto col-2"></div>
             <div className="d-none d-lg-block my-auto mx-auto col-2"></div>
             <div
@@ -71,17 +80,17 @@ const CartList = ({ ctx }) => {
               </span>
             </div>
             <div className="d-flex flex-column justify-content-center">
-            <IconButton
+              <IconButton
                 className="mx-2"
                 onClick={() => ctx.removePromotionFromCart('promotion')}
               >
                 <DeleteIcon />
-              </IconButton>  
+              </IconButton>
             </div>
           </li>
         ) : (
           <>
-            <CartForm ctx={ctx}/>
+            <CartForm ctx={ctx} />
             <CartLevelPromotions ctx={ctx} />
           </>
         )}
@@ -111,7 +120,10 @@ const CartList = ({ ctx }) => {
             <Button
               variant="dark"
               onClick={() => {
-                ctx.checkoutCart(ctx.customerSelectedCustomer, ctx.customerPaymentMethod);
+                ctx.checkoutCart(
+                  ctx.customerSelectedCustomer,
+                  ctx.customerPaymentMethod
+                );
                 ctx.updateCustomerData(ctx.customerSelectedCustomer.source_id);
               }}
               className="w-100 p-2"
