@@ -79,7 +79,6 @@ app.get('/init', async (request, response) => {
         return voucherify.customers.create(customer);
       })
     );
-      console.log(createdCustomers)
     // We're setting up dummy order for one of the customers
     const dummyOrderCustomer = _.find(storeCustomers, {
       source_id: `${request.session.id}lewismarshall`,
@@ -154,11 +153,9 @@ app.get('/customers/:sessionId', async (request, response) => {
     const customers = await Promise.all(
       storeCustomers.map(async(customer) => {
         customerId = `${sessionId}${customer.metadata.demostore_id}`;
-        console.log(customerId)
         return voucherify.customers.get(customerId)
       })
     );
-    console.log(customers)
     response.json(customers);
   }
   catch (e) {
