@@ -42,7 +42,7 @@ for development mode you now need to run two processes (i.e. 2 terminal tabs):
 
 * Select customer and try out some of the validation rules
 * Check out your Voucherify dashboard to track your costumer's orders
-* Check out `src/components/Context.js`, `src/components/CustomerContext.js` and `server.js` to learn more about how we use Voucherify API to validate and redeem coupons and process payments.
+* Check out `src/components/Context/Context.js` and `server.js` to learn more about how we use Voucherify API to validate and redeem coupons and process payments.
 
 ## Important information
 
