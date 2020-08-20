@@ -3,7 +3,7 @@
   "description": "Set up your own Voucherify demo store to learn our API",
   "keywords": ["voucherify", "API"],
   "website": "https://www.voucherify.io",
-  "repository": "https://github.com/voucherifyio/voucherify-react-demo-store",
+  "repository": "https://github.com/voucherifyio/voucherify-showcase-store",
   "env": {
     "REACT_APP_BACKEND_APPLICATION_ID": {
       "description": "Server-side Application ID"
