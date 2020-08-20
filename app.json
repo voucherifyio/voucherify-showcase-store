@@ -3,19 +3,19 @@
   "description": "Set up your own Voucherify demo store to learn our API",
   "keywords": ["voucherify", "API"],
   "website": "https://www.voucherify.io",
-  "repository": "https://github.com/rspective/voucherify-react-demo-store",
+  "repository": "https://github.com/voucherifyio/voucherify-react-demo-store",
   "env": {
     "REACT_APP_BACKEND_APPLICATION_ID": {
-      "description": "YOUR 'Application Keys' APPLICATION ID"
+      "description": "Server-side Application ID"
     },
     "REACT_APP_BACKEND_CLIENT_SECRET_KEY": {
-      "description": "YOUR 'Application Keys' SECRET KEY"
+      "description": "Server-side Application Secret Key"
     },
     "REACT_APP_FRONTEND_APPLICATION_ID": {
-      "description": "YOUR 'Client-side Keys' APPLICATION ID"
+      "description": "Client-side Application ID"
     },
     "REACT_APP_FRONTEND_CLIENT_SECRET_KEY": {
-      "description": "YOUR 'Client-side Keys' SECRET KEY"
+      "description": "Client-side Application Secret Key"
     },
     "SESSION_SECRET": {
       "description": "Session secret password",
