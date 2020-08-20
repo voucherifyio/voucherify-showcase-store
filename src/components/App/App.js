@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
 import {Switch, Route} from 'react-router-dom';
-import './App.css';
+import '../../css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navigation from './components/Navigation';
-import Footer from './components/Footer';
-import ProductList from './components/Product/ProductList';
-import ProductDetails from './components/Product/ProductDetails';
-import Cart from './components/Cart/Cart';
-import PageMain from './components/Page/PageMain';
-import PageSuccess from './components/Page/PageSuccess';
-import PageError from './components/Page/PageError';
+import Navigation from '../Navigation';
+import Footer from '../Footer';
+import ProductList from '../Product/ProductList';
+import ProductDetails from '../Product/ProductDetails';
+import Cart from '../Cart/Cart';
+import PageMain from '../Page/PageMain';
+import PageSuccess from '../Page/PageSuccess';
+import PageError from '../Page/PageError';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Sidebar from './components/Sidebar/Sidebar';
+import Sidebar from '../Sidebar/Sidebar';
 import 'voucherify.js';
 
 const toastOptions = {

@@ -11,8 +11,8 @@ const redis = require('redis');
 const RedisStore = require('connect-redis')(session);
 const enforce = require('express-sslify');
 
-const storeCustomers = require('./src/storeCustomers.json');
 const voucherifyData = require('./setup/voucherifyData');
+const storeCustomers = voucherifyData.customers
 const campaigns = voucherifyData.campaigns.filter(
   (campaign) => campaign.campaign_type !== 'PROMOTION'
 );
@@ -21,7 +21,6 @@ const redisClient = redis.createClient(process.env.REDIS_URL);
 if (process.env.NODE_ENV !== 'development') {
   app.use(enforce.HTTPS({ trustProtoHeader: true }))
 }
-
 app.use(
   session({
     store: new RedisStore({ client: redisClient }),
@@ -80,7 +79,7 @@ app.get('/init', async (request, response) => {
         return voucherify.customers.create(customer);
       })
     );
-
+      console.log(createdCustomers)
     // We're setting up dummy order for one of the customers
     const dummyOrderCustomer = _.find(storeCustomers, {
       source_id: `${request.session.id}lewismarshall`,
@@ -145,6 +144,26 @@ app.get('/init', async (request, response) => {
   } catch (e) {
     console.error(`[Init][Error] - ${e}`);
     return response.status(500).end();
+  }
+});
+
+app.get('/customers/:sessionId', async (request, response) => {
+  const sessionId = request.params.sessionId;
+
+  try {
+    const customers = await Promise.all(
+      storeCustomers.map(async(customer) => {
+        customerId = `${sessionId}${customer.metadata.demostore_id}`;
+        console.log(customerId)
+        return voucherify.customers.get(customerId)
+      })
+    );
+    console.log(customers)
+    response.json(customers);
+  }
+  catch (e) {
+    console.error(`[Customers][Error] - ${e}`);
+    response.status(500).end();
   }
 });
 

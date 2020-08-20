@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
-import storeCustomers from '../../storeCustomers.json';
 
 const ProductContext = React.createContext();
 
@@ -246,6 +245,7 @@ class ProductProvider extends Component {
     }
   };
 
+
   getCustomers = async () => {
     try {
       this.setState({
@@ -253,19 +253,13 @@ class ProductProvider extends Component {
         fetchingQualifications: true,
         fetchingCampaigns: true,
       });
-      const customerAvailableCustomers = await Promise.all(
-        storeCustomers.map(async (customer) => {
-          const cust = await fetch(
-            `${process.env.REACT_APP_API_URL || ''}/customer/${
-              this.state.storeSessionId
-            }${customer.source_id}`,
-            {
-              include: 'credentials',
-            }
-          );
-          return await cust.json();
-        })
-      );
+      const customerAvailableCustomers = await fetch(
+        `${process.env.REACT_APP_API_URL || ''}/customers/${this.state.storeSessionId}`,
+        {
+          include: 'credentials',
+        }
+      ).then((custs) => custs.json());
+      
       this.setState({
         customerAvailableCustomers: customerAvailableCustomers,
         fetchingCustomer: false,
