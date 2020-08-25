@@ -122,15 +122,15 @@ exports.campaigns = [
     },
   },
   {
-    name: 'Buy One - Get One',
+    name: 'BOGO Campaign',
     type: 'AUTO_UPDATE',
     voucher: {
       type: 'DISCOUNT_VOUCHER',
       discount: { percent_off: 100, type: 'PERCENT' },
     },
     metadata: {
-      demostoreName: 'Buy One - Get One',
-      demostoreAssignedValRules: 'Buy One - Get One',
+      demostoreName: 'BOGO Campaign',
+      demostoreAssignedValRules: 'BOGO Campaign',
       demostoreDescription: 'Add to items to cart to use this coupon',
       demostoreSteps:
         'Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra',
@@ -188,18 +188,18 @@ exports.campaigns = [
     },
   },
   {
-    name: 'Cart Level Promotions',
+    name: 'Tiered Discount',
     campaign_type: 'PROMOTION',
     metadata: {
       demostoreAssignedValRules:
-        '$10 off for orders above $100, $3 off for orders above $30',
-      demostoreName: 'Cart Level Promotions',
+        'First Tier - Tiered Discount, Final Tier - Tiered Discount',
+      demostoreName: 'Tiered Discount',
     },
     promotion: {
       tiers: [
         {
           name: '$10 off for orders above $100',
-          banner: 'Congratulations, you get $10 off.',
+          banner: 'Congratulations, you get $10 off!',
           action: {
             discount: {
               type: 'AMOUNT',
@@ -207,14 +207,15 @@ exports.campaigns = [
             },
           },
           metadata: {
-            demostoreName: '$10 off CLP',
-            demostoreTierName: 'Tier 1',
+            demostoreName: 'First Tier - Tiered Discount',
+            demostoreTierName: 'First Tier - Tiered Discount',
             demostoreSteps: 'Cart value: > $100',
           },
         },
         {
           name: '$3 off for orders above $30',
-          banner: 'Congratulations, you get $3 off.',
+          banner:
+            'Congratulations, you get $3 off! Add more items for bigger discount!',
           action: {
             discount: {
               type: 'AMOUNT',
@@ -222,9 +223,48 @@ exports.campaigns = [
             },
           },
           metadata: {
-            demostoreName: '$3 off CLP',
-            demostoreTierName: 'Tier 2',
+            demostoreName: 'First Tier - Tiered Discount',
+            demostoreTierName: 'First Tier - Tiered Discount',
             demostoreSteps: 'Cart value: > $30',
+          },
+        },
+      ],
+    },
+  },
+  {
+    name: 'BOGO Discount',
+    campaign_type: 'PROMOTION',
+    metadata: {
+      demostoreAssignedValRules:
+        'Final Tier - 100% off for Hard Beans - Brazil, First Tier - 50% off Hard Beans - Brazil',
+      demostoreName: 'BOGO Discount',
+    },
+    promotion: {
+      tiers: [
+        {
+          name: 'Final Tier - 100% off for Hard Beans - Brazil',
+          banner: 'Congratulations, you get Hard Beans - Brazil for free',
+          action: {
+            discount: { percent_off: 100, type: 'PERCENT' },
+          },
+          metadata: {
+            demostoreName: 'Final Tier - 100% off for Hard Beans - Brazil',
+            demostoreTierName: 'Final Tier - 100% off for Hard Beans - Brazil',
+            demostoreSteps:
+              'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil;Cart value: > $100',
+          },
+        },
+        {
+          name: 'First Tier - 50% off Hard Beans - Brazil',
+          banner:
+            'Congratulations, you get Hard Beans - Brazil for 50%. Add more items to get it for free!',
+          action: {
+            discount: { percent_off: 50, type: 'PERCENT' },
+          },
+          metadata: {
+            demostoreName: 'First Tier - 50% off Hard Beans - Brazil',
+            demostoreTierName: 'First Tier - 50% off Hard Beans - Brazil',
+            demostoreSteps: 'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil',
           },
         },
       ],

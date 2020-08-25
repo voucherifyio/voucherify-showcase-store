@@ -158,6 +158,10 @@ a:hover {
   min-width: 100vw;
 }
 
+.validateButton {
+  z-index: 1 !important;
+}
+
 button:focus {
   outline: none !important;
   border: 0 !important;
@@ -216,11 +220,12 @@ button:focus {
 }
 
 #storeSidebar-wrapper .campaign-box {
-  height: 80px;
+  /* height: 80px; */
+
 }
 
 #storeSidebar-wrapper .campaign-name {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   margin-bottom: 0px;
 }
@@ -280,6 +285,10 @@ button:focus {
 .storeSidebar-content {
   padding: 0.875rem 1.25rem;
   font-size: 1rem;
+}
+
+.storeSidebar-content p {
+  margin-bottom: 0.25rem;
 }
 
 .storeSidebar-content-data {

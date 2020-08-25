@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ProductConsumer } from './Context/Context';
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from '@material-ui/core/IconButton';
 import Navbar from 'react-bootstrap/Navbar';
@@ -10,6 +9,7 @@ import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 const StyledBadge = withStyles(() => ({
   badge: {
@@ -18,7 +18,12 @@ const StyledBadge = withStyles(() => ({
   },
 }))(Badge);
 
-const Navigation = ({ toggleSidebar, storeSidebar }) => {
+const Navigation = ({
+  toggleSidebar,
+  storeSidebar,
+  itemsTotalCount,
+  selectedCustomer,
+}) => {
   return (
     <>
       <Navbar className="m-auto navbar-sticky" collapseOnSelect expand="lg">
@@ -36,37 +41,23 @@ const Navigation = ({ toggleSidebar, storeSidebar }) => {
             >
               <Nav.Item className="navbar-account px-2">Store</Nav.Item>
             </Link>
-            <ProductConsumer>
-              {(ctx) => {
-                const countTotalItems = ctx.cartItems.reduce(
-                  (acc, curr) => acc + curr.count,
-                  0
-                );
-                return (
-                  <>
-                    {ctx.customerSelectedCustomer !== null && (
-                      <Nav.Item className="navbar-account px-2">
-                        <AccountCircleIcon className="navbar-icon mx-2" />
-                        Hi, <b>{ctx.customerSelectedCustomer.name.split(' ')[0]}</b>
-                      </Nav.Item>
-                    )}
-                    <Nav.Item className="px-2">
-                      <Link to="/cart">
-                        <IconButton className="mx-2">
-                          <StyledBadge badgeContent={countTotalItems}>
-                            <ShoppingCartIcon />
-                          </StyledBadge>
-                        </IconButton>
-                      </Link>
-                      <b>
-                        $
-                        {(ctx.cartTotalAfterPromotion / 100).toFixed(2)}
-                      </b>
-                    </Nav.Item>
-                  </>
-                );
-              }}
-            </ProductConsumer>
+
+            {selectedCustomer !== null && (
+              <Nav.Item className="navbar-account px-2">
+                <AccountCircleIcon className="navbar-icon mx-2" />
+                Hi, <b>{selectedCustomer.name.split(' ')[0]}</b>
+              </Nav.Item>
+            )}
+            <Nav.Item className="px-2">
+              <Link to="/cart">
+                <IconButton className="mx-2">
+                  <StyledBadge badgeContent={itemsTotalCount}>
+                    <ShoppingCartIcon />
+                  </StyledBadge>
+                </IconButton>
+              </Link>
+            </Nav.Item>
+
             <Nav.Item className="px-2">
               <IconButton
                 className={storeSidebar ? 'mx-2 icon-selected' : 'mx-2'}
@@ -82,9 +73,18 @@ const Navigation = ({ toggleSidebar, storeSidebar }) => {
   );
 };
 
-export default Navigation;
+const mapStateToProps = (state) => {
+  return {
+    selectedCustomer: state.userReducer.selectedCustomer,
+    itemsTotalCount: state.cartReducer.itemsTotalCount,
+  };
+};
+
+export default connect(mapStateToProps)(Navigation);
 
 Navigation.propTypes = {
   storeSidebar: PropTypes.bool.isRequired,
   toggleSidebar: PropTypes.func.isRequired,
+  itemsTotalCount: PropTypes.number.isRequired,
+  selectedCustomer: PropTypes.object,
 };

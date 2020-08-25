@@ -120,7 +120,8 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
         {campaign.tiers && (
           <>
             {campaign.tiers.map((tier) => (
-                <>
+              <>
+                <div key={tier.metadata.demostoreName}>
                   <p className="campaign-description section-heading redemption-rules mt-2">
                     {tier.metadata.demostoreTierName}
                   </p>
@@ -166,8 +167,9 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
                       </div>
                     </div>
                   ))}
-                </>
-              ))}
+                </div>
+              </>
+            ))}
           </>
         )}
       </div>

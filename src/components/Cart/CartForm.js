@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
-
-const CartForm = ({ctx}) => {
+import { connect } from 'react-redux';
+import { getDiscount } from '../../redux/actions/cartActions';
+const CartForm = ({ dispatch }) => {
   const [code, setCode] = useState('');
   const handleChange = (event) => {
     setCode(event.target.value);
@@ -14,7 +15,7 @@ const CartForm = ({ctx}) => {
 
   const handleValidate = (code) => {
     if (code !== '') {
-      ctx.addPromotionToCart(code, ctx.customerPaymentMethod);
+      dispatch(getDiscount(code));
     }
   };
 
@@ -31,7 +32,7 @@ const CartForm = ({ctx}) => {
               value={code}
               onChange={handleChange}
             />
-            <div className="input-group-append">
+            <div className="input-group-append validateButton">
               <Button
                 type="submit"
                 variant="dark"
@@ -49,8 +50,9 @@ const CartForm = ({ctx}) => {
     </li>
   );
 };
-export default CartForm;
+
+export default connect()(CartForm);
 
 CartForm.propTypes = {
-  ctx: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };

@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Product from './Product';
-import {ProductConsumer} from '../Context/Context';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
-const ProductList = () => {
+const ProductList = ({ products, fetchingProducts }) => {
   const [filterCategory, setFilterCategory] = useState('');
 
   const categories = [
@@ -19,6 +19,22 @@ const ProductList = () => {
     'Coffee Machines',
     'Accessories',
   ];
+
+  let filteredList;
+  if (!fetchingProducts) {
+    switch (filterCategory) {
+      case '':
+      case 'All':
+        filteredList = products;
+        break;
+      default:
+        filteredList = products.filter((product) =>
+          product.metadata.categories.includes(filterCategory)
+        );
+        break;
+    }
+    filteredList = _.orderBy(filteredList, ['source_id'], ['asc']);
+  }
 
   return (
     <div>
@@ -47,54 +63,30 @@ const ProductList = () => {
               </Form.Control>
             </div>
           </div>
-          <ProductConsumer>
-            {(ctx) => {
-              let filteredList;
-              if (!ctx.fetchingProducts) {
-                switch (filterCategory) {
-                  case '':
-                  case 'All':
-                    filteredList = ctx.storeProducts;
-                    break;
-                  default:
-                    filteredList = ctx.storeProducts.filter((product) =>
-                      product.metadata.categories.includes(filterCategory),
-                    );
-                    break;
-                }
-                filteredList = _.orderBy(filteredList, ['source_id'],['asc']);
-              }
-              return (
-                <>
-                  {ctx.fetchingProducts ? (
-                    <div className="d-flex justify-content-center">
-                      <Spinner animation="border" role="status">
-                        <span className="sr-only">Loading...</span>
-                      </Spinner>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="row">
-                        {filteredList.map((product) => (
-                          <React.Fragment key={product.id}>
-                            <Product
-                              key={product.id}
-                              product={product}
-                              storeLogic={ctx}
-                            ></Product>
-                          </React.Fragment>
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </>
-              );
-            }}
-          </ProductConsumer>
+          {fetchingProducts ? (
+            <div className="d-flex justify-content-center">
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
+          ) : (
+            <div className="row">
+              {filteredList.map((product) => (
+                <Product key={product.id} product={product}></Product>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default ProductList;
+const mapStateToProps = (state) => {
+  return {
+    products: state.shopReducer.products,
+    fetchingProducts: state.shopReducer.fetchingProducts,
+  };
+};
+
+export default connect(mapStateToProps)(ProductList);

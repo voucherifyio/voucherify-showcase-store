@@ -16,11 +16,15 @@ const setupCampaigns = () => {
         console.log(`[SUCCESS] Campaign created ${needsId.name}`);
         if (camp.campaign_type === 'PROMOTION') {
           return camp.promotion.tiers.forEach((tier) => {
-            let needsPromoId = campaigns.find((c) => c.name === camp.name)
-            needsPromoId = needsPromoId.promotion.tiers.find((t) => t.name === tier.name)
+            let needsPromoId = campaigns.find((c) => c.name === camp.name);
+            needsPromoId = needsPromoId.promotion.tiers.find(
+              (t) => t.name === tier.name
+            );
             needsPromoId.voucherifyId = tier.id;
-            console.log(`[SUCCESS] Promotion Tier created ${needsPromoId.name}`);
-          })
+            console.log(
+              `[SUCCESS] Promotion Tier created ${needsPromoId.name}`
+            );
+          });
         }
       })
       .catch((error) =>
@@ -85,7 +89,6 @@ const setupProducts = () => {
       .then((prod) => {
         const needsId = products.find((p) => p.source_id === prod.source_id);
         needsId.voucherifyId = prod.id;
-        console.log(`[SUCCESS] Product created ${needsId.name}`);
       })
       .catch((error) =>
         console.log(
@@ -96,7 +99,7 @@ const setupProducts = () => {
     return thisProduct;
   });
   return Promise.all(productCreationPromises)
-    .then(() => console.log('[SUCCESS] All products setup'))
+    .then(() => console.log('[SUCCESS] Products setup'))
     .catch((error) =>
       console.log('[ERROR] There was an error creating products', error)
     );
@@ -130,14 +133,14 @@ const setupCustomerSegments = () => {
 const setupValidationRules = async () => {
   const rules = [
     {
-      name: 'Buy One - Get One',
+      name: 'BOGO Campaign',
       error: { message: 'Check campaign rules' },
       rules: {
         '1': {
           name: 'product.id',
           error: {
             message:
-              'Cart must contain Johan & Nyström - Fika and Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g',
+              'Cart must contain Johan & Nyström - Fika and Johan & Nyström - Sumatra',
           },
           rules: {},
           conditions: {
@@ -153,7 +156,7 @@ const setupValidationRules = async () => {
           name: 'product.id',
           error: {
             message:
-              'Cart must contain Johan & Nyström - Fika and Johan & Nyström - Sumatra Gayo Mountain Fairtrade 500g',
+              'Cart must contain Johan & Nyström - Fika and Johan & Nyström - Sumatra',
           },
           rules: {
             '1': {
@@ -326,7 +329,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: '$10 off for orders above $100',
+      name: 'Final Tiered Discount',
       rules: {
         '1': {
           name: 'order.amount',
@@ -338,7 +341,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: '$3 off for orders above $30',
+      name: 'First Tiered Discount',
       rules: {
         '1': {
           name: 'order.amount',
@@ -347,6 +350,100 @@ const setupValidationRules = async () => {
           },
         },
         logic: '1',
+      },
+    },
+    {
+      name: 'Final Tier - 100% off for Hard Beans - Brazil',
+      error: { message: 'Check cart discount rules' },
+      rules: {
+        '1': {
+          name: 'product.id',
+          error: {
+            message: 'Cart must contain Johan & Nyström - Caravan',
+          },
+          rules: {},
+          conditions: {
+            $is: [
+              {
+                id: products.find((p) => p.name === 'Johan & Nyström - Caravan')
+                  .voucherifyId,
+              },
+            ],
+          },
+        },
+        '2': {
+          name: 'product.id',
+          error: {
+            message: 'Cart must contain Hard Beans - Brazil',
+          },
+          rules: {
+            '1': {
+              name: 'product.discount_applicable',
+              rules: {},
+              conditions: { $is: [true] },
+            },
+            logic: '1',
+          },
+          conditions: {
+            $is: [
+              {
+                id: products.find((p) => p.name === 'Hard Beans - Brazil')
+                  .voucherifyId,
+              },
+            ],
+          },
+        },
+        '3': {
+          name: 'order.amount',
+          error: { message: 'Total cart value must be more than $100' },
+          rules: {},
+          conditions: { $more_than: [10000] },
+        },
+        logic: '((1) and (2)) and (3)',
+      },
+    },
+    {
+      name: 'First Tier - 50% off for Hard Beans - Brazil',
+      error: { message: 'Check cart discount rules' },
+      rules: {
+        '1': {
+          name: 'product.id',
+          error: {
+            message: 'Cart must contain Johan & Nyström - Caravan',
+          },
+          rules: {},
+          conditions: {
+            $is: [
+              {
+                id: products.find((p) => p.name === 'Johan & Nyström - Caravan')
+                  .voucherifyId,
+              },
+            ],
+          },
+        },
+        '2': {
+          name: 'product.id',
+          error: {
+            message: 'Cart must contain Hard Beans - Brazil',
+          },
+          rules: {
+            '1': {
+              name: 'product.discount_applicable',
+              rules: {},
+              conditions: { $is: [true] },
+            },
+            logic: '1',
+          },
+          conditions: {
+            $is: [
+              {
+                id: products.find((p) => p.name === 'Hard Beans - Brazil')
+                  .voucherifyId,
+              },
+            ],
+          },
+        },
+        logic: '(1) and (2)',
       },
     },
   ];
@@ -380,7 +477,8 @@ const setupValidationRules = async () => {
         return [];
       } else if (m.demostoreName === 'Cart Level Promotions') {
         return campaign.promotion.tiers.map((tier) => {
-          const needsId = rules.find((rule) => rule.name === tier.name).voucherifyId;
+          const needsId = rules.find((rule) => rule.name === tier.name)
+            .voucherifyId;
           return voucherify.validationRules
             .createAssignment(needsId, { promotion_tier: tier.voucherifyId })
             .then((assigment) => {
@@ -401,7 +499,8 @@ const setupValidationRules = async () => {
         '; '
       );
       return demostoreValRules.map((demostoreValRule) => {
-        const needsId = rules.find((rule) => rule.name === demostoreValRule).voucherifyId;
+        const needsId = rules.find((rule) => rule.name === demostoreValRule)
+          .voucherifyId;
         return voucherify.validationRules
           .createAssignment(needsId, { campaign: campaign.voucherifyId })
           .then((assigment) => {
@@ -428,7 +527,8 @@ const setupValidationRules = async () => {
         '; '
       );
       return demostoreValRules.map((demostoreValRule) => {
-        const needsId = rules.find((rule) => rule.name === demostoreValRule).voucherifyId;
+        const needsId = rules.find((rule) => rule.name === demostoreValRule)
+          .voucherifyId;
         return voucherify.validationRules
           .createAssignment(needsId, { voucher: voucher.code })
           .then((assigment) => {

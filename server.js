@@ -12,14 +12,14 @@ const RedisStore = require('connect-redis')(session);
 const enforce = require('express-sslify');
 
 const voucherifyData = require('./setup/voucherifyData');
-const storeCustomers = voucherifyData.customers
+const storeCustomers = voucherifyData.customers;
 const campaigns = voucherifyData.campaigns.filter(
   (campaign) => campaign.campaign_type !== 'PROMOTION'
 );
 
 const redisClient = redis.createClient(process.env.REDIS_URL);
 if (process.env.NODE_ENV !== 'development') {
-  app.use(enforce.HTTPS({ trustProtoHeader: true }))
+  app.use(enforce.HTTPS({ trustProtoHeader: true }));
 }
 app.use(
   session({
@@ -130,7 +130,7 @@ app.get('/init', async (request, response) => {
           );
         }
         return {
-          customerSelectedCustomer: customer.source_id,
+          selectedCustomer: customer.source_id,
           campaigns: coupons.map((coupon) => coupon.voucher),
         };
       })
@@ -151,14 +151,13 @@ app.get('/customers/:sessionId', async (request, response) => {
 
   try {
     const customers = await Promise.all(
-      storeCustomers.map(async(customer) => {
+      storeCustomers.map(async (customer) => {
         customerId = `${sessionId}${customer.metadata.demostore_id}`;
-        return voucherify.customers.get(customerId)
+        return voucherify.customers.get(customerId);
       })
     );
     response.json(customers);
-  }
-  catch (e) {
+  } catch (e) {
     console.error(`[Customers][Error] - ${e}`);
     response.status(500).end();
   }
@@ -208,9 +207,8 @@ app.get('/campaigns', async (request, response) => {
     const allCampaigns = await voucherify.campaigns.list();
     // Filter out campaigns not created by setup.js and filter out Cart Level Promotion
     const campaigns = allCampaigns.campaigns.filter(
-      (campaign) =>
-        campaign.metadata.hasOwnProperty('demostoreName') 
-        // && campaign.metadata.demostoreName !== 'Cart Level Promotions'
+      (campaign) => campaign.metadata.hasOwnProperty('demostoreName')
+      // && campaign.metadata.demostoreName !== 'Cart Level Promotions'
     );
     return response.json(campaigns);
   } catch (e) {
@@ -221,18 +219,30 @@ app.get('/campaigns', async (request, response) => {
 
 app.post('/qualifications', async (request, response) => {
   try {
-    const data = request.body;
+    const { customer, amount, items, metadata } = request.body;
+    
+    const qtPayload = {
+      customer,
+      order: {
+        amount,
+        items,
+      },
+      metadata,
+    };
+
     const examinedVouchers = await voucherify.vouchers.qualifications.examine(
-      data
+      qtPayload
     );
     const examinedCampaigns = await voucherify.campaigns.qualifications.examine(
-      data
+      qtPayload
     );
-    const examinedCampaingnsPromotion = (await voucherify.promotions.validate(data)).promotions
+    const examinedCampaignsPromotion = await voucherify.promotions.validate(
+      qtPayload
+    );
 
     let qualifications = examinedCampaigns.data
       .concat(examinedVouchers.data)
-      .concat(examinedCampaingnsPromotion)
+      .concat(examinedCampaignsPromotion.promotions)
       .filter((qlt) => qlt.hasOwnProperty('metadata'));
 
     qualifications = qualifications.filter((qlt) =>
@@ -249,7 +259,6 @@ app.post('/qualifications', async (request, response) => {
 app.get('/products', async (request, response) => {
   try {
     const allProducts = await voucherify.products.list();
-
     // Filter out default Voucherify products
     const products = allProducts.products.filter(
       (product) =>
@@ -257,7 +266,6 @@ app.get('/products', async (request, response) => {
         product.name !== 'Watchflix' &&
         product.name !== 'Apple iPhone 8'
     );
-
     return response.json(products);
   } catch (e) {
     console.error(`[Products][Error] - ${e}`);
@@ -268,7 +276,9 @@ app.get('/products', async (request, response) => {
 app.get('/promotions/:campaignId', async (request, response) => {
   const campaignId = request.params.campaignId;
   try {
-    const campaignPromotionTiers = await voucherify.promotions.tiers.list(campaignId);
+    const campaignPromotionTiers = await voucherify.promotions.tiers.list(
+      campaignId
+    );
     response.json(campaignPromotionTiers);
   } catch (e) {
     console.error(`[Promotions][Error] - ${e}`);
@@ -320,5 +330,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const listener = app.listen(process.env.PORT || 3000, () => {
-  console.log(`Your server is listening on port ${listener.address().port}`);
+  console.log(`[Server][Port] ${listener.address().port}`);
 });
