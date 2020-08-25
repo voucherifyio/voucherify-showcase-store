@@ -16,7 +16,7 @@ const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
       <div className="d-flex flex-row justify-content-between align-items-center">
         <p className="storeSidebar-heading my-1">Customer Qualifications</p>{' '}
         <Tooltip title={qualificationsToolTip}>
-          <InfoIcon className='mr-4' />
+          <InfoIcon className="mr-4" />
         </Tooltip>
       </div>
 
@@ -33,9 +33,13 @@ const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
               <>
                 {qualifications.map((qualification) => (
                   <Chip
-                    key={`${qualification.metadata.demostoreName}`}
+                    key={`${qualification.name}`}
                     style={{ maxWidth: '100%' }}
-                    label={qualification.metadata.demostoreName}
+                    label={
+                      qualification.name ||
+                      qualification.metadata.demostoreTierName ||
+                      qualification.metadata.demostoreName
+                    }
                   />
                 ))}
               </>

@@ -16,7 +16,6 @@ import SidebarQualifications from './SidebarQualifications';
 import { connect } from 'react-redux';
 import { getCustomer } from '../../redux/actions/userActions';
 import InfoIcon from '@material-ui/icons/Info';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import {
   getCartDiscount,
@@ -73,29 +72,33 @@ const SidebarContent = ({
   fetchingCustomers,
   fetchingCoupons,
   dispatch,
+  items,
 }) => {
   const [expanded, setExpanded] = React.useState('');
+  const [activeCartDiscount, setActiveCartDiscount] = React.useState('');
+  const [enableCartDiscounts, setEnableCartDiscounts] = React.useState(false);
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  const [state, setState] = React.useState({
-    enableCartDiscounts: false,
-  });
+  const handleSwitchChange = (panel) => (event, newActiveCartDiscount) => {
+    setActiveCartDiscount(newActiveCartDiscount ? panel : false);
+  };
 
-  const handleChangeCartDiscount = (event) => {
-    setState({ enableCartDiscounts: event.target.checked });
+  const handleDiscountSwitchChange = () => {
+    setEnableCartDiscounts(!enableCartDiscounts);
   };
 
   useEffect(() => {
-    if (state.enableCartDiscounts) {
+    if (enableCartDiscounts && activeCartDiscount) {
       dispatch(removePromotionFromCart());
-      dispatch(getCartDiscount());
-    } else if (!state.enableCartDiscounts) {
+      dispatch(getCartDiscount(activeCartDiscount));
+    } else if (!enableCartDiscounts) {
       dispatch(removePromotionFromCart());
+      setActiveCartDiscount(false)
     }
-  }, [dispatch, state.enableCartDiscounts]);
+  }, [dispatch, enableCartDiscounts,activeCartDiscount, items]);
 
   let customerDate = '';
   let downloadCustomerData = '';
@@ -119,7 +122,8 @@ const SidebarContent = ({
     (camp) => !_.isEmpty(camp.coupons)
   );
 
-  const cartDiscountCampaigns = discountCampaigns.filter((camp) => camp.campaign_type === 'PROMOTION'
+  const cartDiscountCampaigns = discountCampaigns.filter(
+    (camp) => camp.campaign_type === 'PROMOTION'
   );
 
   const qualificationsToolTip =
@@ -286,26 +290,20 @@ const SidebarContent = ({
                       </AccordionDetails>
                     </Accordion>
                   ))}
-                  <p className="storeSidebar-heading">
-                    Cart Level Campaigns{' '}
-                    <span className="campaigns-count">
-                      ({cartDiscountCampaigns.length})
-                    </span>
-                  </p>
-                  <div className="chips d-flex flex-row justify-content-between align-items-center">
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          color="default"
-                          checked={state.enableCartDiscounts}
-                          onChange={handleChangeCartDiscount}
-                          name="enableCartDiscounts"
-                        />
-                      }
-                      label="Enable Cart Discounts"
+                  <div className="d-flex flex-row justify-content-between align-items-center">
+                    <p className="storeSidebar-heading">
+                      Cart Discounts{' '}
+                      <span className="campaigns-count">
+                        ({cartDiscountCampaigns.length})
+                      </span>
+                    </p>
+                    <Switch
+                      color="default"
+                      checked={enableCartDiscounts}
+                      onChange={() => handleDiscountSwitchChange()}
                     />
                     <Tooltip title={qualificationsToolTip}>
-                      <InfoIcon />
+                      <InfoIcon className="mr-4" />
                     </Tooltip>
                   </div>
                   {cartDiscountCampaigns.map((campaign) => (
@@ -317,13 +315,22 @@ const SidebarContent = ({
                     >
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
+                        aria-label="Expand"
                         aria-controls={`${campaign.metadata.demostoreName}-content`}
                         id={`${campaign.metadata.demostoreName}-header`}
                         className="campaign-box"
                       >
-                        <p className="campaign-name">
-                          {campaign.metadata.demostoreName}
-                        </p>
+                        <div className="d-flex flex-row align-items-center">
+                          <Switch
+                            color="default"
+                            checked={activeCartDiscount === `${campaign.name}`}
+                            onClick={(event) => event.stopPropagation()}
+                            onChange={handleSwitchChange(`${campaign.name}`)}
+                          />
+                          <p className="campaign-name">
+                            {campaign.metadata.demostoreName}
+                          </p>
+                        </div>
                       </AccordionSummary>
                       <AccordionDetails className="bg-light">
                         <SidebarCampaignDetails campaign={campaign} />
@@ -347,6 +354,7 @@ const mapStateToProps = (state) => {
     campaigns: state.userReducer.campaigns,
     availableCustomers: state.userReducer.availableCustomers,
     fetchingCustomers: state.userReducer.fetchingCustomers,
+    items: state.cartReducer.items,
   };
 };
 

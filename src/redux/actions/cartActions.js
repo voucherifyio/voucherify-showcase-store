@@ -73,7 +73,7 @@ export const removeItemFromCart = (id) => (dispatch, getState) => {
     dispatch(removeItem(items));
   }
 };
-export const getCartDiscount = () => async (dispatch, getState) => {
+export const getCartDiscount = (activeCartDiscount) => async (dispatch, getState) => {
   const { selectedCustomer, paymentMethod } = getState().userReducer;
   const { totalAmount, items } = getState().cartReducer;
   const getCartDiscountPayload = setValidatePayload(
@@ -96,9 +96,7 @@ export const getCartDiscount = () => async (dispatch, getState) => {
         }
       });
     });
-    console.log(promotion)
-    const discount = promotion.promotions[0];
-
+    const discount = promotion.promotions.filter((promo) => promo.metadata.demostoreName === activeCartDiscount)[0];
     dispatch(getDiscountSuccess(discount));
     toast.success(discount.banner);
   } catch (error) {

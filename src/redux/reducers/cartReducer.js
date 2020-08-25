@@ -63,9 +63,15 @@ export const cartReducer = (
           }
 
           if (discount.discount.type === 'PERCENT') {
-            const discountedAmount =
+            let discountedAmount =
               applicableProductInCart.price *
               (discount.discount.percent_off / 100);
+            if (
+              discount.discount.amount_limit &&
+              discount.discount.amount_limit < discountedAmount
+            ) {
+              discountedAmount = discount.discount.amount_limit;
+            }
             totalAmountAfterDiscount = totalAmount - discountedAmount;
             if (totalAmountAfterDiscount < 0) {
               totalAmountAfterDiscount = 0;
@@ -93,8 +99,16 @@ export const cartReducer = (
             };
           }
         } else if (discount.discount.type === 'PERCENT') {
-          const discountedAmount =
+          let discountedAmount =
             totalAmount * (discount.discount.percent_off / 100);
+
+          if (
+            discount.discount.amount_limit &&
+            discount.discount.amount_limit < discountedAmount
+          ) {
+            discountedAmount = discount.discount.amount_limit;
+          }
+
           totalAmountAfterDiscount = totalAmount - discountedAmount;
 
           if (totalAmountAfterDiscount < 0) {
@@ -110,6 +124,7 @@ export const cartReducer = (
           };
         } else if (discount.discount.type === 'AMOUNT') {
           const discountedAmount = discount.discount.amount_off;
+
           totalAmountAfterDiscount = totalAmount - discountedAmount;
 
           if (totalAmountAfterDiscount < 0) {
@@ -172,8 +187,8 @@ export const cartReducer = (
     case REMOVE_ITEM: {
       return {
         ...initialState,
-        items: action.payload.items
-      }
+        items: action.payload.items,
+      };
     }
     case SET_CART: {
       const product = action.payload.product;

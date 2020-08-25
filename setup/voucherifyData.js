@@ -212,7 +212,7 @@ exports.campaigns = [
       tiers: [
         {
           name: 'Final Tier - $10 off',
-          hierarchy: 2,
+          hierarchy: 1,
           banner: 'Congratulations, you get $10 off!',
           action: {
             discount: {
@@ -224,12 +224,12 @@ exports.campaigns = [
             demostoreName: 'Tiered Discount',
             demostoreTierName: 'Final Tier - $10 off',
             demostoreSteps: 'Cart value: > $100',
-            demostoreOrder: 2,
+            demostoreOrder: 1,
           },
         },
         {
           name: 'First Tier - $3 off',
-          hierarchy: 1,
+          hierarchy: 2,
           banner:
             'Congratulations, you get $3 off! Add more items for bigger discount!',
           action: {
@@ -242,7 +242,7 @@ exports.campaigns = [
             demostoreName: 'Tiered Discount',
             demostoreTierName: 'First Tier - $3 off',
             demostoreSteps: 'Cart value: > $30',
-            demostoreOrder: 1,
+            demostoreOrder: 2,
           },
         },
       ],
@@ -261,7 +261,7 @@ exports.campaigns = [
         {
           name: 'Final Tier - 100% off for Hard Beans - Brazil',
           banner: 'Congratulations, you get Hard Beans - Brazil for free',
-          hierarchy: 2,
+          hierarchy: 1,
           action: {
             discount: { percent_off: 100, type: 'PERCENT' },
           },
@@ -271,7 +271,7 @@ exports.campaigns = [
             demostoreTierName: 'Final Tier - 100% off for Hard Beans - Brazil',
             demostoreSteps:
               'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil;Cart value: > $100',
-            demostoreOrder: 2,
+            demostoreOrder: 1,
           },
         },
         {
@@ -281,14 +281,14 @@ exports.campaigns = [
           action: {
             discount: { percent_off: 50, type: 'PERCENT' },
           },
-          hierarchy: 1,
+          hierarchy: 2,
           metadata: {
             demostoreName: 'BOGO Discount',
             demostoreBOGO: '1x Hard Beans - Brazil',
             demostoreTierName: 'First Tier - 50% off for Hard Beans - Brazil',
             demostoreSteps:
               'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil',
-            demostoreOrder: 1,
+            demostoreOrder: 2,
           },
         },
       ],
