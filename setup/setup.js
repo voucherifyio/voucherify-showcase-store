@@ -476,8 +476,10 @@ const setupValidationRules = async () => {
         return [];
       } else if (campaign.campaign_type === 'PROMOTION') {
         return campaign.promotion.tiers.map((tier) => {
-          const needsId = rules.find((rule) => rule.name === tier.name)
-            .voucherifyId;
+          console.log(tier)
+          const foundRule = rules.find((rule) => rule.name === tier.name)
+          console.log(foundRule)
+          const needsId = foundRule.voucherifyId;
           return voucherify.validationRules
             .createAssignment(needsId, { promotion_tier: tier.voucherifyId })
             .then((assigment) => {

@@ -192,13 +192,13 @@ exports.campaigns = [
     campaign_type: 'PROMOTION',
     metadata: {
       demostoreAssignedValRules:
-        'First Tier - Tiered Discount;Final Tier - Tiered Discount',
+        'Final Tier - $10 off;First Tier - $3 off',
       demostoreName: 'Tiered Discount',
     },
     promotion: {
       tiers: [
         {
-          name: '$10 off for orders above $100',
+          name: 'Final Tier - $10 off',
           banner: 'Congratulations, you get $10 off!',
           action: {
             discount: {
@@ -207,13 +207,13 @@ exports.campaigns = [
             },
           },
           metadata: {
-            demostoreName: 'First Tier - Tiered Discount',
-            demostoreTierName: 'First Tier - Tiered Discount',
+            demostoreName: 'Final Tier - $10 off',
+            demostoreTierName: 'Final Tier - $10 off',
             demostoreSteps: 'Cart value: > $100',
           },
         },
         {
-          name: '$3 off for orders above $30',
+          name: 'First Tier - $3 off',
           banner:
             'Congratulations, you get $3 off! Add more items for bigger discount!',
           action: {
@@ -223,8 +223,8 @@ exports.campaigns = [
             },
           },
           metadata: {
-            demostoreName: 'First Tier - Tiered Discount',
-            demostoreTierName: 'First Tier - Tiered Discount',
+            demostoreName: 'First Tier - $3 off',
+            demostoreTierName: 'First Tier - $3 off',
             demostoreSteps: 'Cart value: > $30',
           },
         },
