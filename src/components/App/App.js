@@ -35,8 +35,8 @@ const toastOptions = {
 };
 
 window.Voucherify.initialize(
-  process.env.REACT_APP_FRONTEND_APPLICATION_ID,
-  process.env.REACT_APP_FRONTEND_CLIENT_SECRET_KEY
+  process.env.REACT_APP_FRONTEND_APP_ID,
+  process.env.REACT_APP_FRONTEND_KEY
 );
 
 const App = ({ dispatch, items, discount, paymentMethod, selectedCustomer }) => {

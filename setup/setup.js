@@ -1,8 +1,8 @@
 require('dotenv').config();
 const _ = require('lodash');
 const voucherify = require('voucherify')({
-  applicationId: process.env.REACT_APP_BACKEND_APPLICATION_ID,
-  clientSecretKey: process.env.REACT_APP_BACKEND_CLIENT_SECRET_KEY,
+  applicationId: process.env.REACT_APP_BACKEND_APP_ID,
+  clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
 const { campaigns, vouchers, products, segments } = require('./voucherifyData');
 

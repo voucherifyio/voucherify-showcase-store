@@ -5,16 +5,16 @@
   "website": "https://www.voucherify.io",
   "repository": "https://github.com/voucherifyio/voucherify-react-demo-store",
   "env": {
-    "REACT_APP_BACKEND_APPLICATION_ID": {
+    "REACT_APP_BACKEND_APP_ID": {
       "description": "Server-side Application ID"
     },
-    "REACT_APP_BACKEND_CLIENT_SECRET_KEY": {
+    "REACT_APP_BACKEND_KEY": {
       "description": "Server-side Application Secret Key"
     },
-    "REACT_APP_FRONTEND_APPLICATION_ID": {
+    "REACT_APP_FRONTEND_APP_ID": {
       "description": "Client-side Application ID"
     },
-    "REACT_APP_FRONTEND_CLIENT_SECRET_KEY": {
+    "REACT_APP_FRONTEND_KEY": {
       "description": "Client-side Application Secret Key"
     },
     "SESSION_SECRET": {
