@@ -469,13 +469,12 @@ const setupValidationRules = async () => {
 
   const campaignsRuleAssigmentPromises = () => {
     const assignmentsPerCampaign = campaigns.map((campaign) => {
-      const m = campaign.metadata;
       if (
-        !m.demostoreAssignedValRules ||
-        m.demostoreName === 'Welcome wave 5% off'
+        !campaign.metadata.demostoreAssignedValRules ||
+        campaign.metadata.demostoreName === 'Welcome wave 5% off'
       ) {
         return [];
-      } else if (m.demostoreName === 'Cart Level Promotions') {
+      } else if (campaign.campaign_type === 'PROMOTION') {
         return campaign.promotion.tiers.map((tier) => {
           const needsId = rules.find((rule) => rule.name === tier.name)
             .voucherifyId;

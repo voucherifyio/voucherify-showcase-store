@@ -208,7 +208,6 @@ app.get('/campaigns', async (request, response) => {
     // Filter out campaigns not created by setup.js and filter out Cart Level Promotion
     const campaigns = allCampaigns.campaigns.filter(
       (campaign) => campaign.metadata.hasOwnProperty('demostoreName')
-      // && campaign.metadata.demostoreName !== 'Cart Level Promotions'
     );
     return response.json(campaigns);
   } catch (e) {

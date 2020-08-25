@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [2.3.0] - 17.08.2020
 
 ### Added
-   - MAJOR Cart Level Promotions added
+   - MAJOR Cart Discounts added
 
 ## [2.2.0] - 14.08.2020
 
