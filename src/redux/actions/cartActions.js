@@ -96,7 +96,7 @@ export const getCartDiscount = () => async (dispatch, getState) => {
         }
       });
     });
-
+    console.log(promotion)
     const discount = promotion.promotions[0];
 
     dispatch(getDiscountSuccess(discount));

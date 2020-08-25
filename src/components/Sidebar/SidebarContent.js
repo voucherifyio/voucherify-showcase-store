@@ -119,8 +119,7 @@ const SidebarContent = ({
     (camp) => !_.isEmpty(camp.coupons)
   );
 
-  const cartDiscountCampaigns = discountCampaigns.filter((camp) =>
-    _.isEmpty(camp.coupons)
+  const cartDiscountCampaigns = discountCampaigns.filter((camp) => camp.campaign_type === 'PROMOTION'
   );
 
   const qualificationsToolTip =

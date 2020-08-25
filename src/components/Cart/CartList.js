@@ -72,7 +72,7 @@ const CartList = ({
             {!_.isEmpty(discount) && discount.hasOwnProperty('banner') && (
               <>
                 <div className="d-inline my-auto col-4">
-                  Active Promotion{' '}
+                  Cart Discount{' '}
                   <span className="text-success">
                     {discount.metadata.demostoreName}
                   </span>

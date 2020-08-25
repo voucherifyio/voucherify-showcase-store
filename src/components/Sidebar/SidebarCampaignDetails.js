@@ -43,7 +43,7 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
       key={campaign.name}
     >
       <div key={campaign.name}>
-        {!_.isEmpty(campaign.voucher) ? (
+        {!_.isEmpty(campaign.voucher) && (
           <>
             <p className="campaign-description section-heading">
               Your discount voucher{' '}
@@ -57,12 +57,6 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
               )}
               {campaign.metadata.demostoreBOGO &&
                 ` for ${campaign.metadata.demostoreBOGO}`}
-            </p>
-          </>
-        ) : (
-          <>
-            <p className="campaign-description section-heading my-3">
-              Tiered Cart Level Promotion{' '}
             </p>
           </>
         )}
@@ -119,57 +113,55 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
         )}
         {campaign.tiers && (
           <>
-            {campaign.tiers.map((tier) => (
-              <>
-                <div key={tier.metadata.demostoreName}>
-                  <p className="campaign-description section-heading redemption-rules mt-2">
-                    {tier.metadata.demostoreTierName}
-                  </p>
-                  <div className="campaign-step d-flex flex-row align-items-center">
-                    <div className="campaign-step-icon">
-                      <ArrowRightIcon />
-                    </div>
-                    <div className="campaign-step-description">
-                      <p className="campaign-step-text">
-                        Tier name: {tier.metadata.demostoreName}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="campaign-step d-flex flex-row align-items-center">
-                    <div className="campaign-step-icon">
-                      <ArrowRightIcon />
-                    </div>
-                    <div className="campaign-step-description">
-                      <p className="campaign-step-text">
-                        Discount:{' '}
-                        {tier.action.discount.type === 'PERCENT' && (
-                          <>{tier.action.discount.percent_off}%</>
-                        )}
-                        {tier.action.discount.type === 'AMOUNT' && (
-                          <>
-                            $
-                            {(tier.action.discount.amount_off / 100).toFixed(2)}{' '}
-                          </>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                  {tier.metadata.demostoreSteps.split(';').map((step) => (
-                    <div
-                      key={step}
-                      className="campaign-step d-flex flex-row align-items-center"
-                    >
+            {_.orderBy(campaign.tiers, ['metadata']['demostoreOrder'], [
+              'asc',
+            ]).map((tier, index) => {
+              return (
+                <>
+                  <div key={tier.metadata.demostoreTierName}>
+                    <p className="campaign-description section-heading redemption-rules mt-2">
+                      Tier {index + 1}
+                    </p>
+                    <div className="campaign-step d-flex flex-row align-items-center">
                       <div className="campaign-step-icon">
                         <ArrowRightIcon />
                       </div>
                       <div className="campaign-step-description">
-                        <p className="campaign-step-text">{step}</p>
+                        <p className="campaign-step-text">
+                          Discount:{' '}
+                          {tier.action.discount.type === 'PERCENT' && (
+                            <>{tier.action.discount.percent_off}%</>
+                          )}
+                          {tier.action.discount.type === 'AMOUNT' && (
+                            <>
+                              $
+                              {(tier.action.discount.amount_off / 100).toFixed(
+                                2
+                              )}{' '}
+                            </>
+                          )}
+                          {tier.metadata.demostoreBOGO &&
+                            ` for ${tier.metadata.demostoreBOGO}`}
+                        </p>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </>
-            ))}
+                    {tier.metadata.demostoreSteps.split(';').map((step) => (
+                      <div
+                        key={step}
+                        className="campaign-step d-flex flex-row align-items-center"
+                      >
+                        <div className="campaign-step-icon">
+                          <ArrowRightIcon />
+                        </div>
+                        <div className="campaign-step-description">
+                          <p className="campaign-step-text">{step}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              );
+            })}
           </>
         )}
       </div>
