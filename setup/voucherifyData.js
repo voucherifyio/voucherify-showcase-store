@@ -85,6 +85,20 @@ exports.vouchers = [
     },
   },
   {
+    code: 'UPTO100',
+    object: 'voucher',
+    type: 'DISCOUNT_VOUCHER',
+    category: 'Public',
+    discount: { type: 'PERCENT', percent_off: 50, amount_limit: 10000 },
+    metadata: {
+      demostoreName: 'UPTO100',
+      demostoreAssignedValRules: '',
+      demostoreDescription: 'Global coupon',
+      demostoreSteps: '',
+      demostoreOrder: 4,
+    },
+  },
+  {
     code: '15%VISA',
     object: 'voucher',
     type: 'DISCOUNT_VOUCHER',
@@ -191,8 +205,7 @@ exports.campaigns = [
     name: 'Tiered Discount',
     campaign_type: 'PROMOTION',
     metadata: {
-      demostoreAssignedValRules:
-        'Final Tier - $10 off;First Tier - $3 off',
+      demostoreAssignedValRules: 'Final Tier - $10 off;First Tier - $3 off',
       demostoreName: 'Tiered Discount',
     },
     promotion: {
@@ -264,7 +277,8 @@ exports.campaigns = [
           metadata: {
             demostoreName: 'First Tier - 50% off Hard Beans - Brazil',
             demostoreTierName: 'First Tier - 50% off Hard Beans - Brazil',
-            demostoreSteps: 'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil',
+            demostoreSteps:
+              'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil',
           },
         },
       ],
