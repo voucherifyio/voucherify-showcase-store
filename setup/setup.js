@@ -329,10 +329,14 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'Final Tiered Discount',
+      name: 'Final Tier - $10 off',
+      error: { message: 'Check cart discount rules' },
       rules: {
         '1': {
           name: 'order.amount',
+          error: {
+            message: 'Total cart value must be more than $100',
+          },
           conditions: {
             $more_than: [10000],
           },
@@ -341,10 +345,14 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'First Tiered Discount',
+      name: 'First Tier - $3 off',
+      error: { message: 'Check cart discount rules' },
       rules: {
         '1': {
           name: 'order.amount',
+          error: {
+            message: 'Total cart value must be more than $30',
+          },
           conditions: {
             $more_than: [3000],
           },
@@ -456,7 +464,7 @@ const setupValidationRules = async () => {
           (response) => response.name === ruleDefinition.name
         );
         needsId.voucherifyId = rule.id;
-        console.log(`[SUCCESS] Validation rule created ${needsId.name} - ${needsId.voucherifyId}`);
+        console.log(`[SUCCESS] Validation rule created ${needsId.name}`);
         return rule;
       })
       .catch((error) =>

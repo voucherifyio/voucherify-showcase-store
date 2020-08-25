@@ -249,7 +249,7 @@ exports.campaigns = [
     campaign_type: 'PROMOTION',
     metadata: {
       demostoreAssignedValRules:
-        'Final Tier - 100% off for Hard Beans - Brazil;First Tier - 50% off Hard Beans - Brazil',
+        'Final Tier - 100% off for Hard Beans - Brazil;First Tier - 50% off for Hard Beans - Brazil',
       demostoreName: 'BOGO Discount',
     },
     promotion: {
@@ -268,15 +268,15 @@ exports.campaigns = [
           },
         },
         {
-          name: 'First Tier - 50% off Hard Beans - Brazil',
+          name: 'First Tier - 50% off for Hard Beans - Brazil',
           banner:
             'Congratulations, you get Hard Beans - Brazil for 50%. Add more items to get it for free!',
           action: {
             discount: { percent_off: 50, type: 'PERCENT' },
           },
           metadata: {
-            demostoreName: 'First Tier - 50% off Hard Beans - Brazil',
-            demostoreTierName: 'First Tier - 50% off Hard Beans - Brazil',
+            demostoreName: 'First Tier - 50% off for Hard Beans - Brazil',
+            demostoreTierName: 'First Tier - 50% off for Hard Beans - Brazil',
             demostoreSteps:
               'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil',
           },
