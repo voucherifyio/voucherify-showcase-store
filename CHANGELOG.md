@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
    - MAJOR Redux added for better discount logic
+   - MINOR Added new voucher with discount amount limit
+   - MINOR Added new cart discount (Buy one - get one)
+   - MINOR improvements
 
 ## [2.3.0] - 17.08.2020
 
