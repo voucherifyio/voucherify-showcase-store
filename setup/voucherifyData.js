@@ -60,7 +60,7 @@ exports.vouchers = [
     code: 'BLCKFRDY',
     object: 'voucher',
     type: 'DISCOUNT_VOUCHER',
-    category: 'STANDALONE',
+    category: 'Public',
     discount: { type: 'AMOUNT', amount_off: 1000 },
     metadata: {
       demostoreName: 'Black Friday Coupon',
@@ -74,7 +74,7 @@ exports.vouchers = [
     code: '50%OFF',
     object: 'voucher',
     type: 'DISCOUNT_VOUCHER',
-    category: 'STANDALONE',
+    category: 'Public',
     discount: { type: 'PERCENT', percent_off: 50 },
     metadata: {
       demostoreName: '50%OFF',
@@ -88,7 +88,7 @@ exports.vouchers = [
     code: '15%VISA',
     object: 'voucher',
     type: 'DISCOUNT_VOUCHER',
-    category: 'STANDALONE',
+    category: 'Public',
     discount: { type: 'PERCENT', percent_off: 15 },
     metadata: {
       demostoreName: 'Visa Voucher',
@@ -114,7 +114,7 @@ exports.campaigns = [
     metadata: {
       demostoreName: 'Welcome wave 5% off',
       demostoreAssignedValRules:
-        'Welcome wave 5% off Lewis Marshall; Welcome wave 5% off Alice Morgan; Welcome wave 5% off John Dorian',
+        'Welcome wave 5% off Lewis Marshall;Welcome wave 5% off Alice Morgan;Welcome wave 5% off John Dorian',
       demostoreDescription:
         'Only current customer can validate the coupon. Redeemable only once',
       demostoreSteps: 'Customer: Current customer',
@@ -192,7 +192,7 @@ exports.campaigns = [
     campaign_type: 'PROMOTION',
     metadata: {
       demostoreAssignedValRules:
-        'First Tier - Tiered Discount, Final Tier - Tiered Discount',
+        'First Tier - Tiered Discount;Final Tier - Tiered Discount',
       demostoreName: 'Tiered Discount',
     },
     promotion: {
@@ -236,7 +236,7 @@ exports.campaigns = [
     campaign_type: 'PROMOTION',
     metadata: {
       demostoreAssignedValRules:
-        'Final Tier - 100% off for Hard Beans - Brazil, First Tier - 50% off Hard Beans - Brazil',
+        'Final Tier - 100% off for Hard Beans - Brazil;First Tier - 50% off Hard Beans - Brazil',
       demostoreName: 'BOGO Discount',
     },
     promotion: {

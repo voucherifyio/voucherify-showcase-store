@@ -456,7 +456,7 @@ const setupValidationRules = async () => {
           (response) => response.name === ruleDefinition.name
         );
         needsId.voucherifyId = rule.id;
-        console.log(`[SUCCESS] Validation rule created ${needsId.name}`);
+        console.log(`[SUCCESS] Validation rule created ${needsId.name} - ${needsId.voucherifyId}`);
         return rule;
       })
       .catch((error) =>

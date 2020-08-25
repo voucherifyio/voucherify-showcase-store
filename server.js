@@ -189,10 +189,10 @@ app.get('/redemptions/:source_id', async (request, response) => {
 
 app.get('/vouchers', async (request, response) => {
   try {
-    const allStandaloneVouchers = await voucherify.vouchers.list({
-      category: 'STANDALONE',
+    const allPublicVouchers = await voucherify.vouchers.list({
+      category: 'Public',
     });
-    const vouchers = allStandaloneVouchers.vouchers.filter((voucher) =>
+    const vouchers = allPublicVouchers.vouchers.filter((voucher) =>
       voucher.metadata.hasOwnProperty('demostoreName')
     );
     return response.json(vouchers);
