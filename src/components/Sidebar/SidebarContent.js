@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import _ from 'lodash';
+import React, { useEffect, useState } from 'react';
+import orderBy from 'lodash.orderby';
 import SidebarCampaignDetails from './SidebarCampaignDetails';
 import SidebarVoucherDetails from './SidebarVoucherDetails';
 import Spinner from 'react-bootstrap/Spinner';
@@ -17,10 +17,14 @@ import { connect } from 'react-redux';
 import { getCustomer } from '../../redux/actions/userActions';
 import InfoIcon from '@material-ui/icons/Info';
 import Switch from '@material-ui/core/Switch';
+import {setEnableCartDiscounts} from '../../redux/actions/userActions'
 import {
   getCartDiscount,
   removePromotionFromCart,
 } from '../../redux/actions/cartActions';
+import { isEmpty } from '../../redux/utils';
+
+import PropTypes from 'prop-types';
 
 const Accordion = withStyles({
   root: {
@@ -73,10 +77,11 @@ const SidebarContent = ({
   fetchingCoupons,
   dispatch,
   items,
+  discount,
 }) => {
-  const [expanded, setExpanded] = React.useState('');
-  const [activeCartDiscount, setActiveCartDiscount] = React.useState('');
-  const [enableCartDiscounts, setEnableCartDiscounts] = React.useState(false);
+  const [expanded, setExpanded] = useState('');
+  const [activeCartDiscount, setActiveCartDiscount] = useState('');
+  const [enableCartDiscounts, setEnableCartDiscountsState] = useState(false);
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -87,18 +92,22 @@ const SidebarContent = ({
   };
 
   const handleDiscountSwitchChange = () => {
-    setEnableCartDiscounts(!enableCartDiscounts);
+    setEnableCartDiscountsState(!enableCartDiscounts)
   };
 
   useEffect(() => {
+    dispatch(setEnableCartDiscounts(enableCartDiscounts));
+  }, [dispatch, enableCartDiscounts])
+
+  useEffect(() => {
     if (enableCartDiscounts && activeCartDiscount) {
-      dispatch(removePromotionFromCart());
       dispatch(getCartDiscount(activeCartDiscount));
     } else if (!enableCartDiscounts) {
+      setActiveCartDiscount(false);
+    } else if (!activeCartDiscount) {
       dispatch(removePromotionFromCart());
-      setActiveCartDiscount(false)
     }
-  }, [dispatch, enableCartDiscounts,activeCartDiscount, items]);
+  }, [dispatch, enableCartDiscounts, activeCartDiscount, items]);
 
   let customerDate = '';
   let downloadCustomerData = '';
@@ -108,31 +117,29 @@ const SidebarContent = ({
       'data: text/json;charset=utf-8,' +
       encodeURIComponent(JSON.stringify(selectedCustomer));
   }
-  const discountVouchers = _.orderBy(vouchers, ['metadata']['demostoreOrder'], [
+  const discountVouchers = orderBy(vouchers, ['metadata']['demostoreOrder'], [
     'asc',
   ]);
 
-  const discountCampaigns = _.orderBy(
-    campaigns,
-    ['metadata']['demostoreOrder'],
-    ['asc']
-  );
+  const discountCampaigns = orderBy(campaigns, ['metadata']['demostoreOrder'], [
+    'asc',
+  ]);
 
   const couponCampaigns = discountCampaigns.filter(
-    (camp) => !_.isEmpty(camp.coupons)
+    (camp) => camp.campaign_type !== 'PROMOTION'
   );
 
   const cartDiscountCampaigns = discountCampaigns.filter(
     (camp) => camp.campaign_type === 'PROMOTION'
   );
 
-  const qualificationsToolTip =
+  const cartDiscountToolTip =
     'The qualification endpoint returns all promotions available to the given customer profile and orders that meet predefined validation rules such as total order value or the minimum number of items in the cart.';
 
   return (
     <div className="list-group list-group-flush">
       <>
-        {_.isEmpty(availableCustomers) || fetchingCustomers ? (
+        {isEmpty(availableCustomers) || fetchingCustomers ? (
           <div className="d-flex my-3 justify-content-center">
             <Spinner animation="border" role="status">
               <span className="sr-only">Loading...</span>
@@ -166,7 +173,7 @@ const SidebarContent = ({
                 </Tooltip>
               </a>
             </div>
-            {!_.isEmpty(selectedCustomer) && (
+            {!isEmpty(selectedCustomer) && (
               <>
                 <div className="storeSidebar-content">
                   <p>
@@ -199,9 +206,9 @@ const SidebarContent = ({
             )}
           </>
         )}
-        {!_.isEmpty(campaigns) &&
-          !_.isEmpty(vouchers) &&
-          !_.isEmpty(selectedCustomer) && (
+        {!isEmpty(campaigns) &&
+          !isEmpty(vouchers) &&
+          !isEmpty(selectedCustomer) && (
             <>
               <SidebarQualifications key="qualifications" />
               <p className="storeSidebar-heading">
@@ -249,7 +256,9 @@ const SidebarContent = ({
               )}
               <p className="storeSidebar-heading">
                 Personal Codes{' '}
-                <span className="campaigns-count">({campaigns.length})</span>
+                <span className="campaigns-count">
+                  ({couponCampaigns.length})
+                </span>
               </p>
               {fetchingCoupons ? (
                 <div className="d-flex justify-content-center">
@@ -299,10 +308,11 @@ const SidebarContent = ({
                     </p>
                     <Switch
                       color="default"
+                      disabled={activeCartDiscount}
                       checked={enableCartDiscounts}
                       onChange={() => handleDiscountSwitchChange()}
                     />
-                    <Tooltip title={qualificationsToolTip}>
+                    <Tooltip title={cartDiscountToolTip}>
                       <InfoIcon className="mr-4" />
                     </Tooltip>
                   </div>
@@ -323,6 +333,7 @@ const SidebarContent = ({
                         <div className="d-flex flex-row align-items-center">
                           <Switch
                             color="default"
+                            disabled={!enableCartDiscounts}
                             checked={activeCartDiscount === `${campaign.name}`}
                             onClick={(event) => event.stopPropagation()}
                             onChange={handleSwitchChange(`${campaign.name}`)}
@@ -355,7 +366,15 @@ const mapStateToProps = (state) => {
     availableCustomers: state.userReducer.availableCustomers,
     fetchingCustomers: state.userReducer.fetchingCustomers,
     items: state.cartReducer.items,
+    discount: state.cartReducer.discount,
   };
 };
 
 export default connect(mapStateToProps)(SidebarContent);
+
+SidebarContent.propTypes = {
+  selectedCustomer: PropTypes.object,
+  fetchingCoupons: PropTypes.bool,
+  vouchers: PropTypes.object,
+  discount: PropTypes.object,
+};

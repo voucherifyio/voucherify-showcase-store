@@ -6,7 +6,8 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import {isEmpty} from '../../redux/utils'
+import orderBy from 'lodash.orderby'
 
 const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
   const [open, setOpen] = useState(false);
@@ -43,7 +44,7 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
       key={campaign.name}
     >
       <div key={campaign.name}>
-        {!_.isEmpty(campaign.voucher) && (
+        {!isEmpty(campaign.voucher) && (
           <>
             <p className="campaign-description section-heading">
               Your discount voucher{' '}
@@ -113,7 +114,7 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
         )}
         {campaign.tiers && (
           <>
-            {_.orderBy(campaign.tiers, ['metadata']['demostoreOrder'], [
+            {orderBy(campaign.tiers, ['metadata']['demostoreOrder'], [
               'asc',
             ]).map((tier, index) => {
               return (

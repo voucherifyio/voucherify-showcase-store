@@ -211,8 +211,16 @@ button:focus {
 #storeSidebar-wrapper .storeSidebar-heading {
   margin-top: 1rem;
   padding: 0.4rem 1rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 700;
+}
+
+.capitalize::first-letter {
+  text-transform: capitalize;
+}
+
+.capitalize:first-letter {
+  text-transform: capitalize;
 }
 
 #storeSidebar-wrapper .campaigns-count {

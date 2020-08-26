@@ -7,6 +7,17 @@ export const setCartItemsPayload = (item) => {
   };
 };
 
+export const isEmpty = (value) => {
+  return (
+    value == null ||
+    (typeof value === 'object' && Object.keys(value).length === 0) ||
+    (typeof value === 'string' && value.trim().length === 0) ||
+    (Array.isArray(value) && value.length === 0)
+  );
+};
+
+export default isEmpty;
+
 export const setValidatePayload = (
   selectedCustomer,
   total,
@@ -48,12 +59,15 @@ export const setRedemptionPayload = (
 };
 
 export const sendPayload = async (payload, payloadType) => {
-  const sendPayload = await fetch(`${process.env.REACT_APP_API_URL || ''}/${payloadType}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify(payload),
-  });
+  const sendPayload = await fetch(
+    `${process.env.REACT_APP_API_URL || ''}/${payloadType}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(payload),
+    }
+  );
   return sendPayload.json();
 };
 

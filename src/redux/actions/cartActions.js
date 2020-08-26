@@ -1,6 +1,13 @@
 import { toast } from 'react-toastify';
-import { setRedemptionPayload, setValidatePayload, getOrderId, sendPayload } from '../utils';
-import _, { capitalize } from 'lodash';
+import {
+  setRedemptionPayload,
+  setValidatePayload,
+  getOrderId,
+  sendPayload,
+} from '../utils';
+import cloneDeep from 'lodash.clonedeep';
+import { isEmpty } from '../utils';
+
 import {
   GET_DISCOUNT_REQUEST,
   GET_DISCOUNT_SUCCESS,
@@ -11,6 +18,7 @@ import {
   INCREMENT_DECREMENT,
   SET_CART,
   GET_TOTALS,
+  SET_PAYMENT_METHOD,
 } from '../constants';
 
 export const getDiscountRequest = () => {
@@ -37,26 +45,33 @@ export const clearCart = () => {
   return { type: CLEAR_CART };
 };
 
+export const setPaymentMethod = (paymentMethod) => {
+  return { type: SET_PAYMENT_METHOD, payload: { paymentMethod } };
+};
+
 export const incrementOrDecrementItem = (id, type) => {
   return { type: INCREMENT_DECREMENT, payload: { id, type } };
 };
 
 export const setCart = (product, qt, type) => {
-  return { type: SET_CART, payload: { product, qt, type} };
+  return { type: SET_CART, payload: { product, qt, type } };
 };
 
 export const getTotals = () => {
   return { type: GET_TOTALS };
 };
 
-export const addItemToCart = (id, qt, type = 'change_count') => (dispatch, getState) => {
+export const addItemToCart = (id, qt, type = 'change_count') => (
+  dispatch,
+  getState
+) => {
   const getItem = (id) => {
     const tempProducts = getState().shopReducer.products;
-    const product = _.cloneDeep(tempProducts.find((item) => item.id === id));
+    const product = cloneDeep(tempProducts.find((item) => item.id === id));
     return product;
   };
   const product = getItem(id);
-  dispatch(setCart(product, qt, type))
+  dispatch(setCart(product, qt, type));
 };
 
 export const removePromotionFromCart = () => (dispatch) => {
@@ -64,18 +79,19 @@ export const removePromotionFromCart = () => (dispatch) => {
 };
 
 export const removeItemFromCart = (id) => (dispatch, getState) => {
-  const items = getState().cartReducer.items.filter(
-    (item) => item.id !== id
-  );
+  const items = getState().cartReducer.items.filter((item) => item.id !== id);
   if (items.length === 0) {
     dispatch(clearCart());
   } else {
     dispatch(removeItem(items));
   }
 };
-export const getCartDiscount = (activeCartDiscount) => async (dispatch, getState) => {
-  const { selectedCustomer, paymentMethod } = getState().userReducer;
-  const { totalAmount, items } = getState().cartReducer;
+export const getCartDiscount = (activeCartDiscount) => async (
+  dispatch,
+  getState
+) => {
+  const { selectedCustomer } = getState().userReducer;
+  const { totalAmount, items, paymentMethod } = getState().cartReducer;
   const getCartDiscountPayload = setValidatePayload(
     selectedCustomer,
     totalAmount,
@@ -96,9 +112,15 @@ export const getCartDiscount = (activeCartDiscount) => async (dispatch, getState
         }
       });
     });
-    const discount = promotion.promotions.filter((promo) => promo.metadata.demostoreName === activeCartDiscount)[0];
-    dispatch(getDiscountSuccess(discount));
-    toast.success(discount.banner);
+    const discount = promotion.promotions.filter(
+      (promo) => promo.metadata.demostoreName === activeCartDiscount
+    )[0];
+    if (discount) {
+      dispatch(getDiscountSuccess(discount));
+      toast.success(discount.banner);
+    } else {
+      toast.error('You are not eligible for the Cart Discount');
+    }
   } catch (error) {
     console.log('[getCartDiscount]', error);
     dispatch(getDiscountError());
@@ -106,8 +128,13 @@ export const getCartDiscount = (activeCartDiscount) => async (dispatch, getState
 };
 
 export const getDiscount = (voucherCode) => async (dispatch, getState) => {
-  const { selectedCustomer, paymentMethod } = getState().userReducer;
-  const { totalAmount, items } = getState().cartReducer;
+  const { selectedCustomer } = getState().userReducer;
+  const {
+    totalAmount,
+    items,
+    paymentMethod,
+    discount,
+  } = getState().cartReducer;
   const getDiscountPayload = setValidatePayload(
     selectedCustomer,
     totalAmount,
@@ -115,25 +142,30 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
     paymentMethod
   );
   getDiscountPayload.code = voucherCode;
+  const currentDiscount = discount;
   try {
     dispatch(getDiscountRequest());
-    const discount = await new Promise((resolve, reject) => {
+    let discount = await new Promise((resolve, reject) => {
       window.Voucherify.setIdentity(selectedCustomer.source_id);
       window.Voucherify.validate(getDiscountPayload, (response) => {
         if (response.valid) {
           resolve(response);
         } else {
           if (response.error) {
-            toast.error(capitalize(response.error.message));
+            toast.error(response.error.message);
           } else {
-            toast.error(capitalize(response.reason));
+            toast.error(response.reason);
           }
           reject(new Error(response.reason));
         }
       });
     });
-    dispatch(getDiscountSuccess(discount));
-    dispatch(getTotals())
+    if (isEmpty(currentDiscount)) {
+      dispatch(getDiscountSuccess(discount));
+    } else {
+      discount = currentDiscount
+      dispatch(getDiscountSuccess(discount));
+    }
   } catch (error) {
     console.log('[getDiscount]', error);
     dispatch(getDiscountError());
@@ -141,17 +173,22 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 };
 
 export const checkoutCart = () => async (dispatch, getState) => {
-  const { selectedCustomer, paymentMethod } = getState().userReducer;
-  const { totalAmount, items, discount } = getState().cartReducer;
+  const { selectedCustomer } = getState().userReducer;
+  const {
+    totalAmount,
+    paymentMethod,
+    items,
+    discount,
+  } = getState().cartReducer;
   const checkoutPayload = setRedemptionPayload(
     selectedCustomer,
     totalAmount,
     items,
     paymentMethod
   );
-  
+
   // If voucher or promotion is not applied
-  if (_.isEmpty(discount)) {
+  if (isEmpty(discount)) {
     checkoutPayload.source_id = getOrderId();
     checkoutPayload.status = 'FULFILLED';
 
@@ -171,7 +208,7 @@ export const checkoutCart = () => async (dispatch, getState) => {
     await sendPayload(checkoutPayload, 'redeem')
       .then((response) => {
         dispatch(clearCart());
-        dispatch(setOrderId(response.order.id))
+        dispatch(setOrderId(response.order.id));
       })
       .catch((error) => {
         toast.error('There was a problem with your purchase');
@@ -184,7 +221,7 @@ export const checkoutCart = () => async (dispatch, getState) => {
     await sendPayload(checkoutPayload, 'redeem')
       .then((response) => {
         dispatch(clearCart());
-        dispatch(setOrderId(response.order.id))
+        dispatch(setOrderId(response.order.id));
       })
       .catch((error) => {
         toast.error('There was a problem with your purchase');

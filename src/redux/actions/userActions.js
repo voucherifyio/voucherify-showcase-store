@@ -20,7 +20,7 @@ import {
   GET_CUSTOMER_REQUEST,
   GET_CUSTOMER_SUCCESS,
   GET_CUSTOMER_ERROR,
-  SET_PAYMENT_METHOD,
+  SET_ENABLE_CART_DISCOUNTS
 } from '../constants';
 
 export const initRequest = () => {
@@ -52,6 +52,9 @@ export const getQualificationsSuccess = (qualifications) => {
   return { type: GET_QUALIFICATIONS_SUCCESS, payload: { qualifications } };
 };
 
+export const setEnableCartDiscounts = (enableCartDiscounts) => {
+  return {type: SET_ENABLE_CART_DISCOUNTS, payload: {enableCartDiscounts}}
+}
 export const getQualificationsError = () => {
   return { type: GET_QUALIFICATIONS_ERROR };
 };
@@ -90,10 +93,6 @@ export const getCustomerSuccess = (selectedCustomer) => {
 
 export const getCustomerError = () => {
   return { type: GET_CUSTOMER_ERROR };
-};
-
-export const setPaymentMethod = (paymentMethod) => {
-  return { type: SET_PAYMENT_METHOD, payload: { paymentMethod } };
 };
 
 export const init = () => async (dispatch) => {

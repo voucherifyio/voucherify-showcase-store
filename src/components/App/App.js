@@ -12,20 +12,22 @@ import AppMobile from './AppMobile';
 import { ToastContainer } from 'react-toastify';
 import Sidebar from '../Sidebar/Sidebar';
 import { getProducts } from '../../redux/actions/shopActions';
-import { getTotals } from '../../redux/actions/cartActions';
+import { getTotals, getDiscount } from '../../redux/actions/cartActions';
 import { init, getQualifications } from '../../redux/actions/userActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import _ from 'lodash'
 import 'voucherify.js';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { isEmpty } from '../../redux/utils';
+import { has } from 'lodash';
 
 const toastOptions = {
   position: 'bottom-center',
   draggable: false,
-  toastClassName: 'text-xl text-white bg-dark text-center p-3 shadow-none',
+  toastClassName:
+    'text-xl text-white bg-dark text-center p-3 shadow-none capitalize',
   progressClassName: 'bg-white opacity-25',
   closeButton: false,
   autoClose: 2000,
@@ -39,7 +41,13 @@ window.Voucherify.initialize(
   process.env.REACT_APP_FRONTEND_KEY
 );
 
-const App = ({ dispatch, items, discount, paymentMethod, selectedCustomer }) => {
+const App = ({
+  dispatch,
+  items,
+  discount,
+  paymentMethod,
+  selectedCustomer,
+}) => {
   const [storeSidebar, setSidebar] = useState(true);
   const toggleSidebar = () => {
     setSidebar(!storeSidebar);
@@ -55,11 +63,16 @@ const App = ({ dispatch, items, discount, paymentMethod, selectedCustomer }) => 
   }, [dispatch, discount, items]);
 
   useEffect(() => {
-    if (!_.isEmpty(selectedCustomer)) {
+    if (!isEmpty(discount) && has(discount, 'code')) {
+      dispatch(getDiscount(discount.code));
+    }
+  }, [dispatch, items, paymentMethod, discount]);
+
+  useEffect(() => {
+    if (!isEmpty(selectedCustomer)) {
       dispatch(getQualifications());
     }
   }, [dispatch, selectedCustomer, paymentMethod, items]);
-
 
   return (
     <>

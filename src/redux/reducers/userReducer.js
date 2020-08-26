@@ -18,6 +18,7 @@ import {
   GET_QUALIFICATIONS_SUCCESS,
   GET_QUALIFICATIONS_ERROR,
   SET_PAYMENT_METHOD,
+  SET_ENABLE_CART_DISCOUNTS,
 } from '../constants';
 
 export const userReducer = (
@@ -37,6 +38,7 @@ export const userReducer = (
     fetchingQualifications: false,
     fetchingSessionId: false,
     fetchingCustomers: true,
+    enableCartDiscounts: false,
   },
   action
 ) => {
@@ -46,6 +48,12 @@ export const userReducer = (
         ...initialState,
         fetchingSessionId: true,
       };
+    }
+    case SET_ENABLE_CART_DISCOUNTS: {
+      return {
+        ...initialState,
+        enableCartDiscounts: action.payload.enableCartDiscounts
+      }
     }
     case INIT_SUCCESS: {
       return {

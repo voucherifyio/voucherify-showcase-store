@@ -1,6 +1,5 @@
 import React from 'react';
 import CartItem from './CartItem';
-import _ from 'lodash';
 import CartForm from './CartForm';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
@@ -12,12 +11,14 @@ import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
 import { connect } from 'react-redux';
-import { setPaymentMethod, getCustomer } from '../../redux/actions/userActions';
+import { getCustomer } from '../../redux/actions/userActions';
 import {
   clearCart,
   checkoutCart,
   removePromotionFromCart,
+  setPaymentMethod,
 } from '../../redux/actions/cartActions';
+import { isEmpty } from '../../redux/utils';
 
 const CartList = ({
   items,
@@ -27,6 +28,7 @@ const CartList = ({
   dispatch,
   discount,
   discountedAmount,
+  enableCartDiscounts,
 }) => {
   return (
     <div className="col-md-12 col-lg-9 order-2">
@@ -59,9 +61,9 @@ const CartList = ({
             ></Chip>
           </div>
         </li>
-        {!_.isEmpty(discount) ? (
+        {!isEmpty(discount) && (
           <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
-            {!_.isEmpty(discount) && discount.hasOwnProperty('code') && (
+            {!isEmpty(discount) && discount.hasOwnProperty('code') && (
               <>
                 <div className="d-inline my-auto col-4">
                   Discount code{' '}
@@ -69,7 +71,7 @@ const CartList = ({
                 </div>
               </>
             )}
-            {!_.isEmpty(discount) && discount.hasOwnProperty('banner') && (
+            {!isEmpty(discount) && discount.hasOwnProperty('banner') && (
               <>
                 <div className="d-inline my-auto col-4">
                   Cart Discount{' '}
@@ -84,7 +86,7 @@ const CartList = ({
             <div className="d-none d-lg-block my-auto mx-auto col-2"></div>
             <div
               className="d-flex flex-column justify-content-center
-              my-auto mx-auto align-items-center col-2"
+      my-auto mx-auto align-items-center col-2"
             >
               <small className="text-success">Discount</small>
               <span className="text-success">
@@ -100,11 +102,13 @@ const CartList = ({
               </IconButton>
             </div>
           </li>
-        ) : (
+        )}
+        {!enableCartDiscounts && (
           <>
             <CartForm />
           </>
         )}
+
         <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
           <Tooltip title="Clear cart">
             <IconButton className="mx-2" onClick={() => dispatch(clearCart())}>
@@ -131,8 +135,8 @@ const CartList = ({
             <Button
               variant="dark"
               onClick={() => {
-                dispatch(checkoutCart())
-                .then(() => dispatch(getCustomer(selectedCustomer.source_id, 'update'))
+                dispatch(checkoutCart()).then(() =>
+                  dispatch(getCustomer(selectedCustomer.source_id, 'update'))
                 );
               }}
               className="w-100 p-2"
@@ -157,6 +161,7 @@ const mapStateToProps = (state) => {
     discountedAmount: state.cartReducer.discountedAmount,
     paymentMethod: state.userReducer.paymentMethod,
     items: state.cartReducer.items,
+    enableCartDiscounts: state.userReducer.enableCartDiscounts,
   };
 };
 

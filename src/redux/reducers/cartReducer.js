@@ -8,8 +8,11 @@ import {
   SET_ORDER_ID,
   GET_TOTALS,
   REMOVE_ITEM,
+  SET_PAYMENT_METHOD,
 } from '../constants';
-import _ from 'lodash';
+import has from 'lodash.has';
+import cloneDeep from 'lodash.clonedeep';
+import {isEmpty} from '../utils'
 
 export const cartReducer = (
   initialState = {
@@ -20,6 +23,7 @@ export const cartReducer = (
     discountedAmount: 0,
     orderId: null,
     discount: null,
+    paymentMethod: 'Other',
   },
   action
 ) => {
@@ -51,7 +55,7 @@ export const cartReducer = (
       if (initialState.discount !== null) {
         const discount = initialState.discount;
 
-        if (_.has(discount, 'applicable_to')) {
+        if (has(discount, 'applicable_to')) {
           const applicableProducts = [];
           let applicableProductInCart = '';
           discount.applicable_to.data.map((e) => applicableProducts.push(e.id));
@@ -61,8 +65,10 @@ export const cartReducer = (
               (item) => item.id === applicableProducts[i]
             );
           }
-
-          if (discount.discount.type === 'PERCENT') {
+          if (
+            !isEmpty(applicableProductInCart) &&
+            discount.discount.type === 'PERCENT'
+          ) {
             let discountedAmount =
               applicableProductInCart.price *
               (discount.discount.percent_off / 100);
@@ -83,7 +89,10 @@ export const cartReducer = (
               totalAmountAfterDiscount,
               discountedAmount,
             };
-          } else if (discount.discount.type === 'AMOUNT') {
+          } else if (
+            !isEmpty(applicableProducts) &&
+            discount.discount.type === 'AMOUNT'
+          ) {
             const discountedAmount = discount.discount.amount_off;
             totalAmountAfterDiscount =
               applicableProductInCart.totalAmount - discountedAmount;
@@ -98,6 +107,13 @@ export const cartReducer = (
               discountedAmount,
             };
           }
+          return {
+            ...initialState,
+            totalAmount,
+            itemsTotalCount,
+            totalAmountAfterDiscount,
+            discountedAmount,
+          };
         } else if (discount.discount.type === 'PERCENT') {
           let discountedAmount =
             totalAmount * (discount.discount.percent_off / 100);
@@ -181,6 +197,7 @@ export const cartReducer = (
     case GET_DISCOUNT_ERROR: {
       return {
         ...initialState,
+        discount: null,
         fetchingDiscountError: true,
       };
     }
@@ -194,7 +211,7 @@ export const cartReducer = (
       const product = action.payload.product;
       const quantity = parseInt(action.payload.qt, 10);
       const items = [...initialState.items];
-      const item = _.cloneDeep(items.find((item) => item.id === product.id));
+      const item = cloneDeep(items.find((item) => item.id === product.id));
       if (item) {
         const selectedProduct = items.find((item) => item.id === product.id);
         if (action.payload.type === 'increment_count') {
@@ -217,6 +234,12 @@ export const cartReducer = (
           ],
         };
       }
+    }
+    case SET_PAYMENT_METHOD: {
+      return {
+        ...initialState,
+        paymentMethod: action.payload.paymentMethod,
+      };
     }
     case SET_ORDER_ID: {
       return {

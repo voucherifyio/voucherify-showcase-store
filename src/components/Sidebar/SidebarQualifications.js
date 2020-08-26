@@ -1,11 +1,11 @@
 import React from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import Chip from '@material-ui/core/Chip';
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import { connect } from 'react-redux';
 import InfoIcon from '@material-ui/icons/Info';
+import {isEmpty} from '../../redux/utils'
 
 const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
   const qualificationsToolTip =
@@ -29,7 +29,7 @@ const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
           </div>
         ) : (
           <>
-            {!_.isEmpty(qualifications) && (
+            {!isEmpty(qualifications) && (
               <>
                 {qualifications.map((qualification) => (
                   <Chip
