@@ -212,7 +212,6 @@ exports.campaigns = [
       tiers: [
         {
           name: 'Final Tier - $10 off',
-          hierarchy: 1,
           banner: 'Congratulations, you get $10 off!',
           action: {
             discount: {
@@ -229,7 +228,6 @@ exports.campaigns = [
         },
         {
           name: 'First Tier - $3 off',
-          hierarchy: 2,
           banner:
             'Congratulations, you get $3 off! Add more items for bigger discount!',
           action: {
@@ -261,7 +259,6 @@ exports.campaigns = [
         {
           name: 'Final Tier - 100% off for Hard Beans - Brazil',
           banner: 'Congratulations, you get Hard Beans - Brazil for free',
-          hierarchy: 1,
           action: {
             discount: { percent_off: 100, type: 'PERCENT' },
           },
@@ -281,7 +278,6 @@ exports.campaigns = [
           action: {
             discount: { percent_off: 50, type: 'PERCENT' },
           },
-          hierarchy: 2,
           metadata: {
             demostoreName: 'BOGO Discount',
             demostoreBOGO: '1x Hard Beans - Brazil',
