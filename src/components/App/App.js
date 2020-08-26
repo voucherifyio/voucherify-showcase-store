@@ -21,7 +21,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../../css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { isEmpty } from '../../redux/utils';
-import { has } from 'lodash';
+import has from 'lodash';
 
 const toastOptions = {
   position: 'bottom-center',
