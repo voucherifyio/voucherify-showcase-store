@@ -1,5 +1,5 @@
 require('dotenv').config();
-const _ = require('lodash');
+const _flatten = require('lodash.flatten');
 const voucherify = require('voucherify')({
   applicationId: process.env.REACT_APP_BACKEND_APP_ID,
   clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
@@ -522,7 +522,7 @@ const setupValidationRules = async () => {
           );
       });
     });
-    return _.flatten(assignmentsPerCampaign);
+    return _flatten(assignmentsPerCampaign);
   };
 
   const vouchersRuleAssigmentPromises = () => {
@@ -552,7 +552,7 @@ const setupValidationRules = async () => {
           );
       });
     });
-    return _.flatten(valRulesPerVoucher);
+    return _flatten(valRulesPerVoucher);
   };
 
   try {

@@ -6,7 +6,7 @@ import {
   getOrderId,
   sendPayload,
 } from '../utils';
-import cloneDeep from 'lodash.clonedeep';
+import _cloneDeep from 'lodash.clonedeep';
 import { isEmpty } from '../utils';
 
 import {
@@ -73,7 +73,7 @@ export const addItemToCart = (id, qt, type = 'change_count') => (
 ) => {
   const getItem = (id) => {
     const tempProducts = getState().storeReducer.products;
-    const product = cloneDeep(tempProducts.find((item) => item.id === id));
+    const product = _cloneDeep(tempProducts.find((item) => item.id === id));
     return product;
   };
   const product = getItem(id);

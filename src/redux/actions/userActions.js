@@ -1,5 +1,6 @@
 import { loadState } from '../localStorage';
-import _ from 'lodash';
+import _map from 'lodash.map';
+import _get from 'lodash.get';
 import { setValidatePayload } from '../utils';
 import {
   START_USER_SESSION_REQUEST,
@@ -152,8 +153,8 @@ export const getCustomers = () => async (dispatch, getState) => {
     // Check if availableCustomers includes currentCustomer
     // if there is an issue with localStorage or server, remove currentCustomer
     if (
-      !_.map(availableCustomers, 'source_id', []).includes(
-        _.get(currentCustomer, 'source_id')
+      !_map(availableCustomers, 'source_id', []).includes(
+        _get(currentCustomer, 'source_id')
       )
     ) {
       dispatch(removeCurrentCustomer());

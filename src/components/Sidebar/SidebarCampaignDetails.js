@@ -7,7 +7,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
 import { isEmpty } from '../../redux/utils';
-import orderBy from 'lodash.orderby';
+import _orderBy from 'lodash.orderby';
 
 const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
   const [open, setOpen] = useState(false);
@@ -114,7 +114,7 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
         )}
         {campaign.tiers && (
           <>
-            {orderBy(campaign.tiers, ['metadata.demostoreOrder'], ['desc']).map(
+            {_orderBy(campaign.tiers, ['metadata.demostoreOrder'], ['desc']).map(
               (tier, index) => {
                 return (
                   <>

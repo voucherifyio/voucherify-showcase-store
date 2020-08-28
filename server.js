@@ -1,5 +1,5 @@
 require('dotenv').config();
-const _ = require('lodash');
+const _find = require('lodash.find');
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
@@ -80,7 +80,7 @@ app.get('/start', async (request, response) => {
       })
     );
     // We're setting up dummy order for one of the customers
-    const dummyOrderCustomer = _.find(storeCustomers, {
+    const dummyOrderCustomer = _find(storeCustomers, {
       source_id: `${request.session.id}lewismarshall`,
     });
     await voucherify.orders.create({

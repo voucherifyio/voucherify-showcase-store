@@ -11,8 +11,8 @@ import {
   SET_PAYMENT_METHOD,
   REMOVE_DISCOUNT,
 } from '../constants';
-import has from 'lodash.has';
-import cloneDeep from 'lodash.clonedeep';
+import _has from 'lodash.has';
+import _cloneDeep from 'lodash.clonedeep';
 import {isEmpty} from '../utils'
 
 const initialState = {
@@ -58,7 +58,7 @@ export const cartReducer = (
       if (state.discount !== null) {
         const discount = state.discount;
 
-        if (has(discount, 'applicable_to')) {
+        if (_has(discount, 'applicable_to')) {
           const applicableProducts = [];
           let applicableProductInCart = '';
           discount.applicable_to.data.map((e) => applicableProducts.push(e.id));
@@ -220,7 +220,7 @@ export const cartReducer = (
       const product = action.payload.product;
       const quantity = parseInt(action.payload.qt, 10);
       const items = [...state.items];
-      const item = cloneDeep(items.find((item) => item.id === product.id));
+      const item = _cloneDeep(items.find((item) => item.id === product.id));
       if (item) {
         const selectedProduct = items.find((item) => item.id === product.id);
         if (action.payload.type === 'increment_count') {

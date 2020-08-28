@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import orderBy from 'lodash.orderby';
+import _orderBy from 'lodash.orderby';
 import SidebarCampaignDetails from './SidebarCampaignDetails';
 import SidebarVoucherDetails from './SidebarVoucherDetails';
 import Spinner from 'react-bootstrap/Spinner';
@@ -117,11 +117,11 @@ const SidebarContent = ({
       'data: text/json;charset=utf-8,' +
       encodeURIComponent(JSON.stringify(currentCustomer));
   }
-  const discountVouchers = orderBy(vouchers, ['metadata']['demostoreOrder'], [
+  const discountVouchers = _orderBy(vouchers, ['metadata']['demostoreOrder'], [
     'asc',
   ]);
 
-  const discountCampaigns = orderBy(campaigns, ['metadata']['demostoreOrder'], [
+  const discountCampaigns = _orderBy(campaigns, ['metadata']['demostoreOrder'], [
     'asc',
   ]);
 

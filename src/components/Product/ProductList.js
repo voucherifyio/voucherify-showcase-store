@@ -3,7 +3,7 @@ import Product from './Product';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import _orderBy from 'lodash.orderby';
 
 const ProductList = ({ products, fetchingProducts }) => {
   const [filterCategory, setFilterCategory] = useState('');
@@ -33,7 +33,7 @@ const ProductList = ({ products, fetchingProducts }) => {
         );
         break;
     }
-    filteredList = _.orderBy(filteredList, ['source_id'], ['asc']);
+    filteredList = _orderBy(filteredList, ['source_id'], ['asc']);
   }
 
   return (
