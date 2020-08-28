@@ -8,7 +8,7 @@ import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
-const SidebarCampaigns = ({ campaign, handleChange, selectedCustomer }) => {
+const SidebarCampaigns = ({ campaign, handleChange, currentCustomer }) => {
 
     const [expanded, setExpanded] = React.useState('');
 
@@ -76,7 +76,7 @@ const SidebarCampaigns = ({ campaign, handleChange, selectedCustomer }) => {
             code={
               campaign.coupons.find(
                 (coupon) =>
-                  coupon.selectedCustomer === selectedCustomer.source_id
+                  coupon.currentCustomer === currentCustomer.source_id
               ).customerDataCoupon
             }
           />

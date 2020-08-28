@@ -11,7 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
 import { connect } from 'react-redux';
-import { getCustomer } from '../../redux/actions/userActions';
+import { getCurrentCustomer } from '../../redux/actions/userActions';
 import {
   clearCart,
   checkoutCart,
@@ -23,7 +23,7 @@ import { isEmpty } from '../../redux/utils';
 const CartList = ({
   items,
   paymentMethod,
-  selectedCustomer,
+  currentCustomer,
   totalAmountAfterDiscount,
   dispatch,
   discount,
@@ -133,7 +133,7 @@ const CartList = ({
         </li>
       </ul>
       <>
-        {selectedCustomer ? (
+        {currentCustomer ? (
           <Link
             to="/success"
             className="link-unstyled"
@@ -141,9 +141,10 @@ const CartList = ({
           >
             <Button
               variant="dark"
-              onClick={() => {
-                dispatch(checkoutCart()).then(() =>
-                  dispatch(getCustomer(selectedCustomer.source_id, 'update'))
+              onClick={async () => {
+                await dispatch(checkoutCart());
+                dispatch(
+                  getCurrentCustomer(currentCustomer.source_id, 'update')
                 );
               }}
               className="w-100 p-2"
@@ -161,7 +162,7 @@ const CartList = ({
 
 const mapStateToProps = (state) => {
   return {
-    selectedCustomer: state.userReducer.selectedCustomer,
+    currentCustomer: state.userReducer.currentCustomer,
     itemsTotalCount: state.cartReducer.itemsTotalCount,
     totalAmountAfterDiscount: state.cartReducer.totalAmountAfterDiscount,
     discount: state.cartReducer.discount,
@@ -176,11 +177,11 @@ export default connect(mapStateToProps)(CartList);
 
 CartList.propTypes = {
   items: PropTypes.array,
-  selectedCustomer: PropTypes.object,
+  currentCustomer: PropTypes.object,
   dispatch: PropTypes.func,
   paymentMethod: PropTypes.string,
   discount: PropTypes.object,
   totalAmountAfterDiscount: PropTypes.number,
   discountedAmount: PropTypes.number,
-  enableCartDiscounts: PropTypes.bool
+  enableCartDiscounts: PropTypes.bool,
 };

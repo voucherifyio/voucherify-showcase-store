@@ -22,7 +22,7 @@ const Navigation = ({
   toggleSidebar,
   storeSidebar,
   itemsTotalCount,
-  selectedCustomer,
+  currentCustomer,
 }) => {
   return (
     <>
@@ -42,10 +42,10 @@ const Navigation = ({
               <Nav.Item className="navbar-account px-2">Store</Nav.Item>
             </Link>
 
-            {selectedCustomer !== null && (
+            {currentCustomer !== null && (
               <Nav.Item className="navbar-account px-2">
                 <AccountCircleIcon className="navbar-icon mx-2" />
-                Hi, <b>{selectedCustomer.name.split(' ')[0]}</b>
+                Hi, <b>{currentCustomer.name.split(' ')[0]}</b>
               </Nav.Item>
             )}
             <Nav.Item className="px-2">
@@ -75,7 +75,7 @@ const Navigation = ({
 
 const mapStateToProps = (state) => {
   return {
-    selectedCustomer: state.userReducer.selectedCustomer,
+    currentCustomer: state.userReducer.currentCustomer,
     itemsTotalCount: state.cartReducer.itemsTotalCount,
   };
 };
@@ -86,5 +86,5 @@ Navigation.propTypes = {
   storeSidebar: PropTypes.bool.isRequired,
   toggleSidebar: PropTypes.func.isRequired,
   itemsTotalCount: PropTypes.number.isRequired,
-  selectedCustomer: PropTypes.object,
+  currentCustomer: PropTypes.object,
 };

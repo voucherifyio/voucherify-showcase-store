@@ -9,6 +9,7 @@ import {
   GET_TOTALS,
   REMOVE_ITEM,
   SET_PAYMENT_METHOD,
+  REMOVE_DISCOUNT,
 } from '../constants';
 import has from 'lodash.has';
 import cloneDeep from 'lodash.clonedeep';
@@ -176,6 +177,12 @@ export const cartReducer = (
         fetchingDiscount: false,
         discount: action.payload.discount,
       };
+    }
+    case REMOVE_DISCOUNT: {
+      return {
+        ...state,
+        discount: null
+      }
     }
     case INCREMENT_DECREMENT: {
       const tempItems = state.items.map((item) => {

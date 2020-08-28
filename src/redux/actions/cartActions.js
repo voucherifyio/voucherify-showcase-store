@@ -20,6 +20,7 @@ import {
   SET_CART,
   GET_TOTALS,
   SET_PAYMENT_METHOD,
+  REMOVE_DISCOUNT,
 } from '../constants';
 
 export const getDiscountRequest = () => {
@@ -32,6 +33,10 @@ export const getDiscountError = () => {
 
 export const getDiscountSuccess = (discount) => {
   return { type: GET_DISCOUNT_SUCCESS, payload: { discount } };
+};
+
+export const removeDiscount = () => {
+  return { type: REMOVE_DISCOUNT };
 };
 
 export const setOrderId = (orderId) => {
@@ -76,7 +81,7 @@ export const addItemToCart = (id, qt, type = 'change_count') => (
 };
 
 export const removePromotionFromCart = () => (dispatch) => {
-  dispatch(getDiscountSuccess(null));
+  dispatch(removeDiscount());
 };
 
 export const removeItemFromCart = (id) => (dispatch, getState) => {
@@ -87,14 +92,15 @@ export const removeItemFromCart = (id) => (dispatch, getState) => {
     dispatch(removeItem(items));
   }
 };
+
 export const getCartDiscount = (activeCartDiscount) => async (
   dispatch,
   getState
 ) => {
-  const { selectedCustomer } = getState().userReducer;
+  const { currentCustomer } = getState().userReducer;
   const { totalAmount, items, paymentMethod } = getState().cartReducer;
   const getCartDiscountPayload = setValidatePayload(
-    selectedCustomer,
+    currentCustomer,
     totalAmount,
     items,
     paymentMethod
@@ -102,7 +108,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
   try {
     dispatch(getDiscountRequest());
     const promotion = await new Promise((resolve, reject) => {
-      window.Voucherify.setIdentity(selectedCustomer.source_id);
+      window.Voucherify.setIdentity(currentCustomer.source_id);
 
       window.Voucherify.validate(getCartDiscountPayload, (response) => {
         if (response.valid) {
@@ -129,7 +135,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
 };
 
 export const getDiscount = (voucherCode) => async (dispatch, getState) => {
-  const { selectedCustomer } = getState().userReducer;
+  const { currentCustomer } = getState().userReducer;
   const {
     totalAmount,
     items,
@@ -137,7 +143,7 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
     discount,
   } = getState().cartReducer;
   const getDiscountPayload = setValidatePayload(
-    selectedCustomer,
+    currentCustomer,
     totalAmount,
     items,
     paymentMethod
@@ -147,7 +153,7 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
   try {
     dispatch(getDiscountRequest());
     let discount = await new Promise((resolve, reject) => {
-      window.Voucherify.setIdentity(selectedCustomer.source_id);
+      window.Voucherify.setIdentity(currentCustomer.source_id);
       window.Voucherify.validate(getDiscountPayload, (response) => {
         if (response.valid) {
           resolve(response);
@@ -174,67 +180,52 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 };
 
 export const checkoutCart = () => async (dispatch, getState) => {
-  const { selectedCustomer } = getState().userReducer;
+  const { currentCustomer } = getState().userReducer;
   const {
     totalAmount,
     paymentMethod,
     items,
     discount,
   } = getState().cartReducer;
-
-  // If voucher or promotion is not applied
-  if (isEmpty(discount)) {
-    const checkoutPayload = setOrderPayload(
-      selectedCustomer,
-      totalAmount,
-      items,
-      paymentMethod
-    );
-    checkoutPayload.source_id = getOrderId();
-    checkoutPayload.status = 'FULFILLED';
-    console.log(checkoutPayload);
-    sendPayload(checkoutPayload, 'order')
-      .then(() => {
+  try {
+    // If voucher or promotion is not applied
+    if (isEmpty(discount)) {
+      const checkoutPayload = setOrderPayload(
+        currentCustomer,
+        totalAmount,
+        items,
+        paymentMethod
+      );
+      checkoutPayload.source_id = getOrderId();
+      checkoutPayload.status = 'FULFILLED';
+      await sendPayload(checkoutPayload, 'order');
+      dispatch(clearCart());
+      dispatch(setOrderId(checkoutPayload.source_id));
+    } else {
+      const checkoutPayload = setRedemptionPayload(
+        currentCustomer,
+        totalAmount,
+        items,
+        paymentMethod
+      );
+      if (discount.hasOwnProperty('code')) {
+        // If voucher is applied
+        const discountCode = discount.code;
+        checkoutPayload.code = discountCode;
+        const response = await sendPayload(checkoutPayload, 'redeem');
         dispatch(clearCart());
-        dispatch(setOrderId(checkoutPayload.source_id));
-      })
-      .catch((error) => {
-        toast.error('There was a problem with your purchase');
-        console.log('[checkoutCart]', error);
-      });
-    // If voucher is applied
-  } else {
-    const checkoutPayload = setRedemptionPayload(
-      selectedCustomer,
-      totalAmount,
-      items,
-      paymentMethod
-    );
-    if (discount.hasOwnProperty('code')) {
-      const discountCode = discount.code;
-      checkoutPayload.code = discountCode;
-      sendPayload(checkoutPayload, 'redeem')
-        .then((response) => {
-          dispatch(clearCart());
-          dispatch(setOrderId(response.id));
-        })
-        .catch((error) => {
-          toast.error('There was a problem with your purchase');
-          console.log('[checkoutCart][Discount]', error);
-        });
-      // If promotion is applied
-    } else if (discount.hasOwnProperty('banner')) {
-      const promotionId = discount.id;
-      checkoutPayload.promotionId = promotionId;
-      sendPayload(checkoutPayload, 'redeem')
-        .then((response) => {
-          dispatch(clearCart());
-          dispatch(setOrderId(response.order.id));
-        })
-        .catch((error) => {
-          toast.error('There was a problem with your purchase');
-          console.log('[checkoutCart][Cart Discount]', error);
-        });
+        dispatch(setOrderId(response.id));
+      } else if (discount.hasOwnProperty('banner')) {
+        // If promotion is applied
+        const promotionId = discount.id;
+        checkoutPayload.promotionId = promotionId;
+        const response = await sendPayload(checkoutPayload, 'redeem');
+        dispatch(clearCart());
+        dispatch(setOrderId(response.order.id));
+      }
     }
+  } catch (error) {
+    toast.error('There was a problem with your purchase');
+    console.log('[checkoutCart]', error);
   }
 };

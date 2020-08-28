@@ -5,24 +5,25 @@ import {
   GET_CUSTOMERS_ERROR,
   GET_CUSTOMERS_REQUEST,
   GET_CUSTOMERS_SUCCESS,
-  GET_CUSTOMER_SUCCESS,
+  GET_CURRENT_CUSTOMER_SUCCESS,
   GET_CAMPAIGNS_ERROR,
   GET_CAMPAIGNS_REQUEST,
   GET_CAMPAIGNS_SUCCESS,
   GET_VOUCHERS_REQUEST,
   GET_VOUCHERS_ERROR,
   GET_VOUCHERS_SUCCESS,
-  GET_CUSTOMER_ERROR,
-  GET_CUSTOMER_REQUEST,
+  GET_CURRENT_CUSTOMER_ERROR,
+  GET_CURRENT_CUSTOMER_REQUEST,
   GET_QUALIFICATIONS_REQUEST,
   GET_QUALIFICATIONS_SUCCESS,
   GET_QUALIFICATIONS_ERROR,
   SET_PAYMENT_METHOD,
   SET_ENABLE_CART_DISCOUNTS,
+  REMOVE_CURRENT_CUSTOMER,
 } from '../constants';
 
 const initialState = {
-  selectedCustomer: null,
+  currentCustomer: null,
   availableCustomers: null,
   publishedCodes: null,
   campaigns: null,
@@ -130,23 +131,29 @@ export const userReducer = (
         fetchingVouchersError: true,
       };
     }
-    case GET_CUSTOMER_REQUEST: {
+    case GET_CURRENT_CUSTOMER_REQUEST: {
       return {
         ...state,
         fetchingCustomer: true,
       }
     }
-    case GET_CUSTOMER_SUCCESS: {
+    case GET_CURRENT_CUSTOMER_SUCCESS: {
       return {
         ...state,
-        selectedCustomer: action.payload.selectedCustomer,
+        currentCustomer: action.payload.currentCustomer,
         fetchingCustomer: false,
       }
     }
-    case GET_CUSTOMER_ERROR: {
+    case GET_CURRENT_CUSTOMER_ERROR: {
       return {
         ...state,
         fetchingCustomerError: true,
+      }
+    }
+    case REMOVE_CURRENT_CUSTOMER: {
+      return {
+        ...state,
+        currentCustomer: null,
       }
     }
     case GET_QUALIFICATIONS_REQUEST: {

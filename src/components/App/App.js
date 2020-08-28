@@ -46,7 +46,7 @@ const App = ({
   items,
   discount,
   paymentMethod,
-  selectedCustomer,
+  currentCustomer,
 }) => {
   const [storeSidebar, setSidebar] = useState(true);
   const toggleSidebar = () => {
@@ -69,10 +69,10 @@ const App = ({
   }, [dispatch, items, paymentMethod, discount]);
 
   useEffect(() => {
-    if (!isEmpty(selectedCustomer)) {
+    if (!isEmpty(currentCustomer)) {
       dispatch(getQualifications());
     }
-  }, [dispatch, selectedCustomer, paymentMethod, items]);
+  }, [dispatch, currentCustomer, paymentMethod, items]);
 
   return (
     <>
@@ -111,7 +111,7 @@ const mapStateToProps = (state) => {
   return {
     products: state.storeReducer.products,
     items: state.cartReducer.items,
-    selectedCustomer: state.userReducer.selectedCustomer,
+    currentCustomer: state.userReducer.currentCustomer,
     discount: state.cartReducer.discount,
     paymentMethod: state.userReducer.paymentMethod,
   };
@@ -120,7 +120,7 @@ const mapStateToProps = (state) => {
 App.propTypes = {
   dispatch: PropTypes.func,
   items: PropTypes.array,
-  selectedCustomer: PropTypes.object,
+  currentCustomer: PropTypes.object,
   discount: PropTypes.object,
   paymentMethod: PropTypes.string,
 };

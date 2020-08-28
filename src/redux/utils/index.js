@@ -19,15 +19,15 @@ export const isEmpty = (value) => {
 export default isEmpty;
 
 export const setValidatePayload = (
-  selectedCustomer,
+  currentCustomer,
   total,
   cartItems,
   paymentMethod
 ) => {
   return {
     customer: {
-      id: selectedCustomer.id,
-      source_id: selectedCustomer.source_id,
+      id: currentCustomer.id,
+      source_id: currentCustomer.source_id,
     },
     amount: total,
     items: cartItems.map(setCartItemsPayload),
@@ -38,15 +38,15 @@ export const setValidatePayload = (
 };
 
 export const setRedemptionPayload = (
-  selectedCustomer,
+  currentCustomer,
   totalAmount,
   items,
   paymentMethod
 ) => {
   return {
     customer: {
-      id: selectedCustomer.id,
-      source_id: selectedCustomer.source_id,
+      id: currentCustomer.id,
+      source_id: currentCustomer.source_id,
     },
     order: {
       amount: totalAmount,
@@ -59,15 +59,15 @@ export const setRedemptionPayload = (
 };
 
 export const setOrderPayload = (
-  selectedCustomer,
+  currentCustomer,
   totalAmount,
   items,
   paymentMethod
 ) => {
   return {
     customer: {
-      id: selectedCustomer.id,
-      source_id: selectedCustomer.source_id,
+      id: currentCustomer.id,
+      source_id: currentCustomer.source_id,
     },
     amount: totalAmount,
     items: items.map(setCartItemsPayload),
@@ -78,7 +78,7 @@ export const setOrderPayload = (
 };
 
 export const sendPayload = async (payload, payloadType) => {
-  const sendPayload = await fetch(
+  const response = await fetch(
     `${process.env.REACT_APP_API_URL || ''}/${payloadType}`,
     {
       method: 'POST',
@@ -87,7 +87,8 @@ export const sendPayload = async (payload, payloadType) => {
       body: JSON.stringify(payload),
     }
   );
-  return sendPayload.json();
+  const sendPayload = await response.json()
+  return sendPayload;
 };
 
 export const getOrderId = () => {

@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: "Lato", sans-serif !important;
+  font-family: 'Lato', sans-serif !important;
   background: var(--mainWhite) !important;
   color: var(--mainDark) !important;
   font-size: 14px;
@@ -134,7 +134,18 @@ body {
 a,
 a:focus,
 a:hover {
+  text-decoration: none !important;
+}
+
+.voucherify-link {
+  color: #25abb7;
+  text-transform: none;
   text-decoration: none;
+  transition: 0.4s all ease;
+}
+
+.voucherify-link:hover {
+  color: #007682;
 }
 
 .navbar-sticky {
@@ -182,13 +193,6 @@ button:focus {
   width: 100vw !important;
 }
 
-.voucherify-link,
-.voucherify-link:hover {
-  text-transform: none;
-  text-decoration: none;
-  color: #25abb7;
-}
-
 /* Sidebar styles */
 
 #storeSidebar-wrapper {
@@ -229,7 +233,6 @@ button:focus {
 
 #storeSidebar-wrapper .campaign-box {
   /* height: 80px; */
-
 }
 
 #storeSidebar-wrapper .campaign-name {
@@ -262,7 +265,6 @@ button:focus {
 #storeSidebar-wrapper .campaign-step-text {
   margin-bottom: 0px;
 }
-
 
 #storeCustomers {
   width: 100%;

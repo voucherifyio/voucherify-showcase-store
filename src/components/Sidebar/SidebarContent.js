@@ -14,7 +14,7 @@ import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SidebarQualifications from './SidebarQualifications';
 import { connect } from 'react-redux';
-import { getCustomer } from '../../redux/actions/userActions';
+import { getCurrentCustomer } from '../../redux/actions/userActions';
 import InfoIcon from '@material-ui/icons/Info';
 import Switch from '@material-ui/core/Switch';
 import {setEnableCartDiscounts} from '../../redux/actions/userActions'
@@ -69,7 +69,7 @@ const AccordionDetails = withStyles(() => ({
 }))(MuiAccordionDetails);
 
 const SidebarContent = ({
-  selectedCustomer,
+  currentCustomer,
   vouchers,
   campaigns,
   availableCustomers,
@@ -111,11 +111,11 @@ const SidebarContent = ({
 
   let customerDate = '';
   let downloadCustomerData = '';
-  if (selectedCustomer) {
-    customerDate = new Date(selectedCustomer.summary.orders.last_order_date);
+  if (currentCustomer) {
+    customerDate = new Date(currentCustomer.summary.orders.last_order_date);
     downloadCustomerData =
       'data: text/json;charset=utf-8,' +
-      encodeURIComponent(JSON.stringify(selectedCustomer));
+      encodeURIComponent(JSON.stringify(currentCustomer));
   }
   const discountVouchers = orderBy(vouchers, ['metadata']['demostoreOrder'], [
     'asc',
@@ -152,9 +152,9 @@ const SidebarContent = ({
                 as="select"
                 id="storeCustomers"
                 onChange={(e) => {
-                  dispatch(getCustomer(e.target.value));
+                  dispatch(getCurrentCustomer(e.target.value));
                 }}
-                value={(selectedCustomer || {}).source_id || 'DEFAULT'}
+                value={(currentCustomer || {}).source_id || 'DEFAULT'}
               >
                 <option value="DEFAULT" disabled>
                   Select customer
@@ -173,13 +173,13 @@ const SidebarContent = ({
                 </Tooltip>
               </a>
             </div>
-            {!isEmpty(selectedCustomer) && (
+            {!isEmpty(currentCustomer) && (
               <>
                 <div className="storeSidebar-content">
                   <p>
                     Location:{' '}
                     <span className="storeSidebar-content-data">
-                      {selectedCustomer.address.country}
+                      {currentCustomer.address.country}
                     </span>
                   </p>
                   <p>
@@ -187,7 +187,7 @@ const SidebarContent = ({
                     <span className="storeSidebar-content-data">
                       $
                       {(
-                        selectedCustomer.summary.orders.total_amount / 100
+                        currentCustomer.summary.orders.total_amount / 100
                       ).toFixed(2)}
                     </span>
                   </p>
@@ -208,7 +208,7 @@ const SidebarContent = ({
         )}
         {!isEmpty(campaigns) &&
           !isEmpty(vouchers) &&
-          !isEmpty(selectedCustomer) && (
+          !isEmpty(currentCustomer) && (
             <>
               <SidebarQualifications key="qualifications" />
               <p className="storeSidebar-heading">
@@ -291,8 +291,8 @@ const SidebarContent = ({
                           code={
                             campaign.coupons.find(
                               (coupon) =>
-                                coupon.selectedCustomer ===
-                                selectedCustomer.source_id
+                                coupon.currentCustomer ===
+                                currentCustomer.source_id
                             ).customerDataCoupon
                           }
                         />
@@ -359,7 +359,7 @@ const SidebarContent = ({
 
 const mapStateToProps = (state) => {
   return {
-    selectedCustomer: state.userReducer.selectedCustomer,
+    currentCustomer: state.userReducer.currentCustomer,
     fetchingCoupons: state.userReducer.fetchingCoupons,
     vouchers: state.userReducer.vouchers,
     campaigns: state.userReducer.campaigns,
@@ -373,7 +373,7 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(SidebarContent);
 
 SidebarContent.propTypes = {
-  selectedCustomer: PropTypes.object,
+  currentCustomer: PropTypes.object,
   fetchingCoupons: PropTypes.bool,
   vouchers: PropTypes.object,
   discount: PropTypes.object,

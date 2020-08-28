@@ -1,8 +1,8 @@
 import { createStore, compose, applyMiddleware } from 'redux';
-import rootReducer from './reducers';
+import rootReducer from '../reducers';
 import thunkMiddleware from 'redux-thunk';
 import throttle from 'lodash/throttle';
-import { saveState, loadState } from './localStorage';
+import { saveState, loadState } from '../localStorage';
 
 const preloadedState = loadState();
 

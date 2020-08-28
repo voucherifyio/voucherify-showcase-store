@@ -130,7 +130,7 @@ app.get('/start', async (request, response) => {
           );
         }
         return {
-          selectedCustomer: customer.source_id,
+          currentCustomer: customer.source_id,
           campaigns: coupons.map((coupon) => coupon.voucher),
         };
       })
@@ -148,10 +148,9 @@ app.get('/start', async (request, response) => {
 
 app.get('/customers/:sessionId', async (request, response) => {
   const sessionId = request.params.sessionId;
-
   try {
     const customers = await Promise.all(
-      storeCustomers.map(async (customer) => {
+      storeCustomers.map((customer) => {
         customerId = `${sessionId}${customer.metadata.demostore_id}`;
         return voucherify.customers.get(customerId);
       })
@@ -219,7 +218,6 @@ app.get('/campaigns', async (request, response) => {
 app.post('/qualifications', async (request, response) => {
   try {
     const { customer, amount, items, metadata } = request.body;
-    
     const qtPayload = {
       customer,
       order: {
@@ -228,7 +226,6 @@ app.post('/qualifications', async (request, response) => {
       },
       metadata,
     };
-
     const examinedVouchers = await voucherify.vouchers.qualifications.examine(
       qtPayload
     );
