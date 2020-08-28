@@ -14,29 +14,31 @@ import has from 'lodash.has';
 import cloneDeep from 'lodash.clonedeep';
 import {isEmpty} from '../utils'
 
+const initialState = {
+  items: [],
+  totalAmount: 0,
+  itemsTotalCount: 0,
+  totalAmountAfterDiscount: 0,
+  discountedAmount: 0,
+  orderId: null,
+  discount: null,
+  paymentMethod: 'Other',
+}
+
 export const cartReducer = (
-  initialState = {
-    items: [],
-    totalAmount: 0,
-    itemsTotalCount: 0,
-    totalAmountAfterDiscount: 0,
-    discountedAmount: 0,
-    orderId: null,
-    discount: null,
-    paymentMethod: 'Other',
-  },
+  state = initialState,
   action
 ) => {
   switch (action.type) {
     case GET_DISCOUNT_REQUEST: {
       return {
-        ...initialState,
+        ...state,
         fetchingDiscount: true,
       };
     }
     case GET_TOTALS: {
       // eslint-disable-next-line prefer-const
-      let { totalAmount, itemsTotalCount } = initialState.items.reduce(
+      let { totalAmount, itemsTotalCount } = state.items.reduce(
         (items, currentItem) => {
           const { price, count } = currentItem;
           const itemTotalAmount = price * count;
@@ -52,8 +54,8 @@ export const cartReducer = (
       let totalAmountAfterDiscount = totalAmount;
       const discountedAmount = 0;
 
-      if (initialState.discount !== null) {
-        const discount = initialState.discount;
+      if (state.discount !== null) {
+        const discount = state.discount;
 
         if (has(discount, 'applicable_to')) {
           const applicableProducts = [];
@@ -61,7 +63,7 @@ export const cartReducer = (
           discount.applicable_to.data.map((e) => applicableProducts.push(e.id));
 
           for (let i = 0; i < applicableProducts.length; i++) {
-            applicableProductInCart = initialState.items.find(
+            applicableProductInCart = state.items.find(
               (item) => item.id === applicableProducts[i]
             );
           }
@@ -83,7 +85,7 @@ export const cartReducer = (
               totalAmountAfterDiscount = 0;
             }
             return {
-              ...initialState,
+              ...state,
               totalAmount,
               itemsTotalCount,
               totalAmountAfterDiscount,
@@ -100,7 +102,7 @@ export const cartReducer = (
               totalAmountAfterDiscount = 0;
             }
             return {
-              ...initialState,
+              ...state,
               totalAmount,
               itemsTotalCount,
               totalAmountAfterDiscount,
@@ -108,7 +110,7 @@ export const cartReducer = (
             };
           }
           return {
-            ...initialState,
+            ...state,
             totalAmount,
             itemsTotalCount,
             totalAmountAfterDiscount,
@@ -132,7 +134,7 @@ export const cartReducer = (
           }
 
           return {
-            ...initialState,
+            ...state,
             totalAmount,
             itemsTotalCount,
             totalAmountAfterDiscount,
@@ -148,7 +150,7 @@ export const cartReducer = (
           }
 
           return {
-            ...initialState,
+            ...state,
             totalAmount,
             itemsTotalCount,
             totalAmountAfterDiscount,
@@ -161,7 +163,7 @@ export const cartReducer = (
         }
       }
       return {
-        ...initialState,
+        ...state,
         totalAmount,
         itemsTotalCount,
         totalAmountAfterDiscount,
@@ -170,13 +172,13 @@ export const cartReducer = (
     }
     case GET_DISCOUNT_SUCCESS: {
       return {
-        ...initialState,
+        ...state,
         fetchingDiscount: false,
         discount: action.payload.discount,
       };
     }
     case INCREMENT_DECREMENT: {
-      const tempItems = initialState.items.map((item) => {
+      const tempItems = state.items.map((item) => {
         if (item.id === action.payload.id) {
           if (action.payload.type === '+') {
             item = {
@@ -192,25 +194,25 @@ export const cartReducer = (
         }
         return item;
       });
-      return { ...initialState, items: tempItems };
+      return { ...state, items: tempItems };
     }
     case GET_DISCOUNT_ERROR: {
       return {
-        ...initialState,
+        ...state,
         discount: null,
         fetchingDiscountError: true,
       };
     }
     case REMOVE_ITEM: {
       return {
-        ...initialState,
+        ...state,
         items: action.payload.items,
       };
     }
     case SET_CART: {
       const product = action.payload.product;
       const quantity = parseInt(action.payload.qt, 10);
-      const items = [...initialState.items];
+      const items = [...state.items];
       const item = cloneDeep(items.find((item) => item.id === product.id));
       if (item) {
         const selectedProduct = items.find((item) => item.id === product.id);
@@ -220,12 +222,12 @@ export const cartReducer = (
           selectedProduct.count = quantity;
         }
         selectedProduct.total = selectedProduct.price * selectedProduct.count;
-        return { ...initialState, items: items };
+        return { ...state, items: items };
       } else {
         return {
-          ...initialState,
+          ...state,
           items: [
-            ...initialState.items,
+            ...state.items,
             {
               ...product,
               count: quantity,
@@ -237,19 +239,19 @@ export const cartReducer = (
     }
     case SET_PAYMENT_METHOD: {
       return {
-        ...initialState,
+        ...state,
         paymentMethod: action.payload.paymentMethod,
       };
     }
     case SET_ORDER_ID: {
       return {
-        ...initialState,
+        ...state,
         orderId: action.payload.orderId,
       };
     }
     case CLEAR_CART: {
       return {
-        ...initialState,
+        ...state,
         items: [],
         totalAmount: 0,
         itemsTotalCount: 0,
@@ -259,7 +261,7 @@ export const cartReducer = (
       };
     }
     default: {
-      return initialState;
+      return state;
     }
   }
 };

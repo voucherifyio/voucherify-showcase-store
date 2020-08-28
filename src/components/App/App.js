@@ -11,9 +11,9 @@ import PageError from '../Page/PageError';
 import AppMobile from './AppMobile';
 import { ToastContainer } from 'react-toastify';
 import Sidebar from '../Sidebar/Sidebar';
-import { getProducts } from '../../redux/actions/shopActions';
+import { getProducts } from '../../redux/actions/storeActions';
 import { getTotals, getDiscount } from '../../redux/actions/cartActions';
-import { init, getQualifications } from '../../redux/actions/userActions';
+import { startUserSession, getQualifications } from '../../redux/actions/userActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import 'voucherify.js';
@@ -55,7 +55,7 @@ const App = ({
 
   useEffect(() => {
     dispatch(getProducts());
-    dispatch(init());
+    dispatch(startUserSession());
   }, [dispatch]);
 
   useEffect(() => {
@@ -109,7 +109,7 @@ const App = ({
 
 const mapStateToProps = (state) => {
   return {
-    products: state.shopReducer.products,
+    products: state.storeReducer.products,
     items: state.cartReducer.items,
     selectedCustomer: state.userReducer.selectedCustomer,
     discount: state.cartReducer.discount,

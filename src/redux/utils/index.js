@@ -39,8 +39,8 @@ export const setValidatePayload = (
 
 export const setRedemptionPayload = (
   selectedCustomer,
-  total,
-  cartItems,
+  totalAmount,
+  items,
   paymentMethod
 ) => {
   return {
@@ -49,9 +49,28 @@ export const setRedemptionPayload = (
       source_id: selectedCustomer.source_id,
     },
     order: {
-      amount: total,
-      items: cartItems.map(setCartItemsPayload),
+      amount: totalAmount,
+      items: items.map(setCartItemsPayload),
     },
+    metadata: {
+      card: paymentMethod,
+    },
+  };
+};
+
+export const setOrderPayload = (
+  selectedCustomer,
+  totalAmount,
+  items,
+  paymentMethod
+) => {
+  return {
+    customer: {
+      id: selectedCustomer.id,
+      source_id: selectedCustomer.source_id,
+    },
+    amount: totalAmount,
+    items: items.map(setCartItemsPayload),
     metadata: {
       card: paymentMethod,
     },

@@ -1,7 +1,7 @@
 import {
-  INIT_REQUEST,
-  INIT_SUCCESS,
-  INIT_ERROR,
+  START_USER_SESSION_ERROR,
+  START_USER_SESSION_SUCCESS,
+  START_USER_SESSION_REQUEST,
   GET_CUSTOMERS_ERROR,
   GET_CUSTOMERS_REQUEST,
   GET_CUSTOMERS_SUCCESS,
@@ -21,65 +21,67 @@ import {
   SET_ENABLE_CART_DISCOUNTS,
 } from '../constants';
 
+const initialState = {
+  selectedCustomer: null,
+  availableCustomers: null,
+  publishedCodes: null,
+  campaigns: null,
+  promotions: null,
+  vouchers: null,
+  qualifications: null,
+  paymentMethod: 'Other',
+  sessionId: null,
+  fetchingCoupons: false,
+  fetchingPromotions: false,
+  fetchingCustomer: false,
+  fetchingQualifications: false,
+  fetchingSessionId: false,
+  fetchingCustomers: true,
+  enableCartDiscounts: false,
+}
+
 export const userReducer = (
-  initialState = {
-    selectedCustomer: null,
-    availableCustomers: null,
-    publishedCodes: null,
-    campaigns: null,
-    promotions: null,
-    vouchers: null,
-    qualifications: null,
-    paymentMethod: 'Other',
-    sessionId: null,
-    fetchingCoupons: false,
-    fetchingPromotions: false,
-    fetchingCustomer: false,
-    fetchingQualifications: false,
-    fetchingSessionId: false,
-    fetchingCustomers: true,
-    enableCartDiscounts: false,
-  },
+  state = initialState,
   action
 ) => {
   switch (action.type) {
-    case INIT_REQUEST: {
+    case START_USER_SESSION_REQUEST: {
       return {
-        ...initialState,
+        ...state,
         fetchingSessionId: true,
       };
     }
-    case SET_ENABLE_CART_DISCOUNTS: {
+    case START_USER_SESSION_SUCCESS: {
       return {
-        ...initialState,
-        enableCartDiscounts: action.payload.enableCartDiscounts
-      }
-    }
-    case INIT_SUCCESS: {
-      return {
-        ...initialState,
+        ...state,
         sessionId: action.payload.sessionId,
         publishedCodes: action.payload.publishedCodes,
         fetchingSessionId: false,
         fetchingSessionIdError: false,
       };
     }
-    case INIT_ERROR: {
+    case START_USER_SESSION_ERROR: {
       return {
-        ...initialState,
+        ...state,
         fetchingSessionId: false,
         fetchingSessionIdError: true,
       };
     }
+    case SET_ENABLE_CART_DISCOUNTS: {
+      return {
+        ...state,
+        enableCartDiscounts: action.payload.enableCartDiscounts
+      }
+    }
     case GET_CUSTOMERS_REQUEST: {
       return {
-        ...initialState,
+        ...state,
         fetchingCustomers: true,
       };
     }
     case GET_CUSTOMERS_SUCCESS: {
       return {
-        ...initialState,
+        ...state,
         availableCustomers: action.payload.availableCustomers,
         fetchingCustomers: false,
         fetchingCustomersError: false,
@@ -87,94 +89,94 @@ export const userReducer = (
     }
     case GET_CUSTOMERS_ERROR: {
       return {
-        ...initialState,
+        ...state,
         fetchingCustomersError: true,
       };
     }
     case GET_CAMPAIGNS_REQUEST: {
       return {
-        ...initialState,
+        ...state,
         fetchingCoupons: true,
       };
     }
     case GET_CAMPAIGNS_SUCCESS: {
       return {
-        ...initialState,
+        ...state,
         campaigns: action.payload.campaigns,
       };
     }
     case GET_CAMPAIGNS_ERROR: {
       return {
-        ...initialState,
+        ...state,
         fetchingCampaignsError: true,
       };
     }
 
     case GET_VOUCHERS_REQUEST: {
       return {
-        ...initialState,
+        ...state,
       };
     }
     case GET_VOUCHERS_SUCCESS: {
       return {
-        ...initialState,
+        ...state,
         vouchers: action.payload.vouchers,
         fetchingCoupons: false,
       };
     }
     case GET_VOUCHERS_ERROR: {
       return {
-        ...initialState,
+        ...state,
         fetchingVouchersError: true,
       };
     }
     case GET_CUSTOMER_REQUEST: {
       return {
-        ...initialState,
+        ...state,
         fetchingCustomer: true,
       }
     }
     case GET_CUSTOMER_SUCCESS: {
       return {
-        ...initialState,
+        ...state,
         selectedCustomer: action.payload.selectedCustomer,
         fetchingCustomer: false,
       }
     }
     case GET_CUSTOMER_ERROR: {
       return {
-        ...initialState,
+        ...state,
         fetchingCustomerError: true,
       }
     }
     case GET_QUALIFICATIONS_REQUEST: {
       return {
-        ...initialState,
+        ...state,
         fetchingQualifications: true,
       }
     }
     case GET_QUALIFICATIONS_SUCCESS: {
       return {
-        ...initialState,
+        ...state,
         fetchingQualifications: false,
         qualifications: action.payload.qualifications,
       }
     }
     case GET_QUALIFICATIONS_ERROR: {
       return {
-        ...initialState,
+        ...state,
         fetchingQualificationsError: true,
       }
     }
     case SET_PAYMENT_METHOD: {
       return {
-        ...initialState,
+        ...state,
         paymentMethod: action.payload.paymentMethod
       }
     }
     default: {
       return {
-        ...initialState,
+        ...state,
       };
     }
   }

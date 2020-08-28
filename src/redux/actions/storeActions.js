@@ -15,7 +15,7 @@ export const getProductsError = () => {
 
 export const getProducts = () => async (dispatch) => {
   dispatch(getProductsRequest());
-  await fetch(`${process.env.REACT_APP_API_URL || ''}/products`, {
+  fetch(`${process.env.REACT_APP_API_URL || ''}/products`, {
     credentials: 'include',
   })
     .then((response) => response.json())

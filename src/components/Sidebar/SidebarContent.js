@@ -272,8 +272,8 @@ const SidebarContent = ({
                     <Accordion
                       square
                       key={campaign.name}
-                      expanded={expanded === `${campaign.name}`}
-                      onChange={handleChange(`${campaign.name}`)}
+                      expanded={expanded === campaign.name}
+                      onChange={handleChange(campaign.name)}
                     >
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -320,8 +320,8 @@ const SidebarContent = ({
                     <Accordion
                       square
                       key={campaign.name}
-                      expanded={expanded === `${campaign.name}`}
-                      onChange={handleChange(`${campaign.name}`)}
+                      expanded={expanded === campaign.name}
+                      onChange={handleChange(campaign.name)}
                     >
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -334,9 +334,9 @@ const SidebarContent = ({
                           <Switch
                             color="default"
                             disabled={!enableCartDiscounts}
-                            checked={activeCartDiscount === `${campaign.name}`}
+                            checked={activeCartDiscount === campaign.name}
                             onClick={(event) => event.stopPropagation()}
-                            onChange={handleSwitchChange(`${campaign.name}`)}
+                            onChange={handleSwitchChange(campaign.name)}
                           />
                           <p className="campaign-name">
                             {campaign.metadata.demostoreName}

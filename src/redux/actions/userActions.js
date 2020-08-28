@@ -2,9 +2,9 @@ import { loadState } from '../localStorage';
 import _ from 'lodash';
 import { setValidatePayload } from '../utils';
 import {
-  INIT_REQUEST,
-  INIT_SUCCESS,
-  INIT_ERROR,
+  START_USER_SESSION_REQUEST,
+  START_USER_SESSION_SUCCESS,
+  START_USER_SESSION_ERROR,
   GET_CUSTOMERS_REQUEST,
   GET_CUSTOMERS_SUCCESS,
   GET_CUSTOMERS_ERROR,
@@ -20,18 +20,21 @@ import {
   GET_CUSTOMER_REQUEST,
   GET_CUSTOMER_SUCCESS,
   GET_CUSTOMER_ERROR,
-  SET_ENABLE_CART_DISCOUNTS
+  SET_ENABLE_CART_DISCOUNTS,
 } from '../constants';
 
-export const initRequest = () => {
-  return { type: INIT_REQUEST };
+export const startUserSessionRequest = () => {
+  return { type: START_USER_SESSION_REQUEST };
 };
-export const initSuccess = ({ sessionId, publishedCodes }) => {
-  return { type: INIT_SUCCESS, payload: { sessionId, publishedCodes } };
+export const startUserSessionSuccess = ({ sessionId, publishedCodes }) => {
+  return {
+    type: START_USER_SESSION_SUCCESS,
+    payload: { sessionId, publishedCodes },
+  };
 };
 
-export const initError = () => {
-  return { type: INIT_ERROR };
+export const startUserSessionError = () => {
+  return { type: START_USER_SESSION_ERROR };
 };
 
 export const getCustomersRequest = () => {
@@ -53,8 +56,8 @@ export const getQualificationsSuccess = (qualifications) => {
 };
 
 export const setEnableCartDiscounts = (enableCartDiscounts) => {
-  return {type: SET_ENABLE_CART_DISCOUNTS, payload: {enableCartDiscounts}}
-}
+  return { type: SET_ENABLE_CART_DISCOUNTS, payload: { enableCartDiscounts } };
+};
 export const getQualificationsError = () => {
   return { type: GET_QUALIFICATIONS_ERROR };
 };
@@ -95,23 +98,23 @@ export const getCustomerError = () => {
   return { type: GET_CUSTOMER_ERROR };
 };
 
-export const init = () => async (dispatch) => {
-  dispatch(initRequest());
-  await fetch(`${process.env.REACT_APP_API_URL || ''}/init`, {
+export const startUserSession = () => async (dispatch) => {
+  dispatch(startUserSessionRequest());
+  fetch(`${process.env.REACT_APP_API_URL || ''}/start`, {
     credentials: 'include',
   })
     .then((response) => response.json())
     .then((resp) => {
       if (resp.coupons.length === 0) {
         dispatch(
-          initSuccess({
+          startUserSessionSuccess({
             sessionId: resp.session,
             publishedCodes: loadState().userReducer.publishedCodes,
           })
         );
       } else {
         dispatch(
-          initSuccess({
+          startUserSessionSuccess({
             sessionId: resp.session,
             publishedCodes: resp.coupons,
           })
@@ -122,8 +125,8 @@ export const init = () => async (dispatch) => {
     .then(() => dispatch(getCampaigns()))
     .then(() => dispatch(getVouchers()))
     .catch((error) => {
-      console.log('[Init][Error]', error);
-      dispatch(initError());
+      console.log('[startUserSession][Error]', error);
+      dispatch(startUserSessionError());
     });
 };
 
@@ -234,7 +237,8 @@ export const getCustomer = (id, type = 'normal') => async (
         selectedCustomer.summary.orders.total_amount
       ) {
         // If true -> wait
-        sleep(5000).then(() => dispatch(getCustomer(id, 'update')));
+        await sleep(5000);
+        dispatch(getCustomer(id, 'update'));
       } else {
         dispatch(getCustomer(id))
           .then(() => dispatch(getCampaigns))

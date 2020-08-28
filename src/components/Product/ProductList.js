@@ -84,8 +84,8 @@ const ProductList = ({ products, fetchingProducts }) => {
 
 const mapStateToProps = (state) => {
   return {
-    products: state.shopReducer.products,
-    fetchingProducts: state.shopReducer.fetchingProducts,
+    products: state.storeReducer.products,
+    fetchingProducts: state.storeReducer.fetchingProducts,
   };
 };
 

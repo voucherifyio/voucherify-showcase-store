@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CartItem from './CartItem';
 import CartForm from './CartForm';
 import { Link } from 'react-router-dom';
@@ -30,6 +30,14 @@ const CartList = ({
   discountedAmount,
   enableCartDiscounts,
 }) => {
+  const [discountForm, setDiscountForm] = useState(true);
+  useEffect(() => {
+    if (!isEmpty(discount) || enableCartDiscounts) {
+      setDiscountForm(false);
+    } else {
+      setDiscountForm(true);
+    }
+  }, [discount, enableCartDiscounts]);
   return (
     <div className="col-md-12 col-lg-9 order-2">
       <h4 className="d-flex justify-content-between align-items-center mb-3">
@@ -103,12 +111,11 @@ const CartList = ({
             </div>
           </li>
         )}
-        {!enableCartDiscounts && (
+        {discountForm && (
           <>
             <CartForm />
           </>
         )}
-
         <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
           <Tooltip title="Clear cart">
             <IconButton className="mx-2" onClick={() => dispatch(clearCart())}>
@@ -175,4 +182,5 @@ CartList.propTypes = {
   discount: PropTypes.object,
   totalAmountAfterDiscount: PropTypes.number,
   discountedAmount: PropTypes.number,
+  enableCartDiscounts: PropTypes.bool
 };

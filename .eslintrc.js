@@ -7,6 +7,7 @@ module.exports = {
   "parser": "babel-eslint",
   'extends': [
     'plugin:react/recommended',
+    'prettier',
   ],
   'globals': {
     'Atomics': 'readonly',

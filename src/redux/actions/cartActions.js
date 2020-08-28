@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import {
   setRedemptionPayload,
+  setOrderPayload,
   setValidatePayload,
   getOrderId,
   sendPayload,
@@ -66,7 +67,7 @@ export const addItemToCart = (id, qt, type = 'change_count') => (
   getState
 ) => {
   const getItem = (id) => {
-    const tempProducts = getState().shopReducer.products;
+    const tempProducts = getState().storeReducer.products;
     const product = cloneDeep(tempProducts.find((item) => item.id === id));
     return product;
   };
@@ -163,7 +164,7 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
     if (isEmpty(currentDiscount)) {
       dispatch(getDiscountSuccess(discount));
     } else {
-      discount = currentDiscount
+      discount = currentDiscount;
       dispatch(getDiscountSuccess(discount));
     }
   } catch (error) {
@@ -180,19 +181,19 @@ export const checkoutCart = () => async (dispatch, getState) => {
     items,
     discount,
   } = getState().cartReducer;
-  const checkoutPayload = setRedemptionPayload(
-    selectedCustomer,
-    totalAmount,
-    items,
-    paymentMethod
-  );
 
   // If voucher or promotion is not applied
   if (isEmpty(discount)) {
+    const checkoutPayload = setOrderPayload(
+      selectedCustomer,
+      totalAmount,
+      items,
+      paymentMethod
+    );
     checkoutPayload.source_id = getOrderId();
     checkoutPayload.status = 'FULFILLED';
-
-    await sendPayload(checkoutPayload, 'order')
+    console.log(checkoutPayload);
+    sendPayload(checkoutPayload, 'order')
       .then(() => {
         dispatch(clearCart());
         dispatch(setOrderId(checkoutPayload.source_id));
@@ -202,30 +203,38 @@ export const checkoutCart = () => async (dispatch, getState) => {
         console.log('[checkoutCart]', error);
       });
     // If voucher is applied
-  } else if (discount.hasOwnProperty('code')) {
-    const discountCode = discount.code;
-    checkoutPayload.code = discountCode;
-    await sendPayload(checkoutPayload, 'redeem')
-      .then((response) => {
-        dispatch(clearCart());
-        dispatch(setOrderId(response.order.id));
-      })
-      .catch((error) => {
-        toast.error('There was a problem with your purchase');
-        console.log('[checkoutCart][Discount]', error);
-      });
-    // If promotion is applied
-  } else if (discount.hasOwnProperty('banner')) {
-    const promotionId = discount.id;
-    checkoutPayload.promotionId = promotionId;
-    await sendPayload(checkoutPayload, 'redeem')
-      .then((response) => {
-        dispatch(clearCart());
-        dispatch(setOrderId(response.order.id));
-      })
-      .catch((error) => {
-        toast.error('There was a problem with your purchase');
-        console.log('[checkoutCart][Cart Discount]', error);
-      });
+  } else {
+    const checkoutPayload = setRedemptionPayload(
+      selectedCustomer,
+      totalAmount,
+      items,
+      paymentMethod
+    );
+    if (discount.hasOwnProperty('code')) {
+      const discountCode = discount.code;
+      checkoutPayload.code = discountCode;
+      sendPayload(checkoutPayload, 'redeem')
+        .then((response) => {
+          dispatch(clearCart());
+          dispatch(setOrderId(response.id));
+        })
+        .catch((error) => {
+          toast.error('There was a problem with your purchase');
+          console.log('[checkoutCart][Discount]', error);
+        });
+      // If promotion is applied
+    } else if (discount.hasOwnProperty('banner')) {
+      const promotionId = discount.id;
+      checkoutPayload.promotionId = promotionId;
+      sendPayload(checkoutPayload, 'redeem')
+        .then((response) => {
+          dispatch(clearCart());
+          dispatch(setOrderId(response.order.id));
+        })
+        .catch((error) => {
+          toast.error('There was a problem with your purchase');
+          console.log('[checkoutCart][Cart Discount]', error);
+        });
+    }
   }
 };

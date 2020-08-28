@@ -57,9 +57,9 @@ function publishCouponsForCustomer(id) {
 
 app.use(bodyParser.json());
 
-app.get('/init', async (request, response) => {
+app.get('/start', async (request, response) => {
   if (request.session.views) {
-    console.log(`[Re-visit] ${request.session.id} - ${request.session.views}`);
+    console.log(`[Session][Re-visit] ${request.session.id} - ${request.session.views}`);
     ++request.session.views;
 
     return response.json({
@@ -69,7 +69,7 @@ app.get('/init', async (request, response) => {
   }
 
   request.session.views = 1;
-  console.log(`[New-visit] ${request.session.id}`);
+  console.log(`[Session][New-visit] ${request.session.id}`);
 
   try {
     // Create new customers if this is a new session
@@ -141,7 +141,7 @@ app.get('/init', async (request, response) => {
       coupons: createdCoupons,
     });
   } catch (e) {
-    console.error(`[Init][Error] - ${e}`);
+    console.error(`[Session][Error] - ${e}`);
     return response.status(500).end();
   }
 });
@@ -287,7 +287,9 @@ app.get('/promotions/:campaignId', async (request, response) => {
 
 app.post('/order', async (request, response) => {
   try {
+    console.log(request.body)
     const order = await voucherify.orders.create(request.body);
+    console.log(order)
     return response.json(order);
   } catch (e) {
     console.error(`[Order][Error] - ${e}`);

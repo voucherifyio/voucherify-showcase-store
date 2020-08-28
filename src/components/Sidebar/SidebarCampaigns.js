@@ -59,8 +59,8 @@ const SidebarCampaigns = ({ campaign, handleChange, selectedCustomer }) => {
       <Accordion
         square
         key={campaign.name}
-        expanded={expanded === `${campaign.name}`}
-        onChange={handleChange(`${campaign.name}`)}
+        expanded={expanded === campaign.name}
+        onChange={handleChange(campaign.name)}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

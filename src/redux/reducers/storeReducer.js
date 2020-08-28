@@ -9,7 +9,7 @@ const initialState = {
   fetchingProducts: false,
 }
 
-export const shopReducer = (
+export const storeReducer = (
   state = initialState,
   action
 ) => {
@@ -42,4 +42,4 @@ export const shopReducer = (
   }
 };
 
-export default shopReducer;
+export default storeReducer;

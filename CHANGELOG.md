@@ -36,8 +36,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 28.07.2020
 
 ### Added
-   - MAJOR Create customers per new shop session
-   - MAJOR Create campaings / vouchers for each new deployed shop
+   - MAJOR Create customers per new store session
+   - MAJOR Create campaings / vouchers for each new deployed store
    - MAJOR Implemented validation rules
     
 ### Fixed

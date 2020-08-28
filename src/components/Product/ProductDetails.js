@@ -72,7 +72,7 @@ const ProductDetails = ({ products, dispatch }) => {
 
 const mapStateToProps = (state) => {
   return {
-    products: state.shopReducer.products,
+    products: state.storeReducer.products,
     itemsTotalCount: state.cartReducer.itemsTotalCount,
   };
 };
