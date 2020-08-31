@@ -100,7 +100,7 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
             {campaign.metadata.demostoreSteps.split(';').map((step) => (
               <div
                 key={step}
-                className="campaign-step d-flex flex-row align-items-center"
+                className="campaign-step d-flex flex-row"
               >
                 <div className="campaign-step-icon">
                   <ArrowRightIcon />
@@ -122,7 +122,7 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
                       <p className="campaign-description section-heading redemption-rules mt-2">
                         Tier {index + 1}
                       </p>
-                      <div className="campaign-step d-flex flex-row align-items-center">
+                      <div className="campaign-step d-flex flex-row">
                         <div className="campaign-step-icon">
                           <ArrowRightIcon />
                         </div>
@@ -148,7 +148,7 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
                       {tier.metadata.demostoreSteps.split(';').map((step) => (
                         <div
                           key={step}
-                          className="campaign-step d-flex flex-row align-items-center"
+                          className="campaign-step d-flex flex-row"
                         >
                           <div className="campaign-step-icon">
                             <ArrowRightIcon />

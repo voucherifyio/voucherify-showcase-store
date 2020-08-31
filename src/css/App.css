@@ -12,6 +12,9 @@ body {
   color: var(--mainDark) !important;
   font-size: 14px;
   position: relative;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .product-grid {

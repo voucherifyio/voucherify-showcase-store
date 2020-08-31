@@ -41,7 +41,6 @@ const Navigation = ({
             >
               <Nav.Item className="navbar-account px-2">Store</Nav.Item>
             </Link>
-
             {currentCustomer !== null && (
               <Nav.Item className="navbar-account px-2">
                 <AccountCircleIcon className="navbar-icon mx-2" />

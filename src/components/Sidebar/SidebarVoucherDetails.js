@@ -102,7 +102,7 @@ const SidebarVoucherDetails = ({ voucher, code }) => {
             {voucher.metadata.demostoreSteps.split(';').map((step) => (
               <div
                 key={step}
-                className="campaign-step d-flex flex-row align-items-center"
+                className="campaign-step d-flex flex-row"
               >
                 <div className="campaign-step-icon">
                   <ArrowRightIcon />
