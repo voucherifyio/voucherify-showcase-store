@@ -1,9 +1,66 @@
+exports.customers = [
+  {
+    source_id: 'alicemorgan',
+    name: 'Alice Morgan',
+    email: 'alice@morgan.io',
+    metadata: {
+      country: 'UK',
+      gender: 'F',
+      demostore_id: 'alicemorgan',
+      customerValidationRuleName: 'Welcome wave 5% off Alice Morgan',
+    },
+    address: {
+      city: 'London',
+      state: 'Greater London',
+      line_1: '10 Downing Street',
+      country: 'England',
+      postal_code: 'E1 7AA',
+    },
+  },
+  {
+    source_id: 'lewismarshall',
+    name: 'Lewis Marshall',
+    email: 'lewis_marshall@gmail.com',
+    metadata: {
+      country: 'USA',
+      gender: 'M',
+      demostore_id: 'lewismarshall',
+      customerValidationRuleName: 'Welcome wave 5% off Lewis Marshall',
+    },
+    address: {
+      city: 'Los Angeles',
+      state: 'California',
+      line_1: '4302  Norman Street',
+      country: 'USA',
+      postal_code: '90015',
+    },
+  },
+  {
+    source_id: 'johndorian',
+    name: 'John Dorian',
+    email: 'john_d@scrubs.net',
+    metadata: {
+      country: 'PL',
+      gender: 'M',
+      demostore_id: 'johndorian',
+      customerValidationRuleName: 'Welcome wave 5% off John Dorian',
+    },
+    address: {
+      city: 'Warsaw',
+      state: 'Masovian Voivodeship',
+      line_1: 'Wspólna 2/24',
+      country: 'Poland',
+      postal_code: '01-002',
+    },
+  },
+];
+
 exports.vouchers = [
   {
     code: 'BLCKFRDY',
     object: 'voucher',
     type: 'DISCOUNT_VOUCHER',
-    category: 'STANDALONE',
+    category: 'Public',
     discount: { type: 'AMOUNT', amount_off: 1000 },
     metadata: {
       demostoreName: 'Black Friday Coupon',
@@ -17,7 +74,7 @@ exports.vouchers = [
     code: '50%OFF',
     object: 'voucher',
     type: 'DISCOUNT_VOUCHER',
-    category: 'STANDALONE',
+    category: 'Public',
     discount: { type: 'PERCENT', percent_off: 50 },
     metadata: {
       demostoreName: '50%OFF',
@@ -28,10 +85,24 @@ exports.vouchers = [
     },
   },
   {
+    code: 'UPTO100',
+    object: 'voucher',
+    type: 'DISCOUNT_VOUCHER',
+    category: 'Public',
+    discount: { type: 'PERCENT', percent_off: 50, amount_limit: 10000 },
+    metadata: {
+      demostoreName: 'UPTO100',
+      demostoreAssignedValRules: '',
+      demostoreDescription: 'Global coupon',
+      demostoreSteps: '',
+      demostoreOrder: 4,
+    },
+  },
+  {
     code: '15%VISA',
     object: 'voucher',
     type: 'DISCOUNT_VOUCHER',
-    category: 'STANDALONE',
+    category: 'Public',
     discount: { type: 'PERCENT', percent_off: 15 },
     metadata: {
       demostoreName: 'Visa Voucher',
@@ -57,7 +128,7 @@ exports.campaigns = [
     metadata: {
       demostoreName: 'Welcome wave 5% off',
       demostoreAssignedValRules:
-        'Welcome wave 5% off Lewis Marshall; Welcome wave 5% off Alice Morgan; Welcome wave 5% off John Dorian',
+        'Welcome wave 5% off Lewis Marshall;Welcome wave 5% off Alice Morgan;Welcome wave 5% off John Dorian',
       demostoreDescription:
         'Only current customer can validate the coupon. Redeemable only once',
       demostoreSteps: 'Customer: Current customer',
@@ -65,15 +136,15 @@ exports.campaigns = [
     },
   },
   {
-    name: 'Buy One - Get One',
+    name: 'BOGO Campaign',
     type: 'AUTO_UPDATE',
     voucher: {
       type: 'DISCOUNT_VOUCHER',
       discount: { percent_off: 100, type: 'PERCENT' },
     },
     metadata: {
-      demostoreName: 'Buy One - Get One',
-      demostoreAssignedValRules: 'Buy One - Get One',
+      demostoreName: 'BOGO Campaign',
+      demostoreAssignedValRules: 'BOGO Campaign',
       demostoreDescription: 'Add to items to cart to use this coupon',
       demostoreSteps:
         'Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra',
@@ -131,18 +202,17 @@ exports.campaigns = [
     },
   },
   {
-    name: 'Cart Level Promotions',
+    name: 'Tiered Discount',
     campaign_type: 'PROMOTION',
     metadata: {
-      demostoreAssignedValRules:
-        '$10 off for orders above $100, $3 off for orders above $30',
-      demostoreName: 'Cart Level Promotions',
+      demostoreAssignedValRules: 'Final Tier - $10 off;First Tier - $3 off',
+      demostoreName: 'Tiered Discount',
     },
     promotion: {
       tiers: [
         {
-          name: '$10 off for orders above $100',
-          banner: 'Congratulations, you get $10 off.',
+          name: 'Final Tier - $10 off',
+          banner: 'Congratulations, you get $10 off!',
           action: {
             discount: {
               type: 'AMOUNT',
@@ -150,14 +220,16 @@ exports.campaigns = [
             },
           },
           metadata: {
-            demostoreName: '$10 off CLP',
-            demostoreTierName: 'Tier 1',
+            demostoreName: 'Tiered Discount',
+            demostoreTierName: 'Final Tier - $10 off',
             demostoreSteps: 'Cart value: > $100',
+            demostoreOrder: 1,
           },
         },
         {
-          name: '$3 off for orders above $30',
-          banner: 'Congratulations, you get $3 off.',
+          name: 'First Tier - $3 off',
+          banner:
+            'Congratulations, you get $3 off! Add more items for bigger discount!',
           action: {
             discount: {
               type: 'AMOUNT',
@@ -165,9 +237,54 @@ exports.campaigns = [
             },
           },
           metadata: {
-            demostoreName: '$3 off CLP',
-            demostoreTierName: 'Tier 2',
+            demostoreName: 'Tiered Discount',
+            demostoreTierName: 'First Tier - $3 off',
             demostoreSteps: 'Cart value: > $30',
+            demostoreOrder: 2,
+          },
+        },
+      ],
+    },
+  },
+  {
+    name: 'BOGO Discount',
+    campaign_type: 'PROMOTION',
+    metadata: {
+      demostoreAssignedValRules:
+        'Final Tier - 100% off for Hard Beans - Brazil;First Tier - 50% off for Hard Beans - Brazil',
+      demostoreName: 'BOGO Discount',
+    },
+    promotion: {
+      tiers: [
+        {
+          name: 'Final Tier - 100% off for Hard Beans - Brazil',
+          banner: 'Congratulations, you get Hard Beans - Brazil for free',
+          action: {
+            discount: { percent_off: 100, type: 'PERCENT' },
+          },
+          metadata: {
+            demostoreName: 'BOGO Discount',
+            demostoreBOGO: '1x Hard Beans - Brazil',
+            demostoreTierName: 'Final Tier - 100% off for Hard Beans - Brazil',
+            demostoreSteps:
+              'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil;Cart value: > $100',
+            demostoreOrder: 1,
+          },
+        },
+        {
+          name: 'First Tier - 50% off for Hard Beans - Brazil',
+          banner:
+            'Congratulations, you get Hard Beans - Brazil for 50%. Add more items to get it for free!',
+          action: {
+            discount: { percent_off: 50, type: 'PERCENT' },
+          },
+          metadata: {
+            demostoreName: 'BOGO Discount',
+            demostoreBOGO: '1x Hard Beans - Brazil',
+            demostoreTierName: 'First Tier - 50% off for Hard Beans - Brazil',
+            demostoreSteps:
+              'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil',
+            demostoreOrder: 2,
           },
         },
       ],

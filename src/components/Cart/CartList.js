@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CartItem from './CartItem';
-import _ from 'lodash';
 import CartForm from './CartForm';
-import CartLevelPromotions from './CartLevelPromotions';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
@@ -12,94 +10,115 @@ import ClearIcon from '@material-ui/icons/Clear';
 import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
+import { connect } from 'react-redux';
+import { getCurrentCustomer } from '../../redux/actions/userActions';
+import {
+  clearCart,
+  checkoutCart,
+  removePromotionFromCart,
+  setPaymentMethod,
+} from '../../redux/actions/cartActions';
+import { isEmpty } from '../../redux/utils';
 
-const CartList = ({ ctx }) => {
+const CartList = ({
+  items,
+  paymentMethod,
+  currentCustomer,
+  totalAmountAfterDiscount,
+  dispatch,
+  discount,
+  discountedAmount,
+  enableCartDiscounts,
+}) => {
+  const [discountForm, setDiscountForm] = useState(true);
+  useEffect(() => {
+    if (!isEmpty(discount) || enableCartDiscounts) {
+      setDiscountForm(false);
+    } else {
+      setDiscountForm(true);
+    }
+  }, [discount, enableCartDiscounts]);
   return (
     <div className="col-md-12 col-lg-9 order-2">
       <h4 className="d-flex justify-content-between align-items-center mb-3">
         <span>Your cart</span>
       </h4>
       <ul className="list-group mb-3">
-        {ctx.cartItems.map((item) => {
-          return <CartItem key={item.id} item={item} ctx={ctx} />;
+        {items.map((item) => {
+          return <CartItem key={item.id} id={item.id} />;
         })}
         <li className="list-group-item d-flex lh-condensed">
           <div className="my-auto col-4">
-            Payment method: <strong>{ctx.customerPaymentMethod}</strong>
+            Payment method: <strong>{paymentMethod}</strong>
           </div>
           <div className="d-flex my-auto col-4">
             <Chip
               className="mr-1"
-              onClick={() => ctx.setCard('Visa')}
+              onClick={() => dispatch(setPaymentMethod('Visa'))}
               label="Visa"
             ></Chip>
             <Chip
               className="mr-1"
-              onClick={() => ctx.setCard('MasterCard')}
+              onClick={() => dispatch(setPaymentMethod('MasterCard'))}
               label="MasterCard"
             ></Chip>
             <Chip
               className="mr-1"
-              onClick={() => ctx.setCard('Other')}
+              onClick={() => dispatch(setPaymentMethod('Other'))}
               label="Other"
             ></Chip>
           </div>
         </li>
-        {!_.isEmpty(ctx.cartSelectedVoucher) ||
-        !_.isEmpty(ctx.cartSelectedPromotion) ? (
+        {!isEmpty(discount) && (
           <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
-            {!_.isEmpty(ctx.cartSelectedVoucher) &&
-              ctx.cartSelectedVoucher.hasOwnProperty('code') && (
-                <>
-                  <div className="d-inline my-auto col-4">
-                    Discount code{' '}
-                    <span className="text-success">
-                      {ctx.cartSelectedVoucher.code}
-                    </span>
-                  </div>
-                </>
-              )}
-            {!_.isEmpty(ctx.cartSelectedVoucher) &&
-              ctx.cartSelectedVoucher.hasOwnProperty('banner') && (
-                <>
-                  <div className="d-inline my-auto col-4">
-                    Active Promotion{' '}
-                    <span className="text-success">
-                      {ctx.cartSelectedVoucher.metadata.demostoreName}
-                    </span>
-                  </div>
-                </>
-              )}
+            {!isEmpty(discount) && discount.hasOwnProperty('code') && (
+              <>
+                <div className="d-inline my-auto col-4">
+                  Discount code{' '}
+                  <span className="text-success">{discount.code}</span>
+                </div>
+              </>
+            )}
+            {!isEmpty(discount) && discount.hasOwnProperty('banner') && (
+              <>
+                <div className="d-inline my-auto col-4">
+                  Cart Discount{' '}
+                  <span className="text-success">
+                    {discount.metadata.demostoreName}
+                  </span>
+                </div>
+              </>
+            )}
 
             <div className="d-none d-lg-block my-auto mx-auto col-2"></div>
             <div className="d-none d-lg-block my-auto mx-auto col-2"></div>
             <div
               className="d-flex flex-column justify-content-center
-              my-auto mx-auto align-items-center col-2"
+      my-auto mx-auto align-items-center col-2"
             >
               <small className="text-success">Discount</small>
               <span className="text-success">
-                -${(ctx.cartDiscountedAmount / 100).toFixed(2)}
+                -${(discountedAmount / 100).toFixed(2)}
               </span>
             </div>
             <div className="d-flex flex-column justify-content-center">
               <IconButton
                 className="mx-2"
-                onClick={() => ctx.removePromotionFromCart('promotion')}
+                onClick={() => dispatch(removePromotionFromCart())}
               >
                 <DeleteIcon />
               </IconButton>
             </div>
           </li>
-        ) : (
+        )}
+        {discountForm && (
           <>
-            <CartForm ctx={ctx} />
-            <CartLevelPromotions ctx={ctx} />
+            <CartForm />
           </>
         )}
         <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
           <Tooltip title="Clear cart">
-            <IconButton className="mx-2" onClick={() => ctx.clearCart()}>
+            <IconButton className="mx-2" onClick={() => dispatch(clearCart())}>
               <ClearIcon />
             </IconButton>
           </Tooltip>
@@ -108,13 +127,13 @@ const CartList = ({ ctx }) => {
             my-auto ml-auto align-items-center col-4"
           >
             <h4 className="mb-0">
-              ${(ctx.cartTotalAfterPromotion / 100).toFixed(2)}
+              ${(totalAmountAfterDiscount / 100).toFixed(2)}
             </h4>
           </div>
         </li>
       </ul>
       <>
-        {ctx.customerSelectedCustomer ? (
+        {currentCustomer ? (
           <Link
             to="/success"
             className="link-unstyled"
@@ -122,12 +141,11 @@ const CartList = ({ ctx }) => {
           >
             <Button
               variant="dark"
-              onClick={() => {
-                ctx.checkoutCart(
-                  ctx.customerSelectedCustomer,
-                  ctx.customerPaymentMethod
+              onClick={async () => {
+                await dispatch(checkoutCart());
+                dispatch(
+                  getCurrentCustomer(currentCustomer.source_id, 'update')
                 );
-                ctx.updateCustomerData(ctx.customerSelectedCustomer.source_id);
               }}
               className="w-100 p-2"
             >
@@ -142,8 +160,28 @@ const CartList = ({ ctx }) => {
   );
 };
 
-export default CartList;
+const mapStateToProps = (state) => {
+  return {
+    currentCustomer: state.userReducer.currentCustomer,
+    itemsTotalCount: state.cartReducer.itemsTotalCount,
+    totalAmountAfterDiscount: state.cartReducer.totalAmountAfterDiscount,
+    discount: state.cartReducer.discount,
+    discountedAmount: state.cartReducer.discountedAmount,
+    paymentMethod: state.userReducer.paymentMethod,
+    items: state.cartReducer.items,
+    enableCartDiscounts: state.userReducer.enableCartDiscounts,
+  };
+};
+
+export default connect(mapStateToProps)(CartList);
 
 CartList.propTypes = {
-  ctx: PropTypes.object.isRequired,
+  items: PropTypes.array,
+  currentCustomer: PropTypes.object,
+  dispatch: PropTypes.func,
+  paymentMethod: PropTypes.string,
+  discount: PropTypes.object,
+  totalAmountAfterDiscount: PropTypes.number,
+  discountedAmount: PropTypes.number,
+  enableCartDiscounts: PropTypes.bool,
 };

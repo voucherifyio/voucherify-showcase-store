@@ -1,9 +1,11 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addItemToCart } from '../../redux/actions/cartActions';
 
-const Product = ({product, storeLogic}) => {
+const Product = ({ product, addItemToCart }) => {
   return (
     <div className="col-lg-4 p-4 col-md-12 col-sm-12">
       <div className="product-grid">
@@ -27,7 +29,7 @@ const Product = ({product, storeLogic}) => {
                 variant="dark"
                 size="sm"
                 onClick={() => {
-                  storeLogic.addToCart(product.id, 1);
+                  addItemToCart();
                 }}
               >
                 <span>+ Cart</span>
@@ -40,9 +42,16 @@ const Product = ({product, storeLogic}) => {
   );
 };
 
-export default Product;
-
 Product.propTypes = {
   product: PropTypes.object.isRequired,
-  storeLogic: PropTypes.object.isRequired,
+  addItemToCart: PropTypes.func.isRequired,
 };
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const { product } = ownProps;
+  return {
+    addItemToCart: () => dispatch(addItemToCart(product.id, 1, 'increment_count')),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Product);

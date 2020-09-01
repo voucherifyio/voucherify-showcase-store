@@ -7,11 +7,14 @@
 }
 
 body {
-  font-family: "Lato", sans-serif !important;
+  font-family: 'Lato', sans-serif !important;
   background: var(--mainWhite) !important;
   color: var(--mainDark) !important;
   font-size: 14px;
   position: relative;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .product-grid {
@@ -134,7 +137,18 @@ body {
 a,
 a:focus,
 a:hover {
+  text-decoration: none !important;
+}
+
+.voucherify-link {
+  color: #25abb7;
+  text-transform: none;
   text-decoration: none;
+  transition: 0.4s all ease;
+}
+
+.voucherify-link:hover {
+  color: #007682;
 }
 
 .navbar-sticky {
@@ -158,6 +172,10 @@ a:hover {
   min-width: 100vw;
 }
 
+.validateButton {
+  z-index: 1 !important;
+}
+
 button:focus {
   outline: none !important;
   border: 0 !important;
@@ -176,13 +194,6 @@ button:focus {
 #no-mobile {
   height: 100vh !important;
   width: 100vw !important;
-}
-
-.voucherify-link,
-.voucherify-link:hover {
-  text-transform: none;
-  text-decoration: none;
-  color: #25abb7;
 }
 
 /* Sidebar styles */
@@ -207,8 +218,16 @@ button:focus {
 #storeSidebar-wrapper .storeSidebar-heading {
   margin-top: 1rem;
   padding: 0.4rem 1rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 700;
+}
+
+.capitalize::first-letter {
+  text-transform: capitalize;
+}
+
+.capitalize:first-letter {
+  text-transform: capitalize;
 }
 
 #storeSidebar-wrapper .campaigns-count {
@@ -216,11 +235,11 @@ button:focus {
 }
 
 #storeSidebar-wrapper .campaign-box {
-  height: 80px;
+  /* height: 80px; */
 }
 
 #storeSidebar-wrapper .campaign-name {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   margin-bottom: 0px;
 }
@@ -249,7 +268,6 @@ button:focus {
 #storeSidebar-wrapper .campaign-step-text {
   margin-bottom: 0px;
 }
-
 
 #storeCustomers {
   width: 100%;
@@ -280,6 +298,10 @@ button:focus {
 .storeSidebar-content {
   padding: 0.875rem 1.25rem;
   font-size: 1rem;
+}
+
+.storeSidebar-content p {
+  margin-bottom: 0.25rem;
 }
 
 .storeSidebar-content-data {

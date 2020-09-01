@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import App from './components/App/App';
 import {BrowserRouter as Router} from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
-import {ProductProvider} from './components/Context/Context';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { Provider } from 'react-redux'
+import store from './redux/store'
 
 ReactDOM.render(
-      <ProductProvider>
+  <Provider store={store}>
         <Router>
           <React.StrictMode>
             <CssBaseline />
             <App />
           </React.StrictMode>
         </Router>
-      </ProductProvider>,
+      </Provider>,
     document.getElementById('root'),
 );
 

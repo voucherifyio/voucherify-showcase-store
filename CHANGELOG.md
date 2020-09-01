@@ -5,10 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.4.0] - 25.08.2020
+
+### Added
+   - MAJOR Redux added for better discount logic
+   - MINOR Added new voucher with discount amount limit
+   - MINOR Added new cart discount (Buy one - get one)
+   - MINOR improvements
+
 ## [2.3.0] - 17.08.2020
 
 ### Added
-   - MAJOR Cart Level Promotions added
+   - MAJOR Cart Discounts added
 
 ## [2.2.0] - 14.08.2020
 
@@ -28,8 +36,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 28.07.2020
 
 ### Added
-   - MAJOR Create customers per new shop session
-   - MAJOR Create campaings / vouchers for each new deployed shop
+   - MAJOR Create customers per new store session
+   - MAJOR Create campaings / vouchers for each new deployed store
    - MAJOR Implemented validation rules
     
 ### Fixed
