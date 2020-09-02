@@ -5,17 +5,17 @@ const voucherify = voucherifyClient({
   clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
 
-router.route('*').get(async (request, response) => {
+router.route('*').get(async (req, res) => {
   try {
     const allCampaigns = await voucherify.campaigns.list();
     // Filter out campaigns not created by setup.js and filter out Cart Level Promotion
     const campaigns = allCampaigns.campaigns.filter((campaign) =>
       campaign.metadata.hasOwnProperty('demostoreName')
     );
-    return response.json(campaigns);
+    return res.json(campaigns);
   } catch (e) {
     console.error(`[Campaigns][Error] - ${e}`);
-    response.status(500).end();
+    res.status(500).end();
   }
 });
 

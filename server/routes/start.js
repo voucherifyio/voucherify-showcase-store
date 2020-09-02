@@ -7,10 +7,13 @@ const voucherify = voucherifyClient({
   clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
 const storeCustomers = voucherifyData.customers;
-const campaigns = voucherifyData.campaigns.filter(
-  (campaign) => campaign.campaign_type !== 'PROMOTION'
-);
 
+// We need to filter out Promotion campaigns and campaings without published coupons
+const campaigns = voucherifyData.campaigns.filter(
+  (campaign) =>
+    campaign.campaign_type !== 'PROMOTION' &&
+    campaign.metadata.demostoreDoNotPublish !== true
+);
 
 function publishCouponsForCustomer(id) {
   const params = {
@@ -27,49 +30,45 @@ function publishCouponsForCustomer(id) {
     );
 }
 
-router.route('*').get(async (request, response) => {
-  if (request.session.views) {
-    console.log(
-      `[Session][Re-visit] ${request.session.id} - ${request.session.views}`
-    );
-    ++request.session.views;
+router.route('*').get(async (req, res) => {
+  if (req.session.views) {
+    console.log(`[Session][Re-visit] ${req.session.id} - ${req.session.views}`);
+    ++req.session.views;
 
-    return response.json({
-      session: request.session.id,
+    return res.json({
+      session: req.session.id,
       coupons: [],
     });
   }
 
-  request.session.views = 1;
-  console.log(`[Session][New-visit] ${request.session.id}`);
+  req.session.views = 1;
+  console.log(`[Session][New-visit] ${req.session.id}`);
 
   try {
     // Create new customers if this is a new session
     const createdCustomers = await Promise.all(
       storeCustomers.map((customer) => {
-        customer.source_id = `${request.session.id}${customer.metadata.demostore_id}`;
+        customer.source_id = `${req.session.id}${customer.metadata.demostore_id}`;
         return voucherify.customers.create(customer);
       })
     );
     // We're setting up dummy order for one of the customers
     const dummyOrderCustomer = _find(storeCustomers, {
-      source_id: `${request.session.id}lewismarshall`,
+      source_id: `${req.session.id}lewismarshall`,
     });
-    await voucherify.orders
-      .create({
-        source_id: 'hot_beans_dummyorder',
-        items: [
-          {
-            quantity: 1,
-            price: 30000,
-            amount: 30000,
-          },
-        ],
-        amount: 30000,
-        customer: dummyOrderCustomer,
-        status: 'FULFILLED',
-      })
-      .then((resp) => console.log(resp));
+    await voucherify.orders.create({
+      source_id: 'hot_beans_dummyorder',
+      items: [
+        {
+          quantity: 1,
+          price: 30000,
+          amount: 30000,
+        },
+      ],
+      amount: 30000,
+      customer: dummyOrderCustomer,
+      status: 'FULFILLED',
+    });
 
     const createdCoupons = await Promise.all(
       createdCustomers.map(async (customer) => {
@@ -110,13 +109,13 @@ router.route('*').get(async (request, response) => {
       })
     );
 
-    return response.json({
-      session: request.session.id,
+    return res.json({
+      session: req.session.id,
       coupons: createdCoupons,
     });
   } catch (e) {
     console.error(`[Session][Error] - ${e}`);
-    return response.status(500).end();
+    return res.status(500).end();
   }
 });
 

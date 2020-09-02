@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Footer from '../Footer';
@@ -45,17 +45,14 @@ window.Voucherify.initialize(
   process.env.REACT_APP_FRONTEND_KEY
 );
 
-const App = ({ dispatch, items, discount, paymentMethod, currentCustomer }) => {
-  const [storeSidebar, setSidebar] = useState(false);
-  const toggleSidebar = () => {
-    setSidebar(!storeSidebar);
-  };
-  const [storeSelectCustomerModal, setSelectCustomerModal] = useState(true);
-
-  const toggleSelectCustomerModal = () => {
-    setSelectCustomerModal(!storeSelectCustomerModal);
-  };
-
+const App = ({
+  dispatch,
+  items,
+  discount,
+  paymentMethod,
+  currentCustomer,
+  enableSidebar,
+}) => {
   useEffect(() => {
     dispatch(getProducts());
     dispatch(startUserSession());
@@ -84,15 +81,12 @@ const App = ({ dispatch, items, discount, paymentMethod, currentCustomer }) => {
           <SelectCustomerModal show={!Boolean(currentCustomer)} />
         )}
         <div
-          className={storeSidebar ? 'd-flex' : 'd-flex toggled'}
+          className={enableSidebar ? 'd-flex' : 'd-flex toggled'}
           id="wrapper"
         >
           <div id="page-content-wrapper">
             <div className="mainContent">
-              <Navigation
-                storeSidebar={storeSidebar}
-                toggleSidebar={toggleSidebar}
-              />
+              <Navigation />
               <Switch>
                 <Route exact path="/" component={PageMain} />
                 <Route path="/store" component={ProductList} />
@@ -120,6 +114,7 @@ const mapStateToProps = (state) => {
     currentCustomer: state.userReducer.currentCustomer,
     discount: state.cartReducer.discount,
     paymentMethod: state.userReducer.paymentMethod,
+    enableSidebar: state.userReducer.enableSidebar,
   };
 };
 
@@ -129,6 +124,7 @@ App.propTypes = {
   currentCustomer: PropTypes.object,
   discount: PropTypes.object,
   paymentMethod: PropTypes.string,
+  enableSidebar: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(App);

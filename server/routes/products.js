@@ -4,9 +4,8 @@ const voucherify = voucherifyClient({
   applicationId: process.env.REACT_APP_BACKEND_APP_ID,
   clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
-router.route('*').get(async (request, response) => {
+router.route('*').get(async (req, res) => {
   try {
-    console.log('products')
     const allProducts = await voucherify.products.list();
     // Filter out default Voucherify products
     const products = allProducts.products.filter(
@@ -15,10 +14,10 @@ router.route('*').get(async (request, response) => {
         product.name !== 'Watchflix' &&
         product.name !== 'Apple iPhone 8'
     );
-    return response.json(products);
+    return res.json(products);
   } catch (e) {
     console.error(`[Products][Error] - ${e}`);
-    response.status(500).end();
+    res.status(500).end();
   }
 });
 

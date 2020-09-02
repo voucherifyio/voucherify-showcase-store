@@ -84,7 +84,7 @@ export const sendPayload = async (payload, payloadType) => {
   } else {
     routeUrl = '/orders/create';
   }
-  const response = await fetch(
+  const res = await fetch(
     `${process.env.REACT_APP_API_URL || ''}${routeUrl}`,
     {
       method: 'POST',
@@ -93,7 +93,7 @@ export const sendPayload = async (payload, payloadType) => {
       body: JSON.stringify(payload),
     }
   );
-  const sendPayload = await response.json();
+  const sendPayload = await res.json();
   return sendPayload;
 };
 

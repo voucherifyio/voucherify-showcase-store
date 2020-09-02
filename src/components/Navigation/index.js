@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from '@material-ui/core/IconButton';
@@ -10,8 +10,12 @@ import { withStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { removeCurrentCustomer } from '../../redux/actions/userActions';
-
+import {
+  removeCurrentCustomer,
+  setEnableSidebar,
+  setDisableSidebar,
+} from '../../redux/actions/userActions';
+// import {setEnableSidebar, setDisableSidebar} from '../../redux/actions/'
 const StyledBadge = withStyles(() => ({
   badge: {
     backgroundColor: 'yellow',
@@ -20,12 +24,24 @@ const StyledBadge = withStyles(() => ({
 }))(Badge);
 
 const Navigation = ({
-  toggleSidebar,
-  storeSidebar,
   itemsTotalCount,
   currentCustomer,
   dispatch,
+  enableSidebar,
 }) => {
+  const [toggle, setToggle] = useState(enableSidebar);
+
+  const handleToggle = () => {
+    setToggle(!toggle);
+  };
+
+  useEffect(() => {
+    if (toggle) {
+      dispatch(setEnableSidebar());
+    } else {
+      dispatch(setDisableSidebar());
+    }
+  }, [dispatch, toggle]);
   return (
     <>
       <Navbar className="m-auto navbar-sticky" collapseOnSelect expand="lg">
@@ -49,7 +65,10 @@ const Navigation = ({
                 <Link
                   className="d-flex align-content-center nav-item-link"
                   to="/"
-                  onClick={() => dispatch(removeCurrentCustomer(null))}
+                  onClick={() => {
+                    dispatch(setDisableSidebar());
+                    dispatch(removeCurrentCustomer(null));
+                  }}
                 >
                   <Nav.Item className="navbar-account px-2">Logout</Nav.Item>
                 </Link>
@@ -72,8 +91,8 @@ const Navigation = ({
 
             <Nav.Item className="px-2">
               <IconButton
-                className={storeSidebar ? 'mx-2 icon-selected' : 'mx-2'}
-                onClick={toggleSidebar}
+                className={enableSidebar ? 'mx-2 icon-selected' : 'mx-2'}
+                onClick={handleToggle}
               >
                 <SettingsIcon />
               </IconButton>
@@ -87,6 +106,7 @@ const Navigation = ({
 
 const mapStateToProps = (state) => {
   return {
+    enableSidebar: state.userReducer.enableSidebar,
     currentCustomer: state.userReducer.currentCustomer,
     itemsTotalCount: state.cartReducer.itemsTotalCount,
   };
@@ -95,8 +115,10 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(Navigation);
 
 Navigation.propTypes = {
+  enableSidebar: PropTypes.bool,
   storeSidebar: PropTypes.bool.isRequired,
   toggleSidebar: PropTypes.func.isRequired,
   itemsTotalCount: PropTypes.number.isRequired,
   currentCustomer: PropTypes.object,
+  dispatch: PropTypes.func,
 };

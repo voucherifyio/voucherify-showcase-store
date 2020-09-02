@@ -110,12 +110,12 @@ export const getCartDiscount = (activeCartDiscount) => async (
     const promotion = await new Promise((resolve, reject) => {
       window.Voucherify.setIdentity(currentCustomer.source_id);
 
-      window.Voucherify.validate(getCartDiscountPayload, (response) => {
-        if (response.valid) {
-          resolve(response);
+      window.Voucherify.validate(getCartDiscountPayload, (res) => {
+        if (res.valid) {
+          resolve(res);
         } else {
           toast.error('No Cart Discount available');
-          reject(new Error(response.reason));
+          reject(new Error(res.reason));
         }
       });
     });
@@ -154,16 +154,16 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
     dispatch(getDiscountRequest());
     let discount = await new Promise((resolve, reject) => {
       window.Voucherify.setIdentity(currentCustomer.source_id);
-      window.Voucherify.validate(getDiscountPayload, (response) => {
-        if (response.valid) {
-          resolve(response);
+      window.Voucherify.validate(getDiscountPayload, (res) => {
+        if (res.valid) {
+          resolve(res);
         } else {
-          if (response.error) {
-            toast.error(response.error.message);
+          if (res.error) {
+            toast.error(res.error.message);
           } else {
-            toast.error(response.reason);
+            toast.error(res.reason);
           }
-          reject(new Error(response.reason));
+          reject(new Error(res.reason));
         }
       });
     });
@@ -212,16 +212,16 @@ export const checkoutCart = () => async (dispatch, getState) => {
         // If voucher is applied
         const discountCode = discount.code;
         checkoutPayload.code = discountCode;
-        const response = await sendPayload(checkoutPayload, 'redeem');
+        const res = await sendPayload(checkoutPayload, 'redeem');
         dispatch(clearCart());
-        dispatch(setOrderId(response.id));
+        dispatch(setOrderId(res.id));
       } else if (discount.hasOwnProperty('banner')) {
         // If promotion is applied
         const promotionId = discount.id;
         checkoutPayload.promotionId = promotionId;
-        const response = await sendPayload(checkoutPayload, 'redeem');
+        const res = await sendPayload(checkoutPayload, 'redeem');
         dispatch(clearCart());
-        dispatch(setOrderId(response.order.id));
+        dispatch(setOrderId(res.order.id));
       }
     }
   } catch (error) {

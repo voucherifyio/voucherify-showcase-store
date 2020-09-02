@@ -457,7 +457,7 @@ const setupValidationRules = async () => {
     return validationRule
       .then((rule) => {
         const needsId = rules.find(
-          (response) => response.name === ruleDefinition.name
+          (res) => res.name === ruleDefinition.name
         );
         needsId.voucherifyId = rule.id;
         console.log(`[SUCCESS] Validation rule created ${needsId.name}`);

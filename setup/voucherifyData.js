@@ -2,10 +2,8 @@ exports.customers = [
   {
     source_id: 'alicemorgan',
     name: 'Alice Morgan',
-    email: 'alice@morgan.io',
     metadata: {
       country: 'UK',
-      gender: 'F',
       demostore_id: 'alicemorgan',
       customerValidationRuleName: 'Welcome wave 5% off Alice Morgan',
       customerDescription:
@@ -25,10 +23,8 @@ exports.customers = [
   {
     source_id: 'lewismarshall',
     name: 'Lewis Marshall',
-    email: 'lewis_marshall@gmail.com',
     metadata: {
       country: 'USA',
-      gender: 'M',
       demostore_id: 'lewismarshall',
       customerValidationRuleName: 'Welcome wave 5% off Lewis Marshall',
       customerDescription: 'He already spent $300 in Hot Beans store',
@@ -47,10 +43,8 @@ exports.customers = [
   {
     source_id: 'johndorian',
     name: 'John Dorian',
-    email: 'john_d@scrubs.net',
     metadata: {
       country: 'PL',
-      gender: 'M',
       demostore_id: 'johndorian',
       customerValidationRuleName: 'Welcome wave 5% off John Dorian',
       customerDescription:
@@ -198,6 +192,20 @@ exports.campaigns = [
         'You must have 2 of Johan & Nyström - Bourbon in cart',
       demostoreSteps: 'Cart contains: 2x Johan & Nyström - Bourbon',
       demostoreOrder: 3,
+    },
+  },
+  {
+    name: '$5 off for sign up form',
+    type: 'AUTO_UPDATE',
+    voucher: {
+      type: 'DISCOUNT_VOUCHER',
+      discount: { amount_off: 500, type: 'AMOUNT' },
+    },
+    metadata: {
+      demostoreName: '$5 off for sign up form',
+      demostoreDescription: 'You must sign up for Hot Beans Newsletter',
+      demostoreOrder: 3,
+      demostoreDoNotPublish: true
     },
   },
   {

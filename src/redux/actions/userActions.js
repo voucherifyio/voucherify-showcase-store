@@ -23,6 +23,8 @@ import {
   GET_CURRENT_CUSTOMER_ERROR,
   SET_ENABLE_CART_DISCOUNTS,
   REMOVE_CURRENT_CUSTOMER,
+  ENABLE_SIDEBAR,
+  DISABLE_SIDEBAR,
 } from '../constants';
 
 export const startUserSessionRequest = () => {
@@ -48,6 +50,14 @@ export const getCustomersSuccess = ({ availableCustomers }) => {
 
 export const getCustomersError = () => {
   return { type: GET_CUSTOMERS_ERROR };
+};
+
+export const setEnableSidebar = () => {
+  return { type: ENABLE_SIDEBAR };
+};
+
+export const setDisableSidebar = () => {
+  return { type: DISABLE_SIDEBAR };
 };
 
 export const getQualificationsRequest = () => {
@@ -107,13 +117,10 @@ export const getCurrentCustomerError = () => {
 export const startUserSession = () => async (dispatch) => {
   try {
     dispatch(startUserSessionRequest());
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL || ''}/start`,
-      {
-        credentials: 'include',
-      }
-    );
-    const userSession = await response.json();
+    const res = await fetch(`${process.env.REACT_APP_API_URL || ''}/start`, {
+      credentials: 'include',
+    });
+    const userSession = await res.json();
     if (userSession.coupons.length === 0) {
       dispatch(
         startUserSessionSuccess({
@@ -142,13 +149,13 @@ export const getCustomers = () => async (dispatch, getState) => {
   const { sessionId, currentCustomer } = getState().userReducer;
   try {
     dispatch(getCustomersRequest());
-    const response = await fetch(
+    const res = await fetch(
       `${process.env.REACT_APP_API_URL || ''}/customers/all/${sessionId}`,
       {
         credentials: 'include',
       }
     );
-    const availableCustomers = await response.json();
+    const availableCustomers = await res.json();
     dispatch(getCustomersSuccess({ availableCustomers }));
     // Check if availableCustomers includes currentCustomer
     // if there is an issue with localStorage or server, remove currentCustomer
@@ -169,14 +176,13 @@ export const getCampaigns = () => async (dispatch, getState) => {
   const { publishedCodes } = getState().userReducer;
   try {
     dispatch(getCampaignsRequest());
-    const response = await fetch(
+    const res = await fetch(
       `${process.env.REACT_APP_API_URL || ''}/campaigns`,
       {
         credentials: 'include',
       }
     );
-    const campaigns = await response.json();
-
+    const campaigns = await res.json();
     campaigns.forEach(async (camps) => {
       camps.coupons = [];
       publishedCodes.forEach((code) => {
@@ -198,7 +204,6 @@ export const getCampaigns = () => async (dispatch, getState) => {
         );
 
         const campaignPromotions = await promotionResponse.json();
-        console.log(campaignPromotions)
         camps.tiers = campaignPromotions.tiers;
       }
     });
@@ -216,13 +221,10 @@ const sleep = (ms) => {
 export const getVouchers = () => async (dispatch) => {
   try {
     dispatch(getVouchersRequest());
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL || ''}/vouchers`,
-      {
-        credentials: 'include',
-      }
-    );
-    const vouchers = await response.json();
+    const res = await fetch(`${process.env.REACT_APP_API_URL || ''}/vouchers`, {
+      credentials: 'include',
+    });
+    const vouchers = await res.json();
     dispatch(getVouchersSuccess(vouchers));
   } catch (error) {
     console.log('[getVouchers][Error]', error);
@@ -236,14 +238,14 @@ export const getCurrentCustomer = (id, type = 'normal') => async (
 ) => {
   try {
     dispatch(getCurrentCustomerRequest());
-    const response = await fetch(
+    const res = await fetch(
       `${process.env.REACT_APP_API_URL || ''}/customers/${id}`,
       {
         credentials: 'include',
       }
     );
 
-    const currentCustomer = await response.json();
+    const currentCustomer = await res.json();
 
     if (type === 'normal') {
       dispatch(getCurrentCustomerSuccess(currentCustomer));
@@ -283,7 +285,7 @@ export const getQualifications = () => async (dispatch, getState) => {
   );
   try {
     dispatch(getQualificationsRequest());
-    const response = await fetch(
+    const res = await fetch(
       `${process.env.REACT_APP_API_URL || ''}/qualifications`,
       {
         method: 'POST',
@@ -292,7 +294,7 @@ export const getQualifications = () => async (dispatch, getState) => {
         body: JSON.stringify(qualificationsPayload),
       }
     );
-    const qualifications = await response.json();
+    const qualifications = await res.json();
     dispatch(getQualificationsSuccess(qualifications));
   } catch (error) {
     console.log('[getQualifications][Error]', error);

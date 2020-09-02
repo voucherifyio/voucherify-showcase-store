@@ -8,7 +8,7 @@ const session = require('express-session');
 const redis = require('redis');
 const RedisStore = require('connect-redis')(session);
 const enforce = require('express-sslify');
-
+const distributionsRouter = require('./routes/distributions');
 const promotionsRouter = require('./routes/promotions');
 const redemptionsRouter = require('./routes/redemptions');
 const ordersRouter = require('./routes/orders');
@@ -47,15 +47,16 @@ app.use('/campaigns', campaignsRouter);
 app.use('/vouchers', vouchersRouter);
 app.use('/qualifications', qualificationsRouters);
 app.use('/products', productsRouter);
+app.use('/distributions', distributionsRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('build'));
-  app.get('/*', (request, response) => {
-    response.sendFile(path.join(__dirname, 'build', 'index.html'));
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
   });
 } else {
-  app.get('/*', (request, response) => {
-    response.sendFile(path.join(__dirname, 'public', 'index.html'));
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
   });
 }
 

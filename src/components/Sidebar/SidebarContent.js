@@ -3,9 +3,6 @@ import _orderBy from 'lodash.orderby';
 import SidebarCampaignDetails from './SidebarCampaignDetails';
 import SidebarVoucherDetails from './SidebarVoucherDetails';
 import Spinner from 'react-bootstrap/Spinner';
-import Form from 'react-bootstrap/Form';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
@@ -14,7 +11,6 @@ import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SidebarQualifications from './SidebarQualifications';
 import { connect } from 'react-redux';
-import { getCurrentCustomer } from '../../redux/actions/userActions';
 import InfoIcon from '@material-ui/icons/Info';
 import Switch from '@material-ui/core/Switch';
 import { setEnableCartDiscounts } from '../../redux/actions/userActions';
@@ -110,12 +106,8 @@ const SidebarContent = ({
   }, [dispatch, enableCartDiscounts, activeCartDiscount, items]);
 
   let customerDate = '';
-  let downloadCustomerData = '';
   if (currentCustomer) {
     customerDate = new Date(currentCustomer.summary.orders.last_order_date);
-    downloadCustomerData =
-      'data: text/json;charset=utf-8,' +
-      encodeURIComponent(JSON.stringify(currentCustomer));
   }
   const discountVouchers = _orderBy(vouchers, ['metadata']['demostoreOrder'], [
     'asc',
@@ -149,32 +141,6 @@ const SidebarContent = ({
           </div>
         ) : (
           <>
-            {/* <div className="storeSidebar-select-customer">
-              <Form.Control
-                as="select"
-                id="storeCustomers"
-                onChange={(e) => {
-                  dispatch(getCurrentCustomer(e.target.value));
-                }}
-                value={(currentCustomer || {}).source_id || 'DEFAULT'}
-              >
-                <option value="DEFAULT" disabled>
-                  Select customer
-                </option>
-                {availableCustomers.map((customer) => (
-                  <option key={customer.name} value={customer.source_id}>
-                    {customer.name} ({customer.metadata.country})
-                  </option>
-                ))}
-              </Form.Control>
-              <a href={downloadCustomerData} download="customerData.json">
-                <Tooltip title="Download data">
-                  <IconButton>
-                    <GetAppIcon />
-                  </IconButton>
-                </Tooltip>
-              </a>
-            </div> */}
             {!isEmpty(currentCustomer) && (
               <>
                 <div className="storeSidebar-content">

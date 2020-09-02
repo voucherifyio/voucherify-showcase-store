@@ -5,13 +5,13 @@ const voucherify = voucherifyClient({
   clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
 
-router.route('/create').post(async (request, response) => {
+router.route('/create').post(async (req, res) => {
   try {
-    const order = await voucherify.orders.create(request.body);
-    return response.json(order);
+    const order = await voucherify.orders.create(req.body);
+    return res.json(order);
   } catch (e) {
     console.error(`[Order][Error] - ${e}`);
-    response.status(500).end();
+    res.status(500).end();
   }
 });
 

@@ -5,9 +5,9 @@ const voucherify = voucherifyClient({
   clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
 
-router.route('*').post(async (request, response) => {
+router.route('*').post(async (req, res) => {
   try {
-    const { customer, amount, items, metadata } = request.body;
+    const { customer, amount, items, metadata } = req.body;
     const qtPayload = {
       customer,
       order: {
@@ -35,10 +35,10 @@ router.route('*').post(async (request, response) => {
       qlt.metadata.hasOwnProperty('demostoreName')
     );
 
-    return response.json(qualifications);
+    return res.json(qualifications);
   } catch (e) {
     console.error(`[Qualification][Error] - ${e}`);
-    response.status(500).end();
+    res.status(500).end();
   }
 });
 

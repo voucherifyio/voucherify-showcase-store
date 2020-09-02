@@ -20,6 +20,8 @@ import {
   SET_PAYMENT_METHOD,
   SET_ENABLE_CART_DISCOUNTS,
   REMOVE_CURRENT_CUSTOMER,
+  ENABLE_SIDEBAR,
+  DISABLE_SIDEBAR
 } from '../constants';
 
 const initialState = {
@@ -39,17 +41,27 @@ const initialState = {
   fetchingSessionId: false,
   fetchingCustomers: true,
   enableCartDiscounts: false,
-}
+  enableSidebar: false,
+};
 
-export const userReducer = (
-  state = initialState,
-  action
-) => {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case START_USER_SESSION_REQUEST: {
       return {
         ...state,
         fetchingSessionId: true,
+      };
+    }
+    case ENABLE_SIDEBAR: {
+      return {
+        ...state,
+        enableSidebar: true,
+      };
+    }
+    case DISABLE_SIDEBAR: {
+      return {
+        ...state,
+        enableSidebar: false,
       };
     }
     case START_USER_SESSION_SUCCESS: {
@@ -71,8 +83,8 @@ export const userReducer = (
     case SET_ENABLE_CART_DISCOUNTS: {
       return {
         ...state,
-        enableCartDiscounts: action.payload.enableCartDiscounts
-      }
+        enableCartDiscounts: action.payload.enableCartDiscounts,
+      };
     }
     case GET_CUSTOMERS_REQUEST: {
       return {
@@ -135,51 +147,51 @@ export const userReducer = (
       return {
         ...state,
         fetchingCustomer: true,
-      }
+      };
     }
     case GET_CURRENT_CUSTOMER_SUCCESS: {
       return {
         ...state,
         currentCustomer: action.payload.currentCustomer,
         fetchingCustomer: false,
-      }
+      };
     }
     case GET_CURRENT_CUSTOMER_ERROR: {
       return {
         ...state,
         fetchingCustomerError: true,
-      }
+      };
     }
     case REMOVE_CURRENT_CUSTOMER: {
       return {
         ...state,
         currentCustomer: null,
-      }
+      };
     }
     case GET_QUALIFICATIONS_REQUEST: {
       return {
         ...state,
         fetchingQualifications: true,
-      }
+      };
     }
     case GET_QUALIFICATIONS_SUCCESS: {
       return {
         ...state,
         fetchingQualifications: false,
         qualifications: action.payload.qualifications,
-      }
+      };
     }
     case GET_QUALIFICATIONS_ERROR: {
       return {
         ...state,
         fetchingQualificationsError: true,
-      }
+      };
     }
     case SET_PAYMENT_METHOD: {
       return {
         ...state,
-        paymentMethod: action.payload.paymentMethod
-      }
+        paymentMethod: action.payload.paymentMethod,
+      };
     }
     default: {
       return {

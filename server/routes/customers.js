@@ -5,19 +5,19 @@ const voucherify = voucherifyClient({
   clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });const storeCustomers = require('../../setup/voucherifyData').customers;
 
-router.route('/:source_id').get(async (request, response) => {
-  const sourceId = request.params.source_id;
+router.route('/:source_id').get(async (req, res) => {
+  const sourceId = req.params.source_id;
   try {
     const customer = await voucherify.customers.get(sourceId);
-    response.json(customer);
+    res.json(customer);
   } catch (e) {
     console.error(`[Customer][Error] - ${e}`);
-    response.status(500).end();
+    res.status(500).end();
   }
 });
 
-router.route('/all/:session_id').get(async (request, response) => {
-  const sessionId = request.params.session_id;
+router.route('/all/:session_id').get(async (req, res) => {
+  const sessionId = req.params.session_id;
   try {
     const customers = await Promise.all(
       storeCustomers.map((customer) => {
@@ -25,10 +25,10 @@ router.route('/all/:session_id').get(async (request, response) => {
         return voucherify.customers.get(customerId);
       })
     );
-    response.json(customers);
+    res.json(customers);
   } catch (e) {
     console.error(`[Customer][All][Error] - ${e}`);
-    response.status(500).end();
+    res.status(500).end();
   }
 });
 

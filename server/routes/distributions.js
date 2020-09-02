@@ -5,15 +5,15 @@ const voucherify = voucherifyClient({
   clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
 
-router.route('/:campaignId').get(async (req, res) => {
-  const campaignId = req.params.campaignId;
+router.route('/publications/create').post(async (req, res) => {
   try {
-    const campaignPromotionTiers = await voucherify.promotions.tiers.list(
-      campaignId
+    const { customer, campaign } = req.body;
+    const publishedVoucher = await voucherify.distributions.publications.create(
+      Object.assign({ customer, campaign })
     );
-    res.json(campaignPromotionTiers);
+    return res.json(publishedVoucher);
   } catch (e) {
-    console.error(`[Promotions][Error] - ${e}`);
+    console.error(`[Distributions][Error] - ${e}`);
     res.status(500).end();
   }
 });
