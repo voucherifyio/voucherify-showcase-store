@@ -78,8 +78,14 @@ export const setOrderPayload = (
 };
 
 export const sendPayload = async (payload, payloadType) => {
+  let routeUrl;
+  if (payloadType === 'redeem') {
+    routeUrl = '/redemptions/redeem';
+  } else {
+    routeUrl = '/orders/create';
+  }
   const response = await fetch(
-    `${process.env.REACT_APP_API_URL || ''}/${payloadType}`,
+    `${process.env.REACT_APP_API_URL || ''}${routeUrl}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -87,7 +93,7 @@ export const sendPayload = async (payload, payloadType) => {
       body: JSON.stringify(payload),
     }
   );
-  const sendPayload = await response.json()
+  const sendPayload = await response.json();
   return sendPayload;
 };
 

@@ -143,7 +143,7 @@ export const getCustomers = () => async (dispatch, getState) => {
   try {
     dispatch(getCustomersRequest());
     const response = await fetch(
-      `${process.env.REACT_APP_API_URL || ''}/customers/${sessionId}`,
+      `${process.env.REACT_APP_API_URL || ''}/customers/all/${sessionId}`,
       {
         credentials: 'include',
       }
@@ -198,7 +198,7 @@ export const getCampaigns = () => async (dispatch, getState) => {
         );
 
         const campaignPromotions = await promotionResponse.json();
-
+        console.log(campaignPromotions)
         camps.tiers = campaignPromotions.tiers;
       }
     });
@@ -237,7 +237,7 @@ export const getCurrentCustomer = (id, type = 'normal') => async (
   try {
     dispatch(getCurrentCustomerRequest());
     const response = await fetch(
-      `${process.env.REACT_APP_API_URL || ''}/customer/${id}`,
+      `${process.env.REACT_APP_API_URL || ''}/customers/${id}`,
       {
         credentials: 'include',
       }
