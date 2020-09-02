@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { removeCurrentCustomer } from '../../redux/actions/userActions';
 
 const StyledBadge = withStyles(() => ({
   badge: {
@@ -23,6 +24,7 @@ const Navigation = ({
   storeSidebar,
   itemsTotalCount,
   currentCustomer,
+  dispatch,
 }) => {
   return (
     <>
@@ -41,11 +43,22 @@ const Navigation = ({
             >
               <Nav.Item className="navbar-account px-2">Store</Nav.Item>
             </Link>
+
             {currentCustomer !== null && (
-              <Nav.Item className="navbar-account px-2">
-                <AccountCircleIcon className="navbar-icon mx-2" />
-                Hi, <b>{currentCustomer.name.split(' ')[0]}</b>
-              </Nav.Item>
+              <>
+                <Link
+                  className="d-flex align-content-center nav-item-link"
+                  to="/"
+                  onClick={() => dispatch(removeCurrentCustomer(null))}
+                >
+                  <Nav.Item className="navbar-account px-2">Logout</Nav.Item>
+                </Link>
+
+                <Nav.Item className="navbar-account px-2">
+                  <AccountCircleIcon className="navbar-icon mx-2" />
+                  Hi, <b>{currentCustomer.name.split(' ')[0]}</b>
+                </Nav.Item>
+              </>
             )}
             <Nav.Item className="px-2">
               <Link to="/cart">

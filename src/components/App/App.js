@@ -13,7 +13,10 @@ import { ToastContainer } from 'react-toastify';
 import Sidebar from '../Sidebar/Sidebar';
 import { getProducts } from '../../redux/actions/storeActions';
 import { getTotals, getDiscount } from '../../redux/actions/cartActions';
-import { startUserSession, getQualifications } from '../../redux/actions/userActions';
+import {
+  startUserSession,
+  getQualifications,
+} from '../../redux/actions/userActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import 'voucherify.js';
@@ -22,6 +25,7 @@ import '../../css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { isEmpty } from '../../redux/utils';
 import has from 'lodash';
+import SelectCustomerModal from '../SelectCustomerModal';
 
 const toastOptions = {
   position: 'bottom-center',
@@ -41,16 +45,15 @@ window.Voucherify.initialize(
   process.env.REACT_APP_FRONTEND_KEY
 );
 
-const App = ({
-  dispatch,
-  items,
-  discount,
-  paymentMethod,
-  currentCustomer,
-}) => {
-  const [storeSidebar, setSidebar] = useState(true);
+const App = ({ dispatch, items, discount, paymentMethod, currentCustomer }) => {
+  const [storeSidebar, setSidebar] = useState(false);
   const toggleSidebar = () => {
     setSidebar(!storeSidebar);
+  };
+  const [storeSelectCustomerModal, setSelectCustomerModal] = useState(true);
+
+  const toggleSelectCustomerModal = () => {
+    setSelectCustomerModal(!storeSelectCustomerModal);
   };
 
   useEffect(() => {
@@ -77,6 +80,9 @@ const App = ({
   return (
     <>
       <div className="d-none d-md-block">
+        {currentCustomer === null && (
+          <SelectCustomerModal show={!Boolean(currentCustomer)} />
+        )}
         <div
           className={storeSidebar ? 'd-flex' : 'd-flex toggled'}
           id="wrapper"

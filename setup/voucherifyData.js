@@ -8,6 +8,11 @@ exports.customers = [
       gender: 'F',
       demostore_id: 'alicemorgan',
       customerValidationRuleName: 'Welcome wave 5% off Alice Morgan',
+      customerDescription:
+        'New customer who just login to a Hot Bean shop for a first time',
+      customerTitle: 'New Customer',
+      customerAvatar:
+        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/alicemorgan.png',
     },
     address: {
       city: 'London',
@@ -26,6 +31,10 @@ exports.customers = [
       gender: 'M',
       demostore_id: 'lewismarshall',
       customerValidationRuleName: 'Welcome wave 5% off Lewis Marshall',
+      customerDescription: 'He already spent $300 in Hot Beans store',
+      customerTitle: 'Hot Beans Fan',
+      customerAvatar:
+        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/lewismarshall.png',
     },
     address: {
       city: 'Los Angeles',
@@ -44,6 +53,11 @@ exports.customers = [
       gender: 'M',
       demostore_id: 'johndorian',
       customerValidationRuleName: 'Welcome wave 5% off John Dorian',
+      customerDescription:
+        'He can take part in special campaign for foreign customers',
+      customerTitle: 'Foreign Customer',
+      customerAvatar:
+        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/johndorian.png',
     },
     address: {
       city: 'Warsaw',

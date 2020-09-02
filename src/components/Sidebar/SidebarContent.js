@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 import { getCurrentCustomer } from '../../redux/actions/userActions';
 import InfoIcon from '@material-ui/icons/Info';
 import Switch from '@material-ui/core/Switch';
-import {setEnableCartDiscounts} from '../../redux/actions/userActions'
+import { setEnableCartDiscounts } from '../../redux/actions/userActions';
 import {
   getCartDiscount,
   removePromotionFromCart,
@@ -92,12 +92,12 @@ const SidebarContent = ({
   };
 
   const handleDiscountSwitchChange = () => {
-    setEnableCartDiscountsState(!enableCartDiscounts)
+    setEnableCartDiscountsState(!enableCartDiscounts);
   };
 
   useEffect(() => {
     dispatch(setEnableCartDiscounts(enableCartDiscounts));
-  }, [dispatch, enableCartDiscounts])
+  }, [dispatch, enableCartDiscounts]);
 
   useEffect(() => {
     if (enableCartDiscounts && activeCartDiscount) {
@@ -121,9 +121,11 @@ const SidebarContent = ({
     'asc',
   ]);
 
-  const discountCampaigns = _orderBy(campaigns, ['metadata']['demostoreOrder'], [
-    'asc',
-  ]);
+  const discountCampaigns = _orderBy(
+    campaigns,
+    ['metadata']['demostoreOrder'],
+    ['asc']
+  );
 
   const couponCampaigns = discountCampaigns.filter(
     (camp) => camp.campaign_type !== 'PROMOTION'
@@ -147,7 +149,7 @@ const SidebarContent = ({
           </div>
         ) : (
           <>
-            <div className="storeSidebar-select-customer">
+            {/* <div className="storeSidebar-select-customer">
               <Form.Control
                 as="select"
                 id="storeCustomers"
@@ -172,10 +174,16 @@ const SidebarContent = ({
                   </IconButton>
                 </Tooltip>
               </a>
-            </div>
+            </div> */}
             {!isEmpty(currentCustomer) && (
               <>
                 <div className="storeSidebar-content">
+                  <p>
+                    Customer:{' '}
+                    <span className="storeSidebar-content-data">
+                      {currentCustomer.name}
+                    </span>
+                  </p>
                   <p>
                     Location:{' '}
                     <span className="storeSidebar-content-data">
