@@ -111,20 +111,21 @@ export const getCartDiscount = (activeCartDiscount) => async (
       window.Voucherify.setIdentity(currentCustomer.source_id);
 
       window.Voucherify.validate(getCartDiscountPayload, (res) => {
-        if (res.valid) {
-          resolve(res);
+        const discount = res.promotions.filter(
+          (promo) => promo.metadata.demostoreName === activeCartDiscount
+        )[0];
+        if (discount) {
+          resolve(discount);
         } else {
-          toast.error('No Cart Discount available');
+          toast.error('You are not eligible for the Cart Discount');
           reject(new Error(res.reason));
         }
       });
     });
-    const discount = promotion.promotions.filter(
-      (promo) => promo.metadata.demostoreName === activeCartDiscount
-    )[0];
-    if (discount) {
-      dispatch(getDiscountSuccess(discount));
-      toast.success(discount.banner);
+
+    if (promotion) {
+      dispatch(getDiscountSuccess(promotion));
+      toast.success(promotion.banner);
     } else {
       toast.error('You are not eligible for the Cart Discount');
     }

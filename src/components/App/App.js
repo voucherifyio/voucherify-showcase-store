@@ -63,7 +63,7 @@ const App = ({
   }, [dispatch, discount, items]);
 
   useEffect(() => {
-    if (!isEmpty(discount) && has(discount, 'code')) {
+    if (!isEmpty(discount) && !has(discount, 'code')) {
       dispatch(getDiscount(discount.code));
     }
   }, [dispatch, items, paymentMethod, discount]);
@@ -81,26 +81,34 @@ const App = ({
           <SelectCustomerModal show={!Boolean(currentCustomer)} />
         )}
         <div
-          className={enableSidebar ? 'd-flex' : 'd-flex toggled'}
-          id="wrapper"
+          className={currentCustomer === null ? 'isLoaded no' : 'isLoaded yes'}
         >
-          <div id="page-content-wrapper">
-            <div className="mainContent">
-              <Navigation />
-              <Switch>
-                <Route exact path="/" component={PageMain} />
-                <Route path="/store" component={ProductList} />
-                <Route path="/details/:productId" component={ProductDetails} />
-                <Route path="/cart" component={Cart} />
-                <Route path="/success" component={PageSuccess} />
-                <Route component={PageError} />
-              </Switch>
-              <Footer />
-              <ToastContainer {...toastOptions} />
+          <div
+            className={enableSidebar ? 'd-flex' : 'd-flex toggled'}
+            id="wrapper"
+          >
+            <div id="page-content-wrapper">
+              <div className="mainContent">
+                <Navigation />
+                <Switch>
+                  <Route exact path="/" component={PageMain} />
+                  <Route path="/store" component={ProductList} />
+                  <Route
+                    path="/details/:productId"
+                    component={ProductDetails}
+                  />
+                  <Route path="/cart" component={Cart} />
+                  <Route path="/success" component={PageSuccess} />
+                  <Route component={PageError} />
+                </Switch>
+                <Footer />
+                <ToastContainer {...toastOptions} />
+              </div>
             </div>
+            <Sidebar />
           </div>
-          <Sidebar />
         </div>
+        )
       </div>
       <AppMobile />
     </>

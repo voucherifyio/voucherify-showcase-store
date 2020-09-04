@@ -13,7 +13,10 @@ import SidebarQualifications from './SidebarQualifications';
 import { connect } from 'react-redux';
 import InfoIcon from '@material-ui/icons/Info';
 import Switch from '@material-ui/core/Switch';
-import { setEnableCartDiscounts } from '../../redux/actions/userActions';
+import {
+  setEnableCartDiscounts,
+  setCurrentCartDiscount,
+} from '../../redux/actions/userActions';
 import {
   getCartDiscount,
   removePromotionFromCart,
@@ -74,36 +77,33 @@ const SidebarContent = ({
   dispatch,
   items,
   discount,
+  currentCartDiscount,
+  enableCartDiscounts,
 }) => {
   const [expanded, setExpanded] = useState('');
-  const [activeCartDiscount, setActiveCartDiscount] = useState('');
-  const [enableCartDiscounts, setEnableCartDiscountsState] = useState(false);
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
   const handleSwitchChange = (panel) => (event, newActiveCartDiscount) => {
-    setActiveCartDiscount(newActiveCartDiscount ? panel : false);
+    dispatch(setCurrentCartDiscount(newActiveCartDiscount ? panel : false));
   };
 
   const handleDiscountSwitchChange = () => {
-    setEnableCartDiscountsState(!enableCartDiscounts);
+    dispatch(setEnableCartDiscounts(!enableCartDiscounts));
   };
 
   useEffect(() => {
-    dispatch(setEnableCartDiscounts(enableCartDiscounts));
-  }, [dispatch, enableCartDiscounts]);
-
-  useEffect(() => {
-    if (enableCartDiscounts && activeCartDiscount) {
-      dispatch(getCartDiscount(activeCartDiscount));
+    if (enableCartDiscounts && currentCartDiscount) {
+      dispatch(getCartDiscount(currentCartDiscount));
     } else if (!enableCartDiscounts) {
-      setActiveCartDiscount(false);
-    } else if (!activeCartDiscount) {
+      dispatch(setCurrentCartDiscount(null));
+    } else if (currentCartDiscount === false) {
       dispatch(removePromotionFromCart());
+      dispatch(setCurrentCartDiscount(null));
     }
-  }, [dispatch, enableCartDiscounts, activeCartDiscount, items]);
+  }, [dispatch, currentCartDiscount, enableCartDiscounts, items]);
 
   let customerDate = '';
   if (currentCustomer) {
@@ -135,7 +135,7 @@ const SidebarContent = ({
       <>
         {isEmpty(availableCustomers) || fetchingCustomers ? (
           <div className="d-flex my-3 justify-content-center">
-            <Spinner animation="border" role="status">
+            <Spinner animation="border" size="sm" role="status">
               <span className="sr-only">Loading...</span>
             </Spinner>
           </div>
@@ -191,7 +191,7 @@ const SidebarContent = ({
               </p>
               {fetchingCoupons ? (
                 <div className="d-flex justify-content-center">
-                  <Spinner animation="border" role="status">
+                  <Spinner animation="border" size="sm" role="status">
                     <span className="sr-only">Loading...</span>
                   </Spinner>
                 </div>
@@ -236,7 +236,7 @@ const SidebarContent = ({
               </p>
               {fetchingCoupons ? (
                 <div className="d-flex justify-content-center">
-                  <Spinner animation="border" role="status">
+                  <Spinner animation="border" size="sm" role="status">
                     <span className="sr-only">Loading...</span>
                   </Spinner>
                 </div>
@@ -282,7 +282,7 @@ const SidebarContent = ({
                     </p>
                     <Switch
                       color="default"
-                      disabled={activeCartDiscount}
+                      disabled={currentCartDiscount}
                       checked={enableCartDiscounts}
                       onChange={() => handleDiscountSwitchChange()}
                     />
@@ -308,7 +308,7 @@ const SidebarContent = ({
                           <Switch
                             color="default"
                             disabled={!enableCartDiscounts}
-                            checked={activeCartDiscount === campaign.name}
+                            checked={currentCartDiscount === campaign.name}
                             onClick={(event) => event.stopPropagation()}
                             onChange={handleSwitchChange(campaign.name)}
                           />
@@ -341,6 +341,8 @@ const mapStateToProps = (state) => {
     fetchingCustomers: state.userReducer.fetchingCustomers,
     items: state.cartReducer.items,
     discount: state.cartReducer.discount,
+    enableCartDiscounts: state.userReducer.enableCartDiscounts,
+    currentCartDiscount: state.userReducer.currentCartDiscount,
   };
 };
 

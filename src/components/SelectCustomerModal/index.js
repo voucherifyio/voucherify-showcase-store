@@ -24,19 +24,21 @@ const VoucherifyButton = withStyles(() => ({
 }))(Button);
 
 const SelectCustomerModal = ({
-  toggleSelectCustomerModal,
   show,
   availableCustomers,
   fetchingCustomers,
   dispatch,
+  campaigns,
 }) => {
-  const showHideClassName = show ? 'modal d-block' : 'modal d-none';
+  const showHideClassName = show ? 'modal d-flex' : 'modal d-none';
 
   return (
     <div className={showHideClassName}>
-      {isEmpty(availableCustomers) || fetchingCustomers ? (
-        <div className="d-flex my-auto justify-content-center align-items-center">
-          <Spinner animation="border" role="status">
+      {isEmpty(availableCustomers) ||
+      fetchingCustomers ||
+      isEmpty(campaigns) ? (
+        <div className="d-flex m-auto justify-content-center align-items-center">
+          <Spinner animation="grow" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner>
         </div>
@@ -104,6 +106,7 @@ const mapStateToProps = (state) => {
   return {
     availableCustomers: state.userReducer.availableCustomers,
     fetchingCustomers: state.userReducer.fetchingCustomers,
+    campaigns: state.userReducer.campaigns,
   };
 };
 

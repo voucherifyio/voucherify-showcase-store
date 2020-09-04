@@ -65,7 +65,7 @@ const ProductList = ({ products, fetchingProducts }) => {
           </div>
           {fetchingProducts ? (
             <div className="d-flex justify-content-center">
-              <Spinner animation="border" role="status">
+              <Spinner animation="border" size="sm" role="status">
                 <span className="sr-only">Loading...</span>
               </Spinner>
             </div>

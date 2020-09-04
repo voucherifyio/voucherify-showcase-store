@@ -158,6 +158,7 @@ exports.campaigns = [
         'Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra',
       demostoreOrder: 1,
       demostoreBOGO: '1x Johan & Nyström - Sumatra',
+      demostoreProduct: 'Johan & Nyström - Sumatra, Johan & Nyström - Fika',
     },
   },
   {
@@ -175,6 +176,7 @@ exports.campaigns = [
       demostoreSteps:
         'Cart value: > $50;Cart contains: Illy Arabica - Guatemala',
       demostoreOrder: 2,
+      demostoreProduct: 'Illy Arabica - Guatemala',
     },
   },
   {
@@ -192,6 +194,7 @@ exports.campaigns = [
         'You must have 2 of Johan & Nyström - Bourbon in cart',
       demostoreSteps: 'Cart contains: 2x Johan & Nyström - Bourbon',
       demostoreOrder: 3,
+      demostoreProduct: 'Johan & Nyström - Bourbon'
     },
   },
   {
@@ -205,7 +208,7 @@ exports.campaigns = [
       demostoreName: '$5 off for sign up form',
       demostoreDescription: 'You must sign up for Hot Beans Newsletter',
       demostoreOrder: 3,
-      demostoreDoNotPublish: true
+      demostoreDoNotPublish: true,
     },
   },
   {
@@ -275,6 +278,7 @@ exports.campaigns = [
       demostoreAssignedValRules:
         'Final Tier - 100% off for Hard Beans - Brazil;First Tier - 50% off for Hard Beans - Brazil',
       demostoreName: 'BOGO Discount',
+      demostoreProduct: 'Hard Beans - Brazil, Johan & Nyström - Caravan',
     },
     promotion: {
       tiers: [

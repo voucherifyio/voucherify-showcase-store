@@ -25,7 +25,6 @@ router.route('*').post(async (req, res) => {
     const examinedCampaignsPromotion = await voucherify.promotions.validate(
       qtPayload
     );
-
     let qualifications = examinedCampaigns.data
       .concat(examinedVouchers.data)
       .concat(examinedCampaignsPromotion.promotions)

@@ -23,7 +23,7 @@ const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
       <div className="chips d-flex justify-content-start align-items-start">
         {fetchingQualifications ? (
           <div className="w-100 text-center my-3">
-            <Spinner animation="border" role="status">
+            <Spinner animation="border" size="sm" role="status">
               <span className="sr-only">Loading...</span>
             </Spinner>
           </div>

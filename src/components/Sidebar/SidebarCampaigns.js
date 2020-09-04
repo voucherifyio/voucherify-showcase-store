@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import SidebarCampaignDetails from './SidebarCampaignDetails';
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
@@ -7,52 +6,50 @@ import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+const Accordion = withStyles({
+  root: {
+    border: '1px solid rgba(0, 0, 0, .125)',
+    boxShadow: 'none',
+    width: '100%',
+    '&:not(:last-child)': {
+      borderBottom: 0,
+    },
+    '&:before': {
+      display: 'none',
+    },
+    '&$expanded': {
+      margin: 'auto',
+    },
+  },
+  expanded: {},
+})(MuiAccordion);
+
+const AccordionSummary = withStyles({
+  root: {
+    backgroundColor: 'rgba(0, 0, 0, .03)',
+    borderBottom: '1px solid rgba(0, 0, 0, .125)',
+    marginBottom: -1,
+    minHeight: 56,
+    '&$expanded': {
+      minHeight: 56,
+    },
+  },
+  content: {
+    '&$expanded': {
+      margin: '12px 0',
+    },
+  },
+  expanded: {},
+})(MuiAccordionSummary);
+
+const AccordionDetails = withStyles(() => ({
+  root: {
+    padding: 20,
+  },
+}))(MuiAccordionDetails);
 
 const SidebarCampaigns = ({ campaign, handleChange, currentCustomer }) => {
-
-    const [expanded, setExpanded] = React.useState('');
-
-  const Accordion = withStyles({
-    root: {
-      border: '1px solid rgba(0, 0, 0, .125)',
-      boxShadow: 'none',
-      width: '100%',
-      '&:not(:last-child)': {
-        borderBottom: 0,
-      },
-      '&:before': {
-        display: 'none',
-      },
-      '&$expanded': {
-        margin: 'auto',
-      },
-    },
-    expanded: {},
-  })(MuiAccordion);
-
-  const AccordionSummary = withStyles({
-    root: {
-      backgroundColor: 'rgba(0, 0, 0, .03)',
-      borderBottom: '1px solid rgba(0, 0, 0, .125)',
-      marginBottom: -1,
-      minHeight: 56,
-      '&$expanded': {
-        minHeight: 56,
-      },
-    },
-    content: {
-      '&$expanded': {
-        margin: '12px 0',
-      },
-    },
-    expanded: {},
-  })(MuiAccordionSummary);
-
-  const AccordionDetails = withStyles(() => ({
-    root: {
-      padding: 20,
-    },
-  }))(MuiAccordionDetails);
+  const [expanded, setExpanded] = React.useState('');
 
   return (
     <>
@@ -75,8 +72,7 @@ const SidebarCampaigns = ({ campaign, handleChange, currentCustomer }) => {
             campaign={campaign}
             code={
               campaign.coupons.find(
-                (coupon) =>
-                  coupon.currentCustomer === currentCustomer.source_id
+                (coupon) => coupon.currentCustomer === currentCustomer.source_id
               ).customerDataCoupon
             }
           />

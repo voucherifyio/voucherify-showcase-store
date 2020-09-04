@@ -25,6 +25,7 @@ import {
   REMOVE_CURRENT_CUSTOMER,
   ENABLE_SIDEBAR,
   DISABLE_SIDEBAR,
+  SET_CURRENT_CART_DISCOUNT,
 } from '../constants';
 
 export const startUserSessionRequest = () => {
@@ -70,6 +71,11 @@ export const getQualificationsSuccess = (qualifications) => {
 export const setEnableCartDiscounts = (enableCartDiscounts) => {
   return { type: SET_ENABLE_CART_DISCOUNTS, payload: { enableCartDiscounts } };
 };
+
+export const setCurrentCartDiscount = (currentCartDiscount) => {
+  return { type: SET_CURRENT_CART_DISCOUNT, payload: { currentCartDiscount } };
+
+}
 export const getQualificationsError = () => {
   return { type: GET_QUALIFICATIONS_ERROR };
 };

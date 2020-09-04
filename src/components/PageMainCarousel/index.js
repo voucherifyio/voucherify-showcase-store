@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 
-const PageMainCarousel = ({ campaigns }) => {
+const PageMainCarousel = ({
+  campaigns,
+  handleToggleModal,
+  handleModalData,
+}) => {
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex, e) => {
@@ -32,7 +36,14 @@ const PageMainCarousel = ({ campaigns }) => {
             <div className="carousel-caption-block">
               <h3>{campaign.name}</h3>
               <p>Description</p>
-              <Button variant="dark" className="mx-auto">
+              <Button
+                variant="dark"
+                className="mx-auto"
+                onClick={() => {
+                  handleToggleModal();
+                  handleModalData(campaign);
+                }}
+              >
                 Get coupon
               </Button>
             </div>

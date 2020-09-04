@@ -21,7 +21,8 @@ import {
   SET_ENABLE_CART_DISCOUNTS,
   REMOVE_CURRENT_CUSTOMER,
   ENABLE_SIDEBAR,
-  DISABLE_SIDEBAR
+  DISABLE_SIDEBAR,
+  SET_CURRENT_CART_DISCOUNT
 } from '../constants';
 
 const initialState = {
@@ -42,10 +43,17 @@ const initialState = {
   fetchingCustomers: true,
   enableCartDiscounts: false,
   enableSidebar: false,
+  currentCartDiscount: null
 };
 
 export const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_CURRENT_CART_DISCOUNT: {
+      return {
+        ...state,
+        currentCartDiscount: action.payload.currentCartDiscount
+      }
+    }
     case START_USER_SESSION_REQUEST: {
       return {
         ...state,

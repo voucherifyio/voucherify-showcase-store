@@ -15,7 +15,7 @@ import {
   setEnableSidebar,
   setDisableSidebar,
 } from '../../redux/actions/userActions';
-// import {setEnableSidebar, setDisableSidebar} from '../../redux/actions/'
+
 const StyledBadge = withStyles(() => ({
   badge: {
     backgroundColor: 'yellow',
