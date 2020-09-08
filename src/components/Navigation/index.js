@@ -114,7 +114,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps)(Navigation);
 
-Navigation.propTypes = {
+Navigation.propTypes = {   
   enableSidebar: PropTypes.bool,
   storeSidebar: PropTypes.bool.isRequired,
   toggleSidebar: PropTypes.func.isRequired,

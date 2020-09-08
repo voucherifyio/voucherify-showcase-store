@@ -82,3 +82,11 @@ const SidebarCampaigns = ({ campaign, handleChange, currentCustomer }) => {
   );
 };
 export default SidebarCampaigns;
+
+
+SidebarCampaigns.propTypes = {
+  campaign: PropTypes.object.isRequired,
+  handleChange: PropTypes.func,
+  currentCustomer: Proptypes.object.isRequired
+};
+
