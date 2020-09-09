@@ -50,8 +50,7 @@ Product.propTypes = {
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { product } = ownProps;
   return {
-    addItemToCart: () =>
-      dispatch(addItemToCart(product.id, 1, 'increment_count')),
+    addItemToCart: () => dispatch(addItemToCart(product.id, 1, 'increment_count')),
   };
 };
 
