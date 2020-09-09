@@ -8,7 +8,6 @@ import {
 } from '../utils';
 import _cloneDeep from 'lodash.clonedeep';
 import { isEmpty } from '../utils';
-
 import {
   GET_DISCOUNT_REQUEST,
   GET_DISCOUNT_SUCCESS,
