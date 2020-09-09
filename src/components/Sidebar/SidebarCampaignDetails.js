@@ -3,7 +3,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import PropTypes from 'prop-types';
 import { isEmpty } from '../../redux/utils';
 import _orderBy from 'lodash.orderby';
-import VoucherifyButton from '../Shared/VoucherifyButton';
+import VoucherifyCodeButton from '../Shared/VoucherifyCodeButton';
 
 const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
   return (
@@ -36,7 +36,7 @@ const SidebarCampaignDetails = ({ campaign, code = 'noCode' }) => {
           <>
             <p className="campaign-description">Click to copy</p>
             <div className="d-flex justify-content-center">
-              <VoucherifyButton code={code} />
+              <VoucherifyCodeButton code={code} />
             </div>
           </>
         )}

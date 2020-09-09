@@ -8,7 +8,7 @@ import {
   setEnableCartDiscounts,
   setCurrentCartDiscount,
 } from '../../redux/actions/userActions';
-import VoucherifyButton from '../Shared/VoucherifyButton';
+import VoucherifyCodeButton from '../Shared/VoucherifyCodeButton';
 
 const DiscountModal = ({
   toggleModal,
@@ -50,7 +50,7 @@ const DiscountModal = ({
                 <p className="customerModal-modalDescription">
                   Your discount code is:
                 </p>
-                <VoucherifyButton
+                <VoucherifyCodeButton
                   code={
                     modalData.coupons.find(
                       (coupon) =>
@@ -60,12 +60,13 @@ const DiscountModal = ({
                 />
               </>
             ) : (
-              <VoucherifyButton
+              <VoucherifyCodeButton
                 onClick={() => {
                   currentCartDiscount === modalData.name
                     ? handleDisable()
                     : handleEnable(modalData.name);
                 }}
+                type="cartDiscount"
                 text={
                   currentCartDiscount === modalData.name ? 'Disable' : 'Enable'
                 }

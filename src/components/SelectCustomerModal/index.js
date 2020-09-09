@@ -2,8 +2,26 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { isEmpty } from '../../redux/utils';
 import Spinner from 'react-bootstrap/Spinner';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import { getCurrentCustomer } from '../../redux/actions/userActions';
-import VoucherifyButton from '../Shared/VoucherifyButton';
+
+const VoucherifyButton = withStyles(() => ({
+  root: {
+    color: 'white',
+    fontFamily: 'Lato',
+    fontSize: '0.875rem',
+    backgroundColor: '#ff8b5c',
+    borderRadius: '20em',
+    padding: '5px 20px',
+    marginTop: '15px',
+    marginBottom: '15px',
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: '#ff8b5c',
+    },
+  },
+}))(Button);
 
 const SelectCustomerModal = ({
   show,
@@ -58,12 +76,22 @@ const SelectCustomerModal = ({
                       {customer.metadata.customerDescription}
                     </p>
                   </div>
+
                   <VoucherifyButton
-                    text="Login"
+                    className="mx-auto"
+                    style={{
+                      marginTop: 'auto',
+                      paddingLeft: '2rem',
+                      paddingRight: '2rem',
+                      paddingTop: '0.75rem',
+                      paddingBottom: '0.75rem',
+                    }}
                     onClick={() => {
                       dispatch(getCurrentCustomer(customer.source_id));
                     }}
-                  />
+                  >
+                    Login
+                  </VoucherifyButton>
                 </div>
               </>
             ))}

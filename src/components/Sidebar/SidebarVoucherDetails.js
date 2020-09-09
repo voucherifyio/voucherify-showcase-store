@@ -1,7 +1,7 @@
 import React from 'react';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import PropTypes from 'prop-types';
-import VoucherifyButton from '../Shared/VoucherifyButton';
+import VoucherifyCodeButton from '../Shared/VoucherifyCodeButton';
 
 const SidebarVoucherDetails = ({ voucher, code }) => {
   return (
@@ -24,7 +24,7 @@ const SidebarVoucherDetails = ({ voucher, code }) => {
         </p>
         <p className="campaign-description">Click to copy</p>
         <div className="d-flex justify-content-center">
-          <VoucherifyButton code={code} />
+          <VoucherifyCodeButton code={code} />
         </div>
         {voucher.discount.amount_limit && (
           <>

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Tooltip from '@material-ui/core/Tooltip';
 
-const VoucherifyStyledButton = withStyles(() => ({
+const VoucherifyButton = withStyles(() => ({
   root: {
     color: 'white',
     fontFamily: 'Lato',
@@ -22,7 +22,7 @@ const VoucherifyStyledButton = withStyles(() => ({
   },
 }))(Button);
 
-const VoucherifyButton = ({ code, text }) => {
+const VoucherifyCodeButton = ({ code, type = 'discount', text }) => {
   const [open, setOpen] = useState(false);
 
   const handleTooltipClose = () => {
@@ -33,7 +33,7 @@ const VoucherifyButton = ({ code, text }) => {
     setOpen(true);
   };
 
-  if (code) {
+  if (type === 'discount') {
     return (
       <ClickAwayListener onClickAway={handleTooltipClose}>
         <CopyToClipboard text={code}>
@@ -49,20 +49,21 @@ const VoucherifyButton = ({ code, text }) => {
               disableTouchListener
               title="Copied"
             >
-              <VoucherifyStyledButton
-                variant="contained"
-                onClick={handleTooltipOpen}
-              >
+              <VoucherifyButton variant="contained" onClick={handleTooltipOpen}>
                 {code}
-              </VoucherifyStyledButton>
+              </VoucherifyButton>
             </Tooltip>
           </div>
         </CopyToClipboard>
       </ClickAwayListener>
     );
   } else {
-    return <VoucherifyButton variant="contained">{text}</VoucherifyButton>;
+    return (
+      <VoucherifyButton variant="contained" onClick={handleTooltipOpen}>
+        {text}
+      </VoucherifyButton>
+    );
   }
 };
 
-export default VoucherifyButton;
+export default VoucherifyCodeButton;
