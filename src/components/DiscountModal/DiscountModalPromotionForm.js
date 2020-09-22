@@ -30,7 +30,7 @@ const DiscountModalPromotionForm = ({
   return (
     <>
       <div>
-        <p>Subscribe to our newslettter to get extra 5% discount!</p>
+        <p>Subscribe to our newsletter to get extra 5% discount!</p>
         {currentCustomer.email ? (
           <p>You're already subscribed</p>
         ) : (

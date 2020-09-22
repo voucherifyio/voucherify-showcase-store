@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import { connect } from 'react-redux';
 import InfoIcon from '@material-ui/icons/Info';
-import {isEmpty} from '../../redux/utils'
+import { isEmpty } from '../../redux/utils';
 
 const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
   const qualificationsToolTip =
