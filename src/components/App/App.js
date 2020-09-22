@@ -108,7 +108,6 @@ const App = ({
             <Sidebar />
           </div>
         </div>
-        )
       </div>
       <AppMobile />
     </>

@@ -33,7 +33,7 @@ const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
               <>
                 {qualifications.map((qualification) => (
                   <Chip
-                    key={`${qualification.name}`}
+                    key={`${qualification.metadata.demostoreName}`}
                     style={{ maxWidth: '100%' }}
                     label={
                       qualification.name ||

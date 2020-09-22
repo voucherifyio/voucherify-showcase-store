@@ -7,11 +7,16 @@ const voucherify = voucherifyClient({
 
 router.route('/publications/create').post(async (req, res) => {
   try {
-    const { customer, campaign } = req.body;
+    const { currentCustomer, campaign } = req.body;
     const publishedVoucher = await voucherify.distributions.publications.create(
-      Object.assign({ customer, campaign })
+      {
+        customer: {
+          source_id: currentCustomer.source_id,
+        },
+        campaign,
+      }
     );
-    return res.json(publishedVoucher);
+    return res.json(publishedVoucher.voucher);
   } catch (e) {
     console.error(`[Distributions][Error] - ${e}`);
     res.status(500).end();

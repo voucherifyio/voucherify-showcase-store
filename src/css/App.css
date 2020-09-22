@@ -18,6 +18,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+#storeSidebar-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#storeSidebar-wrapper {
+}
+
 .isLoaded {
   transition: all 500ms ease;
 }
@@ -75,7 +84,7 @@ body {
   min-height: 500px;
   max-height: 800px;
   background-position: center;
-  background-size: cover;
+  object-fit: cover;
 }
 
 .carousel .image-1 {
@@ -111,7 +120,20 @@ body {
 }
 
 .customer-card {
-  height: 400px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 400ms;
+  -webkit-transition: all 400ms;
+  -moz-transition: all 400ms;
+  -ms-transition: all 400ms;
+  -o-transition: all 400ms;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+}
+.customer-card:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .customerModal-customerTitle {
   font-weight: 700;
@@ -210,18 +232,6 @@ body {
   display: inline-block;
 }
 
-/* #modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
-
 .mainContent {
   transition: margin-left 0.5s;
 }
@@ -302,9 +312,16 @@ button:focus {
   top: 0;
   overflow-y: auto;
   min-height: 100vh;
-  overflow-x: hidden;
-  width: 25rem;
+  max-width: 300px;
   z-index: 3;
+  margin-right: 0px;
+  -ms-overflow-style: none;
+  /*IEandEdge*/scrollbar-width: none;
+  -ms-transition: margin 0.25s ease-out;
+}
+
+#wrapper.toggled #storeSidebar-wrapper {
+  margin-right: -300px;
 }
 
 #storeSidebar-wrapper .storeSidebar-heading {
@@ -326,10 +343,6 @@ button:focus {
   font-weight: 200;
 }
 
-#storeSidebar-wrapper .campaign-box {
-  /* height: 80px; */
-}
-
 #storeSidebar-wrapper .campaign-name {
   font-size: 0.9rem;
   font-weight: 700;
@@ -346,12 +359,6 @@ button:focus {
 }
 #storeSidebar-wrapper .redemption-rules {
   margin-bottom: 0px;
-}
-
-#storeSidebar-wrapper .campaign-step {
-}
-
-#storeSidebar-wrapper .campaign-step-icon {
 }
 
 #storeSidebar-wrapper .campaign-step-description {
@@ -400,18 +407,6 @@ button:focus {
   font-weight: 700;
 }
 
-.storeSidebar-select-customer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.875rem 1.25rem;
-  font-size: 1rem;
-}
-
-#wrapper.toggled #storeSidebar-wrapper {
-  margin-right: 0;
-}
-
 .storeSidebar-selected {
   border-left: solid 5px black;
 }
@@ -433,14 +428,11 @@ button:focus {
   margin-bottom: 5px;
 }
 
-@media (max-width: 767px) {
-  #storeSidebar-wrapper {
-    display: none;
-  }
-  #wrapper.toggled #storeSidebar-wrapper {
-    margin-right: -25rem;
-  }
+#page-content-wrapper {
+  min-width: 0;
+  width: 100%;
 }
+
 @media (max-width: 1400px) {
   .navbar-brand {
     position: static;
@@ -456,20 +448,6 @@ button:focus {
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
-  }
-}
-@media (min-width: 768px) {
-  #storeSidebar-wrapper {
-    margin-right: 0;
-  }
-
-  #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-  }
-
-  #wrapper.toggled #storeSidebar-wrapper {
-    margin-right: -25rem;
   }
 }
 

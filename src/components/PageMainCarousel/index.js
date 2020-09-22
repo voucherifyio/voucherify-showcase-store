@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -9,14 +9,8 @@ const PageMainCarousel = ({
   handleToggleModal,
   handleModalData,
 }) => {
-  const [index, setIndex] = useState(0);
-
-  const handleSelect = (selectedIndex, e) => {
-    setIndex(selectedIndex);
-  };
-
   return (
-    <Carousel activeIndex={index} onSelect={handleSelect}>
+    <Carousel controls={false}>
       {campaigns.map((campaign, i) => (
         <Carousel.Item
           key={i}
@@ -33,9 +27,8 @@ const PageMainCarousel = ({
               bottom: 'initial',
             }}
           >
-            <div className="carousel-caption-block">
+            <div className="carousel-caption-block my-auto">
               <h3>{campaign.name}</h3>
-              <p>Description</p>
               <Button
                 variant="dark"
                 className="mx-auto"
@@ -61,7 +54,7 @@ const mapStateToProps = (state) => {
 };
 
 PageMainCarousel.propTypes = {
-  campaigns: PropTypes.object,
+  campaigns: PropTypes.array,
 };
 
 export default connect(mapStateToProps)(PageMainCarousel);

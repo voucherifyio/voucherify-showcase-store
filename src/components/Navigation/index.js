@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import {
   removeCurrentCustomer,
   setEnableSidebar,
-  setDisableSidebar,
 } from '../../redux/actions/userActions';
 
 const StyledBadge = withStyles(() => ({
@@ -36,12 +35,9 @@ const Navigation = ({
   };
 
   useEffect(() => {
-    if (toggle) {
-      dispatch(setEnableSidebar());
-    } else {
-      dispatch(setDisableSidebar());
-    }
+    dispatch(setEnableSidebar(toggle));
   }, [dispatch, toggle]);
+
   return (
     <>
       <Navbar className="m-auto navbar-sticky" collapseOnSelect expand="lg">
@@ -59,20 +55,18 @@ const Navigation = ({
             >
               <Nav.Item className="navbar-account px-2">Store</Nav.Item>
             </Link>
-
+            <Link
+              className="d-flex align-content-center nav-item-link"
+              to="/"
+              onClick={() => {
+                dispatch(setEnableSidebar(false));
+                dispatch(removeCurrentCustomer(null));
+              }}
+            >
+              <Nav.Item className="navbar-account px-2">Logout</Nav.Item>
+            </Link>
             {currentCustomer !== null && (
               <>
-                <Link
-                  className="d-flex align-content-center nav-item-link"
-                  to="/"
-                  onClick={() => {
-                    dispatch(setDisableSidebar());
-                    dispatch(removeCurrentCustomer(null));
-                  }}
-                >
-                  <Nav.Item className="navbar-account px-2">Logout</Nav.Item>
-                </Link>
-
                 <Nav.Item className="navbar-account px-2">
                   <AccountCircleIcon className="navbar-icon mx-2" />
                   Hi, <b>{currentCustomer.name.split(' ')[0]}</b>
@@ -88,7 +82,6 @@ const Navigation = ({
                 </IconButton>
               </Link>
             </Nav.Item>
-
             <Nav.Item className="px-2">
               <IconButton
                 className={enableSidebar ? 'mx-2 icon-selected' : 'mx-2'}
@@ -114,11 +107,11 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps)(Navigation);
 
-Navigation.propTypes = {   
+Navigation.propTypes = {
   enableSidebar: PropTypes.bool,
-  storeSidebar: PropTypes.bool.isRequired,
-  toggleSidebar: PropTypes.func.isRequired,
-  itemsTotalCount: PropTypes.number.isRequired,
+  storeSidebar: PropTypes.bool,
+  toggleSidebar: PropTypes.func,
+  itemsTotalCount: PropTypes.number,
   currentCustomer: PropTypes.object,
   dispatch: PropTypes.func,
 };

@@ -56,7 +56,7 @@ const mapStateToProps = (state) => {
 };
 
 PageMain.propTypes = {
-  campaigns: PropTypes.object,
+  campaigns: PropTypes.array,
 };
 
 export default connect(mapStateToProps)(PageMain);

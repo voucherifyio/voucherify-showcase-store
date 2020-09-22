@@ -8,27 +8,27 @@ import {
   setEnableCartDiscounts,
   setCurrentCartDiscount,
 } from '../../redux/actions/userActions';
-import VoucherifyCodeButton from '../Shared/VoucherifyCodeButton';
-
+import VoucherifyButton from '../Shared/VoucherifyButton';
+import DiscountModalTiers from './DiscountModalTiers';
+import DiscountModalSteps from './DiscountModalSteps';
+import PropTypes from 'prop-types';
+import DiscountModalPromotionForm from './DiscountModalPromotionForm';
 const DiscountModal = ({
   toggleModal,
   handleToggleModal,
   modalData,
   currentCustomer,
   dispatch,
-  enableCartDiscounts,
   currentCartDiscount,
 }) => {
-  //
-
-  const handleEnable = (campaignName) => {
-    dispatch(setEnableCartDiscounts(true));
-    dispatch(setCurrentCartDiscount(campaignName));
-  };
-
-  const handleDisable = () => {
-    dispatch(setEnableCartDiscounts(false));
-    dispatch(setCurrentCartDiscount());
+  const handleDiscounts = () => {
+    if (currentCartDiscount !== modalData.name) {
+      dispatch(setEnableCartDiscounts(true));
+      dispatch(setCurrentCartDiscount(modalData.name));
+    } else {
+      dispatch(setEnableCartDiscounts(false));
+      dispatch(setCurrentCartDiscount(null));
+    }
   };
 
   const showHideClassName = toggleModal ? 'modal d-flex' : 'modal d-none';
@@ -43,30 +43,34 @@ const DiscountModal = ({
                 <CloseIcon />
               </IconButton>
             </div>
-
             <h1 className="customerModal-modalTitle">{modalData.name}</h1>
-            {!isEmpty(modalData.coupons) ? (
-              <>
-                <p className="customerModal-modalDescription">
-                  Your discount code is:
-                </p>
-                <VoucherifyCodeButton
-                  code={
-                    modalData.coupons.find(
-                      (coupon) =>
-                        coupon.currentCustomer === currentCustomer.source_id
-                    ).customerDataCoupon
-                  }
-                />
-              </>
-            ) : (
-              <VoucherifyCodeButton
-                onClick={() => {
-                  currentCartDiscount === modalData.name
-                    ? handleDisable()
-                    : handleEnable(modalData.name);
-                }}
-                type="cartDiscount"
+
+            {/* We need to filter out certain campaing to show off our distribution mechanism */}
+
+            {!isEmpty(modalData.coupons) &&
+              modalData.name !== '$5 off for sign up form' && (
+                <>
+                  <p className="customerModal-modalDescription">
+                    Your discount code is:
+                  </p>
+                  <VoucherifyButton
+                    code={
+                      modalData.coupons.find(
+                        (coupon) =>
+                          coupon.currentCustomer === currentCustomer.source_id
+                      ).customerDataCoupon
+                    }
+                  />
+                </>
+              )}
+
+            {modalData.name === '$5 off for sign up form' && (
+              <DiscountModalPromotionForm campaign={modalData}/>
+            )}
+
+            {modalData.campaign_type === 'PROMOTION' && (
+              <VoucherifyButton
+                onClickFunction={handleDiscounts}
                 text={
                   currentCartDiscount === modalData.name ? 'Disable' : 'Enable'
                 }
@@ -79,11 +83,7 @@ const DiscountModal = ({
                   To reedem this code you must fulfill this redemption rules:
                 </p>
                 {modalData.metadata.demostoreSteps.split(';').map((step) => (
-                  <div key={step} className="campaign-step d-flex flex-row">
-                    <div className="campaign-step-description">
-                      <p className="campaign-step-text">{step}</p>
-                    </div>
-                  </div>
+                  <DiscountModalSteps key={step} step={step} />
                 ))}
               </>
             )}
@@ -95,43 +95,7 @@ const DiscountModal = ({
                   ['desc']
                 ).map((tier, index) => {
                   return (
-                    <>
-                      <div key={tier.metadata.demostoreTierName}>
-                        <p className="campaign-description section-heading redemption-rules mt-2">
-                          Tier {index + 1}
-                        </p>
-                        <div className="campaign-step d-flex flex-row">
-                          <div className="campaign-step-description">
-                            <p className="campaign-step-text">
-                              Discount:{' '}
-                              {tier.action.discount.type === 'PERCENT' && (
-                                <>{tier.action.discount.percent_off}%</>
-                              )}
-                              {tier.action.discount.type === 'AMOUNT' && (
-                                <>
-                                  $
-                                  {(
-                                    tier.action.discount.amount_off / 100
-                                  ).toFixed(2)}{' '}
-                                </>
-                              )}
-                              {tier.metadata.demostoreBOGO &&
-                                ` for ${tier.metadata.demostoreBOGO}`}
-                            </p>
-                          </div>
-                        </div>
-                        {tier.metadata.demostoreSteps.split(';').map((step) => (
-                          <div
-                            key={step}
-                            className="campaign-step d-flex flex-row"
-                          >
-                            <div className="campaign-step-description">
-                              <p className="campaign-step-text">{step}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </>
+                    <DiscountModalTiers key={tier} tier={tier} index={index} />
                   );
                 })}
               </>
@@ -148,9 +112,17 @@ const mapStateToProps = (state) => {
     currentCustomer: state.userReducer.currentCustomer,
     fetchingCustomers: state.userReducer.fetchingCustomers,
     campaigns: state.userReducer.campaigns,
-    enableCartDiscounts: state.userReducer.enableCartDiscounts,
     currentCartDiscount: state.userReducer.currentCartDiscount,
   };
 };
 
 export default connect(mapStateToProps)(DiscountModal);
+
+DiscountModal.propTypes = {
+  toggleModal: PropTypes.bool,
+  handleToggleModal: PropTypes.func,
+  modalData: PropTypes.object,
+  currentCustomer: PropTypes.object,
+  dispatch: PropTypes.func,
+  currentCartDiscount: PropTypes.string,
+};

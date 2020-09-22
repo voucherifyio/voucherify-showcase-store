@@ -3,7 +3,8 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getDiscount } from '../../redux/actions/cartActions';
-const CartForm = ({ dispatch }) => {
+
+const DiscountForm = ({ dispatch }) => {
   const [code, setCode] = useState('');
   const handleChange = (event) => {
     setCode(event.target.value);
@@ -51,8 +52,8 @@ const CartForm = ({ dispatch }) => {
   );
 };
 
-export default connect()(CartForm);
+export default connect()(DiscountForm);
 
-CartForm.propTypes = {
+DiscountForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };

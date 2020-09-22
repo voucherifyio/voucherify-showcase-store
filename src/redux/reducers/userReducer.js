@@ -22,7 +22,8 @@ import {
   REMOVE_CURRENT_CUSTOMER,
   ENABLE_SIDEBAR,
   DISABLE_SIDEBAR,
-  SET_CURRENT_CART_DISCOUNT
+  SET_CURRENT_CART_DISCOUNT,
+  ADD_PUBLISHED_CODES,
 } from '../constants';
 
 const initialState = {
@@ -43,7 +44,7 @@ const initialState = {
   fetchingCustomers: true,
   enableCartDiscounts: false,
   enableSidebar: false,
-  currentCartDiscount: null
+  currentCartDiscount: null,
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -51,8 +52,8 @@ export const userReducer = (state = initialState, action) => {
     case SET_CURRENT_CART_DISCOUNT: {
       return {
         ...state,
-        currentCartDiscount: action.payload.currentCartDiscount
-      }
+        currentCartDiscount: action.payload.currentCartDiscount,
+      };
     }
     case START_USER_SESSION_REQUEST: {
       return {
@@ -63,13 +64,25 @@ export const userReducer = (state = initialState, action) => {
     case ENABLE_SIDEBAR: {
       return {
         ...state,
-        enableSidebar: true,
+        enableSidebar: action.payload.enableSidebar,
       };
     }
     case DISABLE_SIDEBAR: {
       return {
         ...state,
         enableSidebar: false,
+      };
+    }
+    case ADD_PUBLISHED_CODES: {
+      const newPublishedCodes = state.publishedCodes;
+      const customerIndex = newPublishedCodes.findIndex(
+        (customer) =>
+          customer.currentCustomer === action.payload.currentCustomer
+      );
+      newPublishedCodes[customerIndex].campaigns.push(action.payload.campaign);
+      return {
+        ...state,
+        publishedCodes: newPublishedCodes,
       };
     }
     case START_USER_SESSION_SUCCESS: {
@@ -124,6 +137,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         campaigns: action.payload.campaigns,
+        fetchingCoupons: false,
       };
     }
     case GET_CAMPAIGNS_ERROR: {

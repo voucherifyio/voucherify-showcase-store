@@ -1,23 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-const CartCustomerAddress = ({ customer }) => {
+const CartCustomerAddress = ({ currentCustomer }) => {
   return (
     <div className="col-md-12 col-lg-3 order-1">
       <h4 className="mb-3">Address</h4>
       <ul className="list-group mb-3">
         <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
           <div className="d-block justify-content-center col-12 text-truncate">
-            {customer.name.split(' ')[0]} {customer.name.split(' ')[1]}{' '}
-            {customer.email !== null && (
-              <p className="mb-0 text-truncate">{customer.email}</p>
+            {currentCustomer.name.split(' ')[0]}{' '}
+            {currentCustomer.name.split(' ')[1]}{' '}
+            {currentCustomer.email !== null && (
+              <p className="mb-0 text-truncate">{currentCustomer.email}</p>
             )}
-            <p className="mb-0 text-truncate">{customer.address.line_1}</p>
             <p className="mb-0 text-truncate">
-              {customer.address.postal_code} {customer.address.city}
+              {currentCustomer.address.line_1}
             </p>
             <p className="mb-0 text-truncate">
-              {customer.address.state}, {customer.address.country}
+              {currentCustomer.address.postal_code}{' '}
+              {currentCustomer.address.city}
+            </p>
+            <p className="mb-0 text-truncate">
+              {currentCustomer.address.state}, {currentCustomer.address.country}
             </p>
           </div>
         </li>
@@ -26,8 +31,14 @@ const CartCustomerAddress = ({ customer }) => {
   );
 };
 
-export default CartCustomerAddress;
+const mapStateToProps = (state) => {
+  return {
+    currentCustomer: state.userReducer.currentCustomer,
+  };
+};
+
+export default connect(mapStateToProps)(CartCustomerAddress);
 
 CartCustomerAddress.propTypes = {
-  customer: PropTypes.object.isRequired,
+  currentCustomer: PropTypes.object.isRequired,
 };

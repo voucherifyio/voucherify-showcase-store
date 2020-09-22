@@ -24,8 +24,8 @@ import {
   SET_ENABLE_CART_DISCOUNTS,
   REMOVE_CURRENT_CUSTOMER,
   ENABLE_SIDEBAR,
-  DISABLE_SIDEBAR,
   SET_CURRENT_CART_DISCOUNT,
+  ADD_PUBLISHED_CODES,
 } from '../constants';
 
 export const startUserSessionRequest = () => {
@@ -53,12 +53,8 @@ export const getCustomersError = () => {
   return { type: GET_CUSTOMERS_ERROR };
 };
 
-export const setEnableSidebar = () => {
-  return { type: ENABLE_SIDEBAR };
-};
-
-export const setDisableSidebar = () => {
-  return { type: DISABLE_SIDEBAR };
+export const setEnableSidebar = (enableSidebar) => {
+  return { type: ENABLE_SIDEBAR, payload: { enableSidebar } };
 };
 
 export const getQualificationsRequest = () => {
@@ -74,8 +70,8 @@ export const setEnableCartDiscounts = (enableCartDiscounts) => {
 
 export const setCurrentCartDiscount = (currentCartDiscount) => {
   return { type: SET_CURRENT_CART_DISCOUNT, payload: { currentCartDiscount } };
+};
 
-}
 export const getQualificationsError = () => {
   return { type: GET_QUALIFICATIONS_ERROR };
 };
@@ -98,6 +94,10 @@ export const getVouchersRequest = () => {
 
 export const getVouchersSuccess = (vouchers) => {
   return { type: GET_VOUCHERS_SUCCESS, payload: { vouchers } };
+};
+
+export const addPublishedCodes = (currentCustomer, campaign) => {
+  return { type: ADD_PUBLISHED_CODES, payload: { currentCustomer, campaign } };
 };
 
 export const getVouchersError = () => {
@@ -235,6 +235,54 @@ export const getVouchers = () => async (dispatch) => {
   } catch (error) {
     console.log('[getVouchers][Error]', error);
     dispatch(getVouchersError());
+  }
+};
+
+export const updateCurrentCustomer = (email) => async (
+  dispatch,
+  getState
+) => {
+  const { currentCustomer } = getState().userReducer;
+  try {
+    dispatch(getCurrentCustomerRequest());
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL || ''}/customers/${
+        currentCustomer.source_id
+      }`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          email,
+        }),
+      }
+    );
+    const updatedCurrentCustomer = await res.json();
+    dispatch(getCurrentCustomerSuccess(updatedCurrentCustomer));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const publishCampaign = (campaign) => async (dispatch, getState) => {
+  const { currentCustomer } = getState().userReducer;
+  try {
+    const res = await fetch(
+      `${
+        process.env.REACT_APP_API_URL || ''
+      }/distributions/publications/create`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ currentCustomer, campaign }),
+      }
+    );
+    const publishedCampaign = await res.json();
+    dispatch(addPublishedCodes(currentCustomer.source_id, publishedCampaign));
+  } catch (error) {
+    console.log(error);
   }
 };
 

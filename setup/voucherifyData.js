@@ -194,7 +194,7 @@ exports.campaigns = [
         'You must have 2 of Johan & Nyström - Bourbon in cart',
       demostoreSteps: 'Cart contains: 2x Johan & Nyström - Bourbon',
       demostoreOrder: 3,
-      demostoreProduct: 'Johan & Nyström - Bourbon'
+      demostoreProduct: 'Johan & Nyström - Bourbon',
     },
   },
   {
@@ -207,6 +207,7 @@ exports.campaigns = [
     metadata: {
       demostoreName: '$5 off for sign up form',
       demostoreDescription: 'You must sign up for Hot Beans Newsletter',
+      demostoreSteps: 'Customers action: Subscribed to newsletter',
       demostoreOrder: 3,
       demostoreDoNotPublish: true,
     },
@@ -326,6 +327,17 @@ exports.segments = [
       'address.country': {
         conditions: {
           $is: ['Poland'],
+        },
+      },
+    },
+  },
+  {
+    type: 'auto-update',
+    name: 'Submitted newsletter',
+    filter: {
+      email: {
+        conditions: {
+          $has_value: true,
         },
       },
     },

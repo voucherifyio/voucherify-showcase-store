@@ -4,6 +4,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import _orderBy from 'lodash.orderby';
+import PropTypes from 'prop-types';
 
 const ProductList = ({ products, fetchingProducts }) => {
   const [filterCategory, setFilterCategory] = useState('');
@@ -90,3 +91,8 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(ProductList);
+
+ProductList.propTypes = {
+  fetchingProducts: PropTypes.bool.isRequired,
+  products: PropTypes.array,
+};

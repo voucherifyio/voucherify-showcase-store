@@ -1,11 +1,10 @@
 import React from 'react';
 import CartList from './CartList';
 import CartCustomerAddress from './CartCustomerAddress';
-import Alert from 'react-bootstrap/Alert';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const Cart = ({ itemsTotalCount, currentCustomer }) => {
+const Cart = ({ itemsTotalCount }) => {
   return (
     <div className="container">
       {itemsTotalCount > 0 ? (
@@ -17,14 +16,8 @@ const Cart = ({ itemsTotalCount, currentCustomer }) => {
             className="d-flex flex-lg-row flex-md-column
                   justify-content-center"
           >
-            {currentCustomer ? (
-              <>
-                <CartList />
-                <CartCustomerAddress customer={currentCustomer} />
-              </>
-            ) : (
-              <Alert variant="dark">Select customer first!</Alert>
-            )}
+            <CartList />
+            <CartCustomerAddress />
           </div>
         </>
       ) : (
@@ -40,13 +33,11 @@ const Cart = ({ itemsTotalCount, currentCustomer }) => {
 const mapStateToProps = (state) => {
   return {
     itemsTotalCount: state.cartReducer.itemsTotalCount,
-    currentCustomer: state.userReducer.currentCustomer,
   };
 };
 
 Cart.propTypes = {
   itemsTotalCount: PropTypes.number.isRequired,
-  currentCustomer: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(Cart);
