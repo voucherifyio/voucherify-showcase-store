@@ -62,6 +62,12 @@ const Sidebar = ({ enableSidebar, dispatch }) => {
     <div className="sidebarWrapper">
       <div className="sidebarContentWrapper">
         <Tabs
+          TabIndicatorProps={{
+            style: {
+              right: 'unset',
+              backgroundColor: '#ff8b5c',
+            },
+          }}
           orientation="vertical"
           value={value}
           onChange={handleChange}

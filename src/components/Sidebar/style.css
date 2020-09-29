@@ -41,11 +41,6 @@
   border-right: 1px solid #c0c0c0;
 }
 
-.MuiTabs-indicator {
-  right: unset !important;
-  background-color: #ff8b5c !important;
-}
-
 .MuiTabs-fixed {
   position: fixed !important;
   width: 70px !important;

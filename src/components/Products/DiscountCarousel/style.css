@@ -16,7 +16,7 @@
   height: 350px;
   background-position: center;
   object-fit: cover;
-  display: flex;
+  /* display: flex; */
   align-content: center;
   justify-content: center;
 }
