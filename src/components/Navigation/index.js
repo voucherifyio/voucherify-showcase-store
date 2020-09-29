@@ -66,6 +66,6 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps)(Navigation);
 
-Navigation.PropTypes = {
+Navigation.propTypes = {
   vouchers: PropTypes.array,
 };
