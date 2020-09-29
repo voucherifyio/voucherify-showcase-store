@@ -40,5 +40,6 @@ export default VoucherifyButton;
 VoucherifyButton.propTypes = {
   code: PropTypes.string,
   text: PropTypes.string,
-  handleDiscounts: PropTypes.func,
+  onClickFunction: PropTypes.func,
+  title: PropTypes.string,
 };
