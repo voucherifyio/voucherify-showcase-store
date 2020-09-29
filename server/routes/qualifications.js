@@ -25,13 +25,17 @@ router.route('*').post(async (req, res) => {
     const examinedCampaignsPromotion = await voucherify.promotions.validate(
       qtPayload
     );
+
     let qualifications = examinedCampaigns.data
       .concat(examinedVouchers.data)
       .concat(examinedCampaignsPromotion.promotions)
       .filter((qlt) => qlt.hasOwnProperty('metadata'));
 
-    qualifications = qualifications.filter((qlt) =>
-      qlt.metadata.hasOwnProperty('demostoreName')
+    // Filter out vouchers and campaigns not created by setup.js
+    qualifications = qualifications.filter(
+      (qlt) =>
+        qlt.name !== 'Referral Reward - 15% Discount' &&
+        qlt.code !== 'test_voucher_1'
     );
 
     return res.json(qualifications);

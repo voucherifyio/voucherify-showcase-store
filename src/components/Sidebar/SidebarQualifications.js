@@ -13,39 +13,43 @@ const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
 
   return (
     <>
-      <div className="d-flex flex-row justify-content-between align-items-center">
-        <p className="storeSidebar-heading my-1">Customer Qualifications</p>{' '}
-        <Tooltip title={qualificationsToolTip}>
-          <InfoIcon className="mr-4" />
-        </Tooltip>
-      </div>
+      <div className="sidebarSection qualificationSection">
+        <div className="sidebarSectionHeading">
+          <span className="sidebarSectionTitle">Qualifications</span>{' '}
+          <Tooltip className="titleTooltip" title={qualificationsToolTip}>
+            <InfoIcon />
+          </Tooltip>
+        </div>
 
-      <div className="chips d-flex justify-content-start align-items-start">
-        {fetchingQualifications ? (
-          <div className="w-100 text-center my-3">
-            <Spinner animation="border" size="sm" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          </div>
-        ) : (
-          <>
-            {!isEmpty(qualifications) && (
-              <>
-                {qualifications.map((qualification) => (
-                  <Chip
-                    key={`${qualification.metadata.demostoreName}`}
-                    style={{ maxWidth: '100%' }}
-                    label={
-                      qualification.name ||
-                      qualification.metadata.demostoreTierName ||
-                      qualification.metadata.demostoreName
-                    }
-                  />
-                ))}
-              </>
-            )}
-          </>
-        )}
+        <div className="sidebarSectionBody">
+          {fetchingQualifications ? (
+            <div className="sidebarSpinner">
+              <Spinner animation="border" size="sm" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
+          ) : (
+            <>
+              {!isEmpty(qualifications) && (
+                <>
+                  {qualifications.map((qualification) => (
+                    <Chip
+                      key={qualification.id}
+                      className="qualificationChip"
+                      label={
+                        <p className="qualificationChipName">
+                          {qualification.name ||
+                            qualification.metadata.name ||
+                            qualification.metadata.qualification_name}
+                        </p>
+                      }
+                    />
+                  ))}
+                </>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </>
   );

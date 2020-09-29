@@ -5,22 +5,28 @@ import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { clearCart } from '../../redux/actions/cartActions';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const CartTotals = ({ totalAmountAfterDiscount, dispatch }) => {
+  const totalAmout = `$${(totalAmountAfterDiscount / 100).toFixed(2)}`;
   return (
-    <li className="list-group-item d-flex flex-row justify-content-between lh-condensed">
-      <Tooltip title="Clear cart">
-        <IconButton className="mx-2" onClick={() => dispatch(clearCart())}>
-          <ClearIcon />
-        </IconButton>
-      </Tooltip>
-      <div
-        className="d-flex flex-column justify-content-center
-            my-auto ml-auto align-items-center col-4"
-      >
-        <h4 className="mb-0">${(totalAmountAfterDiscount / 100).toFixed(2)}</h4>
-      </div>
-    </li>
+    <Row className="totalSection" noGutters={true}>
+      <Col xs={12} sm={4} className="sectionTitle">
+        Order total
+      </Col>
+      <Col xs={6} sm={5} className="totalAmount">
+        {totalAmout}
+      </Col>
+      <Col xs={1} sm={1}></Col>
+      <Col xs={5} sm={2} className="cartItemRemove">
+        <Tooltip title="Clear cart">
+          <IconButton edge="start" onClick={() => dispatch(clearCart())}>
+            <ClearIcon />
+          </IconButton>
+        </Tooltip>
+      </Col>
+    </Row>
   );
 };
 

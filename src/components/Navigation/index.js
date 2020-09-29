@@ -1,117 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import SettingsIcon from '@material-ui/icons/Settings';
-import IconButton from '@material-ui/core/IconButton';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import Badge from '@material-ui/core/Badge';
-import { withStyles } from '@material-ui/core/styles';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  removeCurrentCustomer,
-  setEnableSidebar,
-} from '../../redux/actions/userActions';
+import { isEmpty } from '../../redux/utils';
+import NavigationMenu from './NavigationMenu';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import './style.css';
 
-const StyledBadge = withStyles(() => ({
-  badge: {
-    backgroundColor: 'yellow',
-    color: 'black',
-  },
-}))(Badge);
+const Navigation = ({ vouchers }) => {
+  const vouchersWithoutValidationRules = vouchers.filter(
+    (voucher) => voucher.metadata.assigned_val_rules === ''
+  );
 
-const Navigation = ({
-  itemsTotalCount,
-  currentCustomer,
-  dispatch,
-  enableSidebar,
-}) => {
-  const [toggle, setToggle] = useState(enableSidebar);
+  const ribbonVoucher =
+    vouchersWithoutValidationRules[
+      Math.floor(Math.random() * vouchersWithoutValidationRules.length)
+    ];
 
-  const handleToggle = () => {
-    setToggle(!toggle);
-  };
+  let ribbonDiscountText = '';
+  let ribbonDiscountProduct = '';
 
-  useEffect(() => {
-    dispatch(setEnableSidebar(toggle));
-  }, [dispatch, toggle]);
+  if (ribbonVoucher.discount.type === 'PERCENT') {
+    ribbonDiscountText = `${ribbonVoucher.discount.percent_off}% off`;
+  } else if (ribbonVoucher.discount.type === 'AMOUNT') {
+    ribbonDiscountText = `$${(ribbonVoucher.discount.amount_off / 100).toFixed(
+      2
+    )} off`;
+  }
 
+  if (!isEmpty(ribbonVoucher.metadata.promotion_product)) {
+    ribbonDiscountProduct = ` for ${ribbonVoucher.metadata.promotion_product}`;
+  }
   return (
-    <>
-      <Navbar className="m-auto navbar-sticky" collapseOnSelect expand="lg">
+    <Row className="navigation">
+      <Col xs={12}>
+        <div className="navigationRibbon">
+          Use code{' '}
+          <span className="navigationRibbonCode">{ribbonVoucher.code}</span> to
+          get {ribbonDiscountText}{' '}
+          {ribbonDiscountProduct !== '' && { ribbonDiscountProduct }}
+        </div>
+      </Col>
+      <Col md={5} className="navigationLogoWrapper">
         <Link to="/">
-          <Navbar.Brand className="m-auto">
-            <img src="/logo.svg" width="150" alt="Hot Beans" />
-          </Navbar.Brand>
+          <div className="navigationLogo">
+            <img
+              src="/logo.svg"
+              alt="Hot Beans"
+              className="navigationLogoImage"
+            />
+          </div>
         </Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ml-auto">
-            <Link
-              className="d-flex align-content-center nav-item-link"
-              to="/store"
-            >
-              <Nav.Item className="navbar-account px-2">Store</Nav.Item>
-            </Link>
-            <Link
-              className="d-flex align-content-center nav-item-link"
-              to="/"
-              onClick={() => {
-                dispatch(setEnableSidebar(false));
-                dispatch(removeCurrentCustomer(null));
-              }}
-            >
-              <Nav.Item className="navbar-account px-2">Logout</Nav.Item>
-            </Link>
-            {currentCustomer !== null && (
-              <>
-                <Nav.Item className="navbar-account px-2">
-                  <AccountCircleIcon className="navbar-icon mx-2" />
-                  Hi, <b>{currentCustomer.name.split(' ')[0]}</b>
-                </Nav.Item>
-              </>
-            )}
-            <Nav.Item className="px-2">
-              <Link to="/cart">
-                <IconButton className="mx-2">
-                  <StyledBadge badgeContent={itemsTotalCount}>
-                    <ShoppingCartIcon />
-                  </StyledBadge>
-                </IconButton>
-              </Link>
-            </Nav.Item>
-            <Nav.Item className="px-2">
-              <IconButton
-                className={enableSidebar ? 'mx-2 icon-selected' : 'mx-2'}
-                onClick={handleToggle}
-              >
-                <SettingsIcon />
-              </IconButton>
-            </Nav.Item>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-    </>
+      </Col>
+      <NavigationMenu />
+    </Row>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    enableSidebar: state.userReducer.enableSidebar,
-    currentCustomer: state.userReducer.currentCustomer,
-    itemsTotalCount: state.cartReducer.itemsTotalCount,
+    vouchers: state.userReducer.vouchers,
   };
 };
 
 export default connect(mapStateToProps)(Navigation);
-
-Navigation.propTypes = {
-  enableSidebar: PropTypes.bool,
-  storeSidebar: PropTypes.bool,
-  toggleSidebar: PropTypes.func,
-  itemsTotalCount: PropTypes.number,
-  currentCustomer: PropTypes.object,
-  dispatch: PropTypes.func,
-};

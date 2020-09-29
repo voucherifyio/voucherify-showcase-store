@@ -13,6 +13,9 @@ import DiscountModalTiers from './DiscountModalTiers';
 import DiscountModalSteps from './DiscountModalSteps';
 import PropTypes from 'prop-types';
 import DiscountModalPromotionForm from './DiscountModalPromotionForm';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import Tooltip from '@material-ui/core/Tooltip';
+
 const DiscountModal = ({
   toggleModal,
   handleToggleModal,
@@ -36,23 +39,20 @@ const DiscountModal = ({
   return (
     <div className={showHideClassName}>
       {!isEmpty(modalData) && (
-        <section className="modal-main discountModal">
-          <div className="d-flex mt-3 mb-3 flex-column align-items-center justify-content-center position-relative">
-            <div className="close">
+        <section className="discountModal">
+          <div className="modalContent centeredContent">
+            <div className="closeModal">
               <IconButton onClick={handleToggleModal}>
                 <CloseIcon />
               </IconButton>
             </div>
-            <h1 className="customerModal-modalTitle">{modalData.name}</h1>
+            <h4 className="">{modalData.name}</h4>
 
             {/* We need to filter out certain campaing to show off our distribution mechanism */}
 
             {!isEmpty(modalData.coupons) &&
-              modalData.name !== '$5 off for sign up form' && (
-                <>
-                  <p className="customerModal-modalDescription">
-                    Your discount code is:
-                  </p>
+              modalData.name !== 'Join our newsletter and get 5% discount' && (
+                <div className="pageTitle discountModalButtonWrapper">
                   <VoucherifyButton
                     code={
                       modalData.coupons.find(
@@ -61,43 +61,57 @@ const DiscountModal = ({
                       ).customerDataCoupon
                     }
                   />
-                </>
+                  <Tooltip title="Apply this code at the checkout!">
+                    <IconButton>
+                      <HelpOutlineIcon />
+                    </IconButton>
+                  </Tooltip>
+                </div>
               )}
 
-            {modalData.name === '$5 off for sign up form' && (
-              <DiscountModalPromotionForm campaign={modalData}/>
+            {modalData.name === 'Join our newsletter and get 5% discount' && (
+              <DiscountModalPromotionForm campaign={modalData} />
             )}
 
             {modalData.campaign_type === 'PROMOTION' && (
-              <VoucherifyButton
-                onClickFunction={handleDiscounts}
-                text={
-                  currentCartDiscount === modalData.name ? 'Disable' : 'Enable'
-                }
-              />
+              <div className="discountModalButtonWrapper">
+                <VoucherifyButton
+                  onClickFunction={handleDiscounts}
+                  text={
+                    currentCartDiscount === modalData.name
+                      ? 'Opt out'
+                      : 'Take part'
+                  }
+                />
+                <Tooltip title="If you follow the tier redemption rules, the discount will be applied automatically. You won't be able to redeem other coupons.">
+                  <IconButton>
+                    <HelpOutlineIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
             )}
 
-            {modalData.metadata.demostoreSteps && (
-              <>
-                <p className="campaign-description section-heading redemption-rules">
-                  To reedem this code you must fulfill this redemption rules:
-                </p>
-                {modalData.metadata.demostoreSteps.split(';').map((step) => (
+            {modalData.metadata.redemption_steps && (
+              <div className="discountModalRedemptionSteps">
+                <p>Redemption rules:</p>
+                {modalData.metadata.redemption_steps.split(';').map((step) => (
                   <DiscountModalSteps key={step} step={step} />
                 ))}
-              </>
+              </div>
             )}
             {modalData.tiers && (
               <>
-                {_orderBy(
-                  modalData.tiers,
-                  ['metadata.demostoreOrder'],
-                  ['desc']
-                ).map((tier, index) => {
-                  return (
-                    <DiscountModalTiers key={tier} tier={tier} index={index} />
-                  );
-                })}
+                {_orderBy(modalData.tiers, ['metadata.order'], ['desc']).map(
+                  (tier, index) => {
+                    return (
+                      <DiscountModalTiers
+                        key={tier}
+                        tier={tier}
+                        index={index}
+                      />
+                    );
+                  }
+                )}
               </>
             )}
           </div>

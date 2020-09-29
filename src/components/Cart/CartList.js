@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import CartItem from './CartItem';
-import DiscountForm from './DiscountForm';
 import PaymentMethod from './PaymentMethod';
+import CartDiscountForm from './CartDiscountForm';
+import CartDiscount from './CartDiscount';
 import CartTotals from './CartTotals';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
@@ -10,7 +11,7 @@ import { connect } from 'react-redux';
 import { getCurrentCustomer } from '../../redux/actions/userActions';
 import { checkoutCart } from '../../redux/actions/cartActions';
 import { isEmpty } from '../../redux/utils';
-import ValidatedDiscount from './ValidatedDiscount';
+import Col from 'react-bootstrap/Col';
 
 const CartList = ({
   items,
@@ -33,36 +34,30 @@ const CartList = ({
   }, [discount, enableCartDiscounts]);
 
   return (
-    <div className="col-md-12 col-lg-9 order-2">
-      <h4 className="d-flex justify-content-between align-items-center mb-3">
-        <span>Your cart</span>
-      </h4>
-      <ul className="list-group mb-3">
+    <Col className="cartListWrapper">
+      <h4>Your cart</h4>
+      <div className="cartWrapper">
         {items.map((item) => (
           <CartItem key={item.id} id={item.id} />
         ))}
         <PaymentMethod />
-        {discountForm && <DiscountForm />}
-        {!isEmpty(discount) && <ValidatedDiscount />}
+        {discountForm && <CartDiscountForm />}
+        {!isEmpty(discount) && <CartDiscount />}
         <CartTotals />
-      </ul>
-      <Link
-        to="/success"
-        className="link-unstyled"
-        style={{ textDecoration: 'none' }}
-      >
+      </div>
+      <Link to="/success">
         <Button
           variant="dark"
+          className="checkoutButton"
           onClick={async () => {
             await dispatch(checkoutCart());
             dispatch(getCurrentCustomer(currentCustomer.source_id, 'update'));
           }}
-          className="w-100 p-2"
         >
-          Proceed to checkout
+          Pay now
         </Button>
       </Link>
-    </div>
+    </Col>
   );
 };
 

@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DiscountModalSteps = ({step}) => {
+const DiscountModalSteps = ({ step }) => {
   return (
-    <div key={step} className="campaign-step d-flex flex-row">
-    <div className="campaign-step-description">
-      <p className="campaign-step-text">{step}</p>
+    <div key={step}>
+      <div>
+        <p>{step}</p>
+      </div>
     </div>
-  </div>
   );
 };
 
-export default DiscountModalSteps
-
+export default DiscountModalSteps;
 
 DiscountModalSteps.propTypes = {
-  step: PropTypes.string
+  step: PropTypes.string,
 };
-

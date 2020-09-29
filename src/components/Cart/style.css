@@ -1,0 +1,225 @@
+.cartPage {
+  margin-bottom: 5rem;
+}
+.cartCustomerAddressWrapper {
+  /* border: 1px solid #c0c0c0; */
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+  padding: 1rem;
+}
+
+.cartWrapper {
+  border: 1px solid #c0c0c0;
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+}
+
+.cartCustomerAddressWrapper > p {
+  margin-bottom: 0.25rem;
+}
+
+.cartCustomerAddressName {
+  font-weight: 700;
+}
+
+.cartWrapper {
+}
+
+.cartItem {
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid #c0c0c0;
+}
+
+.cartItemDetails {
+  justify-content: flex-start;
+}
+
+.cartItemImage {
+  width: 100%;
+  /* max-width: 50px; */
+}
+
+.cartItemName {
+  font-weight: 700;
+  margin: auto 0px;
+}
+.cartItemPrice {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+.cartItemPricePrefix {
+  font-size: 12px;
+}
+.cartItemDetailsRow2 {
+  justify-content: flex-start;
+}
+
+.cartItemRemove {
+  margin: auto 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.paymentMethodSection {
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid #c0c0c0;
+}
+.sectionTitle {
+  padding: 1rem 1.5rem !important;
+}
+.paymentMethodsWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.paymentMethod {
+  display: flex;
+  flex-direction: row;
+  margin: 0.5rem;
+}
+
+.selectedPaymentMethod {
+  font-weight: 700 !important;
+}
+.paymentMethodLogoWrapper {
+  width: auto;
+}
+.paymentMethodLogo {
+  height: 30px;
+  padding: 2px;
+}
+
+.avaliablePaymentMethod {
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
+.discountSection {
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid #c0c0c0;
+}
+
+.discountSection .discountAmount {
+  justify-content: center;
+  align-items: center;
+}
+.discountAmount {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.discounted {
+  color: green;
+}
+.discountAmountPrefix {
+  font-size: 12px;
+}
+
+.totalSection .totalAmount {
+  justify-content: center;
+  align-items: center;
+}
+
+.totalSection {
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0.5rem;
+}
+
+.totalAmount {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+@media (max-width: 575.98px) {
+  .cartPage {
+    margin-bottom: 10rem;
+  }
+  .cartItemPrice {
+    align-items: center;
+    justify-content: center;
+  }
+  .cartItemPricePrefix {
+    display: none;
+  }
+  .discountSection .cartItemRemove,
+  .totalSection .cartItemRemove {
+    justify-content: center;
+    align-items: center;
+  }
+  .sectionTitle {
+    font-size: 16px;
+    text-align: center;
+    padding: 1rem 0px;
+  }
+  .paymentMethodsWrapper {
+    justify-content: space-between;
+  }
+
+  .discountFormButton {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+}
+
+.checkoutButtonWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.checkoutButton {
+  /* width: 50%; */
+  width: 100%;
+  margin: 0.5rem auto;
+}
+@media (max-width: 767.98px) {
+  .cartItemPricePrefix {
+    margin-right: 0.5rem;
+  }
+
+  .cartItemName {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .cartItemQuantity {
+    margin-bottom: 0.25rem;
+  }
+  .cartItemPricePrefix {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .cartListWrapper,
+  .cartCustomerAddress {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 1199.98px) {
+}

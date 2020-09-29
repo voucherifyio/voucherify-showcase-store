@@ -1,0 +1,147 @@
+.carousel-indicators li {
+  height: 15px !important;
+}
+
+.carouselWrapper {
+  margin-bottom: 2rem;
+}
+
+.campaignsCarousel {
+  width: 100% !important;
+}
+
+.carousel {
+  width: 100%;
+  max-width: 1080px;
+  height: 350px;
+  background-position: center;
+  object-fit: cover;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.carousel-indicators {
+  margin-bottom: 0px !important;
+}
+.carouselBanner {
+  min-height: 250px;
+  /* width: 80%; */
+  /* width: 80% !important; */
+  padding: 2rem;
+  color: black;
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+}
+
+.carouselBannerFullWidth {
+  width: 80%;
+}
+
+.carouselBannerText {
+  padding: 1rem;
+  /* background-color: white; */
+}
+
+.carouselBannerTextHalfWidth {
+  width: 50%;
+}
+
+.carouselBannerTitle {
+  font-family: 'Lato black';
+}
+
+.carouselBannerDescription {
+  font-size: 0.8rem;
+  line-height: 1.3rem;
+  margin-bottom: 0px;
+}
+
+.carouselBannerImage {
+  background-color: white;
+  /* height: 100px; */
+  width: 50%;
+}
+
+.carouselBannerImageImg {
+  width: 100%;
+}
+
+.modal-content {
+  border-radius: 20px !important;
+  -webkit-border-radius: 20px !important;
+  -moz-border-radius: 20px !important;
+  -ms-border-radius: 20px !important;
+  -o-border-radius: 20px !important;
+}
+
+.modal-body {
+  padding: 2rem 1rem !important;
+}
+.signUpModalFormTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.signUpModalFormResult {
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 575.98px) {
+  /* .carousel {
+    width: 100% !important;
+  } */
+
+  .carouselBannerText {
+    padding: 0.5rem;
+  }
+  .carousel-indicators {
+    display: none !important;
+  }
+
+  .carouselBanner {
+    border-radius: 20px;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 75%;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+  }
+
+  .carouselBannerTitle {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .carouselBannerTextHalfWidth {
+    width: 100%;
+  }
+  .carouselBannerImage {
+    display: none;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .carouselBannerDescription {
+    font-size: 0.7rem;
+    line-height: 1.1rem;
+  }
+  .carouselBannerTitle {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 1199.98px) {
+}

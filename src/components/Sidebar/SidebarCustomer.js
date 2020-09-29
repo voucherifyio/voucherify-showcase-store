@@ -4,50 +4,56 @@ import PropTypes from 'prop-types';
 import { isEmpty } from '../../redux/utils';
 
 const SidebarCustomer = ({ currentCustomer }) => {
-  let customerDate = '';
-  if (currentCustomer) {
-    customerDate = new Date(currentCustomer.summary.orders.last_order_date);
-  }
+  const customerDate = new Date(currentCustomer.summary.orders.last_order_date);
+
+  const dateText = `${('0' + customerDate.getDate()).slice(-2)}.
+    ${('0' + (customerDate.getMonth() + 1)).slice(-2)}.
+    ${customerDate.getFullYear()} @ 
+    ${('0' + customerDate.getHours()).slice(-2)}:${(
+    '0' + customerDate.getMinutes()
+  ).slice(-2)}`;
 
   return (
     <>
-      <div className="storeSidebar-content">
-        <p>
-          Customer:{' '}
-          <span className="storeSidebar-content-data">
-            {currentCustomer.name}
-          </span>
-        </p>
-        <p>
-          Location:{' '}
-          <span className="storeSidebar-content-data">
-            {currentCustomer.address.country}
-          </span>
-        </p>
-        <p>
-          Total amount spent:{' '}
-          <span className="storeSidebar-content-data">
-            ${(currentCustomer.summary.orders.total_amount / 100).toFixed(2)}
-          </span>
-        </p>
-        <p>
-          Last order date:{' '}
-          <span className="storeSidebar-content-data">
-            {('0' + customerDate.getDate()).slice(-2)}.
-            {('0' + (customerDate.getMonth() + 1)).slice(-2)}.
-            {customerDate.getFullYear()} @{' '}
-            {('0' + customerDate.getHours()).slice(-2)}:
-            {('0' + customerDate.getMinutes()).slice(-2)}
-          </span>
-        </p>
-        <p>
-          Email:{' '}
-          <span className="storeSidebar-content-data">
-            {!isEmpty(currentCustomer.metadata.demostoreFakeEmail)
-              ? currentCustomer.metadata.demostoreFakeEmail
-              : 'Not submitted'}
-          </span>
-        </p>
+      <div className="sidebarSection">
+        <div className="sidebarSectionHeading">
+          <span className="sidebarSectionTitle">Customer</span>
+        </div>
+
+        <div className="sidebarSectionBody">
+          <p className="sidebarSectionCustomerData">
+            Customer:{' '}
+            <span className="sidebarSectionCustomerDataContent">
+              {currentCustomer.name}
+            </span>
+          </p>
+          <p className="sidebarSectionCustomerData">
+            Location:{' '}
+            <span className="sidebarSectionCustomerDataContent">
+              {currentCustomer.address.country}
+            </span>
+          </p>
+          <p className="sidebarSectionCustomerData">
+            Amount spent:{' '}
+            <span className="sidebarSectionCustomerDataContent">
+              ${(currentCustomer.summary.orders.total_amount / 100).toFixed(2)}
+            </span>
+          </p>
+          <p className="sidebarSectionCustomerData">
+            Last order:{' '}
+            <span className="sidebarSectionCustomerDataContent">
+              {dateText}
+            </span>
+          </p>
+          <p className="sidebarSectionCustomerData">
+            Email:{' '}
+            <span className="sidebarSectionCustomerDataContent">
+              {isEmpty(currentCustomer.email)
+                ? 'Not submitted'
+                : currentCustomer.email}
+            </span>
+          </p>
+        </div>
       </div>
     </>
   );

@@ -3,29 +3,30 @@ import CartList from './CartList';
 import CartCustomerAddress from './CartCustomerAddress';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import './style.css';
 const Cart = ({ itemsTotalCount }) => {
   return (
-    <div className="container">
+    <div className="page">
       {itemsTotalCount > 0 ? (
         <>
-          <div className="py-5 text-center">
-            <h2>Checkout form</h2>
-          </div>
-          <div
-            className="d-flex flex-lg-row flex-md-column
-                  justify-content-center"
-          >
-            <CartList />
+          <Row className="pageHeader">
+            <Col xs={12}>
+              <h1 className="pageTitle">Checkout</h1>
+            </Col>
+          </Row>
+          <Row className="cartPage">
             <CartCustomerAddress />
-          </div>
+            <CartList />
+          </Row>
         </>
       ) : (
-        <>
-          <div className="py-5 text-center">
-            <h2>Your cart is empty</h2>
-          </div>
-        </>
+        <Row className="pageHeader">
+          <Col xs={12}>
+            <h1 className="pageTitle">Your cart is empty</h1>
+          </Col>
+        </Row>
       )}
     </div>
   );

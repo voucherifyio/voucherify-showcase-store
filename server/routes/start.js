@@ -1,18 +1,18 @@
 const router = require('express').Router();
 const voucherifyClient = require('voucherify');
-const voucherifyData = require('../../setup/voucherifyData');
+const data = require('../../setup/data');
 const _find = require('lodash.find');
 const voucherify = voucherifyClient({
   applicationId: process.env.REACT_APP_BACKEND_APP_ID,
   clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
-const storeCustomers = voucherifyData.customers;
+const storeCustomers = data.customers;
 
 // We need to filter out Promotion campaigns and campaings without published coupons
-const campaigns = voucherifyData.campaigns.filter(
+const campaigns = data.campaigns.filter(
   (campaign) =>
     campaign.campaign_type !== 'PROMOTION' &&
-    campaign.metadata.demostoreDoNotPublish !== true
+    campaign.metadata.autoPublish !== false
 );
 
 function publishCouponsForCustomer(id) {
@@ -76,24 +76,21 @@ router.route('*').get(async (req, res) => {
           publishCouponsForCustomer(customer.source_id)
         ).catch((e) => console.error(`[Publishing coupons][Error] - ${e}`));
 
-        // Assing validation rules for voucher "Welcome wave 5% off"
+        // Assing validation rules for voucher "Individual Coupon"
         const customerCoupons = coupons.filter(
-          (coupon) =>
-            coupon.voucher.metadata.demostoreName === 'Welcome wave 5% off'
+          (coupon) => coupon.voucher.name === 'Individual Coupon'
         );
 
         const uniqueCoupon = customerCoupons.find(
           (coupon) => coupon.tracking_id === customer.source_id
         );
         if (typeof uniqueCoupon !== 'undefined') {
-          const customerValidationRuleName =
-            customer.metadata.customerValidationRuleName;
+          const individualValRule = customer.metadata.individual_val_rule;
 
           const validationRulesList = await voucherify.validationRules.list();
 
           const customerValidationRuleId = validationRulesList.data.find(
-            (ValidationRule) =>
-              ValidationRule.name === customerValidationRuleName
+            (ValidationRule) => ValidationRule.name === individualValRule
           ).id;
 
           const assignment = { voucher: uniqueCoupon.voucher.code };

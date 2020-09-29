@@ -238,7 +238,7 @@ export const getVouchers = () => async (dispatch) => {
   }
 };
 
-export const updateCurrentCustomer = (email) => async (
+export const updateCurrentCustomerEmail = (email) => async (
   dispatch,
   getState
 ) => {
@@ -261,7 +261,7 @@ export const updateCurrentCustomer = (email) => async (
     const updatedCurrentCustomer = await res.json();
     dispatch(getCurrentCustomerSuccess(updatedCurrentCustomer));
   } catch (error) {
-    console.log(error);
+    console.log('[updateCurrentCustomerEmail][Error]', error);
   }
 };
 
@@ -282,7 +282,7 @@ export const publishCampaign = (campaign) => async (dispatch, getState) => {
     const publishedCampaign = await res.json();
     dispatch(addPublishedCodes(currentCustomer.source_id, publishedCampaign));
   } catch (error) {
-    console.log(error);
+    console.log('[publishCampaign][Error]', error);
   }
 };
 

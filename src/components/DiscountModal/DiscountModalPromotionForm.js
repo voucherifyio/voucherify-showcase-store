@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  updateCurrentCustomer,
+  updateCurrentCustomerEmail,
   publishCampaign,
   getCampaigns,
 } from '../../redux/actions/userActions';
@@ -18,7 +18,7 @@ const DiscountModalPromotionForm = ({
   };
 
   const asyncDispatch = async () => {
-    await dispatch(updateCurrentCustomer(email));
+    await dispatch(updateCurrentCustomerEmail(email));
     await dispatch(publishCampaign(campaign));
     await dispatch(getCampaigns());
   };
@@ -32,7 +32,7 @@ const DiscountModalPromotionForm = ({
       <div>
         <p>Subscribe to our newsletter to get extra 5% discount!</p>
         {currentCustomer.email ? (
-          <p>You're already subscribed</p>
+          <p>You are already subscribed</p>
         ) : (
           <form onSubmit={handleSubmit}>
             <label>

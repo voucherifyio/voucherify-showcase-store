@@ -112,7 +112,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
 
       window.Voucherify.validate(getCartDiscountPayload, (res) => {
         const discount = res.promotions.filter(
-          (promo) => promo.metadata.demostoreName === activeCartDiscount
+          (promo) => promo.metadata.promotion_name === activeCartDiscount
         )[0];
         if (discount) {
           resolve(discount);

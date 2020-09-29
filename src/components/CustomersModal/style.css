@@ -1,0 +1,195 @@
+/* Select Customer Details */
+.customersModalWrapper {
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.customersModalArrowLine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: 15%;
+}
+.customersModalDescWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+}
+.customersModal {
+  max-width: 950px;
+  overflow: hidden;
+  padding: 2rem;
+  margin: 0.5rem;
+  position: relative;
+  text-align: center;
+}
+.customersModalTitle {
+  font-family: 'Lato Black';
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  /* word-break: break-all; */
+}
+
+.customersModalDesc {
+  font-size: 1.25rem;
+  color: #7a7a7a;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.customersModalCustomers {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.customersModalArrowLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+.customersModalArrow {
+  height: 10px;
+  transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  transform-style: preserve-3d;
+  -webkit-transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -moz-transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -ms-transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -o-transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  transition: all 0.4s ease;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  -ms-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+}
+
+.customersModalArrowLink:hover .customersModalArrow,
+.customersModalCustomer:hover .customersModalArrow {
+  transform: translate3d(10px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  transform-style: preserve-3d;
+  -webkit-transform: translate3d(10px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -moz-transform: translate3d(10px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -ms-transform: translate3d(10px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -o-transform: translate3d(10px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+}
+
+.customersModalLink {
+  width: 100%;
+  margin-top: auto;
+  margin-left: 0.5rem;
+  padding-left: 0.25rem;
+  color: #74b8c3;
+  font-size: 18px;
+  font-family: 'Lato black';
+  text-align: left;
+}
+.customersModalCustomer {
+  padding: 1rem;
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  border: 1px solid #c0c0c0;
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+  cursor: pointer;
+}
+
+.customersModalCustomer:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.customersModalCustomerImgWrapper {
+  max-width: 150px;
+  height: 150px;
+}
+.customersModalCustomerImg {
+  width: 100%;
+}
+.customersModalCustomerTitle {
+  font-family: 'Lato black';
+  font-size: 1.25rem;
+}
+
+.customersModalCustomerDesc {
+  color: #7a7a7a;
+  font-size: 1rem;
+}
+.customersModalCustomerDescWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.customersModalFooter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+@media (max-width: 575.98px) {
+  .customersModalCustomer {
+    width: 100%;
+    margin: 5px;
+  }
+  .customersModalDescWrapper {
+    width: 100%;
+  }
+  .customersModalArrowLine {
+    display: none;
+  }
+  .customersModal {
+    padding: 1rem;
+    box-shadow: none;
+    border-radius: 0rem;
+    -webkit-border-radius: 0rem;
+    -moz-border-radius: 0rem;
+    -ms-border-radius: 0rem;
+    -o-border-radius: 0rem;
+  }
+  .customersModalTitle {
+    font-size: 1.5rem;
+  }
+  .customersModalDesc {
+    font-size: 1rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 767.98px) {
+}
+
+@media (max-width: 991.98px) {
+}
+
+@media (max-width: 1199.98px) {
+}

@@ -8,9 +8,11 @@ const voucherify = voucherifyClient({
 router.route('*').get(async (req, res) => {
   try {
     const allCampaigns = await voucherify.campaigns.list();
-    // Filter out campaigns not created by setup.js and filter out Cart Level Promotion
-    const campaigns = allCampaigns.campaigns.filter((campaign) =>
-      campaign.metadata.hasOwnProperty('demostoreName')
+    // Filter out campaigns not created by setup.js
+    const campaigns = allCampaigns.campaigns.filter(
+      (campaign) =>
+        campaign.name !== 'Referral Reward - 15% Discount' &&
+        campaign.name !== 'Predefined Gift Cards'
     );
     return res.json(campaigns);
   } catch (e) {

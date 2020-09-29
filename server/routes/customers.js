@@ -4,7 +4,7 @@ const voucherify = voucherifyClient({
   applicationId: process.env.REACT_APP_BACKEND_APP_ID,
   clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
-const storeCustomers = require('../../setup/voucherifyData').customers;
+const storeCustomers = require('../../setup/data').customers;
 
 router.route('/:source_id').get(async (req, res) => {
   const sourceId = req.params.source_id;

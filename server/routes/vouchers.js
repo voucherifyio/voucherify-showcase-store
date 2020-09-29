@@ -6,13 +6,13 @@ const voucherify = voucherifyClient({
 });
 router.route('*').get(async (req, res) => {
   try {
-    const allPublicVouchers = await voucherify.vouchers.list({
+    const vouchers = await voucherify.vouchers.list({
       category: 'Public',
     });
-    const vouchers = allPublicVouchers.vouchers.filter((voucher) =>
-      voucher.metadata.hasOwnProperty('demostoreName')
-    );
-    return res.json(vouchers);
+    // const vouchers = allPublicVouchers.vouchers.filter((voucher) =>
+    //   voucher.metadata.hasOwnProperty('demostoreName')
+    // );
+    return res.json(vouchers.vouchers);
   } catch (e) {
     console.error(`[Vouchers][Error] - ${e}`);
     res.status(500).end();

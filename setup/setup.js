@@ -4,7 +4,7 @@ const voucherify = require('voucherify')({
   applicationId: process.env.REACT_APP_BACKEND_APP_ID,
   clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
-const { campaigns, vouchers, products, segments } = require('./voucherifyData');
+const { campaigns, vouchers, products, segments } = require('./data');
 
 const setupCampaigns = () => {
   const campaignPromises = campaigns.map((campaign) => {
@@ -13,7 +13,9 @@ const setupCampaigns = () => {
       .then((camp) => {
         const needsId = campaigns.find((c) => c.name === camp.name);
         needsId.voucherifyId = camp.id;
-        console.log(`[SUCCESS] Campaign created ${needsId.name}`);
+        console.log(
+          `[SUCCESS] Campaign created ${needsId.name} - ${needsId.voucherifyId}`
+        );
         if (camp.campaign_type === 'PROMOTION') {
           return camp.promotion.tiers.forEach((tier) => {
             let needsPromoId = campaigns.find((c) => c.name === camp.name);
@@ -22,7 +24,7 @@ const setupCampaigns = () => {
             );
             needsPromoId.voucherifyId = tier.id;
             console.log(
-              `[SUCCESS] Promotion Tier created ${needsPromoId.name}`
+              `[SUCCESS] Promotion Tier created ${needsPromoId.name}  - ${needsPromoId.voucherifyId}`
             );
           });
         }
@@ -74,7 +76,7 @@ const setupProducts = () => {
       price: product.price,
       image_url: product.metadata.imgUrl,
       metadata: {
-        demostoreOrder: product.metadata.demostoreOrder,
+        order: product.metadata.order,
         company: product.metadata.company,
         categories: product.metadata.categories.join(),
         info: product.metadata.info,
@@ -129,7 +131,7 @@ const setupCustomerSegments = () => {
 const setupValidationRules = async () => {
   const rules = [
     {
-      name: 'BOGO Campaign',
+      name: 'Buy Two, Get Three',
       error: { message: 'Check campaign rules' },
       rules: {
         1: {
@@ -208,7 +210,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'Welcome wave 5% off Lewis Marshall',
+      name: 'Individual Coupon Lewis Marshall',
       error: { message: 'Only Lewis Marshall can use this coupon' },
       rules: {
         1: {
@@ -222,7 +224,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'Welcome wave 5% off Alice Morgan',
+      name: 'Individual Coupon Alice Morgan',
       error: { message: 'Only Alice Morgan can use this coupon' },
       rules: {
         1: {
@@ -236,7 +238,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'Welcome wave 5% off John Dorian',
+      name: 'Individual Coupon John Dorian',
       error: { message: 'Only John Dorian can validate this coupon' },
       rules: {
         1: {
@@ -250,7 +252,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: '$15 off for Johan & Nystrom - Bourbon double-pack',
+      name: 'Double Trouble',
       error: { message: 'Check the campaign rules' },
       rules: {
         1: {
@@ -279,19 +281,19 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: '5% off for Illy Arabica - Guatemala',
+      name: '5% off for Illy Arabica',
       error: { message: 'Check the campaign rules' },
       rules: {
         1: {
           name: 'product.id',
           error: {
-            message: 'You have to add Illy Arabica - Guatemala to your cart',
+            message: 'You have to add Illy Arabica Guatemala to your cart',
           },
           rules: {},
           conditions: {
             $is: [
               {
-                id: products.find((p) => p.name === 'Illy Arabica - Guatemala')
+                id: products.find((p) => p.name === 'Illy Arabica Guatemala')
                   .voucherifyId,
               },
             ],
@@ -307,7 +309,25 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: '13% off - Local promotion',
+      name: 'Get 5% off your first purchase',
+      error: { message: 'Check campaign rules' },
+      rules: {
+        1: {
+          name: 'customer.segment',
+          error: { message: 'Available only for new customers' },
+          rules: {},
+          conditions: {
+            $is: [
+              segments.find((s) => s.name === 'Get 5% off your first purchase')
+                .voucherifyId,
+            ],
+          },
+        },
+        logic: '1',
+      },
+    },
+    {
+      name: 'Special Deal for Poles',
       error: { message: 'Check campaign rules' },
       rules: {
         1: {
@@ -316,7 +336,7 @@ const setupValidationRules = async () => {
           rules: {},
           conditions: {
             $is: [
-              segments.find((s) => s.name === '13% off - Local promotion')
+              segments.find((s) => s.name === 'Special Deal for Poles')
                 .voucherifyId,
             ],
           },
@@ -357,7 +377,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'Final Tier - 100% off for Hard Beans - Brazil',
+      name: 'Final Tier - 100% off for Hard Beans',
       error: { message: 'Check cart discount rules' },
       rules: {
         1: {
@@ -407,7 +427,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'First Tier - 50% off for Hard Beans - Brazil',
+      name: 'First Tier - 50% off for Hard Beans',
       error: { message: 'Check cart discount rules' },
       rules: {
         1: {
@@ -456,11 +476,11 @@ const setupValidationRules = async () => {
     const validationRule = voucherify.validationRules.create(ruleDefinition);
     return validationRule
       .then((rule) => {
-        const needsId = rules.find(
-          (res) => res.name === ruleDefinition.name
-        );
+        const needsId = rules.find((res) => res.name === ruleDefinition.name);
         needsId.voucherifyId = rule.id;
-        console.log(`[SUCCESS] Validation rule created ${needsId.name}`);
+        console.log(
+          `[SUCCESS] Validation rule created ${needsId.name} - ${needsId.voucherifyId}`
+        );
         return rule;
       })
       .catch((error) =>
@@ -473,9 +493,10 @@ const setupValidationRules = async () => {
 
   const campaignsRuleAssigmentPromises = () => {
     const assignmentsPerCampaign = campaigns.map((campaign) => {
+      // We filter out campaign with indvidual coupons
       if (
-        !campaign.metadata.demostoreAssignedValRules ||
-        campaign.metadata.demostoreName === 'Welcome wave 5% off'
+        !campaign.metadata.assigned_val_rules ||
+        campaign.name === 'Individual Coupon'
       ) {
         return [];
       } else if (campaign.campaign_type === 'PROMOTION') {
@@ -500,7 +521,7 @@ const setupValidationRules = async () => {
             );
         });
       }
-      const demostoreValRules = campaign.metadata.demostoreAssignedValRules.split(
+      const demostoreValRules = campaign.metadata.assigned_val_rules.split(
         '; '
       );
       return demostoreValRules.map((demostoreValRule) => {
@@ -527,12 +548,10 @@ const setupValidationRules = async () => {
 
   const vouchersRuleAssigmentPromises = () => {
     const valRulesPerVoucher = vouchers.map((voucher) => {
-      if (!voucher.metadata.demostoreAssignedValRules) {
+      if (!voucher.metadata.assigned_val_rules) {
         return [];
       }
-      const demostoreValRules = voucher.metadata.demostoreAssignedValRules.split(
-        '; '
-      );
+      const demostoreValRules = voucher.metadata.assigned_val_rules.split('; ');
       return demostoreValRules.map((demostoreValRule) => {
         const needsId = rules.find((rule) => rule.name === demostoreValRule)
           .voucherifyId;

@@ -1,0 +1,235 @@
+html {
+  font-size: 16px;
+}
+body {
+  background-color: white !important;
+  font-family: 'Lato', sans-serif !important;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+
+.flex-basis-100 {
+  flex-basis: 100%;
+}
+
+.carouselImage {
+  object-fit: cover;
+}
+
+/* Main Content Container Styles */
+
+.mainContent {
+  margin-right: 70px;
+}
+.mainContent.sidebar .sidebarWrapper {
+  right: -230px;
+}
+
+/* Links styles */
+
+a,
+a:focus,
+a:hover {
+  text-decoration: none !important;
+}
+
+.voucherifyLink {
+  color: #25abb7;
+  text-transform: none;
+  text-decoration: none;
+  transition: 0.4s all ease;
+  -webkit-transition: 0.4s all ease;
+  -moz-transition: 0.4s all ease;
+  -ms-transition: 0.4s all ease;
+  -o-transition: 0.4s all ease;
+}
+
+.voucherifyLink:hover {
+  color: #007682;
+}
+
+.pageContainer {
+  padding-bottom: 5rem;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+.page {
+  padding-top: 5rem;
+  margin: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pageHeader {
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.pageTitle {
+  word-break: break-all;
+}
+.spinnerWrapper {
+  /* display: flex; */
+  justify-content: center;
+  margin-bottom: 5rem;
+  /* margin-left: auto; */
+}
+
+.validateButton {
+  z-index: 1 !important;
+}
+
+button:focus {
+  outline: none !important;
+  border: 0 !important;
+}
+
+@media (max-width: 575.98px) {
+  /* .mainContent {
+    margin-right: 70px;
+  } */
+  .pageTitle {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .pageContainer {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+}
+
+@media (max-width: 1199.98px) {
+}
+
+/* Other */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.closeModal {
+  position: absolute;
+  top: -3.5rem;
+  right: -1.5rem;
+}
+
+.discountModal {
+  padding: 2rem;
+  max-width: 500px;
+  width: auto;
+  position: fixed;
+  background: white;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.modalContent {
+  display: flex;
+  margin: 2rem 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.centeredContent {
+  text-align: center;
+}
+
+.discountModalTier {
+  display: block;
+  margin: 1rem 0px;
+  width: 100%;
+  padding: 1rem;
+  text-align: left;
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+  /*border: 1px solid black;
+  */
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transition: all 200ms ease;
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+}
+
+.discountModalTier:hover {
+  transform: scale(1.05);
+  -webkit-transform: scale(1.05);
+  -moz-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  -o-transform: scale(1.05);
+}
+
+.tierName {
+  font-weight: 700;
+}
+
+.tierDiscount {
+  font-weight: 700;
+}
+.discountModalButtonWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.discountModalRedemptionSteps {
+}
+
+.voucherifyButton {
+  color: white !important;
+  font-family: 'Lato' !important;
+  font-size: 0.875rem !important;
+  background-color: #ff8b5c !important;
+  border-radius: 20em !important;
+  padding: 5px 20px !important;
+  margin: 15px 0px !important;
+  text-transform: none !important;
+  -webkit-border-radius: 20em !important;
+  -moz-border-radius: 20em !important;
+  -ms-border-radius: 20em !important;
+  -o-border-radius: 20em !important;
+}
+
+.voucherifyButton:hover {
+  background-color: #ff8b5c;
+}
