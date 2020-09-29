@@ -9,7 +9,7 @@ import { isEmpty } from '../../../redux/utils';
 const DiscountCarousel = ({ campaigns }) => {
   return (
     <div className="carouselWrapper">
-      <Carousel interval={5000}>
+      <Carousel interval={5000} onSlide={() => console.log('slide')}>
         {/* We filter out campaigns without banners */}
         {campaigns
           .filter(
