@@ -6,6 +6,7 @@ import NavigationMenu from './NavigationMenu';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import './style.css';
+import PropTypes from 'prop-types';
 
 const Navigation = ({ vouchers }) => {
   const vouchersWithoutValidationRules = vouchers.filter(
@@ -64,3 +65,7 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Navigation);
+
+Navigation.PropTypes = {
+  vouchers: PropTypes.array,
+};
