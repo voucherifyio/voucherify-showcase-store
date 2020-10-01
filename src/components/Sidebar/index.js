@@ -86,7 +86,7 @@ const Sidebar = ({ enableSidebar, dispatch }) => {
             style: {
               right: 'unset',
               width: '4px',
-              backgroundColor: 'var(--voucherify-orange)',
+              backgroundColor: 'var(--orange)',
             },
           }}
           orientation="vertical"

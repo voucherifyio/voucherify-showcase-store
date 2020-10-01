@@ -61,7 +61,7 @@ const DiscountCarouselSignUpModalForm = ({
               placeholder="Enter email"
               onChange={handleChange}
             />
-            <Form.Text className="text-muted">
+            <Form.Text className="emailMutedText">
               This is fake shop - you will not recieve any email
             </Form.Text>
           </Form.Group>

@@ -16,7 +16,7 @@
 }
 
 .cartWrapper {
-  border: 1px solid var(--voucherify-light-grey);
+  border: 1px solid var(--lightgrey);
   border-radius: 1rem;
   -webkit-border-radius: 1rem;
   -moz-border-radius: 1rem;
@@ -36,7 +36,7 @@
   justify-content: center;
   align-items: center;
   padding: 1rem 0.5rem;
-  border-bottom: 1px solid var(--voucherify-light-grey);
+  border-bottom: 1px solid var(--lightgrey);
 }
 
 .cartItemDetails {
@@ -84,7 +84,7 @@
   justify-content: center;
   align-items: center;
   padding: 1rem 0.5rem;
-  border-bottom: 1px solid var(--voucherify-light-grey);
+  border-bottom: 1px solid var(--lightgrey);
   min-height: 120px;
 }
 
@@ -98,12 +98,12 @@
   flex-wrap: wrap;
 }
 .cartDiscountsInformation {
-  color: var(--voucherify-light-grey);
+  color: var(--lightgrey);
   font-weight: 700;
   font-size: 0.8rem;
 }
 .paymentMethod {
-  border: 1px solid var(--voucherify-light-grey);
+  border: 1px solid var(--lightgrey);
   display: flex;
   flex-direction: row;
   margin: 0.5rem;
@@ -131,14 +131,14 @@
 }
 
 .avaliablePaymentMethod {
-  box-shadow: var(--voucherify-box-shadow);
+  box-shadow: var(--custom-box-shadow);
 }
 
 .discountSection {
   justify-content: center;
   align-items: center;
   padding: 1rem 0.5rem;
-  border-bottom: 1px solid var(--voucherify-light-grey);
+  border-bottom: 1px solid var(--lightgrey);
 }
 
 .discountSection .discountAmount {
@@ -156,7 +156,7 @@
 
 .discounted {
   margin-right: auto;
-  color: var(--voucherify-discounted-green);
+  color: var(--green);
 }
 
 .discountAmountPrefix {

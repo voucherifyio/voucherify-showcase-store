@@ -3,8 +3,9 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import PropTypes from 'prop-types';
 import { isEmpty } from '../../../redux/utils';
 import _orderBy from 'lodash.orderby';
-import VoucherifyButton from '../../Shared/VoucherifyButton';
+import VoucherifyButton from '../../App/VoucherifyButton';
 import SidebarDiscountDetailsTier from './SidebarDiscountDetailsTier';
+import './style.css';
 
 const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
   let discountText = '';

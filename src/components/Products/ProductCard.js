@@ -11,8 +11,8 @@ import { isEmpty } from '../../redux/utils';
 
 const DiscountBadge = withStyles(() => ({
   badge: {
-    backgroundColor: 'var(--voucherify-orange)',
-    color: 'var(--voucherify-font-white)',
+    backgroundColor: 'var(--orange)',
+    color: 'var(--white)',
     borderRadius: '5px',
     padding: '10px',
   },

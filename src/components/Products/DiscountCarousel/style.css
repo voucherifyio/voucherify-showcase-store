@@ -25,8 +25,8 @@
 .carouselBanner {
   min-height: 250px;
   padding: 2rem;
-  color: var(--voucherify-font-black);
-  background-color: var(--voucherify-bg-white);
+  color: var(--black);
+  background-color: var(--bg-white);
   position: absolute;
   top: 50%;
   left: 50%;
@@ -58,7 +58,7 @@
 }
 
 .carouselBannerImage {
-  background-color: var(--voucherify-bg-white);
+  background-color: var(--bg-white);
   width: 50%;
 }
 
@@ -76,21 +76,8 @@
   -o-border-radius: 10px !important;
 }
 
-.emailInput {
-  margin: 2rem 0;
-}
 .carouselBannerImageImg {
   width: 100%;
-}
-
-.signUpModalFormTitle {
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.signUpModalFormResult {
-  font-weight: 700;
-  font-size: 0.8rem;
 }
 
 @media (max-width: 575.98px) {

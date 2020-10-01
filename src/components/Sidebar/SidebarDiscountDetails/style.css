@@ -1,0 +1,59 @@
+.sidebarAccordion {
+  font-size: 0.9rem;
+  width: 100%;
+  padding: 0 0.5rem;
+  transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  /* margin-bottom: 1rem; */
+}
+
+.discountDescription {
+  margin-bottom: 0px !important;
+}
+
+.discountDescriptionAmount,
+.redemptionAmount {
+  font-weight: 700;
+}
+
+.campaignDescription {
+  /* text-align: center; */
+}
+
+.redemptionRules {
+  margin-bottom: 0px;
+}
+
+.redemptionRulesWrapper {
+  margin: 1rem 0rem;
+}
+
+.redemptionRulesStep {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.redemptionRules,
+.statistics {
+  font-weight: 700;
+}
+
+.tierTitle {
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0.5rem !important;
+}
+
+.redemptionTier .discountDescription {
+  margin-bottom: 0.5rem !important;
+}
+
+.redemptionTier {
+  margin-bottom: 1rem;
+  padding: 0rem 0.5rem;
+  border-left: 2px solid var(--orange);
+}

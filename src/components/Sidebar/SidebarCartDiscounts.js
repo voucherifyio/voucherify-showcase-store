@@ -25,10 +25,10 @@ const OrangeSwitch = withStyles({
   switchBase: {
     color: 'white',
     '&$checked': {
-      color: 'var(--voucherify-orange)',
+      color: 'var(--orange)',
     },
     '&$checked + $track': {
-      backgroundColor: 'var(--voucherify-orange)',
+      backgroundColor: 'var(--orange)',
     },
   },
   checked: {},

@@ -39,7 +39,7 @@
 
 .customersModalDesc {
   font-size: 1.125rem;
-  color: var(--voucherify-light-grey);
+  color: var(--lightgrey);
   margin-bottom: 2rem;
   text-align: left;
 }
@@ -103,7 +103,7 @@
   margin-top: auto;
   margin-left: 0.5rem;
   padding-left: 0.25rem;
-  color: var(--voucherify-link);
+  color: var(--link);
   font-size: 18px;
   font-family: 'Lato black';
   text-align: left;
@@ -121,7 +121,7 @@
   -moz-transition: all 0.4s ease;
   -ms-transition: all 0.4s ease;
   -o-transition: all 0.4s ease;
-  border: 1px solid var(--voucherify-light-grey);
+  border: 1px solid var(--lightgrey);
   border-radius: 1rem;
   -webkit-border-radius: 1rem;
   -moz-border-radius: 1rem;
@@ -131,7 +131,7 @@
 }
 
 .customersModalCustomer:hover {
-  box-shadow: var(--voucherify-box-shadow);
+  box-shadow: var(--custom-box-shadow);
 }
 
 .customersModalCustomerImgWrapper {
@@ -149,7 +149,7 @@
 }
 
 .customersModalCustomerDesc {
-  color: var(--voucherify-light-grey);
+  color: var(--lightgrey);
   font-size: 1rem;
 }
 

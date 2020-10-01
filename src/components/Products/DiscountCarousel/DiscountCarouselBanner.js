@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './style.css';
-import VoucherifyButton from '../../Shared/VoucherifyButton';
+import VoucherifyButton from '../../App/VoucherifyButton';
 import { isEmpty } from '../../../redux/utils';
 import DiscountCarouselSignUpModal from './DiscountCarouselSignUpModal';
 

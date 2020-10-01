@@ -1,7 +1,7 @@
 /* Navigation styles */
 
 .navigation {
-  background-color: var(--voucherify-bg-white);
+  background-color: var(--bg-white);
   position: -webkit-sticky !important;
   position: sticky !important;
   top: 0px;
@@ -32,7 +32,7 @@
 }
 
 .navigationMenu a {
-  color: var(--voucherify-font-black);
+  color: var(--black);
   transition: all 0.4s ease-in-out;
   -webkit-transition: all 0.4s ease-in-out;
   -moz-transition: all 0.4s ease-in-out;
@@ -41,12 +41,12 @@
 }
 
 .navigationMenu a:hover {
-  color: var(--voucherify-link-black-hover);
+  color: var(--link-black-hover);
 }
 
 .navigationMenuItemLink {
   margin: auto 0;
-  color: var(--voucherify-font-black);
+  color: var(--black);
   padding: 12px;
 }
 
@@ -67,7 +67,7 @@
 }
 
 .navigationMenuItemLink:hover {
-  color: var(--voucherify-link-black-hover);
+  color: var(--link-black-hover);
   text-decoration: none !important;
 }
 
@@ -107,7 +107,7 @@
     width: 100%;
     margin-top: 0.5rem !important;
     margin-bottom: 0.5rem !important;
-    box-shadow: var(--voucherify-box-shadow);
+    box-shadow: var(--custom-box-shadow);
     border-radius: 1rem !important ;
     -webkit-border-radius: 1rem !important ;
     -moz-border-radius: 1rem !important ;
@@ -118,7 +118,7 @@
     -moz-transition: all 0.4s ease;
     -ms-transition: all 0.4s ease;
     -o-transition: all 0.4s ease;
-    background: var(--voucherify-bg-white) !important;
+    background: var(--bg-white) !important;
     border: unset !important;
   }
 

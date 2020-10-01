@@ -15,8 +15,8 @@ import CheckIcon from '@material-ui/icons/Check';
 
 const PaymentMethodBadge = withStyles(() => ({
   badge: {
-    backgroundColor: 'var(--voucherify-font-black)',
-    color: 'var(--voucherify-font-white)',
+    backgroundColor: 'var(--black)',
+    color: 'var(--white)',
     borderRadius: '50%',
     height: '25px',
     width: '25px',

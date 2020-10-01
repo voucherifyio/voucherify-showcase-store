@@ -3,11 +3,11 @@
 }
 
 .voucherifyButtonOrange {
-  color: var(--voucherify-font-white) !important;
+  color: var(--white) !important;
   font-family: 'Lato' !important;
   font-size: 0.9rem !important;
-  background-color: var(--voucherify-orange) !important;
-  border-color: var(--voucherify-orange) !important;
+  background-color: var(--orange) !important;
+  border-color: var(--orange) !important;
   border-radius: 10px !important;
   padding: 5px 20px !important;
   margin: 15px 0px !important;
@@ -19,13 +19,13 @@
 }
 
 .voucherifyButtonOrange:hover {
-  background-color: var(--voucherify-orange);
+  background-color: var(--orange);
 }
 
 .voucherifyButtonDark {
-  color: var(--voucherify-font-white) !important;
-  background-color: var(--voucherify-font-black) !important;
-  border-color: var(--voucherify-font-black) !important;
+  color: var(--white) !important;
+  background-color: var(--black) !important;
+  border-color: var(--black) !important;
   font-family: 'Lato' !important;
   font-size: 0.9rem !important;
   border-radius: 10px !important;
@@ -39,7 +39,12 @@
 }
 
 .voucherifyButtonDark:hover {
-  background-color: var(--voucherify-font-black);
+  background-color: var(--black);
+}
+
+.voucherifyButtonDark:focus,
+.voucherifyButtonOrange:focus {
+  box-shadow: unset;
 }
 
 .buttonSeparator {

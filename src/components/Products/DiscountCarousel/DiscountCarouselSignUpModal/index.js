@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import DiscountCarouselSignUpModalForm from './DiscountCarouselSignUpModalForm';
 import PropTypes from 'prop-types';
+import './style.css';
 
 const DiscountCarouselSignUpModal = ({ campaign, show, onHide }) => {
   return (
