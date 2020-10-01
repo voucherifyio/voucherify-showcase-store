@@ -20,9 +20,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import 'voucherify.js';
 import 'react-toastify/dist/ReactToastify.css';
-import './styleVariables.css';
 import './style.css';
-import './buttonStyles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 window.Voucherify.initialize(

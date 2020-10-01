@@ -1,3 +1,17 @@
+:root {
+  --bg-white: white;
+  --orange: #ff8b5c;
+  --link: #25abb7;
+  --link-hover: #007682;
+  --white: white;
+  --black: black;
+  --lightgrey: #7a7a7a;
+  --custom-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  --link-black-hover: #7a7a7a;
+  --bg-sidebar: #f8f7f7;
+  --green: green;
+}
+
 html {
   font-size: 16px;
 }
@@ -75,8 +89,61 @@ a:hover {
   margin-bottom: 5rem;
 }
 
-.validateButton {
-  z-index: 1 !important;
+.buttonWrapper {
+  display: flex;
+}
+
+.voucherifyButtonOrange {
+  color: var(--white) !important;
+  font-family: 'Lato' !important;
+  font-size: 0.9rem !important;
+  background-color: var(--orange) !important;
+  border-color: var(--orange) !important;
+  border-radius: 10px !important;
+  padding: 5px 20px !important;
+  margin: 15px 0px !important;
+  text-transform: none !important;
+  -webkit-border-radius: 10px !important;
+  -moz-border-radius: 10px !important;
+  -ms-border-radius: 10px !important;
+  -o-border-radius: 10px !important;
+}
+
+.voucherifyButtonOrange:hover {
+  background-color: var(--orange);
+}
+
+.voucherifyButtonDark {
+  color: var(--white) !important;
+  background-color: var(--black) !important;
+  border-color: var(--black) !important;
+  font-family: 'Lato' !important;
+  font-size: 0.9rem !important;
+  border-radius: 10px !important;
+  padding: 5px 20px !important;
+  margin: 15px 0px !important;
+  text-transform: none !important;
+  -webkit-border-radius: 10px !important;
+  -moz-border-radius: 10px !important;
+  -ms-border-radius: 10px !important;
+  -o-border-radius: 10px !important;
+}
+
+.voucherifyButtonDark:hover {
+  background-color: var(--black);
+}
+
+.voucherifyButtonDark:focus,
+.voucherifyButtonOrange:focus {
+  box-shadow: unset;
+}
+
+.buttonSeparator {
+  width: 15px;
+}
+
+.paymentButton {
+  width: 100%;
 }
 
 @media (max-width: 575.98px) {
@@ -93,6 +160,9 @@ a:hover {
   }
   .pageHeader {
     margin-bottom: 1rem;
+  }
+  .voucherifyButtonDark {
+    width: 100%;
   }
 }
 
