@@ -17,8 +17,19 @@ const DiscountCarouselSignUpModalForm = ({
 }) => {
   const [email, setEmail] = useState(null);
 
+  const [submit, setSubmit] = useState(true);
+
   const handleChange = (event) => {
-    setEmail(event.target.value);
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (re.test(event.target.value)) {
+      setEmail(event.target.value);
+      setSubmit(false);
+    }
+  };
+
+  const handleClose = () => {
+    onHide();
   };
 
   const asyncDispatch = async () => {
@@ -35,11 +46,16 @@ const DiscountCarouselSignUpModalForm = ({
   return (
     <>
       {currentCustomer.email ? (
-        <p className="signUpModalFormResult">Thank you for subscribing!</p>
+        <>
+          <p className="signUpModalFormResult">Thank you for subscribing!</p>
+          <Button className="voucherifyButtonOrange" onClick={handleClose}>
+            Close
+          </Button>
+        </>
       ) : (
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+          <Form.Group controlId="formBasicEmail" className="emailInput">
+            <Form.Label>Your email address</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
@@ -49,10 +65,19 @@ const DiscountCarouselSignUpModalForm = ({
               This is fake shop - you will not recieve any email
             </Form.Text>
           </Form.Group>
-
-          <Button variant="dark" type="submit">
-            Submit
-          </Button>
+          <div className="buttonWrapper">
+            <Button
+              disabled={submit}
+              className="voucherifyButtonDark"
+              type="submit"
+            >
+              Submit
+            </Button>
+            <div className="buttonSeparator"></div>
+            <Button className="voucherifyButtonOrange" onClick={handleClose}>
+              Close
+            </Button>
+          </div>
         </Form>
       )}
     </>

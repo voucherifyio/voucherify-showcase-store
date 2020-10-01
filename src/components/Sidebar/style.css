@@ -2,57 +2,71 @@
   display: none;
 }
 
+.tab {
+  color: var(--voucherify-orange) !important;
+  transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+}
+
+.currentTab {
+  color: var(--voucherify-orange) !important;
+}
+
 .sidebarWrapper {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  font-size: 0.9rem;
+  box-shadow: var(--voucherify-box-shadow);
   max-height: 100vh;
-  -webkit-transition: all 0.25s ease-out;
-  -moz-transition: all 0.25s ease-out;
-  -o-transition: all 0.25s ease-out;
-  transition: all 0.25s ease-out;
+  transition: right 0.4s ease-in-out;
   position: fixed;
   top: 0;
   right: 0;
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 100vh;
-  width: 300px;
+  width: 360px;
   z-index: 17;
   margin-right: 0px;
   -ms-overflow-style: none;
-  /*IEandEdge*/
   scrollbar-width: none;
-  -ms-transition: all 0.25s ease-out;
-  background-color: #f8f7f7;
-  border-left: 1px solid #c0c0c0;
+  background-color: var(--voucherify-sidebar-bg);
+  -webkit-transition: right 0.4s ease-in-out;
+  -moz-transition: right 0.4s ease-in-out;
+  -ms-transition: right 0.4s ease-in-out;
+  -o-transition: right 0.4s ease-in-out;
 }
 
+.MuiTabs-flexContainerVertical {
+  height: calc(100vh - 30px) !important;
+}
+.tabLinks {
+  margin-top: auto !important;
+}
 .sidebarContentWrapper {
   display: flex;
-  /* min-width: 100px; */
-  /* height: 100vh; */
 }
+
 .sidebarLabels {
   min-width: 70px;
   padding: 25px 0px;
-  /* position: fixed; */
-  /* height: 135vh; */
-
-  /* border-left: 1px solid #c0c0c0; */
-  border-right: 1px solid #c0c0c0;
+  border-right: 1px solid var(--voucherify-light-grey);
 }
 
 .MuiTabs-fixed {
   position: fixed !important;
   width: 70px !important;
   height: 100% !important;
-  border-right: 1px solid #c0c0c0 !important;
+  border-right: 1px solid var(--voucherify-light-grey) !important;
 }
+
 .sidebarTab {
-  min-width: 230px;
+  width: 100%;
   height: 100%;
   padding: 25px 0px;
-  /* border-left: 1px solid #c0c0c0; */
 }
+
 .sidebarWrapper .storeSidebarHeading {
   margin-top: 1rem;
   padding: 0.4rem 1rem;
@@ -63,8 +77,6 @@
 .MuiTab-root {
   min-width: unset !important;
 }
-
-/* Qualifications style */
 
 .qualificationChip {
   height: 100% !important;
@@ -84,8 +96,8 @@
   padding-left: 0.5rem;
   padding-bottom: 1rem;
 }
+
 .sidebarSectionHeading {
-  display: flex;
   margin-bottom: 0.5rem;
 }
 
@@ -95,12 +107,27 @@
   /* padding-left: 0.5rem; */
 }
 
+.cartDiscountDescription {
+  padding-right: 0.5rem;
+}
+
+.readMore {
+  font-weight: 700;
+  color: var(--voucherify-orange);
+}
+
+.readMore:hover {
+  color: var(--voucherify-orange);
+}
+
 .MuiAccordionSummary-content {
   height: 40px;
   align-items: center;
 }
+
 .accordionSection {
   padding-left: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .accordionTitle {
@@ -111,17 +138,17 @@
 }
 
 .cartDiscountSwitch {
-  display: flex;
-  justify-content: space-around;
   align-items: center;
-  padding: 0.5rem 0.5rem;
+  padding: 1rem 0.5rem;
 }
+
 .cartDiscountCampaignSwitch {
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 0.5rem 0rem;
 }
+
 .MuiAccordionSummary-root {
   padding: 0 0.5rem !important;
   min-height: 40px !important;
@@ -131,49 +158,27 @@
   padding-left: 0.5rem !important;
   padding-right: 0.5rem !important;
 }
-.discountDescription {
-  font-size: 0.8rem;
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-.campaignDescription {
-  font-family: 'Lato';
-  font-weight: 700;
-  font-size: 0.8rem !important;
-  margin-bottom: 1rem !important;
-  text-align: center;
-  color: #7a7a7a;
-}
-
-.discountDescriptionAmount,
-.redemptionAmount {
-  font-weight: 700;
-}
 
 .redemptionRules,
 .statistics {
-  font-size: 0.8rem;
-  margin-bottom: 0.5rem;
-  text-align: center;
   font-weight: 700;
 }
+
 .redemptionRulesWrapper {
   margin: 1rem 0rem;
 }
+
 .redemptionRulesStep {
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
 }
 
-.discountCodeButton {
-  display: flex;
-  justify-content: center;
-}
 .sidebarSectionBody {
-  min-height: 150px;
+  min-height: 100px;
+  margin-bottom: 1rem;
 }
+
 .titleTooltip {
   margin-left: 0.5rem;
   cursor: help;
@@ -184,11 +189,11 @@
   justify-content: center;
   padding: 1rem 0;
 }
+
 .sidebarSectionCustomerData {
-  /* font-weight: 700; */
   margin-bottom: 0.25rem;
   font-size: 0.8rem;
-  color: #7a7a7a;
+  color: var(--voucherify-light-grey);
 }
 
 .qualificationSection {
@@ -197,29 +202,65 @@
 
 .sidebarSectionCustomerDataContent {
   font-weight: 700;
-  color: black;
+  color: var(--voucherify-font-black);
 }
 
-.MuiAccordionDetails-root {
-  /* background-color: #80808033 !important; */
+.accordionBackground {
+  background-color: var(--voucherify-bg-white) !important;
+  transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  border-top: 1px solid var(--voucherify-light-grey);
 }
+
+.accordions:last-child {
+  border-bottom: 1px solid var(--voucherify-light-grey);
+}
+
+.accordionBackground.open {
+  background-color: var(--voucherify-bg-white) !important;
+  transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+}
+
 .sidebarAccordion {
+  font-size: 0.9rem;
   width: 100%;
-  transition: all 0.2s ease-in-out;
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -ms-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
+  padding: 0 0.5rem;
+  transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  /* margin-bottom: 1rem; */
 }
 
-.sidebarWrapper .campaignDescription {
-  font-size: 0.875rem;
-  margin-bottom: 0px;
+.discountDescription {
+  margin-bottom: 0px !important;
+}
+
+.cartDiscountsTitle {
+  margin-bottom: 0.5rem;
+}
+
+.discountDescriptionAmount,
+.redemptionAmount {
+  font-weight: 700;
+}
+
+.campaignDescription {
+  /* text-align: center; */
 }
 
 .sidebarWrapper .sectionHeading {
   font-weight: 700;
 }
+
 .sidebarWrapper .redemptionRules {
   margin-bottom: 0px;
 }
@@ -227,24 +268,31 @@
 .sidebarWrapper .campaignStepDescription {
   margin-left: 10px;
 }
+
 .sidebarWrapper .campaignStepText {
   margin-bottom: 0px;
 }
 
 .redemptionTier {
-  margin-bottom: 0.5rem;
-  padding: 0.75rem;
-  background-color: #c0c0c061;
-  border-radius: 20px;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -ms-border-radius: 20px;
-  -o-border-radius: 20px;
+  margin-bottom: 1rem;
+  padding: 0rem 0.5rem;
+  border-left: 2px solid var(--voucherify-orange);
 }
+
 .tierTitle {
+  text-transform: uppercase;
+  font-weight: 700;
   margin-bottom: 0.5rem !important;
 }
+
+.redemptionTier .discountDescription {
+  margin-bottom: 0.5rem !important;
+}
+
 @media (max-width: 575.98px) {
+  .sidebarWrapper {
+    width: 100%;
+  }
 }
 
 @media (max-width: 767.98px) {
@@ -255,5 +303,3 @@
 
 @media (max-width: 1199.98px) {
 }
-
-/* Other */

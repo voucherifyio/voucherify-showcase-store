@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import _orderBy from 'lodash.orderby';
 import SidebarDiscountDetails from './SidebarDiscountDetails';
 import Spinner from 'react-bootstrap/Spinner';
-import Tooltip from '@material-ui/core/Tooltip';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { connect } from 'react-redux';
-import InfoIcon from '@material-ui/icons/Info';
 import Switch from '@material-ui/core/Switch';
+import { withStyles } from '@material-ui/core/styles';
 import {
   setEnableCartDiscounts,
   setCurrentCartDiscount,
@@ -20,6 +19,21 @@ import {
 } from '../../redux/actions/cartActions';
 import { isEmpty } from '../../redux/utils';
 import PropTypes from 'prop-types';
+import ShowMoreText from 'react-show-more-text';
+
+const OrangeSwitch = withStyles({
+  switchBase: {
+    color: 'white',
+    '&$checked': {
+      color: 'var(--voucherify-orange)',
+    },
+    '&$checked + $track': {
+      backgroundColor: 'var(--voucherify-orange)',
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
 
 const SidebarCartDiscounts = ({
   currentCustomer,
@@ -32,11 +46,11 @@ const SidebarCartDiscounts = ({
 }) => {
   const [expanded, setExpanded] = useState('');
   const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
+    setExpanded(newExpanded ? panel : '');
   };
 
   const handleSwitchChange = (panel) => (event, newActiveCartDiscount) => {
-    dispatch(setCurrentCartDiscount(newActiveCartDiscount ? panel : false));
+    dispatch(setCurrentCartDiscount(newActiveCartDiscount ? panel : ''));
   };
 
   const handleDiscountSwitchChange = () => {
@@ -47,10 +61,10 @@ const SidebarCartDiscounts = ({
     if (enableCartDiscounts && currentCartDiscount) {
       dispatch(getCartDiscount(currentCartDiscount));
     } else if (!enableCartDiscounts) {
-      dispatch(setCurrentCartDiscount(null));
-    } else if (currentCartDiscount === false) {
+      dispatch(setCurrentCartDiscount(''));
+    } else if (currentCartDiscount === '') {
       dispatch(removePromotionFromCart());
-      dispatch(setCurrentCartDiscount(null));
+      dispatch(setCurrentCartDiscount(''));
     }
   }, [dispatch, currentCartDiscount, enableCartDiscounts, items]);
 
@@ -60,20 +74,30 @@ const SidebarCartDiscounts = ({
   const cartDiscountCampaigns = discountCampaigns.filter(
     (camp) => camp.campaign_type === 'PROMOTION'
   );
-
-  const cartDiscountToolTip =
-    'The qualification endpoint returns all promotions available to the given customer profile and orders that meet predefined validation rules such as total order value or the minimum number of items in the cart.';
-
   // We're counting campaings for each Customer based on published coupons
 
   return (
-    <div>
+    <div className="accordions">
       {!isEmpty(campaigns) && !isEmpty(currentCustomer) && (
         <>
           <div className="sidebarSectionHeading accordionSection">
-            <span className="sidebarSectionTitle">
-              Cart discounts ({cartDiscountCampaigns.length})
-            </span>
+            <div className="cartDiscountsTitle">
+              {' '}
+              <span className="sidebarSectionTitle">
+                Cart discounts ({cartDiscountCampaigns.length})
+              </span>
+            </div>
+
+            <div className="cartDiscountDescription">
+              <ShowMoreText anchorClass="readMore" lines={2}>
+                <p>
+                  The qualification endpoint returns all promotions available to
+                  the given customer profile and orders that meet predefined
+                  validation rules such as total order value or the minimum
+                  number of items in the cart.
+                </p>
+              </ShowMoreText>
+            </div>
           </div>
 
           {fetchingCoupons ? (
@@ -85,16 +109,13 @@ const SidebarCartDiscounts = ({
           ) : (
             <div>
               <div className="cartDiscountSwitch">
-                <Switch
+                <OrangeSwitch
                   color="default"
-                  disabled={currentCartDiscount}
+                  disabled={currentCartDiscount ? true : false}
                   checked={enableCartDiscounts}
                   onChange={() => handleDiscountSwitchChange()}
                 />
                 Enable Cart Discounts
-                <Tooltip title={cartDiscountToolTip}>
-                  <InfoIcon />
-                </Tooltip>
               </div>
               {cartDiscountCampaigns.map((campaign) => (
                 <Accordion
@@ -110,10 +131,12 @@ const SidebarCartDiscounts = ({
                     id={campaign.id}
                   >
                     <div className="cartDiscountCampaignSwitch">
-                      <Switch
+                      <OrangeSwitch
                         color="default"
                         disabled={!enableCartDiscounts}
-                        checked={currentCartDiscount === campaign.name}
+                        checked={
+                          currentCartDiscount === campaign.name ? true : false
+                        }
                         onClick={(event) => event.stopPropagation()}
                         onChange={handleSwitchChange(campaign.name)}
                       />

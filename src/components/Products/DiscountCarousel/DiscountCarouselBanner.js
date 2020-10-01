@@ -2,31 +2,12 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './style.css';
-import {
-  setEnableCartDiscounts,
-  setCurrentCartDiscount,
-} from '../../../redux/actions/userActions';
 import VoucherifyButton from '../../Shared/VoucherifyButton';
 import { isEmpty } from '../../../redux/utils';
 import DiscountCarouselSignUpModal from './DiscountCarouselSignUpModal';
 
-const DiscountCarouselBanner = ({
-  campaign,
-  dispatch,
-  currentCustomer,
-  currentCartDiscount,
-}) => {
+const DiscountCarouselBanner = ({ campaign, currentCustomer }) => {
   const [modalShow, setModalShow] = useState(false);
-
-  const handleDiscounts = () => {
-    if (currentCartDiscount !== campaign.name) {
-      dispatch(setEnableCartDiscounts(true));
-      dispatch(setCurrentCartDiscount(campaign.name));
-    } else {
-      dispatch(setEnableCartDiscounts(false));
-      dispatch(setCurrentCartDiscount(null));
-    }
-  };
 
   return (
     <>
@@ -49,12 +30,9 @@ const DiscountCarouselBanner = ({
             {campaign.metadata.description}
           </p>
           {campaign.campaign_type === 'PROMOTION' && (
-            <VoucherifyButton
-              onClickFunction={handleDiscounts}
-              text={
-                currentCartDiscount === campaign.name ? 'Disable' : 'Enable'
-              }
-            />
+            <p className="carouselBannerDescriptionPromotion">
+              You can enable this promotion in the sidebar
+            </p>
           )}
           {!isEmpty(campaign.coupons) && (
             <VoucherifyButton
@@ -67,12 +45,13 @@ const DiscountCarouselBanner = ({
               }
             />
           )}
-          {campaign.name === 'Join our newsletter and get 5% discount' && (
-            <VoucherifyButton
-              onClickFunction={() => setModalShow(true)}
-              text="Sign up"
-            />
-          )}
+          {isEmpty(campaign.coupons) &&
+            campaign.name === 'Join our newsletter and get 5% discount' && (
+              <VoucherifyButton
+                onClickFunction={() => setModalShow(true)}
+                text="Sign up"
+              />
+            )}
         </div>
         {campaign.metadata.carousel_banner_url && (
           <div className="carouselBannerImage">
@@ -102,6 +81,7 @@ const mapStateToProps = (state) => {
 
 DiscountCarouselBanner.propTypes = {
   campaign: PropTypes.object,
+  currentCustomer: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(DiscountCarouselBanner);

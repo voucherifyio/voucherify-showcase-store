@@ -1,11 +1,11 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
+import PropTypes from 'prop-types';
 
 const ProductQuantityForm = ({ quantity, handleOnChange }) => {
   const quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
   return (
-    <Form inline className="productQuantityWrapper">
+    <Form inline="true" className="productQuantityWrapper">
       <Form.Control
         placeholder="quantity"
         as="select"
@@ -16,7 +16,7 @@ const ProductQuantityForm = ({ quantity, handleOnChange }) => {
       >
         {quantities.map((qty) => (
           <option key={qty} value={qty}>
-            Quantity: {qty}
+            {qty}
           </option>
         ))}
       </Form.Control>
@@ -25,3 +25,8 @@ const ProductQuantityForm = ({ quantity, handleOnChange }) => {
 };
 
 export default ProductQuantityForm;
+
+ProductQuantityForm.propTypes = {
+  quantity: PropTypes.string,
+  handleOnChange: PropTypes.func.isRequired,
+};

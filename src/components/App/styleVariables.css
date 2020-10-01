@@ -1,0 +1,13 @@
+:root {
+  --voucherify-bg-white: white;
+  --voucherify-orange: #ff8b5c;
+  --voucherify-link: #25abb7;
+  --voucherify-link-hover: #007682;
+  --voucherify-font-white: white;
+  --voucherify-font-black: black;
+  --voucherify-light-grey: #7a7a7a;
+  --voucherify-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  --voucherify-link-black-hover: #7a7a7a;
+  --voucherify-sidebar-bg: #f8f7f7;
+  --voucherify-discounted-green: green;
+}

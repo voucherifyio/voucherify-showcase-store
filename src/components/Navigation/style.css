@@ -1,36 +1,23 @@
 /* Navigation styles */
 
 .navigation {
-  background-color: white;
+  background-color: var(--voucherify-bg-white);
   position: -webkit-sticky !important;
   position: sticky !important;
-  top: 0;
+  top: 0px;
   z-index: 16;
   display: flex;
   align-items: center;
   padding: 0px 0 12px 0;
 }
 
-.navigationRibbon {
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  padding: 0.25rem 0px;
-  background: #f58b5b;
-  width: 100%;
-  color: white;
-  text-align: center;
-  -webkit-border-radius: ;
-  -moz-border-radius: ;
-  -ms-border-radius: ;
-  -o-border-radius: ;
-}
-
-.navigationRibbonCode {
-  font-weight: 700;
+.navigationLogoWrapper {
+  padding-left: 0px;
 }
 .navigationLogo {
   max-width: 170px;
   padding: 12px;
+  padding-left: 0px;
 }
 
 .navigationLogoImage {
@@ -45,27 +32,31 @@
 }
 
 .navigationMenu a {
-  color: black;
-  transition: all 0.2s ease-in-out;
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -ms-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
+  color: var(--voucherify-font-black);
+  transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
 }
 
 .navigationMenu a:hover {
-  color: #0000007d;
+  color: var(--voucherify-link-black-hover);
 }
+
 .navigationMenuItemLink {
   margin: auto 0;
-  color: rgba(0, 0, 0, 0.54);
+  color: var(--voucherify-font-black);
   padding: 12px;
 }
 
 .navigationMenuUser {
   margin: auto 0px;
   padding: 12px;
+  display: flex;
+  justify-content: flex-start;
 }
+
 .customerSelect {
   background-color: unset !important;
 }
@@ -74,8 +65,9 @@
   display: flex !important;
   align-items: center;
 }
+
 .navigationMenuItemLink:hover {
-  color: rgba(0, 0, 0, 0.54);
+  color: var(--voucherify-link-black-hover);
   text-decoration: none !important;
 }
 
@@ -85,6 +77,7 @@
 
 .navigationMenuUserAvatar {
   margin-right: 0.5rem;
+  width: 30px;
 }
 
 .navigationMenuUserDropdownItem {
@@ -102,31 +95,30 @@
   flex-wrap: wrap;
   white-space: break-spaces;
 }
+
 @media (max-width: 575.98px) {
   .navigationMenuUserDropdownItem {
     width: 100% !important;
   }
-  .navigationRibbon {
-    font-size: 0.8rem;
-  }
+
   .navigationMenuItemLink,
   .navigationMenuUser,
   .dropdown-menu {
     width: 100%;
     margin-top: 0.5rem !important;
     margin-bottom: 0.5rem !important;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 15px;
+    box-shadow: var(--voucherify-box-shadow);
     border-radius: 1rem !important ;
     -webkit-border-radius: 1rem !important ;
     -moz-border-radius: 1rem !important ;
     -ms-border-radius: 1rem !important ;
     -o-border-radius: 1rem !important ;
-    transition: all 0.2s ease;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -ms-transition: all 0.2s ease;
-    -o-transition: all 0.2s ease;
-    background: white !important;
+    transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -ms-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    background: var(--voucherify-bg-white) !important;
     border: unset !important;
   }
 
@@ -138,16 +130,17 @@
     -ms-transform: translate(0px, 70px) !important;
     -o-transform: translate(0px, 70px) !important;
   }
+
   .navigationMenuIcon {
     margin-top: 0.5rem !important;
     margin-bottom: 0.5rem !important;
     margin-right: 0.22rem !important;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 15px;
-    transition: all 0.2s ease;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -ms-transition: all 0.2s ease;
-    -o-transition: all 0.2s ease;
+    transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -ms-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
   }
 
   .navigationMenuIcon:active,
@@ -158,15 +151,16 @@
     -ms-transform: scale(0.9);
     -o-transform: scale(0.9);
   }
+
   .navigationMenuItemLink:hover {
     background-color: rgba(0, 0, 0, 0.04);
+  }
+  .navigationMenuUser a {
+    width: 100%;
   }
 }
 
 @media (max-width: 767.98px) {
-  /* .navigationMenu {
-    justify-content: flex-start;
-  } */
 }
 
 @media (max-width: 991.98px) {

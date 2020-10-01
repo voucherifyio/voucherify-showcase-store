@@ -26,6 +26,7 @@ import {
   ENABLE_SIDEBAR,
   SET_CURRENT_CART_DISCOUNT,
   ADD_PUBLISHED_CODES,
+  SET_NAVIGATION_RIBBON_VOUCHER,
 } from '../constants';
 
 export const startUserSessionRequest = () => {
@@ -94,6 +95,13 @@ export const getVouchersRequest = () => {
 
 export const getVouchersSuccess = (vouchers) => {
   return { type: GET_VOUCHERS_SUCCESS, payload: { vouchers } };
+};
+
+export const setNavigationRibbonVoucher = (navigationRibbonVoucher) => {
+  return {
+    type: SET_NAVIGATION_RIBBON_VOUCHER,
+    payload: { navigationRibbonVoucher },
+  };
 };
 
 export const addPublishedCodes = (currentCustomer, campaign) => {
@@ -231,6 +239,18 @@ export const getVouchers = () => async (dispatch) => {
       credentials: 'include',
     });
     const vouchers = await res.json();
+
+    const vouchersWithoutValidationRules = vouchers.filter(
+      (voucher) => voucher.metadata.assigned_val_rules === ''
+    );
+
+    const singleVoucher =
+      vouchersWithoutValidationRules[
+        Math.floor(Math.random() * vouchersWithoutValidationRules.length)
+      ];
+
+    dispatch(setNavigationRibbonVoucher(singleVoucher));
+
     dispatch(getVouchersSuccess(vouchers));
   } catch (error) {
     console.log('[getVouchers][Error]', error);

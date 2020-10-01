@@ -1,11 +1,10 @@
-/* .productHeader {
-  display: flex;
-  align-items: center;
-} */
-
 /* .productCategoryFormWrapper {
   align-items: center;
 } */
+
+.productPageHeader {
+  align-items: center;
+}
 
 .carouselWrapper {
   margin-bottom: 2rem;
@@ -14,6 +13,21 @@
 }
 .products {
   width: 100%;
+  margin-bottom: 2rem;
+}
+.productCompanyBadge {
+  background-color: var(--voucherify-font-black);
+  color: var(--voucherify-font-white);
+  padding: 4px 10px !important;
+  font-size: 0.7rem;
+}
+
+.productDiscountBadge {
+  margin-left: 0.5rem !important;
+  background-color: var(--voucherify-orange);
+  color: var(--voucherify-font-white);
+  padding: 4px 10px !important;
+  font-size: 0.7rem;
 }
 
 .productPage {
@@ -22,25 +36,33 @@
 .productCard {
   text-align: center;
   border-radius: 1rem;
-  transition: all 0.2s ease 0s;
+  transition: all 0.4s ease 0s;
   margin-bottom: 1rem;
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-content: center;
   min-height: 320px;
   -webkit-border-radius: 1rem;
   -moz-border-radius: 1rem;
   -ms-border-radius: 1rem;
   -o-border-radius: 1rem;
-  -webkit-transition: all 0.2s ease 0s;
-  -moz-transition: all 0.2s ease 0s;
-  -ms-transition: all 0.2s ease 0s;
-  -o-transition: all 0.2s ease 0s;
+  -webkit-transition: all 0.4s ease 0s;
+  -moz-transition: all 0.4s ease 0s;
+  -ms-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
 }
 
+.productBadges {
+  margin-bottom: 0.5rem;
+}
+
+.campaignCard {
+  box-shadow: var(--voucherify-box-shadow);
+}
 .productCard:hover {
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: var(--voucherify-box-shadow);
 }
 
 .productCardImage {
@@ -61,6 +83,7 @@
   padding: 15px;
   min-height: 50px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 }
 
@@ -76,13 +99,10 @@
   font-weight: 600;
 }
 
-.productCardButton {
-  margin-top: auto !important;
-  margin-bottom: auto !important;
+.productActionsQuantity {
+  display: flex;
+  align-items: center;
 }
-
-/* Product Details View Styles */
-
 .productName {
   word-break: break-all;
 }
@@ -90,6 +110,8 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 2rem;
+  align-items: center;
+  font-size: 1.1rem;
 }
 
 .productQuantityWrapper {
@@ -100,11 +122,11 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  transition: all 0.2s ease;
-  -webkit-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  -ms-transition: all 0.2s ease;
-  -o-transition: all 0.2s ease;
+  transition: all 0.4s ease;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  -ms-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
 }
 
 .productImageWrapper:hover {
@@ -114,11 +136,16 @@
   -ms-transform: scale(1.1);
   -o-transform: scale(1.1);
 }
+.productCampaignsRow {
+  width: 100%;
+}
 .productImage {
   height: auto;
   width: 100%;
 }
-
+.productDescriptionWrapper {
+  padding: 0 1rem;
+}
 .productDescription {
   line-height: 1.5rem;
 }
@@ -128,14 +155,14 @@
 }
 
 @media (max-width: 575.98px) {
+  .productActionsQuantity {
+    margin-bottom: 1rem;
+  }
   .pageTitle {
     font-size: 1.5rem;
   }
   .productCardContent {
     display: block;
-  }
-  .productCardButton {
-    display: block !important;
   }
 }
 

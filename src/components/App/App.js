@@ -4,6 +4,7 @@ import Navigation from '../Navigation';
 import AppRoutes from './AppRoutes';
 import { ToastContainer } from 'react-toastify';
 import Sidebar from '../Sidebar';
+import Ribbon from '../Ribbon';
 import { getProducts } from '../../redux/actions/storeActions';
 import { getTotals, getDiscount } from '../../redux/actions/cartActions';
 import {
@@ -19,7 +20,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import 'voucherify.js';
 import 'react-toastify/dist/ReactToastify.css';
+import './styleVariables.css';
 import './style.css';
+import './buttonStyles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 window.Voucherify.initialize(
@@ -62,9 +65,10 @@ const App = ({
         <CustomersModal />
       ) : (
         <div className={enableSidebar ? 'mainContent' : 'mainContent sidebar'}>
+          <Ribbon />
           <Container>
             <Navigation />
-            <Row className="pageContainer">
+            <Row noGutters className="pageContainer">
               <AppRoutes />
             </Row>
             {/* <Footer /> */}

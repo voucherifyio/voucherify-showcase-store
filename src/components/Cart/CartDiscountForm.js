@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-const CartDiscountForm = ({ dispatch }) => {
+const CartDiscountForm = ({ dispatch, disable }) => {
   const [code, setCode] = useState('');
   const handleChange = (event) => {
     setCode(event.target.value);
@@ -30,20 +30,20 @@ const CartDiscountForm = ({ dispatch }) => {
       </Col>
       <Col sm={8}>
         <Form onSubmit={handleSubmit}>
-          <Form.Row>
+          <Form.Row className="discountFormRow">
             <Col sm={8}>
               <Form.Control
                 type="text"
-                placeholder="Voucher"
+                placeholder={disable ? 'Disabled' : 'Voucher'}
                 value={code}
                 onChange={handleChange}
+                disabled={disable}
               />
             </Col>
             <Col sm={4}>
               <Button
                 type="submit"
-                variant="dark"
-                className="discountFormButton"
+                className="voucherifyButtonDark"
                 disabled={code.replace(/^\s+/, '').replace(/\s+$/, '') === ''}
                 onClick={() => {
                   handleValidate(code);
@@ -54,6 +54,12 @@ const CartDiscountForm = ({ dispatch }) => {
             </Col>
           </Form.Row>
         </Form>
+        {disable && (
+          <p className="cartDiscountsInformation">
+            With Cart Discounts Enabled you can not use other Vouchers. Disable
+            Cart Discounts in the Sidebar to use your personal and public codes
+          </p>
+        )}
       </Col>
     </Row>
   );
@@ -63,4 +69,5 @@ export default connect()(CartDiscountForm);
 
 CartDiscountForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  disable: PropTypes.bool,
 };

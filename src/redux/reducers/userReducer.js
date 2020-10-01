@@ -24,6 +24,7 @@ import {
   DISABLE_SIDEBAR,
   SET_CURRENT_CART_DISCOUNT,
   ADD_PUBLISHED_CODES,
+  SET_NAVIGATION_RIBBON_VOUCHER,
 } from '../constants';
 
 const initialState = {
@@ -45,10 +46,17 @@ const initialState = {
   enableCartDiscounts: false,
   enableSidebar: false,
   currentCartDiscount: null,
+  navigationRibbonVoucher: null,
 };
 
 export const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_NAVIGATION_RIBBON_VOUCHER: {
+      return {
+        ...state,
+        navigationRibbonVoucher: action.payload.navigationRibbonVoucher,
+      };
+    }
     case SET_CURRENT_CART_DISCOUNT: {
       return {
         ...state,

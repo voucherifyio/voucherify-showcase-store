@@ -4,7 +4,6 @@ import IconButton from '@material-ui/core/IconButton';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Col from 'react-bootstrap/Col';
@@ -16,6 +15,7 @@ import {
 } from '../../redux/actions/userActions';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { getCurrentCustomer } from '../../redux/actions/userActions';
+
 const StyledBadge = withStyles(() => ({
   badge: {
     backgroundColor: 'yellow',
@@ -41,18 +41,19 @@ const NavigationMenu = ({
 
   return (
     <Col className="navigationMenu">
-      <Tooltip title="Go to store">
-        <Link className="navigationMenuItemLink" to="/">
-          Store
-        </Link>
-      </Tooltip>
       <NavDropdown
         className="navigationMenuUser"
         title={
-          <div>
-            <AccountCircleIcon className="navigationMenuUserAvatar" />
-            Hi, <b>{currentCustomer.metadata.firstName}</b>
-          </div>
+          <Tooltip title="Change customer">
+            <div>
+              <img
+                src={currentCustomer.metadata.avatar}
+                className="navigationMenuUserAvatar"
+                alt="Customer Avatar"
+              />
+              Hi, <b>{currentCustomer.metadata.firstName}</b>
+            </div>
+          </Tooltip>
         }
       >
         {availableCustomers
@@ -72,7 +73,7 @@ const NavigationMenu = ({
             </NavDropdown.Item>
           ))}
       </NavDropdown>
-      <Tooltip title="Go to store">
+      <Tooltip title="Go to cart">
         <Link to="/cart">
           <IconButton className="navigationMenuIcon">
             <StyledBadge badgeContent={itemsTotalCount}>
@@ -92,7 +93,6 @@ const NavigationMenu = ({
 
 const mapStateToProps = (state) => {
   return {
-    enableSidebar: state.userReducer.enableSidebar,
     currentCustomer: state.userReducer.currentCustomer,
     itemsTotalCount: state.cartReducer.itemsTotalCount,
     availableCustomers: state.userReducer.availableCustomers,
@@ -102,9 +102,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(NavigationMenu);
 
 NavigationMenu.propTypes = {
-  enableSidebar: PropTypes.bool,
-  storeSidebar: PropTypes.bool,
-  toggleSidebar: PropTypes.func,
   itemsTotalCount: PropTypes.number,
   currentCustomer: PropTypes.object,
   dispatch: PropTypes.func,

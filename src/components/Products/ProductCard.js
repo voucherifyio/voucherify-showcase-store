@@ -4,35 +4,49 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addItemToCart } from '../../redux/actions/cartActions';
 import Col from 'react-bootstrap/Col';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import IconButton from '@material-ui/core/IconButton';
+import Button from 'react-bootstrap/Button';
+import Badge from '@material-ui/core/Badge';
+import { withStyles } from '@material-ui/core/styles';
+import { isEmpty } from '../../redux/utils';
 
-const ProductCard = ({ product, addItemToCart }) => {
+const DiscountBadge = withStyles(() => ({
+  badge: {
+    backgroundColor: 'var(--voucherify-orange)',
+    color: 'var(--voucherify-font-white)',
+    borderRadius: '5px',
+    padding: '10px',
+  },
+}))(Badge);
+
+const ProductCard = ({ product, addItemToCart, productCampaigns }) => {
   return (
     <Col lg={4} md={6} sm={6} xs={12}>
       <div className="productCard">
         <Link to={`/details/${product.id}`}>
           <div>
-            <img
-              className="productCardImage"
-              src={product.image_url}
-              alt={product.name}
-            />
+            <DiscountBadge
+              badgeContent="Promotion"
+              invisible={isEmpty(productCampaigns)}
+            >
+              <img
+                className="productCardImage"
+                src={product.image_url}
+                alt={product.name}
+              />
+            </DiscountBadge>
           </div>
         </Link>
         <div className="productCardContent">
-          <div className="productCardDetails">
-            <h6 className="productCardTitle">{product.name}</h6>
-            <h6>${(product.price / 100).toFixed(2)}</h6>
-          </div>
-          <IconButton
-            className="productCardButton"
+          <h6 className="productCardTitle">{product.name}</h6>
+          <div className="productCardDetails"></div>
+          <Button
             onClick={() => {
               addItemToCart();
             }}
+            className="voucherifyButtonDark"
           >
-            <AddShoppingCartIcon />
-          </IconButton>
+            ${(product.price / 100).toFixed(2)} - Add to cart
+          </Button>
         </div>
       </div>
     </Col>
@@ -42,6 +56,7 @@ const ProductCard = ({ product, addItemToCart }) => {
 ProductCard.propTypes = {
   product: PropTypes.object.isRequired,
   addItemToCart: PropTypes.func.isRequired,
+  productCampaigns: PropTypes.array,
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {

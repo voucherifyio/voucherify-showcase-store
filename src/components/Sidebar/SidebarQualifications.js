@@ -70,5 +70,5 @@ export default connect(mapStateToProps)(SidebarQualifications);
 
 SidebarQualifications.propTypes = {
   fetchingQualifications: PropTypes.bool,
-  qualifications: PropTypes.array.isRequired,
+  qualifications: PropTypes.array,
 };

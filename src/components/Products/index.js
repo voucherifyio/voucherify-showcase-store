@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 import Spinner from 'react-bootstrap/Spinner';
 import { connect } from 'react-redux';
@@ -10,9 +10,12 @@ import ProductsCategoryForm from './ProductsCategoryForm';
 import './style.css';
 import DiscountCarousel from './DiscountCarousel';
 
-const Products = ({ products, fetchingProducts }) => {
+const Products = ({ products, fetchingProducts, campaigns }) => {
   const [filterCategory, setFilterCategory] = useState('');
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   let filteredList;
   if (!fetchingProducts) {
     switch (filterCategory) {
@@ -33,10 +36,6 @@ const Products = ({ products, fetchingProducts }) => {
     <>
       <DiscountCarousel />
       <div className="page productPage">
-        {/* <div clasName="carouselWrapper"> */}
-
-        {/* </div> */}
-
         {fetchingProducts ? (
           <div className="spinnerWrapper">
             <Spinner animation="border" role="status">
@@ -49,7 +48,6 @@ const Products = ({ products, fetchingProducts }) => {
               <Col lg={6}>
                 <h1 className="pageTitle">
                   {filterCategory === '' ? 'Products' : `${filterCategory}`}
-                  {/* Products {filterCategory && `- ${filterCategory}`} */}
                 </h1>
               </Col>
               <Col lg={6} md={12} className="productCategoryFormWrapper">
@@ -62,7 +60,14 @@ const Products = ({ products, fetchingProducts }) => {
 
             <Row className="products">
               {filteredList.map((product) => (
-                <ProductCard key={product.id} product={product}></ProductCard>
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  productCampaigns={campaigns.filter(
+                    (camp) =>
+                      camp.metadata.demostore_product_info === product.name
+                  )}
+                ></ProductCard>
               ))}
             </Row>
           </>
@@ -76,6 +81,7 @@ const mapStateToProps = (state) => {
   return {
     products: state.storeReducer.products,
     fetchingProducts: state.storeReducer.fetchingProducts,
+    campaigns: state.userReducer.campaigns,
   };
 };
 
@@ -84,4 +90,5 @@ export default connect(mapStateToProps)(Products);
 Products.propTypes = {
   fetchingProducts: PropTypes.bool.isRequired,
   products: PropTypes.array,
+  campaigns: PropTypes.array,
 };

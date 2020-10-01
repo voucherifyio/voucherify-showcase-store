@@ -13,12 +13,10 @@
 .carousel {
   width: 100%;
   max-width: 1080px;
-  height: 350px;
+  height: 400px;
   background-position: center;
   object-fit: cover;
-  /* display: flex; */
-  align-content: center;
-  justify-content: center;
+  margin: 0 auto;
 }
 
 .carousel-indicators {
@@ -26,11 +24,9 @@
 }
 .carouselBanner {
   min-height: 250px;
-  /* width: 80%; */
-  /* width: 80% !important; */
   padding: 2rem;
-  color: black;
-  background-color: white;
+  color: var(--voucherify-font-black);
+  background-color: var(--voucherify-bg-white);
   position: absolute;
   top: 50%;
   left: 50%;
@@ -45,7 +41,6 @@
 
 .carouselBannerText {
   padding: 1rem;
-  /* background-color: white; */
 }
 
 .carouselBannerTextHalfWidth {
@@ -57,32 +52,37 @@
 }
 
 .carouselBannerDescription {
-  font-size: 0.8rem;
-  line-height: 1.3rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   margin-bottom: 0px;
 }
 
 .carouselBannerImage {
-  background-color: white;
-  /* height: 100px; */
+  background-color: var(--voucherify-bg-white);
   width: 50%;
 }
 
+.carouselBannerDescriptionPromotion {
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 10px !important;
+  -webkit-border-radius: 10px !important;
+  -moz-border-radius: 10px !important;
+  -ms-border-radius: 10px !important;
+  -o-border-radius: 10px !important;
+}
+
+.emailInput {
+  margin: 2rem 0;
+}
 .carouselBannerImageImg {
   width: 100%;
 }
 
-.modal-content {
-  border-radius: 20px !important;
-  -webkit-border-radius: 20px !important;
-  -moz-border-radius: 20px !important;
-  -ms-border-radius: 20px !important;
-  -o-border-radius: 20px !important;
-}
-
-.modal-body {
-  padding: 2rem 1rem !important;
-}
 .signUpModalFormTitle {
   font-size: 1.1rem;
   font-weight: 700;
@@ -94,13 +94,10 @@
 }
 
 @media (max-width: 575.98px) {
-  /* .carousel {
-    width: 100% !important;
-  } */
-
   .carouselBannerText {
     padding: 0.5rem;
   }
+
   .carousel-indicators {
     display: none !important;
   }
@@ -128,6 +125,7 @@
   .carouselBannerTextHalfWidth {
     width: 100%;
   }
+
   .carouselBannerImage {
     display: none;
   }

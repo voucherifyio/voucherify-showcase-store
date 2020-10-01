@@ -39,13 +39,18 @@ const SidebarPublicDiscounts = ({
               </Spinner>
             </div>
           ) : (
-            <div>
+            <div className="accordions">
               {discountVouchers.map((voucher) => (
                 <Accordion
                   square
                   key={voucher.id}
                   expanded={expanded === voucher.id}
                   onChange={handleChange(voucher.id)}
+                  className={
+                    expanded === voucher.id
+                      ? 'accordionBackground open'
+                      : 'accordionBackground'
+                  }
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -80,8 +85,6 @@ const mapStateToProps = (state) => {
     fetchingCustomers: state.userReducer.fetchingCustomers,
     items: state.cartReducer.items,
     discount: state.cartReducer.discount,
-    enableCartDiscounts: state.userReducer.enableCartDiscounts,
-    currentCartDiscount: state.userReducer.currentCartDiscount,
   };
 };
 
@@ -97,6 +100,4 @@ SidebarPublicDiscounts.propTypes = {
   fetchingCustomers: PropTypes.bool,
   dispatch: PropTypes.func,
   items: PropTypes.array,
-  currentCartDiscount: PropTypes.string,
-  enableCartDiscounts: PropTypes.bool,
 };

@@ -182,7 +182,7 @@ exports.campaigns = [
         'Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra',
       order: 1,
       promotion_product: '1x Johan & Nyström - Sumatra',
-      demostoreProduct: 'Johan & Nyström - Sumatra, Johan & Nyström - Fika',
+      demostore_product_info: 'Johan & Nyström - Sumatra',
       carousel_banner_background_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner4.jpg',
       carousel_banner_url:
@@ -198,6 +198,7 @@ exports.campaigns = [
     },
     metadata: {
       assigned_val_rules: '5% off for Illy Arabica',
+      demostore_product_info: 'Illy Arabica Guatemala',
       description:
         'Make an order above 50$ and have Illy Arabica Guatemala in your cart to get a 5% discount on your order.',
       redemption_steps:
@@ -222,6 +223,7 @@ exports.campaigns = [
         'Get a double-pack of Bourbon by Johan & Nyström to get a 15$ off your order.',
       redemption_steps: 'Cart contains: 2x Johan & Nyström - Bourbon',
       order: 3,
+      demostore_product_info: 'Johan & Nyström - Bourbon',
       carousel_banner_background_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner6.jpg',
       carousel_banner_url:
@@ -325,6 +327,7 @@ exports.campaigns = [
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner7.jpg',
       carousel_banner_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/image3.jpg',
+      demostore_product_info: 'Hard Beans - Brazil',
     },
     promotion: {
       tiers: [

@@ -9,7 +9,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SidebarQualifications from './SidebarQualifications';
 import { connect } from 'react-redux';
 import SidebarCustomer from './SidebarCustomer';
-
 import { isEmpty } from '../../redux/utils';
 import PropTypes from 'prop-types';
 
@@ -63,7 +62,7 @@ const SidebarPersonalDiscounts = ({
               </Spinner>
             </div>
           ) : (
-            <>
+            <div className="accordions">
               {couponCampaigns.map((campaign) => (
                 // We're checking avaliable coupons for currentCustomer.
                 <div key={campaign.name}>
@@ -78,6 +77,11 @@ const SidebarPersonalDiscounts = ({
                       key={campaign.id}
                       expanded={expanded === campaign.id}
                       onChange={handleChange(campaign.id)}
+                      className={
+                        expanded === campaign.id
+                          ? 'accordionBackground open'
+                          : 'accordionBackground'
+                      }
                     >
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -102,7 +106,7 @@ const SidebarPersonalDiscounts = ({
                   )}
                 </div>
               ))}
-            </>
+            </div>
           )}
         </>
       )}
@@ -120,8 +124,6 @@ const mapStateToProps = (state) => {
     fetchingCustomers: state.userReducer.fetchingCustomers,
     items: state.cartReducer.items,
     discount: state.cartReducer.discount,
-    enableCartDiscounts: state.userReducer.enableCartDiscounts,
-    currentCartDiscount: state.userReducer.currentCartDiscount,
   };
 };
 
@@ -137,6 +139,4 @@ SidebarPersonalDiscounts.propTypes = {
   fetchingCustomers: PropTypes.bool,
   dispatch: PropTypes.func,
   items: PropTypes.array,
-  currentCartDiscount: PropTypes.string,
-  enableCartDiscounts: PropTypes.bool,
 };

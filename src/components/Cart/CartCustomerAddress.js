@@ -5,9 +5,9 @@ import Col from 'react-bootstrap/Col';
 
 const CartCustomerAddress = ({ currentCustomer }) => {
   return (
-    <Col lg={3} className="cartCustomerAddressWrapper">
+    <Col lg={3}>
       <h4 className="cartCustomerAddressTitle">Address</h4>
-      <div className="cartCustomerAddressWrapper">
+      <div className="cartCustomerAddress">
         <p className="cartCustomerAddressName">{currentCustomer.name}</p>
         {currentCustomer.email !== null && <p>{currentCustomer.email}</p>}
         <p>{currentCustomer.address.line_1}</p>

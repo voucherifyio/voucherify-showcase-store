@@ -8,6 +8,7 @@ import ArrowLine from '../../assets/ArrowLine.png';
 import CustomersModalCustomer from './CustomersModalCustomer';
 import './style.css';
 import VoucherifyLogo from '../../assets/VoucherifyLogo.png';
+
 const CustomersModal = ({
   availableCustomers,
   fetchingCustomers,
@@ -29,17 +30,24 @@ const CustomersModal = ({
               Welcome to Voucherify Store!
             </h1>
             <p className="customersModalDesc">
-              Log in to our demo shop where you can experience twelve
-              promotional workflows. In the control panel on your right, you
-              will see available promotions retrieved from Voucherify. You can
-              also switch between customer personas.
+              Log in to our demo shop where you can experience various
+              promotional workflows. In the{' '}
+              <span className="customersModalDescBold">control panel</span> on
+              your right, you will see available promotions retrieved from
+              Voucherify. You can also{' '}
+              <span className="customersModalDescBold">
+                switch between customers
+              </span>{' '}
+              to use their own specific coupons.
             </p>
-            <div className="customersModalArrowLink">
-              <img className="customersModalArrow" alt="" src={ArrowIcon} />
-              <div className="customersModalLink">
-                Connect your Voucherify acccount to Hot Beans
+            <a href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F">
+              <div className="customersModalArrowLink">
+                <img className="customersModalArrow" alt="" src={ArrowIcon} />
+                <div className="customersModalLink">
+                  Connect your Voucherify acccount to Hot Beans
+                </div>
               </div>
-            </div>
+            </a>
           </div>
           <div className="customersModalCustomers">
             {availableCustomers.map((customer) => (
@@ -47,7 +55,7 @@ const CustomersModal = ({
             ))}
           </div>
           <div className="customersModalFooter">
-            <div>
+            <div className="voucherifyLogoWrapper">
               <a href="https://voucherify.io">
                 <img
                   className="voucherifyLogo"
@@ -58,7 +66,9 @@ const CustomersModal = ({
             </div>
             <div>
               © {new Date().getFullYear()}{' '}
-              <a href="https://rspective.com">rspective</a>
+              <a className="voucherifyLink" href="https://rspective.com">
+                rspective
+              </a>
             </div>
           </div>
         </div>
@@ -78,7 +88,7 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(CustomersModal);
 
 CustomersModal.propTypes = {
-  availableCustomers: PropTypes.object,
+  availableCustomers: PropTypes.array,
   fetchingCustomers: PropTypes.bool,
-  campaigns: PropTypes.object,
+  campaigns: PropTypes.array,
 };

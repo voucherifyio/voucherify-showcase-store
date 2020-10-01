@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
+import PropTypes from 'prop-types';
 
 const ProductsCategoryForm = ({ filterCategory, setFilterCategory }) => {
   const categories = [
@@ -35,3 +36,8 @@ const ProductsCategoryForm = ({ filterCategory, setFilterCategory }) => {
 };
 
 export default ProductsCategoryForm;
+
+ProductsCategoryForm.propTypes = {
+  filterCategory: PropTypes.string,
+  setFilterCategory: PropTypes.func.isRequired,
+};

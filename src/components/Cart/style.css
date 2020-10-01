@@ -1,8 +1,12 @@
+.checkoutHeader {
+  width: 100%;
+}
+
 .cartPage {
   margin-bottom: 5rem;
 }
+
 .cartCustomerAddressWrapper {
-  /* border: 1px solid #c0c0c0; */
   border-radius: 1rem;
   -webkit-border-radius: 1rem;
   -moz-border-radius: 1rem;
@@ -12,7 +16,7 @@
 }
 
 .cartWrapper {
-  border: 1px solid #c0c0c0;
+  border: 1px solid var(--voucherify-light-grey);
   border-radius: 1rem;
   -webkit-border-radius: 1rem;
   -moz-border-radius: 1rem;
@@ -20,7 +24,7 @@
   -o-border-radius: 1rem;
 }
 
-.cartCustomerAddressWrapper > p {
+.cartCustomerAddress > p {
   margin-bottom: 0.25rem;
 }
 
@@ -28,14 +32,11 @@
   font-weight: 700;
 }
 
-.cartWrapper {
-}
-
 .cartItem {
   justify-content: center;
   align-items: center;
   padding: 1rem 0.5rem;
-  border-bottom: 1px solid #c0c0c0;
+  border-bottom: 1px solid var(--voucherify-light-grey);
 }
 
 .cartItemDetails {
@@ -44,13 +45,13 @@
 
 .cartItemImage {
   width: 100%;
-  /* max-width: 50px; */
 }
 
 .cartItemName {
   font-weight: 700;
   margin: auto 0px;
 }
+
 .cartItemPrice {
   display: flex;
   flex-direction: column;
@@ -60,67 +61,91 @@
 .cartItemPricePrefix {
   font-size: 12px;
 }
+
 .cartItemDetailsRow2 {
+  width: 100%;
   justify-content: flex-start;
+  align-items: center;
+}
+
+.cartItemDetail {
+  padding: 0 10px !important;
 }
 
 .cartItemRemove {
-  margin: auto 0;
+  /* margin: auto 0; */
   display: flex;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
+  /* margin: 0 auto; */
+  justify-content: ce;
 }
 
 .paymentMethodSection {
   justify-content: center;
   align-items: center;
   padding: 1rem 0.5rem;
-  border-bottom: 1px solid #c0c0c0;
+  border-bottom: 1px solid var(--voucherify-light-grey);
+  min-height: 120px;
 }
+
 .sectionTitle {
   padding: 1rem 1.5rem !important;
 }
+
 .paymentMethodsWrapper {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
+.cartDiscountsInformation {
+  color: var(--voucherify-light-grey);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
 .paymentMethod {
+  border: 1px solid var(--voucherify-light-grey);
   display: flex;
   flex-direction: row;
   margin: 0.5rem;
+  transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
 }
 
 .selectedPaymentMethod {
   font-weight: 700 !important;
 }
+
 .paymentMethodLogoWrapper {
   width: auto;
 }
+
+.paymentMethodBadgeIcon {
+  height: 15px !important;
+}
 .paymentMethodLogo {
-  height: 30px;
+  /* height: 25px; */
   padding: 2px;
 }
 
 .avaliablePaymentMethod {
-  border-radius: 50%;
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
+  box-shadow: var(--voucherify-box-shadow);
 }
 
 .discountSection {
   justify-content: center;
   align-items: center;
   padding: 1rem 0.5rem;
-  border-bottom: 1px solid #c0c0c0;
+  border-bottom: 1px solid var(--voucherify-light-grey);
 }
 
 .discountSection .discountAmount {
   justify-content: center;
   align-items: center;
 }
+
 .discountAmount {
   display: flex;
   flex-direction: column;
@@ -130,15 +155,17 @@
 }
 
 .discounted {
-  color: green;
+  margin-right: auto;
+  color: var(--voucherify-discounted-green);
 }
+
 .discountAmountPrefix {
   font-size: 12px;
 }
 
 .totalSection .totalAmount {
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 
 .totalSection {
@@ -154,28 +181,51 @@
   font-size: 1.5rem;
   font-weight: 700;
 }
+.cartItemDescription {
+  display: flex;
+  width: 100%;
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+.discountFormRow {
+  align-items: center;
+}
 
 @media (max-width: 575.98px) {
+  .totalAmount {
+    justify-content: center;
+    align-items: center;
+  }
+
   .cartPage {
     margin-bottom: 10rem;
   }
+
+  .paymentMethodSection {
+    min-height: 260px;
+  }
+
   .cartItemPrice {
     align-items: center;
     justify-content: center;
   }
+
   .cartItemPricePrefix {
     display: none;
   }
+
   .discountSection .cartItemRemove,
   .totalSection .cartItemRemove {
     justify-content: center;
     align-items: center;
   }
+
   .sectionTitle {
     font-size: 16px;
     text-align: center;
     padding: 1rem 0px;
   }
+
   .paymentMethodsWrapper {
     justify-content: space-between;
   }
@@ -183,6 +233,9 @@
   .discountFormButton {
     width: 100%;
     margin: 0.5rem 0;
+  }
+  .discounted {
+    margin-right: unset;
   }
 }
 
@@ -192,10 +245,10 @@
 }
 
 .checkoutButton {
-  /* width: 50%; */
   width: 100%;
   margin: 0.5rem auto;
 }
+
 @media (max-width: 767.98px) {
   .cartItemPricePrefix {
     margin-right: 0.5rem;
@@ -209,6 +262,7 @@
   .cartItemQuantity {
     margin-bottom: 0.25rem;
   }
+
   .cartItemPricePrefix {
     font-size: 14px;
   }

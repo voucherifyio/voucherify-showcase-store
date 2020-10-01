@@ -19,7 +19,7 @@ const SidebarDiscountDetailsTier = ({ tier, index }) => {
 
   return (
     <div key={tier.name} className="redemptionTier">
-      <p className="redemptionRules tierTitle">Tier {index + 1}</p>
+      <p className="tierTitle">Tier {index + 1}</p>
       <div>
         <p className="discountDescription">
           Discount{' '}

@@ -49,11 +49,7 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
         )}
 
         {/* We're checking if the Campaign has a voucher code */}
-        {code !== 'cartDiscount' && (
-          <div className="discountCodeButton">
-            <VoucherifyButton code={code} />
-          </div>
-        )}
+        {code !== 'cartDiscount' && <VoucherifyButton code={code} />}
         <p className="campaignDescription">{campaign.metadata.description}</p>
         {campaign.metadata.redemption_steps && (
           <div>

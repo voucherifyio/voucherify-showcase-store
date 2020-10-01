@@ -34,32 +34,37 @@ const CartItem = ({ id, dispatch, items }) => {
           </div>
         </Col>
         <Col>
-          <Row className="cartItemDetailsRow1">
+          <Row noGutters className="cartItemDetailsRow1">
             <Col xs={12} md={3} className="cartItemName">
               {name}
             </Col>
-            <Col xs={9} md={7}>
-              <Row className="cartItemDetailsRow2">
-                <Col xs={12} md={4} className="cartItemPrice d-none d-md-flex">
+            <Col xs={10} sm={9} md={8} className="cartItemDescription">
+              <Row noGutters className="cartItemDetailsRow2">
+                <Col
+                  xs={12}
+                  md={4}
+                  className="cartItemDetail cartItemPrice d-none d-md-flex"
+                >
                   <span className="cartItemPricePrefix">Price:</span>
                   {productPrice}
                 </Col>
-                <Col xs={6} md={4} className="cartItemQuantity">
+                <Col xs={7} md={4} className="cartItemDetail cartItemQuantity">
                   <CartItemQuantityForm
                     count={count}
                     handleOnChange={handleOnChange}
                   />
                 </Col>
-                <Col xs={6} md={4} className="cartItemPrice">
+                <Col xs={4} md={4} className="cartItemDetail  cartItemPrice">
                   <span className="cartItemPricePrefix">Total:</span>
                   {productTotalPrice}
                 </Col>
               </Row>
             </Col>
-            <Col xs={3} md={2} className="cartItemRemove">
+            <Col xs={2} sm={2} md={1} className="cartItemRemove">
               <Tooltip title="Remove item from cart">
                 <IconButton
                   edge="start"
+                  // edge="end"
                   onClick={() => dispatch(removeItemFromCart(id))}
                 >
                   <DeleteIcon />

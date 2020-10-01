@@ -11,6 +11,11 @@ import './style.css';
 import { connect } from 'react-redux';
 import { setEnableSidebar } from '../../redux/actions/userActions';
 import VoucherifyLogoSquare from '../../assets/VoucherifyLogoSquare.png';
+import Tooltip from '@material-ui/core/Tooltip';
+import LaunchIcon from '@material-ui/icons/Launch';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import PropTypes from 'prop-types';
+
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -28,11 +33,10 @@ const TabPanel = (props) => {
   );
 };
 
-const a11yProps = (index) => {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
-  };
+TabPanel.propTypes = {
+  children: PropTypes.object,
+  value: PropTypes.number,
+  index: PropTypes.number,
 };
 
 const Sidebar = ({ enableSidebar, dispatch }) => {
@@ -47,12 +51,28 @@ const Sidebar = ({ enableSidebar, dispatch }) => {
     dispatch(setEnableSidebar(toggle));
   }, [dispatch, toggle]);
 
+  const a11yProps = (index) => {
+    if (index === value) {
+      return {
+        id: `vertical-tab-${index}`,
+        'aria-controls': `vertical-tabpanel-${index}`,
+        className: 'currentTab',
+      };
+    } else {
+      return {
+        id: `vertical-tab-${index}`,
+        'aria-controls': `vertical-tabpanel-${index}`,
+      };
+    }
+  };
+
   const handleChange = (event, newValue) => {
     if (newValue === 0) {
       handleToggleSidebar();
     } else if (enableSidebar === false) {
       handleToggleSidebar();
       setValue(newValue);
+    } else if (newValue > 3) {
     } else {
       setValue(newValue);
     }
@@ -65,7 +85,8 @@ const Sidebar = ({ enableSidebar, dispatch }) => {
           TabIndicatorProps={{
             style: {
               right: 'unset',
-              backgroundColor: '#ff8b5c',
+              width: '4px',
+              backgroundColor: 'var(--voucherify-orange)',
             },
           }}
           orientation="vertical"
@@ -74,15 +95,37 @@ const Sidebar = ({ enableSidebar, dispatch }) => {
           aria-label="Control panel"
           className="sidebarLabels"
         >
-          <Tab
-            // disabled
-            className="voucherifyIcon"
-            icon={<img src={VoucherifyLogoSquare} alt="" />}
-            {...a11yProps(0)}
-          />
-          <Tab icon={<PersonIcon />} {...a11yProps(1)} />
-          <Tab icon={<GroupIcon />} {...a11yProps(2)} />
-          <Tab icon={<ShoppingCartIcon />} {...a11yProps(3)} />
+          <Tooltip title="Close sidebar">
+            <Tab
+              className="voucherifyIcon"
+              icon={<img src={VoucherifyLogoSquare} alt="" />}
+              {...a11yProps(0)}
+            />
+          </Tooltip>
+          <Tooltip title="Check personal discounts">
+            <Tab icon={<PersonIcon />} {...a11yProps(1)} />
+          </Tooltip>
+          <Tooltip title="Check public discounts">
+            <Tab icon={<GroupIcon />} {...a11yProps(2)} />
+          </Tooltip>
+          <Tooltip title="Check cart discounts">
+            <Tab icon={<ShoppingCartIcon />} {...a11yProps(3)} />
+          </Tooltip>
+          <Tooltip title="Check documentation">
+            <Tab
+              className="tabLinks"
+              component="a"
+              href="https://github.com/voucherifyio/voucherify-showcase-store"
+              icon={<GitHubIcon />}
+            />
+          </Tooltip>
+          <Tooltip title="Deploy">
+            <Tab
+              component="a"
+              href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F"
+              icon={<LaunchIcon />}
+            />
+          </Tooltip>
         </Tabs>
         <TabPanel value={value} index={1}>
           <SidebarPersonalDiscounts />
@@ -105,3 +148,8 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Sidebar);
+
+Sidebar.propTypes = {
+  enableSidebar: PropTypes.bool,
+  dispatch: PropTypes.func,
+};

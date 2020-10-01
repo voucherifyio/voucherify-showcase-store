@@ -1,5 +1,4 @@
 import React from 'react';
-import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -8,6 +7,7 @@ import { removePromotionFromCart } from '../../redux/actions/cartActions';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Tooltip from '@material-ui/core/Tooltip';
+import ClearIcon from '@material-ui/icons/Clear';
 
 const CartDiscount = ({ dispatch, discount, discountedAmount }) => {
   return (
@@ -22,22 +22,22 @@ const CartDiscount = ({ dispatch, discount, discountedAmount }) => {
           Cart Discount <span className="discounted">{discount.name}</span>
         </Col>
       )}
-      <Col xs={6} sm={5} className="discountAmount">
+      <Col xs={6} sm={7} className="discountAmount">
         <span className="discounted">
-          -${(discountedAmount / 100).toFixed(2)}
+          ${(discountedAmount / 100).toFixed(2)}
         </span>
       </Col>
-      <Col xs={1} sm={1}></Col>
-      <Col xs={5} sm={2} className="cartItemRemove">
+      {/* <Col xs={1} sm={1}></Col> */}
+      <Col xs={6} sm={1} className="cartItemRemove">
         <Tooltip title="Remove promotion">
           <IconButton
-            edge="start"
+            // edge="start"
             onClick={() => {
               dispatch(removePromotionFromCart());
               dispatch(setCurrentCartDiscount(null));
             }}
           >
-            <DeleteIcon />
+            <ClearIcon />
           </IconButton>
         </Tooltip>
       </Col>

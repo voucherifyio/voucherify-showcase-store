@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import DiscountCarouselSignUpModalForm from './DiscountCarouselSignUpModalForm';
-import Button from 'react-bootstrap/Button';
+import PropTypes from 'prop-types';
 
 const DiscountCarouselSignUpModal = ({ campaign, show, onHide }) => {
   return (
@@ -13,20 +13,18 @@ const DiscountCarouselSignUpModal = ({ campaign, show, onHide }) => {
       centered
       className="signUpModalWrapper"
     >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
-      </Modal.Header>
       <Modal.Body>
         <h4 className="signUpModalTitle">{campaign.name}</h4>
-        <DiscountCarouselSignUpModalForm onHide={onHide} />
+        <DiscountCarouselSignUpModalForm onHide={onHide} campaign={campaign} />
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="dark" onClick={onHide}>
-          Close
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };
 
 export default DiscountCarouselSignUpModal;
+
+DiscountCarouselSignUpModal.propTypes = {
+  onHide: PropTypes.func,
+  show: PropTypes.bool,
+  campaign: PropTypes.object,
+};
