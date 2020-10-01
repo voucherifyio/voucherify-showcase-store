@@ -109,11 +109,11 @@
 
 .readMore {
   font-weight: 700;
-  color: var(--orange);
+  color: var(--orange) !important;
 }
 
 .readMore:hover {
-  color: var(--orange);
+  color: var(--orange) !important;
 }
 
 .MuiAccordionSummary-content {
