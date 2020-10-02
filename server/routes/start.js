@@ -8,14 +8,29 @@ const voucherify = voucherifyClient({
 });
 const storeCustomers = data.customers;
 
-// We need to filter out Promotion campaigns and campaings without published coupons
-const campaigns = data.campaigns.filter(
-  (campaign) =>
-    campaign.campaign_type !== 'PROMOTION' &&
-    campaign.metadata.autoPublish !== false
-);
+const allCampigns = async () => {
+  try {
+    const allCampaigns = await voucherify.campaigns.list();
+    // Filter out campaigns not created by setup.js
+    let campaigns = allCampaigns.campaigns.filter(
+      (campaign) =>
+        campaign.name !== 'Referral Reward - 15% Discount' &&
+        campaign.name !== 'Predefined Gift Cards'
+    );
 
-function publishCouponsForCustomer(id) {
+    campaigns = campaigns.filter(
+      (campaign) =>
+        campaign.campaign_type !== 'PROMOTION' &&
+        campaign.metadata.auto_publish !== false
+    );
+    return campaigns;
+  } catch (e) {
+    console.error(`[Start][Error] - ${e}`);
+    res.status(500).end();
+  }
+};
+
+function publishCouponsForCustomer(id, campaigns) {
   const params = {
     customer: {
       source_id: id,
@@ -31,6 +46,8 @@ function publishCouponsForCustomer(id) {
 }
 
 router.route('*').get(async (req, res) => {
+  const campaigns = await allCampigns();
+
   if (req.session.views) {
     console.log(`[Session][Re-visit] ${req.session.id} - ${req.session.views}`);
     ++req.session.views;
@@ -73,7 +90,7 @@ router.route('*').get(async (req, res) => {
     const createdCoupons = await Promise.all(
       createdCustomers.map(async (customer) => {
         const coupons = await Promise.all(
-          publishCouponsForCustomer(customer.source_id)
+          publishCouponsForCustomer(customer.source_id, campaigns)
         ).catch((e) => console.error(`[Publishing coupons][Error] - ${e}`));
 
         // Assing validation rules for voucher "Individual Coupon"

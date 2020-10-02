@@ -13,14 +13,14 @@ const DiscountCarouselBanner = ({ campaign, currentCustomer }) => {
     <>
       <div
         className={
-          campaign.metadata.carousel_banner_url
+          campaign.metadata.img_url
             ? 'carouselBanner carouselBannerFullWidth'
             : 'carouselBanner'
         }
       >
         <div
           className={
-            campaign.metadata.carousel_banner_url
+            campaign.metadata.img_url
               ? 'carouselBannerText carouselBannerTextHalfWidth'
               : 'carouselBannerText'
           }
@@ -53,11 +53,11 @@ const DiscountCarouselBanner = ({ campaign, currentCustomer }) => {
               />
             )}
         </div>
-        {campaign.metadata.carousel_banner_url && (
+        {campaign.metadata.img_url && (
           <div className="carouselBannerImage">
             <img
               className="carouselBannerImageImg"
-              src={campaign.metadata.carousel_banner_url}
+              src={campaign.metadata.img_url}
               alt=""
             />
           </div>

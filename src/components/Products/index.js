@@ -64,8 +64,7 @@ const Products = ({ products, fetchingProducts, campaigns }) => {
                   key={product.id}
                   product={product}
                   productCampaigns={campaigns.filter(
-                    (camp) =>
-                      camp.metadata.demostore_product_info === product.name
+                    (camp) => camp.metadata.promotion_product === product.name
                   )}
                 ></ProductCard>
               ))}

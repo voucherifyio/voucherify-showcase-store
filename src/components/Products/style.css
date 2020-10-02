@@ -36,7 +36,7 @@
 .productCard {
   text-align: center;
   border-radius: 1rem;
-  transition: all 0.4s ease 0s;
+  transition: all 0.2s ease 0s;
   margin-bottom: 1rem;
   margin-top: 1rem;
   display: flex;
@@ -48,10 +48,10 @@
   -moz-border-radius: 1rem;
   -ms-border-radius: 1rem;
   -o-border-radius: 1rem;
-  -webkit-transition: all 0.4s ease 0s;
-  -moz-transition: all 0.4s ease 0s;
-  -ms-transition: all 0.4s ease 0s;
-  -o-transition: all 0.4s ease 0s;
+  -webkit-transition: all 0.2s ease 0s;
+  -moz-transition: all 0.2s ease 0s;
+  -ms-transition: all 0.2s ease 0s;
+  -o-transition: all 0.2s ease 0s;
 }
 
 .productBadges {
@@ -66,6 +66,7 @@
 }
 
 .productCardImage {
+  height: 100%;
   width: 100%;
   max-width: 250px;
   border-radius: 1rem;
@@ -122,11 +123,11 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  transition: all 0.4s ease;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  -ms-transition: all 0.4s ease;
-  -o-transition: all 0.4s ease;
+  transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
 }
 
 .productImageWrapper:hover {

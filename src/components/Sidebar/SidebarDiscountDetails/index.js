@@ -18,8 +18,8 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
       discountText = `$${(campaign.discount.amount_off / 100).toFixed(2)} off`;
     }
 
-    if (!isEmpty(campaign.metadata.promotion_product)) {
-      discountProduct = ` for ${campaign.metadata.promotion_product}`;
+    if (!isEmpty(campaign.metadata.discount_suffix)) {
+      discountProduct = ` for ${campaign.metadata.discount_suffix}`;
     }
   }
 
@@ -33,8 +33,8 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
       )} off`;
     }
 
-    if (!isEmpty(campaign.metadata.promotion_product)) {
-      discountProduct = ` for ${campaign.metadata.promotion_product}`;
+    if (!isEmpty(campaign.metadata.discount_suffix)) {
+      discountProduct = ` for ${campaign.metadata.discount_suffix}`;
     }
   }
 

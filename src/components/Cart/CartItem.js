@@ -1,5 +1,4 @@
 import React from 'react';
-import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -12,6 +11,7 @@ import {
 } from '../../redux/actions/cartActions';
 import CartItemQuantityForm from './CartItemQuantityForm';
 import Tooltip from '@material-ui/core/Tooltip';
+import ClearIcon from '@material-ui/icons/Clear';
 
 const CartItem = ({ id, dispatch, items }) => {
   const { name, price, count, total, image_url } = items.find(
@@ -64,10 +64,9 @@ const CartItem = ({ id, dispatch, items }) => {
               <Tooltip title="Remove item from cart">
                 <IconButton
                   edge="start"
-                  // edge="end"
                   onClick={() => dispatch(removeItemFromCart(id))}
                 >
-                  <DeleteIcon />
+                  <ClearIcon />
                 </IconButton>
               </Tooltip>
             </Col>

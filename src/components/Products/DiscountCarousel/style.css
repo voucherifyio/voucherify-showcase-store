@@ -12,7 +12,6 @@
 
 .carousel {
   width: 100%;
-  max-width: 1080px;
   height: 400px;
   background-position: center;
   object-fit: cover;
@@ -47,7 +46,8 @@
 }
 
 .carouselBannerTitle {
-  font-family: 'Lato black';
+  font-family: 'Lato' !important;
+  font-weight: 700 !important;
 }
 
 .carouselBannerDescription {

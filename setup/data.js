@@ -142,7 +142,7 @@ exports.campaigns = [
       redemption_steps:
         'Customer Segment: Customers without any previous purchases',
       order: 1,
-      carousel_banner_background_url:
+      carousel_banner_img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner1.jpg',
     },
   },
@@ -163,7 +163,7 @@ exports.campaigns = [
         'Special coupon - each customer has unique code for his use only.',
       redemption_steps: 'Customer: Current customer',
       order: 1,
-      carousel_banner_background_url:
+      carousel_banner_img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner4.jpg',
     },
   },
@@ -181,11 +181,11 @@ exports.campaigns = [
       redemption_steps:
         'Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra',
       order: 1,
-      promotion_product: '1x Johan & Nyström - Sumatra',
-      demostore_product_info: 'Johan & Nyström - Sumatra',
-      carousel_banner_background_url:
+      discount_suffix: '1x Johan & Nyström - Sumatra',
+      promotion_product: 'Johan & Nyström - Sumatra',
+      carousel_banner_img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner4.jpg',
-      carousel_banner_url:
+      img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/image1.jpg',
     },
   },
@@ -198,15 +198,15 @@ exports.campaigns = [
     },
     metadata: {
       assigned_val_rules: '5% off for Illy Arabica',
-      demostore_product_info: 'Illy Arabica Guatemala',
+      promotion_product: 'Illy Arabica Guatemala',
       description:
         'Make an order above 50$ and have Illy Arabica Guatemala in your cart to get a 5% discount on your order.',
       redemption_steps:
         'Cart value: > $50; Cart contains: Illy Arabica Guatemala',
       order: 2,
-      carousel_banner_background_url:
+      carousel_banner_img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner5.jpg',
-      carousel_banner_url:
+      img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/image4.jpg',
     },
   },
@@ -223,10 +223,10 @@ exports.campaigns = [
         'Get a double-pack of Bourbon by Johan & Nyström to get a 15$ off your order.',
       redemption_steps: 'Cart contains: 2x Johan & Nyström - Bourbon',
       order: 3,
-      demostore_product_info: 'Johan & Nyström - Bourbon',
-      carousel_banner_background_url:
+      promotion_product: 'Johan & Nyström - Bourbon',
+      carousel_banner_img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner6.jpg',
-      carousel_banner_url:
+      img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/image2.jpg',
     },
   },
@@ -243,8 +243,8 @@ exports.campaigns = [
       redemption_steps: 'Customers action: Subscribed to newsletter',
       order: 3,
       assigned_val_rules: '',
-      autoPublish: false,
-      carousel_banner_background_url:
+      auto_publish: false,
+      carousel_banner_img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner5.jpg',
     },
   },
@@ -261,7 +261,7 @@ exports.campaigns = [
         'If your location is Poland, enjoy a 13% discount available only for our Polish customers.',
       redemption_steps: 'Customers segment: Customers from Poland',
       order: 5,
-      carousel_banner_background_url:
+      carousel_banner_img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner2.jpg',
     },
   },
@@ -272,7 +272,7 @@ exports.campaigns = [
       assigned_val_rules: 'Final Tier - $10 off; First Tier - $3 off',
       description:
         'Make an order below 30$ and get a 3$ off your order. Enjoy a 10$ discount if your order exceeds 30$.',
-      carousel_banner_background_url:
+      carousel_banner_img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner3.jpg',
     },
     promotion: {
@@ -323,11 +323,11 @@ exports.campaigns = [
         'Enjoy a 50% discount on Hard Beans Brazil blend. Simply add Hard Beans Brazil and Caravan by Johan & Nyström to your cart. Get one pack of Hard Beans completely for free if your order of Hard Beans Brazil and Johan & Nyström Caravan exceeds 100$.',
       assigned_val_rules:
         'Final Tier - 100% off for Hard Beans; First Tier - 50% off for Hard Beans',
-      carousel_banner_background_url:
+      carousel_banner_img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner7.jpg',
-      carousel_banner_url:
+      img_url:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/image3.jpg',
-      demostore_product_info: 'Hard Beans - Brazil',
+      promotion_product: 'Hard Beans - Brazil',
     },
     promotion: {
       tiers: [
@@ -338,7 +338,7 @@ exports.campaigns = [
             discount: { percent_off: 100, type: 'PERCENT' },
           },
           metadata: {
-            promotion_product: '1x Hard Beans - Brazil',
+            discount_suffix: '1x Hard Beans - Brazil',
             redemption_steps:
               'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil; Cart value: > $100',
             order: 1,
@@ -355,7 +355,7 @@ exports.campaigns = [
             discount: { percent_off: 50, type: 'PERCENT' },
           },
           metadata: {
-            promotion_product: '1x Hard Beans - Brazil',
+            discount_suffix: '1x Hard Beans - Brazil',
             redemption_steps:
               'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil',
             order: 2,

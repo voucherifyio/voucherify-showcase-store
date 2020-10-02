@@ -43,7 +43,7 @@
     "voucherify.js": "^1.32.0"
   },
   "scripts": {
-    "postinstall": "node ./setup/setup.js && react-scripts build",
+    "postinstall": "react-scripts build",
     "setup": "node ./setup/setup.js",
     "dev": "NODE_ENV=development PORT=3001 REACT_APP_API_URL=http://localhost:3000 react-scripts start",
     "dev-server": "NODE_ENV=development REACT_APP_URL=http://localhost:3001 nodemon server/server.js",

@@ -13,8 +13,8 @@ const SidebarDiscountDetailsTier = ({ tier, index }) => {
     discountTierText = `$${(tier.action.discount.amount_off / 100).toFixed(2)}`;
   }
 
-  if (!isEmpty(tier.metadata.promotion_product)) {
-    discountTierProduct = ` for ${tier.metadata.promotion_product}`;
+  if (!isEmpty(tier.metadata.discount_suffix)) {
+    discountTierProduct = ` for ${tier.metadata.discount_suffix}`;
   }
 
   return (

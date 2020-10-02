@@ -21,7 +21,7 @@ const Product = ({ products, dispatch, campaigns }) => {
   const product = products.find((product) => product.id === productId);
 
   const productCampaigns = campaigns.filter(
-    (camp) => camp.metadata.demostore_product_info === product.name
+    (camp) => camp.metadata.promotion_product === product.name
   );
 
   useEffect(() => {

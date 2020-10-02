@@ -12,15 +12,13 @@ const DiscountCarousel = ({ campaigns }) => {
       <Carousel interval={5000}>
         {/* We filter out campaigns without banners */}
         {campaigns
-          .filter(
-            (camp) => !isEmpty(camp.metadata.carousel_banner_background_url)
-          )
+          .filter((camp) => !isEmpty(camp.metadata.carousel_banner_img_url))
           .map((campaign, i) => (
             <Carousel.Item
               key={i}
               className="carousel"
               style={{
-                background: `url(${campaign.metadata.carousel_banner_background_url}) no-repeat center`,
+                background: `url(${campaign.metadata.carousel_banner_img_url}) no-repeat center`,
                 backgroundSize: 'cover',
               }}
             >

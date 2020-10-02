@@ -25,6 +25,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-y: auto;
   scrollbar-width: none;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 body::-webkit-scrollbar {
@@ -51,11 +52,11 @@ a:hover {
   color: var(--link);
   text-transform: none;
   text-decoration: none;
-  transition: 0.4s all ease;
-  -webkit-transition: 0.4s all ease;
-  -moz-transition: 0.4s all ease;
-  -ms-transition: 0.4s all ease;
-  -o-transition: 0.4s all ease;
+  transition: 0.2s all ease;
+  -webkit-transition: 0.2s all ease;
+  -moz-transition: 0.2s all ease;
+  -ms-transition: 0.2s all ease;
+  -o-transition: 0.2s all ease;
 }
 
 .voucherifyLink:hover {

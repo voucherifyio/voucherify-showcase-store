@@ -9,7 +9,7 @@ const ProductCampaign = ({ campaign }) => {
         <div>
           <img
             className="productCardImage"
-            src={campaign.metadata.carousel_banner_url}
+            src={campaign.metadata.img_url}
             alt={campaign.name}
           />
         </div>

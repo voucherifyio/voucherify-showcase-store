@@ -4,11 +4,11 @@
 
 .tab {
   color: var(--orange) !important;
-  transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
-  -moz-transition: all 0.4s ease-in-out;
-  -ms-transition: all 0.4s ease-in-out;
-  -o-transition: all 0.4s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
 }
 
 .currentTab {
@@ -19,7 +19,7 @@
   font-size: 0.9rem;
   box-shadow: var(--custom-box-shadow);
   max-height: 100vh;
-  transition: right 0.4s ease-in-out;
+  transition: right 0.2s ease-in-out;
   position: fixed;
   top: 0;
   right: 0;
@@ -32,10 +32,10 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
   background-color: var(--bg-sidebar);
-  -webkit-transition: right 0.4s ease-in-out;
-  -moz-transition: right 0.4s ease-in-out;
-  -ms-transition: right 0.4s ease-in-out;
-  -o-transition: right 0.4s ease-in-out;
+  -webkit-transition: right 0.2s ease-in-out;
+  -moz-transition: right 0.2s ease-in-out;
+  -ms-transition: right 0.2s ease-in-out;
+  -o-transition: right 0.2s ease-in-out;
 }
 
 .MuiTabs-flexContainerVertical {
@@ -102,9 +102,9 @@
 }
 
 .sidebarSectionTitle {
-  font-family: 'Lato black';
+  font-family: 'Lato' !important;
+  font-weight: 700 !important;
   font-size: 1rem;
-  /* padding-left: 0.5rem; */
 }
 
 .readMore {
@@ -188,11 +188,11 @@
 
 .accordionBackground {
   background-color: var(--bg-white) !important;
-  transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
-  -moz-transition: all 0.4s ease-in-out;
-  -ms-transition: all 0.4s ease-in-out;
-  -o-transition: all 0.4s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
   border-top: 1px solid var(--lightgrey);
 }
 
@@ -202,11 +202,11 @@
 
 .accordionBackground.open {
   background-color: var(--bg-white) !important;
-  transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
-  -moz-transition: all 0.4s ease-in-out;
-  -ms-transition: all 0.4s ease-in-out;
-  -o-transition: all 0.4s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
 }
 
 .cartDiscountsTitle {

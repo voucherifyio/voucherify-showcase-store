@@ -17,8 +17,8 @@ const Ribbon = ({ navigationRibbonVoucher }) => {
     ).toFixed(2)} off`;
   }
 
-  if (!isEmpty(navigationRibbonVoucher.metadata.promotion_product)) {
-    ribbonDiscountProduct = ` for ${navigationRibbonVoucher.metadata.promotion_product}`;
+  if (!isEmpty(navigationRibbonVoucher.metadata.discount_suffix)) {
+    ribbonDiscountProduct = ` for ${navigationRibbonVoucher.metadata.discount_suffix}`;
   }
 
   return (

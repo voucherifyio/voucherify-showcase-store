@@ -7,21 +7,7 @@
 }
 
 .cartCustomerAddressWrapper {
-  border-radius: 1rem;
-  -webkit-border-radius: 1rem;
-  -moz-border-radius: 1rem;
-  -ms-border-radius: 1rem;
-  -o-border-radius: 1rem;
   padding: 1rem;
-}
-
-.cartWrapper {
-  border: 1px solid var(--lightgrey);
-  border-radius: 1rem;
-  -webkit-border-radius: 1rem;
-  -moz-border-radius: 1rem;
-  -ms-border-radius: 1rem;
-  -o-border-radius: 1rem;
 }
 
 .cartCustomerAddress > p {
@@ -73,11 +59,8 @@
 }
 
 .cartItemRemove {
-  /* margin: auto 0; */
   display: flex;
-  /* justify-content: flex-end; */
-  /* margin: 0 auto; */
-  justify-content: ce;
+  justify-content: center;
 }
 
 .paymentMethodSection {
@@ -107,11 +90,11 @@
   display: flex;
   flex-direction: row;
   margin: 0.5rem;
-  transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
-  -moz-transition: all 0.4s ease-in-out;
-  -ms-transition: all 0.4s ease-in-out;
-  -o-transition: all 0.4s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
 }
 
 .selectedPaymentMethod {
@@ -139,6 +122,7 @@
   align-items: center;
   padding: 1rem 0.5rem;
   border-bottom: 1px solid var(--lightgrey);
+  min-height: 120px;
 }
 
 .discountSection .discountAmount {
@@ -163,15 +147,11 @@
   font-size: 12px;
 }
 
-.totalSection .totalAmount {
-  /* justify-content: center; */
-  /* align-items: center; */
-}
-
 .totalSection {
   justify-content: center;
   align-items: center;
   padding: 1rem 0.5rem;
+  min-height: 120px;
 }
 
 .totalAmount {
@@ -184,9 +164,8 @@
 .cartItemDescription {
   display: flex;
   width: 100%;
-  /* justify-content: center; */
-  /* align-items: center; */
 }
+
 .discountFormRow {
   align-items: center;
 }

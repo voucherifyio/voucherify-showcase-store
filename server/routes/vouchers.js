@@ -9,9 +9,6 @@ router.route('*').get(async (req, res) => {
     const vouchers = await voucherify.vouchers.list({
       category: 'Public',
     });
-    // const vouchers = allPublicVouchers.vouchers.filter((voucher) =>
-    //   voucher.metadata.hasOwnProperty('demostoreName')
-    // );
     return res.json(vouchers.vouchers);
   } catch (e) {
     console.error(`[Vouchers][Error] - ${e}`);
