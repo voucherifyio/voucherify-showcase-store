@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col';
 import ProductQuantityForm from './ProductQuantityForm';
 import Badge from '@material-ui/core/Badge';
 import Button from 'react-bootstrap/Button';
-import isEmpty from '../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 import ProductCampaign from './ProductCampaign';
 
 const Product = ({ products, dispatch, campaigns }) => {
@@ -48,7 +48,7 @@ const Product = ({ products, dispatch, campaigns }) => {
                   <Badge className="productCompanyBadge">
                     {product.metadata.company}
                   </Badge>
-                  {!isEmpty(productCampaigns) && (
+                  {!_isEmpty(productCampaigns) && (
                     <Badge className="productDiscountBadge">Sale</Badge>
                   )}
                 </div>
@@ -86,7 +86,7 @@ const Product = ({ products, dispatch, campaigns }) => {
           </Col>
         </Row>
 
-        {!isEmpty(productCampaigns) && (
+        {!_isEmpty(productCampaigns) && (
           <Row className="productCampaignsRow">
             <Col xs={12} className="pageHeader">
               <h2>Avaliable promotions</h2>

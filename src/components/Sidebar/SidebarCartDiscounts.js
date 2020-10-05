@@ -17,7 +17,7 @@ import {
   getCartDiscount,
   removePromotionFromCart,
 } from '../../redux/actions/cartActions';
-import { isEmpty } from '../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 import PropTypes from 'prop-types';
 import ShowMoreText from 'react-show-more-text';
 
@@ -78,7 +78,7 @@ const SidebarCartDiscounts = ({
 
   return (
     <div className="accordions">
-      {!isEmpty(campaigns) && !isEmpty(currentCustomer) && (
+      {!_isEmpty(campaigns) && !_isEmpty(currentCustomer) && (
         <>
           <div className="sidebarSectionHeading accordionSection">
             <div className="cartDiscountsTitle">

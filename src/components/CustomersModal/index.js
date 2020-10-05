@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { isEmpty } from '../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 import Spinner from 'react-bootstrap/Spinner';
 import PropTypes from 'prop-types';
 import ArrowLine from '../../assets/ArrowLine.png';
@@ -17,9 +17,9 @@ const CustomersModal = ({
 }) => {
   return (
     <div className="customersModalWrapper">
-      {isEmpty(availableCustomers) ||
+      {_isEmpty(availableCustomers) ||
       fetchingCustomers ||
-      isEmpty(campaigns) ? (
+      _isEmpty(campaigns) ? (
         <Spinner animation="grow" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>

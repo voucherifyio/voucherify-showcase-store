@@ -13,7 +13,7 @@ import {
 } from '../constants';
 import _has from 'lodash.has';
 import _cloneDeep from 'lodash.clonedeep';
-import { isEmpty } from '../utils';
+import _isEmpty from 'lodash.isempty';
 
 const initialState = {
   items: [],
@@ -66,7 +66,7 @@ export const cartReducer = (state = initialState, action) => {
             );
           }
           if (
-            !isEmpty(applicableProductInCart) &&
+            !_isEmpty(applicableProductInCart) &&
             discount.discount.type === 'PERCENT'
           ) {
             let discountedAmount =
@@ -90,7 +90,7 @@ export const cartReducer = (state = initialState, action) => {
               discountedAmount,
             };
           } else if (
-            !isEmpty(applicableProducts) &&
+            !_isEmpty(applicableProducts) &&
             discount.discount.type === 'AMOUNT'
           ) {
             const discountedAmount = discount.discount.amount_off;

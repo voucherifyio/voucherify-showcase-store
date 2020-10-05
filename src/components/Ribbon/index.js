@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { isEmpty } from '../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 import Row from 'react-bootstrap/Row';
 import './style.css';
 import PropTypes from 'prop-types';
@@ -17,7 +17,7 @@ const Ribbon = ({ navigationRibbonVoucher }) => {
     ).toFixed(2)} off`;
   }
 
-  if (!isEmpty(navigationRibbonVoucher.metadata.discount_suffix)) {
+  if (!_isEmpty(navigationRibbonVoucher.metadata.discount_suffix)) {
     ribbonDiscountProduct = ` for ${navigationRibbonVoucher.metadata.discount_suffix}`;
   }
 

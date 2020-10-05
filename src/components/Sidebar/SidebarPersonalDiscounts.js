@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import _orderBy from 'lodash.orderby';
+import _isEmpty from 'lodash.isempty';
 import SidebarDiscountDetails from './SidebarDiscountDetails';
 import Spinner from 'react-bootstrap/Spinner';
 import Accordion from '@material-ui/core/Accordion';
@@ -9,7 +10,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SidebarQualifications from './SidebarQualifications';
 import { connect } from 'react-redux';
 import SidebarCustomer from './SidebarCustomer';
-import { isEmpty } from '../../redux/utils';
 import PropTypes from 'prop-types';
 
 const SidebarPersonalDiscounts = ({
@@ -34,7 +34,7 @@ const SidebarPersonalDiscounts = ({
   const countCampaings = () => {
     let campCount = 0;
     for (let i = 0; i < couponCampaigns.length; i++) {
-      !isEmpty(
+      !_isEmpty(
         couponCampaigns[i].coupons.find(
           (coupon) => coupon.currentCustomer === currentCustomer.source_id
         )
@@ -45,8 +45,8 @@ const SidebarPersonalDiscounts = ({
 
   return (
     <div>
-      {!isEmpty(currentCustomer) && <SidebarCustomer />}
-      {!isEmpty(campaigns) && !isEmpty(currentCustomer) && (
+      {!_isEmpty(currentCustomer) && <SidebarCustomer />}
+      {!_isEmpty(campaigns) && !_isEmpty(currentCustomer) && (
         <>
           <SidebarQualifications />
           <div className="sidebarSectionHeading accordionSection">
@@ -66,7 +66,7 @@ const SidebarPersonalDiscounts = ({
               {couponCampaigns.map((campaign) => (
                 // We're checking avaliable coupons for currentCustomer.
                 <div key={campaign.name}>
-                  {!isEmpty(
+                  {!_isEmpty(
                     campaign.coupons.find(
                       (coupon) =>
                         coupon.currentCustomer === currentCustomer.source_id

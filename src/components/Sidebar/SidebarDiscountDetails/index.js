@@ -1,7 +1,7 @@
 import React from 'react';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import PropTypes from 'prop-types';
-import { isEmpty } from '../../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 import _orderBy from 'lodash.orderby';
 import VoucherifyButton from '../../App/VoucherifyButton';
 import SidebarDiscountDetailsTier from './SidebarDiscountDetailsTier';
@@ -12,20 +12,20 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
   let discountProduct = '';
 
   // if this is a Voucher
-  if (!isEmpty(campaign.code)) {
+  if (!_isEmpty(campaign.code)) {
     if (campaign.discount.type === 'PERCENT') {
       discountText = `${campaign.discount.percent_off}% off`;
     } else if (campaign.discount.type === 'AMOUNT') {
       discountText = `$${(campaign.discount.amount_off / 100).toFixed(2)} off`;
     }
 
-    if (!isEmpty(campaign.metadata.discount_suffix)) {
+    if (!_isEmpty(campaign.metadata.discount_suffix)) {
       discountProduct = ` for ${campaign.metadata.discount_suffix}`;
     }
   }
 
   // if this is a Campaign
-  if (!isEmpty(campaign.voucher)) {
+  if (!_isEmpty(campaign.voucher)) {
     if (campaign.voucher.discount.type === 'PERCENT') {
       discountText = `${campaign.voucher.discount.percent_off}% off`;
     } else if (campaign.voucher.discount.type === 'AMOUNT') {
@@ -34,7 +34,7 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
       )} off`;
     }
 
-    if (!isEmpty(campaign.metadata.discount_suffix)) {
+    if (!_isEmpty(campaign.metadata.discount_suffix)) {
       discountProduct = ` for ${campaign.metadata.discount_suffix}`;
     }
   }
@@ -75,7 +75,7 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
 
         {campaign.code && (
           <>
-            {!isEmpty(campaign.discount.amount_limit) && (
+            {!_isEmpty(campaign.discount.amount_limit) && (
               <p className="statistics">
                 Discount limit{' '}
                 <span className="redemptionAmount">

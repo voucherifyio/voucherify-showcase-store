@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import _orderBy from 'lodash.orderby';
+import _isEmpty from 'lodash.isempty';
 import SidebarDiscountDetails from './SidebarDiscountDetails';
 import Spinner from 'react-bootstrap/Spinner';
 import Accordion from '@material-ui/core/Accordion';
@@ -7,7 +8,6 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { connect } from 'react-redux';
-import { isEmpty } from '../../redux/utils';
 import PropTypes from 'prop-types';
 
 const SidebarPublicDiscounts = ({
@@ -24,7 +24,7 @@ const SidebarPublicDiscounts = ({
 
   return (
     <div>
-      {!isEmpty(vouchers) && !isEmpty(currentCustomer) && (
+      {!_isEmpty(vouchers) && !_isEmpty(currentCustomer) && (
         <>
           <div className="sidebarSectionHeading accordionSection">
             <span className="sidebarSectionTitle">

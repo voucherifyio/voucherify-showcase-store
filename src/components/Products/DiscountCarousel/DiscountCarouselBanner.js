@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './style.css';
 import VoucherifyButton from '../../App/VoucherifyButton';
 import VoucherifyLogoSquare from '../../../assets/VoucherifyLogoSquare.png';
-import { isEmpty } from '../../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 import DiscountCarouselSignUpModal from './DiscountCarouselSignUpModal';
 
 const DiscountCarouselBanner = ({
@@ -51,7 +51,7 @@ const DiscountCarouselBanner = ({
                 </div>
               </div>
             )}
-          {!isEmpty(couponForCurrentCustomer) && (
+          {!_isEmpty(couponForCurrentCustomer) && (
             <VoucherifyButton
               text="Get code"
               code={
@@ -62,7 +62,7 @@ const DiscountCarouselBanner = ({
               }
             />
           )}
-          {isEmpty(couponForCurrentCustomer) &&
+          {_isEmpty(couponForCurrentCustomer) &&
             campaign.name === 'Join our newsletter and get 5% discount' && (
               <VoucherifyButton
                 onClickFunction={() => setModalShow(true)}

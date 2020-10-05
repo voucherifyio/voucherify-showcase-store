@@ -13,8 +13,8 @@ import {
 } from '../../redux/actions/userActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { isEmpty } from '../../redux/utils';
 import _has from 'lodash.has';
+import _isEmpty from 'lodash.isempty';
 import toastOptions from './ToastOptions';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -46,13 +46,13 @@ const App = ({
   }, [dispatch, discount, items]);
 
   useEffect(() => {
-    if (!isEmpty(discount) && !_has(discount, 'code')) {
+    if (!_isEmpty(discount) && !_has(discount, 'code')) {
       dispatch(getDiscount(discount.code));
     }
   }, [dispatch, items, paymentMethod, discount]);
 
   useEffect(() => {
-    if (!isEmpty(currentCustomer)) {
+    if (!_isEmpty(currentCustomer)) {
       dispatch(getQualifications());
     }
   }, [dispatch, currentCustomer, paymentMethod, items]);

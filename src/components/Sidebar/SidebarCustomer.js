@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { isEmpty } from '../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 
 const SidebarCustomer = ({ currentCustomer }) => {
   const customerDate = new Date(currentCustomer.summary.orders.last_order_date);
@@ -48,7 +48,7 @@ const SidebarCustomer = ({ currentCustomer }) => {
           <p className="sidebarSectionCustomerData">
             Email:{' '}
             <span className="sidebarSectionCustomerDataContent">
-              {isEmpty(currentCustomer.email)
+              {_isEmpty(currentCustomer.email)
                 ? 'Not submitted'
                 : currentCustomer.email}
             </span>

@@ -7,7 +7,7 @@ import {
   sendPayload,
 } from '../utils';
 import _cloneDeep from 'lodash.clonedeep';
-import { isEmpty } from '../utils';
+import _isEmpty from 'lodash.isempty';
 
 import {
   GET_DISCOUNT_REQUEST,
@@ -168,7 +168,7 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
         }
       });
     });
-    if (isEmpty(currentDiscount)) {
+    if (_isEmpty(currentDiscount)) {
       dispatch(getDiscountSuccess(discount));
     } else {
       discount = currentDiscount;
@@ -190,7 +190,7 @@ export const checkoutCart = () => async (dispatch, getState) => {
   } = getState().cartReducer;
   try {
     // If voucher or promotion is not applied
-    if (isEmpty(discount)) {
+    if (_isEmpty(discount)) {
       const checkoutPayload = setOrderPayload(
         currentCustomer,
         totalAmount,

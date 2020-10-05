@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
-import { isEmpty } from '../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 
 const DiscountBadge = withStyles(() => ({
   badge: {
@@ -26,7 +26,7 @@ const ProductCard = ({ product, addItemToCart, productCampaigns }) => {
           <div>
             <DiscountBadge
               badgeContent="Sale"
-              invisible={isEmpty(productCampaigns)}
+              invisible={_isEmpty(productCampaigns)}
             >
               <img
                 className="productCardImage"

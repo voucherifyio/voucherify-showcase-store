@@ -6,7 +6,7 @@ import CartDiscount from './CartDiscount';
 import CartTotals from './CartTotals';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isEmpty } from '../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 import Col from 'react-bootstrap/Col';
 
 const CartList = ({ items, discount, enableCartDiscounts }) => {
@@ -15,7 +15,7 @@ const CartList = ({ items, discount, enableCartDiscounts }) => {
   const [disableForm, setDisableForm] = useState(true);
 
   useEffect(() => {
-    if (!isEmpty(discount)) {
+    if (!_isEmpty(discount)) {
       setDiscountForm(false);
     } else {
       setDiscountForm(true);
@@ -36,7 +36,7 @@ const CartList = ({ items, discount, enableCartDiscounts }) => {
         ))}
         <PaymentMethod />
         {discountForm && <CartDiscountForm disable={disableForm} />}
-        {!isEmpty(discount) && <CartDiscount />}
+        {!_isEmpty(discount) && <CartDiscount />}
         <CartTotals />
       </div>
     </Col>

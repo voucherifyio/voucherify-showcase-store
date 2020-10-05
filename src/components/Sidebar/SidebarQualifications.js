@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import { connect } from 'react-redux';
 import InfoIcon from '@material-ui/icons/Info';
-import { isEmpty } from '../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 
 const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
   const qualificationsToolTip =
@@ -30,7 +30,7 @@ const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
             </div>
           ) : (
             <>
-              {!isEmpty(qualifications) && (
+              {!_isEmpty(qualifications) && (
                 <>
                   {qualifications.map((qualification) => (
                     <Chip

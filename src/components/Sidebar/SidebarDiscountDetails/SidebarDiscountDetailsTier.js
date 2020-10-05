@@ -1,7 +1,7 @@
 import React from 'react';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import PropTypes from 'prop-types';
-import { isEmpty } from '../../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 
 const SidebarDiscountDetailsTier = ({ tier, index }) => {
   let discountTierText = '';
@@ -13,7 +13,7 @@ const SidebarDiscountDetailsTier = ({ tier, index }) => {
     discountTierText = `$${(tier.action.discount.amount_off / 100).toFixed(2)}`;
   }
 
-  if (!isEmpty(tier.metadata.discount_suffix)) {
+  if (!_isEmpty(tier.metadata.discount_suffix)) {
     discountTierProduct = ` for ${tier.metadata.discount_suffix}`;
   }
 

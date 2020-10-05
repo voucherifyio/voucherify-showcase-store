@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './style.css';
 import DiscountCarouselBanner from './DiscountCarouselBanner';
-import { isEmpty } from '../../../redux/utils';
+import _isEmpty from 'lodash.isempty';
 
 const DiscountCarousel = ({ campaigns }) => {
   return (
@@ -12,7 +12,7 @@ const DiscountCarousel = ({ campaigns }) => {
       <Carousel interval={5000}>
         {/* We filter out campaigns without banners */}
         {campaigns
-          .filter((camp) => !isEmpty(camp.metadata.carousel_banner_img_url))
+          .filter((camp) => !_isEmpty(camp.metadata.carousel_banner_img_url))
           .map((campaign, i) => (
             <Carousel.Item
               key={i}
