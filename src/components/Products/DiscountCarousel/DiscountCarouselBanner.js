@@ -43,11 +43,11 @@ const DiscountCarouselBanner = ({
           {campaign.campaign_type === 'PROMOTION' &&
             campaign.name !== currentCartDiscount && (
               <div className="carouselBannerDescriptionPromotion">
-                <p className="carouselBannerDescriptionPromotionText">
-                  Enable this promotion in the sidebar
-                </p>
                 <div>
                   <img src={VoucherifyLogoSquare} alt="" width="24px" />
+                </div>
+                <div className="carouselBannerDescriptionPromotionText">
+                  Enable this promotion in the sidebar
                 </div>
               </div>
             )}

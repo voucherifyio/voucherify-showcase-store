@@ -27,7 +27,6 @@ const CartDiscount = ({ dispatch, discount, discountedAmount }) => {
           ${(discountedAmount / 100).toFixed(2)}
         </span>
       </Col>
-      {/* <Col xs={1} sm={1}></Col> */}
       <Col xs={6} sm={1} className="cartItemRemove">
         <Tooltip title="Remove promotion">
           <IconButton

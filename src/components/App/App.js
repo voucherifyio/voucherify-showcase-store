@@ -69,7 +69,6 @@ const App = ({
             <Row noGutters className="pageContainer">
               <AppRoutes />
             </Row>
-            {/* <Footer /> */}
             <ToastContainer {...toastOptions} />
           </Container>
           <Sidebar />
