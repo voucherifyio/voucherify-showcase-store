@@ -93,9 +93,9 @@ router.route('*').get(async (req, res) => {
           publishCouponsForCustomer(customer.source_id, campaigns)
         ).catch((e) => console.error(`[Publishing coupons][Error] - ${e}`));
 
-        // Assing validation rules for voucher "Individual Coupon"
+        // Assing validation rules for voucher "Happy Birthday"
         const customerCoupons = coupons.filter(
-          (coupon) => coupon.voucher.name === 'Individual Coupon'
+          (coupon) => coupon.voucher.name === 'Happy Birthday'
         );
 
         const uniqueCoupon = customerCoupons.find(

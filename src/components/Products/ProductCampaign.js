@@ -16,9 +16,10 @@ const ProductCampaign = ({ campaign }) => {
 
         <div className="productCardContent">
           <h6 className="productCardTitle">{campaign.name}</h6>
-          <div className="productCardDetails">
-            {campaign.metadata.description}
-          </div>
+          <div
+            className="productCardDetails"
+            dangerouslySetInnerHTML={{ __html: campaign.metadata.description }}
+          ></div>
         </div>
       </div>
     </Col>

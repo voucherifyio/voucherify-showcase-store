@@ -3,11 +3,20 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './style.css';
 import VoucherifyButton from '../../App/VoucherifyButton';
+import VoucherifyLogoSquare from '../../../assets/VoucherifyLogoSquare.png';
 import { isEmpty } from '../../../redux/utils';
 import DiscountCarouselSignUpModal from './DiscountCarouselSignUpModal';
 
-const DiscountCarouselBanner = ({ campaign, currentCustomer }) => {
+const DiscountCarouselBanner = ({
+  campaign,
+  currentCustomer,
+  currentCartDiscount,
+}) => {
   const [modalShow, setModalShow] = useState(false);
+
+  const couponForCurrentCustomer = campaign.coupons.find(
+    (coupon) => coupon.currentCustomer === currentCustomer.source_id
+  );
 
   return (
     <>
@@ -26,15 +35,23 @@ const DiscountCarouselBanner = ({ campaign, currentCustomer }) => {
           }
         >
           <h3 className="carouselBannerTitle">{campaign.name}</h3>
-          <p className="carouselBannerDescription">
-            {campaign.metadata.description}
-          </p>
-          {campaign.campaign_type === 'PROMOTION' && (
-            <p className="carouselBannerDescriptionPromotion">
-              You can enable this promotion in the sidebar
-            </p>
-          )}
-          {!isEmpty(campaign.coupons) && (
+          <div
+            className="carouselBannerDescription"
+            dangerouslySetInnerHTML={{ __html: campaign.metadata.description }}
+          ></div>
+
+          {campaign.campaign_type === 'PROMOTION' &&
+            campaign.name !== currentCartDiscount && (
+              <div className="carouselBannerDescriptionPromotion">
+                <p className="carouselBannerDescriptionPromotionText">
+                  Enable this promotion in the sidebar
+                </p>
+                <div>
+                  <img src={VoucherifyLogoSquare} alt="" width="24px" />
+                </div>
+              </div>
+            )}
+          {!isEmpty(couponForCurrentCustomer) && (
             <VoucherifyButton
               text="Get code"
               code={
@@ -45,7 +62,7 @@ const DiscountCarouselBanner = ({ campaign, currentCustomer }) => {
               }
             />
           )}
-          {isEmpty(campaign.coupons) &&
+          {isEmpty(couponForCurrentCustomer) &&
             campaign.name === 'Join our newsletter and get 5% discount' && (
               <VoucherifyButton
                 onClickFunction={() => setModalShow(true)}
@@ -76,12 +93,15 @@ const mapStateToProps = (state) => {
   return {
     currentCartDiscount: state.userReducer.currentCartDiscount,
     currentCustomer: state.userReducer.currentCustomer,
+    products: state.storeReducer.products,
   };
 };
 
 DiscountCarouselBanner.propTypes = {
   campaign: PropTypes.object,
   currentCustomer: PropTypes.object,
+  currentCartDiscount: PropTypes.string,
+  products: PropTypes.array,
 };
 
 export default connect(mapStateToProps)(DiscountCarouselBanner);

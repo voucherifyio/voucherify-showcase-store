@@ -98,7 +98,7 @@ const Sidebar = ({ enableSidebar, dispatch }) => {
           <Tooltip title="Close sidebar">
             <Tab
               className="voucherifyIcon"
-              icon={<img src={VoucherifyLogoSquare} alt="" />}
+              icon={<img src={VoucherifyLogoSquare} width="24px" alt="" />}
               {...a11yProps(0)}
             />
           </Tooltip>

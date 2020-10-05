@@ -49,7 +49,7 @@ const Product = ({ products, dispatch, campaigns }) => {
                     {product.metadata.company}
                   </Badge>
                   {!isEmpty(productCampaigns) && (
-                    <Badge className="productDiscountBadge">Promotion</Badge>
+                    <Badge className="productDiscountBadge">Sale</Badge>
                   )}
                 </div>
 

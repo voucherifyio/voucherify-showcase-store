@@ -4,6 +4,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 
 const VoucherifyButton = ({ code, text, onClickFunction }) => {
+  const [currentText, setCurrentText] = useState(text || null);
   const [tooltipTitle, setTitle] = useState('Click to copy');
 
   const handleCopy = () => {
@@ -12,6 +13,11 @@ const VoucherifyButton = ({ code, text, onClickFunction }) => {
       setTitle('Click to copy');
     }, 400);
   };
+
+  const handleChangeText = () => {
+    setCurrentText(code);
+  };
+
   if (code) {
     return (
       <Tooltip title={tooltipTitle}>
@@ -20,9 +26,10 @@ const VoucherifyButton = ({ code, text, onClickFunction }) => {
           onClick={() => {
             navigator.clipboard.writeText(code);
             handleCopy();
+            handleChangeText();
           }}
         >
-          {!text ? `${code}` : `${text}`}
+          {!text ? `${code}` : `${currentText}`}
         </Button>
       </Tooltip>
     );
@@ -33,11 +40,7 @@ const VoucherifyButton = ({ code, text, onClickFunction }) => {
       </Button>
     );
   } else {
-    return (
-      <Button className="voucherifyButtonOrange" variant="contained">
-        {text}
-      </Button>
-    );
+    return <Button className="voucherifyButtonOrange">{text}</Button>;
   }
 };
 

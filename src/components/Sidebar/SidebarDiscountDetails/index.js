@@ -10,6 +10,7 @@ import './style.css';
 const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
   let discountText = '';
   let discountProduct = '';
+
   // if this is a Voucher
   if (!isEmpty(campaign.code)) {
     if (campaign.discount.type === 'PERCENT') {
@@ -40,7 +41,10 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
 
   return (
     <div className="sidebarAccordion" key={campaign.name}>
-      <div key={campaign.name}>
+      <div
+        key={campaign.name}
+        // dangerouslySetInnerHTML={campaign.metadata.description}
+      >
         {code !== 'cartDiscount' && (
           <p className="discountDescription">
             Discount{' '}
@@ -51,7 +55,10 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
 
         {/* We're checking if the Campaign has a voucher code */}
         {code !== 'cartDiscount' && <VoucherifyButton code={code} />}
-        <p className="campaignDescription">{campaign.metadata.description}</p>
+        <div
+          className="campaignDescription"
+          dangerouslySetInnerHTML={{ __html: campaign.metadata.description }}
+        ></div>
         {campaign.metadata.redemption_steps && (
           <div>
             <p className="redemptionRules">Redemption rules</p>

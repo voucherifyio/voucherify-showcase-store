@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { isEmpty } from '../../redux/utils';
 import Spinner from 'react-bootstrap/Spinner';
 import PropTypes from 'prop-types';
-import ArrowIcon from '../../assets/ArrowIcon.png';
 import ArrowLine from '../../assets/ArrowLine.png';
 import CustomersModalCustomer from './CustomersModalCustomer';
 import './style.css';
 import VoucherifyLogo from '../../assets/VoucherifyLogo.png';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import IconButton from '@material-ui/core/IconButton';
 
 const CustomersModal = ({
   availableCustomers,
@@ -27,33 +28,39 @@ const CustomersModal = ({
           <img className="customersModalArrowLine" alt="" src={ArrowLine} />
           <div className="customersModalDescWrapper">
             <h1 className="customersModalTitle">
-              Welcome to Voucherify Store!
+              Welcome to Hot Beans — Voucherify demo store
             </h1>
             <p className="customersModalDesc">
-              Log in to our demo shop where you can experience various
-              promotional workflows. In the{' '}
-              <span className="customersModalDescBold">control panel</span> on
-              your right, you will see available promotions retrieved from
-              Voucherify. You can also{' '}
+              Log in to explore various promotional workflows we have predefined
+              in Voucherify dashboard. You can enable and disable active
+              promotions in the control panel on your right.{' '}
               <span className="customersModalDescBold">
-                switch between customers
-              </span>{' '}
-              to use their own specific coupons.
+                Remember to switch between customers to learn how promotion
+                personalization works!
+              </span>
             </p>
-            <a href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F">
-              <div className="customersModalArrowLink">
-                <img className="customersModalArrow" alt="" src={ArrowIcon} />
-                <div className="customersModalLink">
-                  Connect your Voucherify acccount to Hot Beans
-                </div>
-              </div>
-            </a>
           </div>
           <div className="customersModalCustomers">
             {availableCustomers.map((customer) => (
               <CustomersModalCustomer key={customer.name} customer={customer} />
             ))}
           </div>
+          <div className="customersModalSourceLinks">
+            <span className="sourceLinkText">Connect to Voucherify</span>
+            <a href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F">
+              <img
+                src="https://www.herokucdn.com/deploy/button.svg"
+                alt="Deploy"
+              />
+            </a>
+            <span className="sourceLinkText">Source code</span>
+            <a href="https://github.com/voucherifyio/voucherify-showcase-store">
+              <IconButton>
+                <GitHubIcon />
+              </IconButton>
+            </a>
+          </div>
+
           <div className="customersModalFooter">
             <div className="voucherifyLogoWrapper">
               <a href="https://voucherify.io">
@@ -62,12 +69,6 @@ const CustomersModal = ({
                   alt="Voucherify logo"
                   src={VoucherifyLogo}
                 />
-              </a>
-            </div>
-            <div>
-              © {new Date().getFullYear()}{' '}
-              <a className="voucherifyLink" href="https://rspective.com">
-                rspective
               </a>
             </div>
           </div>

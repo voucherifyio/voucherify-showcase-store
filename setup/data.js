@@ -6,7 +6,7 @@ exports.customers = [
       firstName: 'Alice',
       country: 'UK',
       demostore_id: 'alicemorgan',
-      individual_val_rule: 'Individual Coupon Alice Morgan',
+      individual_val_rule: 'Happy Birthday Alice Morgan',
       description:
         'A new customer who just logged into the Hot Beans shop for the very first time.',
       title: 'New Customer',
@@ -28,7 +28,7 @@ exports.customers = [
       firstName: 'Lewis',
       country: 'USA',
       demostore_id: 'lewismarshall',
-      individual_val_rule: 'Individual Coupon Lewis Marshall',
+      individual_val_rule: 'Happy Birthday Lewis Marshall',
       description: 'He already spent $300 in Hot Beans store',
       title: 'Hot Beans Fan',
       avatar:
@@ -49,9 +49,9 @@ exports.customers = [
       firstName: 'John',
       country: 'PL',
       demostore_id: 'johndorian',
-      individual_val_rule: 'Individual Coupon John Dorian',
-      description: 'He can take part in special campaign for foreign customers',
-      title: 'Foreign Customer',
+      individual_val_rule: 'Happy Birthday John Dorian',
+      description: 'He can take part in special partnership campaign',
+      title: 'Partner Customer',
       avatar:
         'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/JohnDorian.png',
     },
@@ -147,7 +147,7 @@ exports.campaigns = [
     },
   },
   {
-    name: 'Individual Coupon',
+    name: 'Happy Birthday',
     type: 'AUTO_UPDATE',
     voucher: {
       type: 'DISCOUNT_VOUCHER',
@@ -158,9 +158,9 @@ exports.campaigns = [
     },
     metadata: {
       assigned_val_rules:
-        'Individual Coupon Lewis Marshall; Individual Coupon Alice Morgan; Individual Coupon John Dorian',
+        'Happy Birthday Lewis Marshall; Happy Birthday Alice Morgan; Happy Birthday John Dorian',
       description:
-        'Special coupon - each customer has unique code for his use only.',
+        'Special coupon - each customer has unique code for his/her use only.',
       redemption_steps: 'Customer: Current customer',
       order: 1,
       carousel_banner_img_url:
@@ -177,7 +177,7 @@ exports.campaigns = [
     metadata: {
       assigned_val_rules: 'Buy Two, Get Three',
       description:
-        'Purchase Fika and Sumatra blend from Johan & Nyström to get Sumatra blend for free.',
+        'Purchase Johan & Nyström - Fika and Johan & Nyström - Sumatra blend to get one Johan & Nyström - Sumatra blend for free.',
       redemption_steps:
         'Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra',
       order: 1,
@@ -220,7 +220,7 @@ exports.campaigns = [
     metadata: {
       assigned_val_rules: 'Double Trouble',
       description:
-        'Get a double-pack of Bourbon by Johan & Nyström to get a 15$ off your order.',
+        'Get a double-pack of Johan & Nyström - Bourbon to get a 15$ off your order.',
       redemption_steps: 'Cart contains: 2x Johan & Nyström - Bourbon',
       order: 3,
       promotion_product: 'Johan & Nyström - Bourbon',
@@ -249,14 +249,14 @@ exports.campaigns = [
     },
   },
   {
-    name: 'Special Deal for Poles',
+    name: 'Partnership Campaign',
     type: 'AUTO_UPDATE',
     voucher: {
       type: 'DISCOUNT_VOUCHER',
       discount: { percent_off: 13, type: 'PERCENT' },
     },
     metadata: {
-      assigned_val_rules: 'Special Deal for Poles',
+      assigned_val_rules: 'Partnership Campaign',
       description:
         'If your location is Poland, enjoy a 13% discount available only for our Polish customers.',
       redemption_steps: 'Customers segment: Customers from Poland',
@@ -320,7 +320,7 @@ exports.campaigns = [
     campaign_type: 'PROMOTION',
     metadata: {
       description:
-        'Enjoy a 50% discount on Hard Beans Brazil blend. Simply add Hard Beans Brazil and Caravan by Johan & Nyström to your cart. Get one pack of Hard Beans completely for free if your order of Hard Beans Brazil and Johan & Nyström Caravan exceeds 100$.',
+        'Enjoy a 50% discount on Hard Beans - Brazil blend. Simply add Hard Beans - Brazil and Johan & Nyström - Caravan to your cart. Get one pack of Hard Beans - Brazil completely for free if your order of Hard Beans - Brazil and Johan & Nyström - Caravan exceeds 100$.',
       assigned_val_rules:
         'Final Tier - 100% off for Hard Beans; First Tier - 50% off for Hard Beans',
       carousel_banner_img_url:
@@ -372,7 +372,7 @@ exports.campaigns = [
 exports.segments = [
   {
     type: 'auto-update',
-    name: 'Special Deal for Poles',
+    name: 'Partnership Campaign',
     filter: {
       'address.country': {
         conditions: {

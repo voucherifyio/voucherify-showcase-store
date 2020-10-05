@@ -188,6 +188,7 @@ export const getCustomers = () => async (dispatch, getState) => {
 
 export const getCampaigns = () => async (dispatch, getState) => {
   const { publishedCodes } = getState().userReducer;
+  const { products } = getState().storeReducer;
   try {
     dispatch(getCampaignsRequest());
     const res = await fetch(
@@ -199,6 +200,17 @@ export const getCampaigns = () => async (dispatch, getState) => {
     const campaigns = await res.json();
     campaigns.forEach(async (camps) => {
       camps.coupons = [];
+      let replacedText;
+      for (let index = 0; index < products.length; index++) {
+        const element = products[index];
+        if (camps.metadata.description.includes(element.name)) {
+          replacedText = camps.metadata.description.replace(
+            element.name,
+            `<a class='descriptionLink' href='/details/${element.id}'>${element.name}</a>`
+          );
+          camps.metadata.description = replacedText;
+        }
+      }
       publishedCodes.forEach((code) => {
         code.campaigns.forEach((camp) => {
           if (camp.campaign === camps.name) {

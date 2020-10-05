@@ -25,7 +25,7 @@ const ProductCard = ({ product, addItemToCart, productCampaigns }) => {
         <Link to={`/details/${product.id}`}>
           <div>
             <DiscountBadge
-              badgeContent="Promotion"
+              badgeContent="Sale"
               invisible={isEmpty(productCampaigns)}
             >
               <img

@@ -210,7 +210,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'Individual Coupon Lewis Marshall',
+      name: 'Happy Birthday Lewis Marshall',
       error: { message: 'Only Lewis Marshall can use this coupon' },
       rules: {
         1: {
@@ -224,7 +224,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'Individual Coupon Alice Morgan',
+      name: 'Happy Birthday Alice Morgan',
       error: { message: 'Only Alice Morgan can use this coupon' },
       rules: {
         1: {
@@ -238,7 +238,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'Individual Coupon John Dorian',
+      name: 'Happy Birthday John Dorian',
       error: { message: 'Only John Dorian can validate this coupon' },
       rules: {
         1: {
@@ -327,7 +327,7 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'Special Deal for Poles',
+      name: 'Partnership Campaign',
       error: { message: 'Check campaign rules' },
       rules: {
         1: {
@@ -336,7 +336,7 @@ const setupValidationRules = async () => {
           rules: {},
           conditions: {
             $is: [
-              segments.find((s) => s.name === 'Special Deal for Poles')
+              segments.find((s) => s.name === 'Partnership Campaign')
                 .voucherifyId,
             ],
           },
@@ -496,7 +496,7 @@ const setupValidationRules = async () => {
       // We filter out campaign with indvidual coupons
       if (
         !campaign.metadata.assigned_val_rules ||
-        campaign.name === 'Individual Coupon'
+        campaign.name === 'Happy Birthday'
       ) {
         return [];
       } else if (campaign.campaign_type === 'PROMOTION') {

@@ -44,6 +44,11 @@ a:hover {
   color: unset !important;
 }
 
+.descriptionLink {
+  font-weight: 700 !important;
+  color: var(--orange) !important;
+}
+
 .mainContent.sidebar .sidebarWrapper {
   right: -290px;
 }
