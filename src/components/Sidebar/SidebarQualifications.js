@@ -8,9 +8,10 @@ import InfoIcon from '@material-ui/icons/Info';
 import _isEmpty from 'lodash.isempty';
 
 const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
+  /* eslint-disable */
   const qualificationsToolTip =
     'The qualification endpoint returns all promotions available to the given customer profile and orders that meet predefined validation rules such as total order value or the minimum number of items in the cart.';
-
+  /* eslint-enable */
   return (
     <>
       <div className="sidebarSection qualificationSection">

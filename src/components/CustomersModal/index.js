@@ -15,6 +15,11 @@ const CustomersModal = ({
   fetchingCustomers,
   campaigns,
 }) => {
+  /* eslint-disable */
+  const herokuLink =
+    'https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F';
+  /* eslint-enable */
+
   return (
     <div className="customersModalWrapper">
       {_isEmpty(availableCustomers) ||
@@ -47,7 +52,7 @@ const CustomersModal = ({
           </div>
           <div className="customersModalSourceLinks">
             <span className="sourceLinkText">Connect to Voucherify</span>
-            <a href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F">
+            <a href={herokuLink}>
               <img
                 src="https://www.herokucdn.com/deploy/button.svg"
                 alt="Deploy"
