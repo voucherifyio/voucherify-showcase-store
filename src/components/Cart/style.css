@@ -1,0 +1,257 @@
+.checkoutHeader {
+  width: 100%;
+}
+
+.cartPage {
+  margin-bottom: 5rem;
+}
+
+.cartCustomerAddressWrapper {
+  padding: 1rem;
+}
+
+.cartCustomerAddress > p {
+  margin-bottom: 0.25rem;
+}
+
+.cartCustomerAddressName {
+  font-weight: 700;
+}
+
+.cartItem {
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid var(--lightgrey);
+}
+
+.cartItemDetails {
+  justify-content: flex-start;
+}
+
+.cartItemImage {
+  width: 100%;
+}
+
+.cartItemName {
+  font-weight: 700;
+  margin: auto 0px;
+}
+
+.cartItemPrice {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+.cartItemPricePrefix {
+  font-size: 12px;
+}
+
+.cartItemDetailsRow2 {
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.cartItemDetail {
+  padding: 0 10px !important;
+}
+
+.cartItemRemove {
+  display: flex;
+  justify-content: center;
+}
+
+.paymentMethodSection {
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid var(--lightgrey);
+  min-height: 120px;
+}
+
+.sectionTitle {
+  padding: 1rem 1.5rem !important;
+}
+
+.paymentMethodsWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.cartDiscountsInformation {
+  color: var(--lightgrey);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.paymentMethod {
+  border: 1px solid var(--lightgrey);
+  display: flex;
+  flex-direction: row;
+  margin: 0.5rem;
+  transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+}
+
+.selectedPaymentMethod {
+  font-weight: 700 !important;
+}
+
+.paymentMethodLogoWrapper {
+  width: auto;
+}
+
+.paymentMethodBadgeIcon {
+  height: 15px !important;
+}
+.paymentMethodLogo {
+  padding: 2px;
+}
+
+.avaliablePaymentMethod {
+  box-shadow: var(--custom-box-shadow);
+}
+
+.discountSection {
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid var(--lightgrey);
+  min-height: 120px;
+}
+
+.discountSection .discountAmount {
+  justify-content: center;
+  align-items: center;
+}
+
+.discountAmount {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.discounted {
+  margin-right: auto;
+  color: var(--green);
+}
+
+.discountAmountPrefix {
+  font-size: 12px;
+}
+
+.totalSection {
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  min-height: 120px;
+}
+
+.totalAmount {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.cartItemDescription {
+  display: flex;
+  width: 100%;
+}
+
+.discountFormRow {
+  align-items: center;
+}
+
+@media (max-width: 575.98px) {
+  .totalAmount {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cartPage {
+    margin-bottom: 10rem;
+  }
+
+  .paymentMethodSection {
+    min-height: 260px;
+  }
+
+  .cartItemPrice {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cartItemPricePrefix {
+    display: none;
+  }
+
+  .discountSection .cartItemRemove,
+  .totalSection .cartItemRemove {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sectionTitle {
+    font-size: 16px;
+    text-align: center;
+    padding: 1rem 0px;
+  }
+
+  .paymentMethodsWrapper {
+    justify-content: space-between;
+  }
+
+  .discountFormButton {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+  .discounted {
+    margin-right: unset;
+  }
+}
+
+.checkoutButtonWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.checkoutButton {
+  width: 100%;
+  margin: 0.5rem auto;
+}
+
+@media (max-width: 767.98px) {
+  .cartItemPricePrefix {
+    margin-right: 0.5rem;
+  }
+
+  .cartItemName {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .cartItemQuantity {
+    margin-bottom: 0.25rem;
+  }
+
+  .cartItemPricePrefix {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .cartListWrapper,
+  .cartCustomerAddress {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 1199.98px) {
+}

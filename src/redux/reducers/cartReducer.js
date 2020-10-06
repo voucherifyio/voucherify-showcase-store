@@ -13,7 +13,7 @@ import {
 } from '../constants';
 import _has from 'lodash.has';
 import _cloneDeep from 'lodash.clonedeep';
-import {isEmpty} from '../utils'
+import _isEmpty from 'lodash.isempty';
 
 const initialState = {
   items: [],
@@ -24,12 +24,9 @@ const initialState = {
   orderId: null,
   discount: null,
   paymentMethod: 'Other',
-}
+};
 
-export const cartReducer = (
-  state = initialState,
-  action
-) => {
+export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_DISCOUNT_REQUEST: {
       return {
@@ -69,7 +66,7 @@ export const cartReducer = (
             );
           }
           if (
-            !isEmpty(applicableProductInCart) &&
+            !_isEmpty(applicableProductInCart) &&
             discount.discount.type === 'PERCENT'
           ) {
             let discountedAmount =
@@ -93,7 +90,7 @@ export const cartReducer = (
               discountedAmount,
             };
           } else if (
-            !isEmpty(applicableProducts) &&
+            !_isEmpty(applicableProducts) &&
             discount.discount.type === 'AMOUNT'
           ) {
             const discountedAmount = discount.discount.amount_off;
@@ -181,8 +178,8 @@ export const cartReducer = (
     case REMOVE_DISCOUNT: {
       return {
         ...state,
-        discount: null
-      }
+        discount: null,
+      };
     }
     case INCREMENT_DECREMENT: {
       const tempItems = state.items.map((item) => {

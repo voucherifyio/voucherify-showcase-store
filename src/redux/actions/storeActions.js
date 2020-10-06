@@ -18,13 +18,13 @@ export const getProductsError = () => {
 export const getProducts = () => async (dispatch) => {
   try {
     dispatch(getProductsRequest());
-    const response = await fetch(
+    const res = await fetch(
       `${process.env.REACT_APP_API_URL || ''}/products`,
       {
         credentials: 'include',
       }
     );
-    const products = await response.json();
+    const products = await res.json();
     dispatch(getProductsSuccess(products));
   } catch (error) {
     console.log('[getProducts][Error]', error);

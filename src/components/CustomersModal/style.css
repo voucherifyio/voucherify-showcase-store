@@ -1,0 +1,245 @@
+.customersModalWrapper {
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.customersModalArrowLine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: 15%;
+}
+
+.customersModalDescWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.customersModal {
+  max-width: 950px;
+  overflow: hidden;
+  padding: 2rem;
+  margin: 0.5rem;
+  position: relative;
+  text-align: center;
+}
+
+.customersModalTitle {
+  font-family: 'Lato' !important;
+  font-weight: 900 !important;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.customersModalDesc {
+  font-size: 1.125rem;
+  color: var(--lightgrey);
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.customersModalDescBold {
+  font-weight: 700;
+}
+
+.customersModalCustomers {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  margin: 1rem 0;
+}
+
+.customersModalArrowLink {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+.customersModalArrow {
+  height: 10px;
+  transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  transform-style: preserve-3d;
+  -webkit-transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -moz-transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -ms-transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -o-transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+}
+
+.customersModalArrowLink:hover .customersModalArrow,
+.customersModalCustomer:hover .customersModalArrow {
+  transform: translate3d(10px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  transform-style: preserve-3d;
+  -webkit-transform: translate3d(10px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -moz-transform: translate3d(10px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -ms-transform: translate3d(10px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+  -o-transform: translate3d(10px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(270deg) skew(0deg, 0deg);
+}
+
+.customersModalLink {
+  margin-top: auto;
+  margin-left: 0.5rem;
+  padding-left: 0.25rem;
+  color: var(--link);
+  font-size: 18px;
+  font-family: 'Lato' !important;
+  font-weight: 700 !important;
+  text-align: left;
+}
+
+.customersModalSourceLinks {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+}
+
+.sourceLinkWrapper {
+  margin: 0 1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.customersModalSourceLinks .sourceLinkText {
+  margin: 0.5rem 0.25rem !important;
+}
+.customersModalCustomer {
+  padding: 1rem;
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  border: 1px solid var(--lightgrey);
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+  cursor: pointer;
+}
+
+.customersModalCustomer:hover {
+  box-shadow: var(--custom-box-shadow);
+}
+
+.customersModalCustomerImgWrapper {
+  max-width: 150px;
+  height: 150px;
+}
+
+.customersModalCustomerImg {
+  width: 100%;
+}
+
+.customersModalCustomerTitle {
+  font-family: 'Lato' !important;
+  font-weight: 700 !important;
+  font-size: 1.25rem;
+}
+
+.customersModalCustomerDesc {
+  color: var(--lightgrey);
+  font-size: 1rem;
+}
+
+.customersModalCustomerDescWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.customersModalFooter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.voucherifyLogoWrapper {
+  max-width: 140px;
+}
+
+.voucherifyLogo {
+  width: 100%;
+}
+
+@media (max-width: 575.98px) {
+  .customersModalCustomer {
+    width: 100%;
+    margin: 5px;
+  }
+  .sourceLink {
+    width: 100%;
+  }
+  .customersModalDescWrapper {
+    width: 100%;
+  }
+
+  .customersModalArrowLine {
+    display: none;
+  }
+
+  .customersModal {
+    padding: 1rem;
+    box-shadow: none;
+    border-radius: 0rem;
+    -webkit-border-radius: 0rem;
+    -moz-border-radius: 0rem;
+    -ms-border-radius: 0rem;
+    -o-border-radius: 0rem;
+  }
+
+  .customersModalTitle {
+    font-size: 1.5rem;
+  }
+
+  .customersModalDesc {
+    font-size: 1rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 767.98px) {
+}
+
+@media (max-width: 991.98px) {
+}
+
+@media (max-width: 1199.98px) {
+}

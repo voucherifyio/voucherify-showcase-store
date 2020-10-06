@@ -1,0 +1,186 @@
+:root {
+  --bg-white: white;
+  --orange: #ff8b5c;
+  --link: #25abb7;
+  --link-hover: #007682;
+  --white: white;
+  --black: black;
+  --lightgrey: #7a7a7a;
+  --custom-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  --link-black-hover: #7a7a7a;
+  --bg-sidebar: #f8f7f7;
+  --green: green;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--bg-white) !important;
+  font-family: 'Lato', sans-serif !important;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+button:focus {
+  outline: none !important;
+  border: 0 !important;
+}
+
+a,
+a:focus,
+a:hover {
+  text-decoration: none !important;
+  color: unset !important;
+}
+
+.descriptionLink {
+  font-weight: 700 !important;
+  color: var(--orange) !important;
+}
+
+.mainContent.sidebar .sidebarWrapper {
+  right: -290px;
+}
+
+.voucherifyLink {
+  color: var(--link);
+  text-transform: none;
+  text-decoration: none;
+  transition: 0.2s all ease;
+  -webkit-transition: 0.2s all ease;
+  -moz-transition: 0.2s all ease;
+  -ms-transition: 0.2s all ease;
+  -o-transition: 0.2s all ease;
+}
+
+.voucherifyLink:hover {
+  color: var(--link-hover);
+}
+
+.pageContainer {
+  padding-bottom: 5rem;
+}
+
+.page {
+  padding-top: 5rem;
+  margin: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pageHeader {
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.pageTitle {
+  word-break: break-all;
+}
+
+.spinnerWrapper {
+  justify-content: center;
+  margin-bottom: 5rem;
+}
+
+.buttonWrapper {
+  display: flex;
+}
+
+.voucherifyButtonOrange {
+  color: var(--white) !important;
+  font-family: 'Lato' !important;
+  font-size: 0.9rem !important;
+  background-color: var(--orange) !important;
+  border-color: var(--orange) !important;
+  border-radius: 10px !important;
+  padding: 5px 20px !important;
+  margin: 15px 0px !important;
+  text-transform: none !important;
+  -webkit-border-radius: 10px !important;
+  -moz-border-radius: 10px !important;
+  -ms-border-radius: 10px !important;
+  -o-border-radius: 10px !important;
+}
+
+.voucherifyButtonOrange:hover {
+  background-color: var(--orange);
+}
+
+.voucherifyButtonDark {
+  color: var(--white) !important;
+  background-color: var(--black) !important;
+  border-color: var(--black) !important;
+  font-family: 'Lato' !important;
+  font-size: 0.9rem !important;
+  border-radius: 10px !important;
+  padding: 5px 20px !important;
+  margin: 15px 0px !important;
+  text-transform: none !important;
+  -webkit-border-radius: 10px !important;
+  -moz-border-radius: 10px !important;
+  -ms-border-radius: 10px !important;
+  -o-border-radius: 10px !important;
+}
+
+.voucherifyButtonDark:hover {
+  background-color: var(--black);
+}
+
+.voucherifyButtonDark:focus,
+.voucherifyButtonOrange:focus {
+  box-shadow: unset;
+}
+
+.buttonSeparator {
+  width: 15px;
+}
+
+.paymentButton {
+  width: 100%;
+}
+
+@media (max-width: 575.98px) {
+  .mainContent.sidebar .sidebarWrapper {
+    right: calc(-100vw + 70px);
+  }
+
+  .mainContent {
+    margin-right: 70px;
+  }
+
+  .pageTitle {
+    font-size: 1.5rem;
+  }
+  .pageHeader {
+    margin-bottom: 1rem;
+  }
+  .voucherifyButtonDark {
+    width: 100%;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .pageContainer {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+}
+
+@media (max-width: 1199.98px) {
+}

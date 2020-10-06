@@ -5,9 +5,9 @@ import {
   setValidatePayload,
   getOrderId,
   sendPayload,
-} from '../utils';
+} from '../../utils';
 import _cloneDeep from 'lodash.clonedeep';
-import { isEmpty } from '../utils';
+import _isEmpty from 'lodash.isempty';
 import {
   GET_DISCOUNT_REQUEST,
   GET_DISCOUNT_SUCCESS,
@@ -109,21 +109,22 @@ export const getCartDiscount = (activeCartDiscount) => async (
     const promotion = await new Promise((resolve, reject) => {
       window.Voucherify.setIdentity(currentCustomer.source_id);
 
-      window.Voucherify.validate(getCartDiscountPayload, (response) => {
-        if (response.valid) {
-          resolve(response);
+      window.Voucherify.validate(getCartDiscountPayload, (res) => {
+        const discount = res.promotions.filter(
+          (promo) => promo.metadata.promotion_name === activeCartDiscount
+        )[0];
+        if (discount) {
+          resolve(discount);
         } else {
-          toast.error('No Cart Discount available');
-          reject(new Error(response.reason));
+          toast.error('You are not eligible for the Cart Discount');
+          reject(new Error(res.reason));
         }
       });
     });
-    const discount = promotion.promotions.filter(
-      (promo) => promo.metadata.demostoreName === activeCartDiscount
-    )[0];
-    if (discount) {
-      dispatch(getDiscountSuccess(discount));
-      toast.success(discount.banner);
+
+    if (promotion) {
+      dispatch(getDiscountSuccess(promotion));
+      toast.success(promotion.banner);
     } else {
       toast.error('You are not eligible for the Cart Discount');
     }
@@ -153,20 +154,20 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
     dispatch(getDiscountRequest());
     let discount = await new Promise((resolve, reject) => {
       window.Voucherify.setIdentity(currentCustomer.source_id);
-      window.Voucherify.validate(getDiscountPayload, (response) => {
-        if (response.valid) {
-          resolve(response);
+      window.Voucherify.validate(getDiscountPayload, (res) => {
+        if (res.valid) {
+          resolve(res);
         } else {
-          if (response.error) {
-            toast.error(response.error.message);
+          if (res.error) {
+            toast.error(res.error.message);
           } else {
-            toast.error(response.reason);
+            toast.error(res.reason);
           }
-          reject(new Error(response.reason));
+          reject(new Error(res.reason));
         }
       });
     });
-    if (isEmpty(currentDiscount)) {
+    if (_isEmpty(currentDiscount)) {
       dispatch(getDiscountSuccess(discount));
     } else {
       discount = currentDiscount;
@@ -188,7 +189,7 @@ export const checkoutCart = () => async (dispatch, getState) => {
   } = getState().cartReducer;
   try {
     // If voucher or promotion is not applied
-    if (isEmpty(discount)) {
+    if (_isEmpty(discount)) {
       const checkoutPayload = setOrderPayload(
         currentCustomer,
         totalAmount,
@@ -211,16 +212,16 @@ export const checkoutCart = () => async (dispatch, getState) => {
         // If voucher is applied
         const discountCode = discount.code;
         checkoutPayload.code = discountCode;
-        const response = await sendPayload(checkoutPayload, 'redeem');
+        const res = await sendPayload(checkoutPayload, 'redeem');
         dispatch(clearCart());
-        dispatch(setOrderId(response.id));
+        dispatch(setOrderId(res.id));
       } else if (discount.hasOwnProperty('banner')) {
         // If promotion is applied
         const promotionId = discount.id;
         checkoutPayload.promotionId = promotionId;
-        const response = await sendPayload(checkoutPayload, 'redeem');
+        const res = await sendPayload(checkoutPayload, 'redeem');
         dispatch(clearCart());
-        dispatch(setOrderId(response.order.id));
+        dispatch(setOrderId(res.order.id));
       }
     }
   } catch (error) {

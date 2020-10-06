@@ -1,7 +1,7 @@
 import { loadState } from '../localStorage';
 import _map from 'lodash.map';
 import _get from 'lodash.get';
-import { setValidatePayload } from '../utils';
+import { setValidatePayload } from '../../utils';
 import {
   START_USER_SESSION_REQUEST,
   START_USER_SESSION_SUCCESS,
@@ -23,6 +23,10 @@ import {
   GET_CURRENT_CUSTOMER_ERROR,
   SET_ENABLE_CART_DISCOUNTS,
   REMOVE_CURRENT_CUSTOMER,
+  ENABLE_SIDEBAR,
+  SET_CURRENT_CART_DISCOUNT,
+  ADD_PUBLISHED_CODES,
+  SET_NAVIGATION_RIBBON_VOUCHER,
 } from '../constants';
 
 export const startUserSessionRequest = () => {
@@ -50,6 +54,10 @@ export const getCustomersError = () => {
   return { type: GET_CUSTOMERS_ERROR };
 };
 
+export const setEnableSidebar = (enableSidebar) => {
+  return { type: ENABLE_SIDEBAR, payload: { enableSidebar } };
+};
+
 export const getQualificationsRequest = () => {
   return { type: GET_QUALIFICATIONS_REQUEST };
 };
@@ -60,6 +68,11 @@ export const getQualificationsSuccess = (qualifications) => {
 export const setEnableCartDiscounts = (enableCartDiscounts) => {
   return { type: SET_ENABLE_CART_DISCOUNTS, payload: { enableCartDiscounts } };
 };
+
+export const setCurrentCartDiscount = (currentCartDiscount) => {
+  return { type: SET_CURRENT_CART_DISCOUNT, payload: { currentCartDiscount } };
+};
+
 export const getQualificationsError = () => {
   return { type: GET_QUALIFICATIONS_ERROR };
 };
@@ -82,6 +95,17 @@ export const getVouchersRequest = () => {
 
 export const getVouchersSuccess = (vouchers) => {
   return { type: GET_VOUCHERS_SUCCESS, payload: { vouchers } };
+};
+
+export const setNavigationRibbonVoucher = (navigationRibbonVoucher) => {
+  return {
+    type: SET_NAVIGATION_RIBBON_VOUCHER,
+    payload: { navigationRibbonVoucher },
+  };
+};
+
+export const addPublishedCodes = (currentCustomer, campaign) => {
+  return { type: ADD_PUBLISHED_CODES, payload: { currentCustomer, campaign } };
 };
 
 export const getVouchersError = () => {
@@ -107,13 +131,10 @@ export const getCurrentCustomerError = () => {
 export const startUserSession = () => async (dispatch) => {
   try {
     dispatch(startUserSessionRequest());
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL || ''}/start`,
-      {
-        credentials: 'include',
-      }
-    );
-    const userSession = await response.json();
+    const res = await fetch(`${process.env.REACT_APP_API_URL || ''}/start`, {
+      credentials: 'include',
+    });
+    const userSession = await res.json();
     if (userSession.coupons.length === 0) {
       dispatch(
         startUserSessionSuccess({
@@ -142,13 +163,13 @@ export const getCustomers = () => async (dispatch, getState) => {
   const { sessionId, currentCustomer } = getState().userReducer;
   try {
     dispatch(getCustomersRequest());
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL || ''}/customers/${sessionId}`,
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL || ''}/customers/all/${sessionId}`,
       {
         credentials: 'include',
       }
     );
-    const availableCustomers = await response.json();
+    const availableCustomers = await res.json();
     dispatch(getCustomersSuccess({ availableCustomers }));
     // Check if availableCustomers includes currentCustomer
     // if there is an issue with localStorage or server, remove currentCustomer
@@ -167,18 +188,29 @@ export const getCustomers = () => async (dispatch, getState) => {
 
 export const getCampaigns = () => async (dispatch, getState) => {
   const { publishedCodes } = getState().userReducer;
+  const { products } = getState().storeReducer;
   try {
     dispatch(getCampaignsRequest());
-    const response = await fetch(
+    const res = await fetch(
       `${process.env.REACT_APP_API_URL || ''}/campaigns`,
       {
         credentials: 'include',
       }
     );
-    const campaigns = await response.json();
-
+    const campaigns = await res.json();
     campaigns.forEach(async (camps) => {
       camps.coupons = [];
+      let replacedText;
+      for (let index = 0; index < products.length; index++) {
+        const element = products[index];
+        if (camps.metadata.description.includes(element.name)) {
+          replacedText = camps.metadata.description.replace(
+            element.name,
+            `<a class='descriptionLink' href='/details/${element.id}'>${element.name}</a>`
+          );
+          camps.metadata.description = replacedText;
+        }
+      }
       publishedCodes.forEach((code) => {
         code.campaigns.forEach((camp) => {
           if (camp.campaign === camps.name) {
@@ -198,7 +230,6 @@ export const getCampaigns = () => async (dispatch, getState) => {
         );
 
         const campaignPromotions = await promotionResponse.json();
-
         camps.tiers = campaignPromotions.tiers;
       }
     });
@@ -216,17 +247,74 @@ const sleep = (ms) => {
 export const getVouchers = () => async (dispatch) => {
   try {
     dispatch(getVouchersRequest());
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL || ''}/vouchers`,
-      {
-        credentials: 'include',
-      }
+    const res = await fetch(`${process.env.REACT_APP_API_URL || ''}/vouchers`, {
+      credentials: 'include',
+    });
+    const vouchers = await res.json();
+
+    const vouchersWithoutValidationRules = vouchers.filter(
+      (voucher) => voucher.metadata.assigned_val_rules === ''
     );
-    const vouchers = await response.json();
+
+    const singleVoucher =
+      vouchersWithoutValidationRules[
+        Math.floor(Math.random() * vouchersWithoutValidationRules.length)
+      ];
+
+    dispatch(setNavigationRibbonVoucher(singleVoucher));
+
     dispatch(getVouchersSuccess(vouchers));
   } catch (error) {
     console.log('[getVouchers][Error]', error);
     dispatch(getVouchersError());
+  }
+};
+
+export const updateCurrentCustomerEmail = (email) => async (
+  dispatch,
+  getState
+) => {
+  const { currentCustomer } = getState().userReducer;
+  try {
+    dispatch(getCurrentCustomerRequest());
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL || ''}/customers/${
+        currentCustomer.source_id
+      }`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          email,
+        }),
+      }
+    );
+    const updatedCurrentCustomer = await res.json();
+    dispatch(getCurrentCustomerSuccess(updatedCurrentCustomer));
+  } catch (error) {
+    console.log('[updateCurrentCustomerEmail][Error]', error);
+  }
+};
+
+export const publishCampaign = (campaign) => async (dispatch, getState) => {
+  const { currentCustomer } = getState().userReducer;
+  try {
+    const res = await fetch(
+      `${
+        process.env.REACT_APP_API_URL || ''
+      }/distributions/publications/create`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ currentCustomer, campaign }),
+      }
+    );
+    const publishedCampaign = await res.json();
+    dispatch(addPublishedCodes(currentCustomer.source_id, publishedCampaign));
+  } catch (error) {
+    console.log('[publishCampaign][Error]', error);
   }
 };
 
@@ -236,14 +324,14 @@ export const getCurrentCustomer = (id, type = 'normal') => async (
 ) => {
   try {
     dispatch(getCurrentCustomerRequest());
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL || ''}/customer/${id}`,
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL || ''}/customers/${id}`,
       {
         credentials: 'include',
       }
     );
 
-    const currentCustomer = await response.json();
+    const currentCustomer = await res.json();
 
     if (type === 'normal') {
       dispatch(getCurrentCustomerSuccess(currentCustomer));
@@ -283,7 +371,7 @@ export const getQualifications = () => async (dispatch, getState) => {
   );
   try {
     dispatch(getQualificationsRequest());
-    const response = await fetch(
+    const res = await fetch(
       `${process.env.REACT_APP_API_URL || ''}/qualifications`,
       {
         method: 'POST',
@@ -292,7 +380,7 @@ export const getQualifications = () => async (dispatch, getState) => {
         body: JSON.stringify(qualificationsPayload),
       }
     );
-    const qualifications = await response.json();
+    const qualifications = await res.json();
     dispatch(getQualificationsSuccess(qualifications));
   } catch (error) {
     console.log('[getQualifications][Error]', error);
