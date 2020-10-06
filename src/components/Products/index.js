@@ -12,7 +12,7 @@ import DiscountCarousel from './DiscountCarousel';
 
 const Products = ({ products, fetchingProducts, campaigns }) => {
   const [filterCategory, setFilterCategory] = useState('');
-
+  console.log(filterCategory);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
