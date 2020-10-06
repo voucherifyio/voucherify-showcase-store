@@ -11,7 +11,7 @@ exports.customers = [
         'A new customer who just logged into the Hot Beans shop for the very first time.',
       title: 'New Customer',
       avatar:
-        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/AliceMorgan.png',
+        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/AliceMorgan.jpg',
     },
     address: {
       city: 'London',
@@ -32,7 +32,7 @@ exports.customers = [
       description: 'He already spent $300 in Hot Beans store',
       title: 'Hot Beans Fan',
       avatar:
-        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/LewisMarshall.png',
+        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/LewisMarshall.jpg',
     },
     address: {
       city: 'Los Angeles',
@@ -53,7 +53,7 @@ exports.customers = [
       description: 'He can take part in special partnership campaign',
       title: 'Partner Customer',
       avatar:
-        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/JohnDorian.png',
+        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/JohnDorian.jpg',
     },
     address: {
       city: 'Warsaw',
@@ -574,118 +574,6 @@ exports.products = [
       weight: 250,
       slug: '8003753900490',
       sku: '8003753900490',
-    },
-  },
-  {
-    name: 'Hario Cafe Press Slim S',
-    source_id: '23',
-    price: 3000,
-    metadata: {
-      company: 'Hario',
-      categories: ['Coffee Machines'],
-      imgUrl:
-        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Hario+Cafe+Press+Slim+S+Transparent+Black.jpg',
-      info:
-        'Hario Cafe Press Slim is a typical French Press made in Japan. Capacity: 240 ml. Colour: black Small and handy, used to brew 2 cups of tea or coffee. Just pour hot water over ground coffee, press the brew and, in a few minutes, you can enjoy your favourite coffee! How to prepare coffee with French Press? You can find the answer in our Knowledge Base: French Press.',
-      weight: 0,
-      slug: '4977642153608',
-      sku: '4977642153608',
-    },
-  },
-  {
-    name: 'Hario V60-01 Plastic Dripper',
-    source_id: '25',
-    price: 520,
-    metadata: {
-      company: 'Hario',
-      categories: ['Coffee Machines', 'Accessories'],
-      imgUrl:
-        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Hario+V60-01+Plastic+Dripper+White.jpg',
-      info:
-        "Size: V60-01 Colour: white Material: plastic Would you like to get started with alternative methods of coffee brewing, but don't know what to choose? Hario V-60 Dripper is just for you! This Japanese gadget allows you to make the most of your coffee in a simple and effective way. The filter method is great fun and allows for experimenting with coffee. Surprise your friends with rich taste and aroma of coffee, and the technique of its preparation! Hario V60-01 allows you to brew 200 - 360 ml of coffee at a time, which is enough for a big mug or two smaller portions.",
-      weight: 0,
-      slug: '4977642724204',
-      sku: '4977642724204',
-    },
-  },
-  {
-    name: 'Hario V60-02 Plastic Dripper',
-    source_id: '26',
-    price: 520,
-    metadata: {
-      company: 'Hario',
-      categories: ['Coffee Machines', 'Accessories'],
-      imgUrl:
-        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Hario+V60-01+Plastic+Dripper+Red.jpg',
-      info:
-        "Size: V60-01 Colour: red Material: plastic Would you like to get started with alternative methods of coffee brewing, but don't know what to choose? Hario V-60 Dripper is just for you! This Japanese gadget allows you to make the most of your coffee in a simple and effective way. The filter method is great fun and allows for experimenting with coffee. Surprise your friends with rich taste and aroma of coffee, and the technique of its preparation! Hario V60-01 allows you to brew 200 - 360 ml of coffee at a time, which is enough for a big mug or two smaller portions.",
-      weight: 0,
-      slug: '4977642724228',
-      sku: '4977642724228',
-    },
-  },
-  {
-    name: 'Hario V60 Plastic Dripper 01',
-    source_id: '27',
-    price: 520,
-    metadata: {
-      company: 'Hario',
-      categories: ['Coffee Machines', 'Accessories'],
-      imgUrl:
-        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Hario+V60+Plastic+Dripper+01+clear.jpg',
-      info:
-        "Size: V60-01 Colour: transparent Material: plastic Would you like to get started with alternative methods of coffee brewing, but don't know what to choose? Hario V-60 Dripper is just for you! This Japanese gadget allows you to make the most of your coffee in a simple and effective way. The filter method is great fun and allows for experimenting with coffee. Surprise your friends with rich taste and aroma of coffee, and the technique of its preparation! Hario V60-01 allows you to brew 200 - 360 ml of coffee at a time, which is enough for a big mug or two smaller portions.",
-      weight: 0,
-      slug: '4977642723016',
-      sku: '4977642723016',
-    },
-  },
-  {
-    name: 'Hario Love Dori',
-    source_id: '28',
-    price: 450,
-    metadata: {
-      company: 'Hario',
-      categories: ['Accessories'],
-      imgUrl:
-        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Hario+Love+Dori+-+Loveripper+-+paper+filters+for+V60-02+dripper.jpg',
-      info:
-        'A special version of paper filters from Hario - each one is cut in the original shape of a bird! Their conical shape allows for comfortable brewing. The package contains 20 pieces of natural disposable filters, which are a great solution for Hario V60-02.',
-      weight: 0,
-      slug: '4977642726314',
-      sku: '4977642726314',
-    },
-  },
-  {
-    name: 'Hario V60-02 filters',
-    source_id: '29',
-    price: 570,
-    metadata: {
-      company: 'Hario',
-      categories: ['Accessories'],
-      imgUrl:
-        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Hario+V60-02+paper+filters.jpg',
-      info:
-        '100 Hario filters designed for conical coffee drippers. Hario Drip brews amazing coffee but only when you use a suitable filter. This is the most standard version of filters which allow for very good water flow. Size: fits Hario V60-02',
-      weight: 0,
-      slug: '4977642723320',
-      sku: '4977642723320',
-    },
-  },
-  {
-    name: 'Glowbeans',
-    source_id: '30',
-    price: 790,
-    metadata: {
-      company: 'Glowbeans',
-      categories: ['Accessories'],
-      imgUrl:
-        'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Glowbeans+-+The+Gabi+Master+A+-+White+Paper+Filters+100+pcs.jpg',
-      info:
-        '100 white, wave paper filters with flat bottom for Glowbeans The Gabi Master A coffee brewer.',
-      weight: 0,
-      slug: '8809539890029',
-      sku: '8809539890029',
     },
   },
 ];

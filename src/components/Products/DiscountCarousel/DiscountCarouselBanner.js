@@ -43,8 +43,8 @@ const DiscountCarouselBanner = ({
           {campaign.campaign_type === 'PROMOTION' &&
             campaign.name !== currentCartDiscount && (
               <div className="carouselBannerDescriptionPromotion">
-                <div>
-                  <img src={VoucherifyLogoSquare} alt="" width="24px" />
+                <div className="carouselVoucherifyLogo">
+                  <img src={VoucherifyLogoSquare} alt="" />
                 </div>
                 <div className="carouselBannerDescriptionPromotionText">
                   Enable this promotion in the sidebar

@@ -17,6 +17,9 @@
   object-fit: cover;
 }
 
+.carouselVoucherifyLogo {
+  width: 24px !important;
+}
 .carousel-indicators {
   margin-bottom: 0px !important;
 }
@@ -70,6 +73,7 @@
   padding: 1rem;
   background-color: var(--bg-sidebar);
   flex-wrap: wrap;
+  justify-content: center;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
@@ -78,7 +82,7 @@
 
 .carouselBannerDescriptionPromotionText {
   font-size: 0.8rem;
-  width: 80%;
+  /* width: 80%; */
   padding-left: 0.5rem;
 }
 

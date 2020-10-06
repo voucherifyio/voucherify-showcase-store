@@ -56,8 +56,8 @@ const CartDiscountForm = ({ dispatch, disable }) => {
         </Form>
         {disable && (
           <p className="cartDiscountsInformation">
-            With Cart Discounts Enabled you can not use other Vouchers. Disable
-            Cart Discounts in the Sidebar to use your personal and public codes
+            With cart discounts enabled you cannot use other vouchers. Disable
+            cart discounts in the sidebar to use personal and public codes
           </p>
         )}
       </Col>

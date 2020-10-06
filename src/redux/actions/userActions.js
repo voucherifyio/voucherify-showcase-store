@@ -1,7 +1,7 @@
 import { loadState } from '../localStorage';
 import _map from 'lodash.map';
 import _get from 'lodash.get';
-import { setValidatePayload } from '../utils';
+import { setValidatePayload } from '../../utils';
 import {
   START_USER_SESSION_REQUEST,
   START_USER_SESSION_SUCCESS,

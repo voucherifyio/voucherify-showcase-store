@@ -11,8 +11,6 @@ const ProductsCategoryForm = ({ filterCategory, setFilterCategory }) => {
     'Single Origin',
     'Ground',
     'Decaffeinated',
-    'Coffee Machines',
-    'Accessories',
   ];
 
   return (

@@ -51,19 +51,23 @@ const CustomersModal = ({
             ))}
           </div>
           <div className="customersModalSourceLinks">
-            <span className="sourceLinkText">Connect to Voucherify</span>
-            <a href={herokuLink}>
-              <img
-                src="https://www.herokucdn.com/deploy/button.svg"
-                alt="Deploy"
-              />
-            </a>
-            <span className="sourceLinkText">Source code</span>
-            <a href="https://github.com/voucherifyio/voucherify-showcase-store">
-              <IconButton>
-                <GitHubIcon />
-              </IconButton>
-            </a>
+            <div className="sourceLinkWrapper">
+              <p className="sourceLinkText">Connect to Voucherify</p>
+              <a href={herokuLink}>
+                <img
+                  src="https://www.herokucdn.com/deploy/button.svg"
+                  alt="Deploy"
+                />
+              </a>
+            </div>
+            <div className="sourceLinkWrapper">
+              <p className="sourceLinkText">Source code</p>
+              <a href="https://github.com/voucherifyio/voucherify-showcase-store">
+                <IconButton>
+                  <GitHubIcon />
+                </IconButton>
+              </a>
+            </div>
           </div>
 
           <div className="customersModalFooter">

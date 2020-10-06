@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import _isEmpty from 'lodash.isempty';
 import Row from 'react-bootstrap/Row';
 import './style.css';
 import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const Ribbon = ({ navigationRibbonVoucher }) => {
+  const [tooltipTitle, setTitle] = useState('Click to copy');
+
+  const handleTooltipTitle = () => {
+    setTitle('Copied!');
+    setTimeout(() => {
+      setTitle('Click to copy');
+    }, 400);
+  };
+
   let ribbonDiscountText = '';
   let ribbonDiscountProduct = '';
 
@@ -25,14 +35,17 @@ const Ribbon = ({ navigationRibbonVoucher }) => {
     <Row noGutters={true} className="ribbonWrapper">
       <div className="ribbon">
         Use code{' '}
-        <span
-          className="ribbonCode"
-          onClick={() =>
-            navigator.clipboard.writeText(navigationRibbonVoucher.code)
-          }
-        >
-          {navigationRibbonVoucher.code}
-        </span>{' '}
+        <Tooltip title={tooltipTitle}>
+          <span
+            className="ribbonCode"
+            onClick={() => {
+              navigator.clipboard.writeText(navigationRibbonVoucher.code);
+              handleTooltipTitle();
+            }}
+          >
+            {navigationRibbonVoucher.code}
+          </span>
+        </Tooltip>{' '}
         to get {ribbonDiscountText}{' '}
         {ribbonDiscountProduct !== '' && { ribbonDiscountProduct }}
       </div>

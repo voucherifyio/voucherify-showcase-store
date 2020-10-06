@@ -7,7 +7,7 @@ const VoucherifyButton = ({ code, text, onClickFunction }) => {
   const [currentText, setCurrentText] = useState(text || null);
   const [tooltipTitle, setTitle] = useState('Click to copy');
 
-  const handleCopy = () => {
+  const handleTooltipTitle = () => {
     setTitle('Copied!');
     setTimeout(() => {
       setTitle('Click to copy');
@@ -25,7 +25,7 @@ const VoucherifyButton = ({ code, text, onClickFunction }) => {
           className="voucherifyButtonOrange"
           onClick={() => {
             navigator.clipboard.writeText(code);
-            handleCopy();
+            handleTooltipTitle();
             handleChangeText();
           }}
         >

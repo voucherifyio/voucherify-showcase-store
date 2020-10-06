@@ -1,5 +1,6 @@
 import React from 'react';
-import Carousel from 'react-bootstrap/Carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Carousel } from 'react-responsive-carousel';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './style.css';
@@ -9,12 +10,18 @@ import _isEmpty from 'lodash.isempty';
 const DiscountCarousel = ({ campaigns }) => {
   return (
     <div className="carouselWrapper">
-      <Carousel interval={5000}>
+      <Carousel
+        showThumbs={false}
+        stopOnHover={true}
+        showStatus={false}
+        autoPlay={true}
+        interval={5000}
+      >
         {/* We filter out campaigns without banners */}
         {campaigns
           .filter((camp) => !_isEmpty(camp.metadata.carousel_banner_img_url))
           .map((campaign, i) => (
-            <Carousel.Item
+            <div
               key={i}
               className="carousel"
               style={{
@@ -23,7 +30,7 @@ const DiscountCarousel = ({ campaigns }) => {
               }}
             >
               <DiscountCarouselBanner campaign={campaign} />
-            </Carousel.Item>
+            </div>
           ))}
       </Carousel>
     </div>

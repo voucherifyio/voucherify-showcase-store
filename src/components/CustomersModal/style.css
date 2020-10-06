@@ -120,8 +120,16 @@
   font-size: 0.9rem;
 }
 
+.sourceLinkWrapper {
+  margin: 0 1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .customersModalSourceLinks .sourceLinkText {
-  margin: 0.5rem 0.5rem !important;
+  margin: 0.5rem 0.25rem !important;
 }
 .customersModalCustomer {
   padding: 1rem;
