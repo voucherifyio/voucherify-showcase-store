@@ -2,14 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App/App';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import * as serviceWorker from './serviceWorker';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
+const history = createBrowserHistory();
+
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <Router history={history}>
       <React.StrictMode>
         <CssBaseline />
         <App />
