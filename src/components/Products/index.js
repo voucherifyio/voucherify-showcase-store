@@ -3,6 +3,7 @@ import ProductCard from './ProductCard';
 import Spinner from 'react-bootstrap/Spinner';
 import { connect } from 'react-redux';
 import _orderBy from 'lodash.orderby';
+import _isEmpty from 'lodash.isempty';
 import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -12,7 +13,6 @@ import DiscountCarousel from './DiscountCarousel';
 
 const Products = ({ products, fetchingProducts, campaigns }) => {
   const [filterCategory, setFilterCategory] = useState('');
-  console.log(filterCategory);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -24,8 +24,10 @@ const Products = ({ products, fetchingProducts, campaigns }) => {
         filteredList = products;
         break;
       default:
-        filteredList = products.filter((product) =>
-          product.metadata.categories.includes(filterCategory)
+        filteredList = products.filter(
+          (product) =>
+            !_isEmpty(product.metadata.categories) &&
+            product.metadata.categories.includes(filterCategory)
         );
         break;
     }
