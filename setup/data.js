@@ -1,3 +1,4 @@
+/* eslint-disable */
 exports.customers = [
   {
     source_id: 'alicemorgan',
