@@ -19,7 +19,10 @@ const ProductsCategoryForm = ({ filterCategory, setFilterCategory }) => {
     <Form.Control
       as="select"
       id="storeProducts"
-      onChange={(e) => setFilterCategory(e.target.value)}
+      onChange={(e) => {
+        setFilterCategory(e.target.value);
+        console.log(e.target.value);
+      }}
       value={filterCategory || 'DEFAULT'}
       className="categorySelector"
     >
