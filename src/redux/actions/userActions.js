@@ -1,6 +1,7 @@
 import { loadState } from '../localStorage';
 import _map from 'lodash.map';
 import _get from 'lodash.get';
+import _isEmpty from 'lodash.isempty';
 import { setValidatePayload } from '../../utils';
 import {
   START_USER_SESSION_REQUEST,
@@ -27,8 +28,17 @@ import {
   SET_CURRENT_CART_DISCOUNT,
   ADD_PUBLISHED_CODES,
   SET_NAVIGATION_RIBBON_VOUCHER,
+  NEW_APP_VERSION,
+  SET_NEW_APP_VERSION,
 } from '../constants';
 
+export const newAppVersion = () => {
+  return { type: NEW_APP_VERSION };
+};
+
+export const setNewAppVersion = (appVersion) => {
+  return { type: SET_NEW_APP_VERSION, payload: { appVersion } };
+};
 export const startUserSessionRequest = () => {
   return { type: START_USER_SESSION_REQUEST };
 };
@@ -128,14 +138,28 @@ export const getCurrentCustomerError = () => {
   return { type: GET_CURRENT_CUSTOMER_ERROR };
 };
 
+export const checkVersion = () => async (dispatch) => {
+  if (
+    _isEmpty(loadState()) ||
+    (!_isEmpty(loadState().userReducer) &&
+      loadState().userReducer.appVersion !== process.env.REACT_APP_VERSION)
+  ) {
+    return dispatch(newAppVersion());
+  }
+};
 export const startUserSession = () => async (dispatch) => {
   try {
     dispatch(startUserSessionRequest());
+    dispatch(setNewAppVersion(process.env.REACT_APP_VERSION));
     const res = await fetch(`${process.env.REACT_APP_API_URL || ''}/start`, {
       credentials: 'include',
     });
     const userSession = await res.json();
-    if (userSession.coupons.length === 0) {
+
+    if (
+      userSession.coupons.length === 0 &&
+      !_isEmpty(loadState().userReducer.publishedCodes)
+    ) {
       dispatch(
         startUserSessionSuccess({
           sessionId: userSession.session,

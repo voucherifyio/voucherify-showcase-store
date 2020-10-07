@@ -10,6 +10,7 @@ import { getTotals, getDiscount } from '../../redux/actions/cartActions';
 import {
   startUserSession,
   getQualifications,
+  checkVersion,
 } from '../../redux/actions/userActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -37,8 +38,12 @@ const App = ({
   enableSidebar,
 }) => {
   useEffect(() => {
-    dispatch(getProducts());
-    dispatch(startUserSession());
+    const startSession = async () => {
+      await dispatch(checkVersion());
+      await dispatch(startUserSession());
+      await dispatch(getProducts());
+    };
+    startSession();
   }, [dispatch]);
 
   useEffect(() => {

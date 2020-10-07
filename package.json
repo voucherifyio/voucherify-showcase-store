@@ -51,7 +51,8 @@
     "dev-server": "NODE_ENV=development REACT_APP_URL=http://localhost:3001 nodemon server/server.js",
     "start": "NODE_ENV=production node server/server.js",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app"

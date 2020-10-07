@@ -57,7 +57,6 @@ router.route('*').get(async (req, res) => {
       coupons: [],
     });
   }
-
   req.session.views = 1;
   console.log(`[Session][New-visit] ${req.session.id}`);
 
