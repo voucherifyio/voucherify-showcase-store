@@ -28,20 +28,22 @@ import {
   SET_CURRENT_CART_DISCOUNT,
   ADD_PUBLISHED_CODES,
   SET_NAVIGATION_RIBBON_VOUCHER,
-  NEW_APP_VERSION,
-  SET_NEW_APP_VERSION,
+  IS_OLD_APP_VERSION,
+  SET_CURRENT_APP_VERSION,
 } from '../constants';
 
-export const newAppVersion = () => {
-  return { type: NEW_APP_VERSION };
+export const isOldAppVersion = () => {
+  return { type: IS_OLD_APP_VERSION };
 };
 
-export const setNewAppVersion = (appVersion) => {
-  return { type: SET_NEW_APP_VERSION, payload: { appVersion } };
+export const setCurrentAppVersion = (appVersion) => {
+  return { type: SET_CURRENT_APP_VERSION, payload: { appVersion } };
 };
+
 export const startUserSessionRequest = () => {
   return { type: START_USER_SESSION_REQUEST };
 };
+
 export const startUserSessionSuccess = ({ sessionId, publishedCodes }) => {
   return {
     type: START_USER_SESSION_SUCCESS,
@@ -144,13 +146,14 @@ export const checkVersion = () => async (dispatch) => {
     (!_isEmpty(loadState().userReducer) &&
       loadState().userReducer.appVersion !== process.env.REACT_APP_VERSION)
   ) {
-    return dispatch(newAppVersion());
+    return dispatch(isOldAppVersion());
   }
 };
+
 export const startUserSession = () => async (dispatch) => {
   try {
     dispatch(startUserSessionRequest());
-    dispatch(setNewAppVersion(process.env.REACT_APP_VERSION));
+    dispatch(setCurrentAppVersion(process.env.REACT_APP_VERSION));
     const res = await fetch(`${process.env.REACT_APP_API_URL || ''}/start`, {
       credentials: 'include',
     });
@@ -198,6 +201,7 @@ export const getCustomers = () => async (dispatch, getState) => {
     // Check if availableCustomers includes currentCustomer
     // if there is an issue with localStorage or server, remove currentCustomer
     if (
+      currentCustomer !== null &&
       !_map(availableCustomers, 'source_id', []).includes(
         _get(currentCustomer, 'source_id')
       )

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { userReducer } from './userReducer';
 import { cartReducer } from './cartReducer';
 import { storeReducer } from './storeReducer';
-import { NEW_APP_VERSION } from '../constants';
+import { IS_OLD_APP_VERSION } from '../constants';
 const combinedReducers = combineReducers({
   cartReducer,
   userReducer,
@@ -11,7 +11,7 @@ const combinedReducers = combineReducers({
 
 const rootReducer = (state, action) => {
   // when a 'NEW APP VERSION' action is dispatched it will reset redux state
-  if (action.type === NEW_APP_VERSION) {
+  if (action.type === IS_OLD_APP_VERSION) {
     state = undefined;
   }
 

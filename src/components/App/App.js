@@ -47,8 +47,10 @@ const App = ({
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getTotals());
-  }, [dispatch, discount, items]);
+    if (!_isEmpty(currentCustomer)) {
+      dispatch(getTotals());
+    }
+  }, [currentCustomer, dispatch, discount, items]);
 
   useEffect(() => {
     if (!_isEmpty(discount) && !_has(discount, 'code')) {
@@ -61,26 +63,42 @@ const App = ({
       dispatch(getQualifications());
     }
   }, [dispatch, currentCustomer, paymentMethod, items]);
-
-  return (
-    <>
-      {currentCustomer === null ? (
-        <CustomersModal />
-      ) : (
-        <div className={enableSidebar ? 'mainContent' : 'mainContent sidebar'}>
-          <Ribbon />
-          <Container>
-            <Navigation />
-            <Row noGutters className="pageContainer">
-              <AppRoutes />
-            </Row>
-            <ToastContainer {...toastOptions} />
-          </Container>
-          <Sidebar />
-        </div>
-      )}
-    </>
-  );
+  if (currentCustomer === null) {
+    return <CustomersModal />;
+  } else {
+    return (
+      <div className={enableSidebar ? 'mainContent' : 'mainContent sidebar'}>
+        <Ribbon />
+        <Container>
+          <Navigation />
+          <Row noGutters className="pageContainer">
+            <AppRoutes />
+          </Row>
+          <ToastContainer {...toastOptions} />
+        </Container>
+        <Sidebar />
+      </div>
+    );
+  }
+  // return (
+  //   <>
+  //     {currentCustomer === null ? (
+  //       <CustomersModal />
+  //     ) : (
+  //       <div className={enableSidebar ? 'mainContent' : 'mainContent sidebar'}>
+  //         <Ribbon />
+  //         <Container>
+  //           <Navigation />
+  //           <Row noGutters className="pageContainer">
+  //             <AppRoutes />
+  //           </Row>
+  //           <ToastContainer {...toastOptions} />
+  //         </Container>
+  //         <Sidebar />
+  //       </div>
+  //     )}
+  //   </>
+  // );
 };
 
 const mapStateToProps = (state) => {

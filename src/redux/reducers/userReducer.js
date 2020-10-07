@@ -25,7 +25,7 @@ import {
   SET_CURRENT_CART_DISCOUNT,
   ADD_PUBLISHED_CODES,
   SET_NAVIGATION_RIBBON_VOUCHER,
-  SET_NEW_APP_VERSION,
+  SET_CURRENT_APP_VERSION,
 } from '../constants';
 
 const initialState = {
@@ -103,7 +103,7 @@ export const userReducer = (state = initialState, action) => {
         fetchingSessionIdError: false,
       };
     }
-    case SET_NEW_APP_VERSION: {
+    case SET_CURRENT_APP_VERSION: {
       return {
         ...state,
         appVersion: action.payload.appVersion,
