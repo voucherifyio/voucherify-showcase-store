@@ -14,13 +14,13 @@ Simple react demo store for showcasing Voucherify abilities.
 
 Add your Voucherify `Application ID` and `Application Secret Key` for both your Application Keys and Client-side Keys to your environment variables:
 
-![Getting Application Keys](/instructions/ServerSide.png?raw=true 'Application Keys')
+![Getting Application Keys](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/ServerSide.png 'Application Keys')
 
-![Getting Client-side Keys](/instructions/ClientSide.png?raw=true 'Client-side Keys')
+![Getting Client-side Keys](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/ClientSide.png 'Client-side Keys')
 
 Add `Your website URL` or `*` to Client-side Settings of your project in Voucherify.
 
-![Setting Website URL](/instructions/URL.png?raw=true 'Setting Website URL')
+![Setting Website URL](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/URL.png 'Setting Website URL')
 
 We're using Heroku Redis to store client sessions - provide
 `REDIS_URL` to your environment variables or use another method to store session data.
