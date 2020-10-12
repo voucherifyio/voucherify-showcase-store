@@ -22,7 +22,7 @@ Copy your Voucherify `Application ID` and `Application Secret Key` for both Appl
 
 ![Getting Client-side Keys](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/ClientSide.png 'Client-side Keys')
 
-Add `Your website URL` or `*` to Client-side Settings of your project in Voucherify.
+Stay on the same page and scroll down to Client-side Settings section. Set `*` as Your Website URL.
 
 ![Setting Website URL](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/URL.png 'Setting Website URL')
 
