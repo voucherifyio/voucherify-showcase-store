@@ -12,7 +12,11 @@ Simple react demo store for showcasing Voucherify abilities.
 
 ## Installation
 
-Add your Voucherify `Application ID` and `Application Secret Key` for both your Application Keys and Client-side Keys to your environment variables:
+In your Project Dashboard navigate to your Project Settings.
+
+![Navigate to Project Settings](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/ProjectSettings.png 'Project Settings')
+
+Copy your Voucherify `Application ID` and `Application Secret Key` for both Application Keys and Client-side Keys to your environment variables:
 
 ![Getting Application Keys](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/ServerSide.png 'Application Keys')
 
