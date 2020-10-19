@@ -2,7 +2,6 @@
 exports.customers = [
 	{
 		metadata: {
-			firstName: 'Alice',
 			country: 'UK',
 			demostore_id: 'customer1',
 			individual_val_rule: 'Happy Birthday Customer 1',
