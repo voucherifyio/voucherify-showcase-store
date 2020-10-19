@@ -12,17 +12,17 @@ const combinedReducers = combineReducers({
 const rootReducer = (state, action) => {
 	// when a 'NEW APP VERSION' action is dispatched it will reset redux state
 	if (action.type === IS_OLD_APP_VERSION) {
-		// sessionStorage.clear();
-		// const cookies = document.cookie.split(';');
-		// for (let i = 0; i < cookies.length; i++) {
-		// 	const cookie = cookies[i];
-		// 	const eqPos = cookie.indexOf('=');
-		// 	const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-		// 	document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-		// }
+		sessionStorage.clear();
+		const cookies = document.cookie.split(';');
+		for (let i = 0; i < cookies.length; i++) {
+			const cookie = cookies[i];
+			const eqPos = cookie.indexOf('=');
+			const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+			document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+		}
 		state = undefined;
 
-		// localStorage.clear();
+		localStorage.clear();
 	}
 
 	return combinedReducers(state, action);
