@@ -210,43 +210,37 @@ const setupValidationRules = async () => {
       },
     },
     {
-      name: 'Happy Birthday Lewis Marshall',
-      error: { message: 'Only Lewis Marshall can use this coupon' },
+      name: 'Happy Birthday Customer 2',
       rules: {
         1: {
           name: 'customer.metadata',
-          error: { message: 'Only Lewis Marshall can use this coupon' },
           rules: {},
           property: 'demostore_id',
-          conditions: { $is: ['lewismarshall'] },
+          conditions: { $is: ['customer2'] },
         },
         logic: '1',
       },
     },
     {
-      name: 'Happy Birthday Alice Morgan',
-      error: { message: 'Only Alice Morgan can use this coupon' },
+      name: 'Happy Birthday Customer 1',
       rules: {
         1: {
           name: 'customer.metadata',
-          error: { message: 'Only Alice Morgan can use this coupon' },
           rules: {},
           property: 'demostore_id',
-          conditions: { $is: ['alicemorgan'] },
+          conditions: { $is: ['customer1'] },
         },
         logic: '1',
       },
     },
     {
-      name: 'Happy Birthday John Dorian',
-      error: { message: 'Only John Dorian can validate this coupon' },
+      name: 'Happy Birthday Customer 3',
       rules: {
         1: {
           name: 'customer.metadata',
-          error: { message: 'Only John Dorian can validate this coupon' },
           rules: {},
           property: 'demostore_id',
-          conditions: { $is: ['johndorian'] },
+          conditions: { $is: ['customer3'] },
         },
         logic: '1',
       },
