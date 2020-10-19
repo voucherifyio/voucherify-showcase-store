@@ -42,6 +42,7 @@ const App = ({
 
 	useEffect(() => {
 		if (!isLatestVersion) {
+			console.log('not latest version!');
 			emptyCacheStorage();
 		}
 	}, [isLatestVersion, emptyCacheStorage]);
