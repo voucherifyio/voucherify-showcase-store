@@ -182,19 +182,18 @@ exports.campaigns = [
 		},
 	},
 	{
-		name: '5% off for Illy Arabica',
+		name: '5% off for Illy - Arabica',
 		type: 'AUTO_UPDATE',
 		voucher: {
 			type: 'DISCOUNT_VOUCHER',
 			discount: { percent_off: 5, type: 'PERCENT' },
 		},
 		metadata: {
-			assigned_val_rules: '5% off for Illy Arabica',
-			promotion_product: 'Illy Arabica Guatemala',
+			assigned_val_rules: '5% off for Illy - Arabica',
+			promotion_product: 'Illy - Arabica',
 			description:
-				'Make an order above 50$ and have Illy Arabica Guatemala in your cart to get a 5% discount on your order.',
-			redemption_steps:
-				'Cart value: > $50; Cart contains: Illy Arabica Guatemala',
+				'Make an order above 50$ and have Illy - Arabica in your cart to get a 5% discount on your order.',
+			redemption_steps: 'Cart value: > $50; Cart contains: Illy - Arabica',
 			order: 2,
 			carousel_banner_img_url:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner5.jpg',
@@ -389,7 +388,7 @@ exports.segments = [
 
 exports.products = [
 	{
-		name: 'Illy Arabica Guatemala',
+		name: 'Illy - Arabica',
 		source_id: '11',
 		price: 830,
 		metadata: {
@@ -399,7 +398,7 @@ exports.products = [
 			imgUrl:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Illy+Arabica+Selection+-+Guatemala.jpg',
 			info:
-				"Illy Arabica is a new line of single origin coffee from Illy's roaster. The beans from Guatemala is characterized by a complex flavour with the delicate hints of caramel, chocolate and honey. In Guatemala, Coffee is grown on the fertile soil high in the mountains. Suitable temperatures are the result of the hot air current from Mexico. That, along with farmers' care, results in the beans with intense aroma, complex flavour and pleasant sweetness.",
+				"Arabica is a new line of single origin coffee from Illy's roaster. The beans from Guatemala is characterized by a complex flavour with the delicate hints of caramel, chocolate and honey. In Guatemala, Coffee is grown on the fertile soil high in the mountains. Suitable temperatures are the result of the hot air current from Mexico. That, along with farmers' care, results in the beans with intense aroma, complex flavour and pleasant sweetness.",
 			weight: 250,
 			slug: '8003753970073',
 			sku: '8003753970073',
@@ -423,7 +422,7 @@ exports.products = [
 		},
 	},
 	{
-		name: 'Nivona CafeRomatica 759',
+		name: 'Nivona - CafeRomatica 759',
 		source_id: '13',
 		price: 71400,
 		metadata: {
@@ -433,7 +432,7 @@ exports.products = [
 			imgUrl:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Nivona+CafeRomatica+759.jpg',
 			info:
-				'Nivona CafeRomatica 759 is the perfect machine for all those how like their life and their coffee clear, strong and uncomplicated. This model satisfies admirers of clean lines with its matt black front and a new quieter grinder.',
+				'CafeRomatica 759 is the perfect machine for all those how like their life and their coffee clear, strong and uncomplicated. This model satisfies admirers of clean lines with its matt black front and a new quieter grinder.',
 			weight: 0,
 			slug: '4260083467596',
 			sku: '4260083467596',
@@ -553,7 +552,7 @@ exports.products = [
 		},
 	},
 	{
-		name: 'Illy Espresso Decaffeinato',
+		name: 'Illy - Decaffeinato',
 		source_id: '21',
 		price: 760,
 		metadata: {

@@ -1,6 +1,6 @@
 {
 	"name": "hot-beans",
-	"version": "3.0.0",
+	"version": "3.5.0",
 	"engines": {
 		"node": "12.0.0"
 	},
@@ -28,7 +28,6 @@
 		"lodash.isempty": "^4.4.0",
 		"lodash.map": "^4.6.0",
 		"lodash.orderby": "^4.6.0",
-		"moment": "^2.29.1",
 		"popper.js": "^1.16.1",
 		"prop-types": "^15.7.2",
 		"react": "^16.13.1",

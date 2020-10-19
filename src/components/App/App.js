@@ -40,12 +40,15 @@ const App = ({
 }) => {
 	const { isLatestVersion, emptyCacheStorage } = useClearCache();
 
+	console.log(isLatestVersion);
 	useEffect(() => {
 		if (!isLatestVersion) {
 			console.log('not latest version!');
 			emptyCacheStorage();
+		} else {
+			console.log('latest');
 		}
-	}, [isLatestVersion, emptyCacheStorage]);
+	}, []);
 
 	useEffect(() => {
 		const startSession = async () => {
