@@ -278,8 +278,6 @@ exports.campaigns = [
 						},
 					},
 					metadata: {
-						promotion_name: 'Buy more, save more',
-						promotion_tier_name: 'Final Tier - $10 off',
 						qualification_name: 'Final Tier - Buy more, save more',
 						redemption_steps: 'Cart value: > $100',
 						order: 1,
@@ -298,8 +296,6 @@ exports.campaigns = [
 					metadata: {
 						redemption_steps: 'Cart value: > $30',
 						order: 2,
-						promotion_name: 'Buy more, save more',
-						promotion_tier_name: 'First Tier - $3 off',
 						qualification_name: 'First Tier - Buy more, save more',
 					},
 				},
@@ -333,8 +329,6 @@ exports.campaigns = [
 						redemption_steps:
 							'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil; Cart value: > $100',
 						order: 1,
-						promotion_name: 'Get Hard Beans for free',
-						promotion_tier_name: 'Final Tier - 100% off for Hard Beans',
 						qualification_name: 'Final Tier - Get Hard Beans for free',
 					},
 				},
@@ -350,8 +344,6 @@ exports.campaigns = [
 						redemption_steps:
 							'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil',
 						order: 2,
-						promotion_name: 'Get Hard Beans for free',
-						promotion_tier_name: 'First Tier - 50% off for Hard Beans',
 						qualification_name: 'First Tier - Get Hard Beans for free',
 					},
 				},

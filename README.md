@@ -80,9 +80,9 @@ Voucher metadata
 
 | Key                | Requried? | Type   | Description                                     |
 | ------------------ | --------- | ------ | ----------------------------------------------- |
-| `name`             | yes       | string | Name of your voucher                            |
-| `description`      | yes       | string | Simple description of your voucher              |
-| `redemption_steps` |           | string | Steps to validate this voucher Separated by `;` |
+| `name`             | no        | string | Name of your voucher                            |
+| `description`      | no        | string | Simple description of your voucher              |
+| `redemption_steps` | no        | string | Steps to validate this voucher Separated by `;` |
 
 #### Campaign (Personal codes)
 
@@ -95,12 +95,12 @@ Campaign metadata
 
 | Key                       | Requried? | Type   | Description                                                                                 |
 | ------------------------- | --------- | ------ | ------------------------------------------------------------------------------------------- |
-| `description`             | yes       | string | Simple description of your voucher                                                          |
-| `carousel_banner_img_url` | yes       | string | Image which will be displayed as background in the main carousel.                           |
-| `img_url`                 |           | string | Image which will be displayed with description on the main carousel on in the product page. |
-| `promotion_product`       |           | string | Exact name of the product which should be labeled as "Promotion" on main page.              |
-| `discount_suffix`         |           | string | e.g: '1x Hard Beans' - displays name of discounted product on the Sidebar                   |
-| `redemption_steps`        |           | string | Steps to be able to properly validate this campaign Separated by `;`                        |
+| `description`             | no        | string | Simple description of your voucher                                                          |
+| `carousel_banner_img_url` | no        | string | Image which will be displayed as background in the main carousel.                           |
+| `img_url`                 | no        | string | Image which will be displayed with description on the main carousel on in the product page. |
+| `promotion_product`       | no        | string | Exact name of the product which should be labeled as "Promotion" on main page.              |
+| `discount_suffix`         | no        | string | e.g: '1x Hard Beans' - displays name of discounted product on the Sidebar                   |
+| `redemption_steps`        | no        | string | Steps to be able to properly validate this campaign Separated by `;`                        |
 
 #### Campaign - Cart Discounts (Cart discounts)
 
@@ -110,22 +110,20 @@ Campaign settings
 
 Discount Level metadata
 
-| Key                   | Requried? | Type   | Description                                                               |
-| --------------------- | --------- | ------ | ------------------------------------------------------------------------- |
-| `promotion_name`      | yes       | string | Name of the promotion to which this discount level belongs                |
-| `promotion_tier_name` | yes       | string | Name of the discount level                                                |
-| `qualification_name`  | yes       | string | Name to be displayed in the Sidebar `Qualifcations`                       |
-| `discount_suffix`     |           | string | e.g: '1x Hard Beans' - displays name of discounted product on the Sidebar |
-| `redemption_steps`    |           | string | Steps to be able to properly validate this campaign Separated by `;`      |
+| Key                  | Requried? | Type   | Description                                                                |
+| -------------------- | --------- | ------ | -------------------------------------------------------------------------- |
+| `qualification_name` | yes       | string | Name to be displayed in the Sidebar `Qualifcations` for the Discount Level |
+| `discount_suffix`    |           | string | e.g: '1x Hard Beans' - displays name of discounted product on the Sidebar  |
+| `redemption_steps`   | no        | string | Steps to be able to properly validate this campaign Separated by `;`       |
 
 Campaign metadata
 
 | Key                       | Requried? | Type   | Description                                                                                      |
 | ------------------------- | --------- | ------ | ------------------------------------------------------------------------------------------------ |
-| `description`             | yes       | string | Simple description of your voucher                                                               |
-| `carousel_banner_img_url` | yes       | string | Image which will be displayed as background in the main carousel.                                |
-| `img_url`                 |           | string | Image which will be displayed together with description on main carousel on in the product page. |
-| `promotion_product`       |           | string | Exact name of the product which should be labeled as "Promotion" on main page.                   |
+| `description`             | no        | string | Simple description of your voucher                                                               |
+| `carousel_banner_img_url` | no        | string | Image which will be displayed as background in the main carousel.                                |
+| `img_url`                 | no        | string | Image which will be displayed together with description on main carousel on in the product page. |
+| `promotion_product`       | no        | string | Exact name of the product which should be labeled as "Promotion" on main page.                   |
 
 ## Errors
 
