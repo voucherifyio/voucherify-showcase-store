@@ -121,6 +121,7 @@ const SidebarCartDiscounts = ({
 								<Accordion
 									square
 									key={campaign.id}
+									id={campaign.id}
 									expanded={expanded === campaign.id}
 									onChange={handleChange(campaign.id)}
 								>

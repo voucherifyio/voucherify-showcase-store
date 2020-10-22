@@ -33,20 +33,28 @@ const SidebarQualifications = ({ qualifications, fetchingQualifications }) => {
 						<>
 							{!_isEmpty(qualifications) && (
 								<>
-									{qualifications.map((qualification) => (
-										<Chip
-											key={qualification.id}
-											className="qualificationChip"
-											label={
-												<p className="qualificationChipName">
-													{qualification.name ||
-														qualification.metadata.name ||
-														qualification.metadata.qualification_name ||
-														qualification.code}
-												</p>
-											}
-										/>
-									))}
+									{qualifications
+										.filter(
+											(qualification) =>
+												qualification.name ||
+												qualification.metadata.name ||
+												qualification.metadata.qualification_name ||
+												qualification.code
+										)
+										.map((qualification) => (
+											<Chip
+												key={qualification.id}
+												className="qualificationChip"
+												label={
+													<p className="qualificationChipName">
+														{qualification.name ||
+															qualification.metadata.name ||
+															qualification.metadata.qualification_name ||
+															qualification.code}
+													</p>
+												}
+											/>
+										))}
 								</>
 							)}
 						</>

@@ -96,7 +96,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
 	dispatch,
 	getState
 ) => {
-	const { currentCustomer } = getState().userReducer;
+	const { currentCustomer, campaigns } = getState().userReducer;
 	const { totalAmount, items, paymentMethod } = getState().cartReducer;
 	const getCartDiscountPayload = setValidatePayload(
 		currentCustomer,
@@ -109,10 +109,19 @@ export const getCartDiscount = (activeCartDiscount) => async (
 		const promotion = await new Promise((resolve, reject) => {
 			window.Voucherify.setIdentity(currentCustomer.source_id);
 
+			const promotionCampaigns = campaigns.find(
+				(camp) => camp.id === activeCartDiscount
+			).tiers;
+
 			window.Voucherify.validate(getCartDiscountPayload, (res) => {
-				const discount = res.promotions.filter(
-					(promo) => promo.id === activeCartDiscount
-				)[0];
+				const promotions = res.promotions;
+				const foundPromotions = promotions.filter((o1) =>
+					promotionCampaigns.some((o2) => o1.id === o2.id)
+				);
+
+				// We're selecting the current highest promotion tier
+				const discount = foundPromotions[0];
+
 				if (discount) {
 					resolve(discount);
 				} else {
@@ -124,7 +133,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
 
 		if (promotion) {
 			dispatch(getDiscountSuccess(promotion));
-			toast.success(promotion.banner);
+			toast.success(promotion.banner || 'Cart Discount applied');
 		} else {
 			toast.error('You are not eligible for the Cart Discount');
 		}

@@ -26,7 +26,7 @@ const Ribbon = ({ navigationRibbonVoucher }) => {
 			navigationRibbonVoucher.discount.amount_off / 100
 		).toFixed(2)} off`;
 	}
-	// TODO: Remove discount_suffix
+
 	if (!_isEmpty(navigationRibbonVoucher.metadata.discount_suffix)) {
 		ribbonDiscountProduct = ` for ${navigationRibbonVoucher.metadata.discount_suffix}`;
 	}

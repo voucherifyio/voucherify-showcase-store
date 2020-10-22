@@ -3,7 +3,8 @@ import { userReducer } from './userReducer';
 import { cartReducer } from './cartReducer';
 import { storeReducer } from './storeReducer';
 import { IS_OLD_APP_VERSION } from '../constants';
-const rootReducer = combineReducers({
+
+const combinedReducers = combineReducers({
 	cartReducer,
 	userReducer,
 	storeReducer,

@@ -26,8 +26,7 @@ const allCampigns = async () => {
 		);
 		return campaigns;
 	} catch (e) {
-		console.error(`[Start][Error] - ${e}`);
-		res.status(500).end();
+		console.error(`[All Campaigns][Error] - ${e}`);
 	}
 };
 
@@ -45,6 +44,11 @@ function publishCouponsForCustomer(id, campaigns) {
 			)
 		);
 }
+router.route('/newSession').get(async (req, res) => {
+	req.session.destroy();
+	req.session = null;
+	return res.status(200).end();
+});
 
 router.route('*').get(async (req, res) => {
 	const campaigns = await allCampigns();

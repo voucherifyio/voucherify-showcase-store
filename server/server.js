@@ -18,23 +18,24 @@ const startRouter = require('./routes/start');
 const qualificationsRouters = require('./routes/qualifications');
 const productsRouter = require('./routes/products');
 const vouchersRouter = require('./routes/vouchers');
-
 const redisClient = redis.createClient(process.env.REDIS_URL);
+
 if (process.env.NODE_ENV !== 'development') {
-  app.use(enforce.HTTPS({ trustProtoHeader: true }));
+	app.use(enforce.HTTPS({ trustProtoHeader: true }));
 }
+
 app.use(
-  session({
-    store: new RedisStore({ client: redisClient }),
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: false,
-    cookie: { maxAge: 1000 * 3600 * 24 * 30 },
-  }),
-  cors({
-    credentials: true,
-    origin: process.env.REACT_APP_URL,
-  })
+	session({
+		store: new RedisStore({ client: redisClient }),
+		secret: process.env.SESSION_SECRET,
+		resave: true,
+		saveUninitialized: true,
+		cookie: { maxAge: 1000 * 3600 * 24 * 30 },
+	}),
+	cors({
+		credentials: true,
+		origin: process.env.REACT_APP_URL,
+	})
 );
 
 app.use(bodyParser.json());
@@ -50,16 +51,16 @@ app.use('/products', productsRouter);
 app.use('/distributions', distributionsRouter);
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('build'));
-  app.get('/*', (req, res) => {
-    res.sendFile(path.resolve(__dirname + '/../build/index.html'));
-  });
+	app.use(express.static('build'));
+	app.get('/*', (req, res) => {
+		res.sendFile(path.resolve(__dirname + '/../build/index.html'));
+	});
 } else {
-  app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-  });
+	app.get('/*', (req, res) => {
+		res.sendFile(path.join(__dirname, 'public', 'index.html'));
+	});
 }
 
 const listener = app.listen(process.env.PORT || 3000, () => {
-  console.log(`[Server][Port] ${listener.address().port}`);
+	console.log(`[Server][Port] ${listener.address().port}`);
 });

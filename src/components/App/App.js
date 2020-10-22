@@ -7,7 +7,6 @@ import Sidebar from '../Sidebar';
 import Ribbon from '../Ribbon';
 import { getProducts } from '../../redux/actions/storeActions';
 import { getTotals, getDiscount } from '../../redux/actions/cartActions';
-import { useClearCache } from 'react-clear-cache';
 import {
 	startUserSession,
 	getQualifications,
@@ -38,18 +37,6 @@ const App = ({
 	currentCustomer,
 	enableSidebar,
 }) => {
-	const { isLatestVersion, emptyCacheStorage } = useClearCache();
-
-	console.log(isLatestVersion);
-	useEffect(() => {
-		if (!isLatestVersion) {
-			console.log('not latest version!');
-			emptyCacheStorage();
-		} else {
-			console.log('latest');
-		}
-	}, []);
-
 	useEffect(() => {
 		const startSession = async () => {
 			await dispatch(checkVersion());
@@ -93,25 +80,6 @@ const App = ({
 			</div>
 		);
 	}
-	// return (
-	//   <>
-	//     {currentCustomer === null ? (
-	//       <CustomersModal />
-	//     ) : (
-	//       <div className={enableSidebar ? 'mainContent' : 'mainContent sidebar'}>
-	//         <Ribbon />
-	//         <Container>
-	//           <Navigation />
-	//           <Row noGutters className="pageContainer">
-	//             <AppRoutes />
-	//           </Row>
-	//           <ToastContainer {...toastOptions} />
-	//         </Container>
-	//         <Sidebar />
-	//       </div>
-	//     )}
-	//   </>
-	// );
 };
 
 const mapStateToProps = (state) => {

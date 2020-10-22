@@ -62,7 +62,7 @@ exports.vouchers = [
 		code: 'BLCKFRDY',
 		object: 'voucher',
 		type: 'DISCOUNT_VOUCHER',
-		category: 'Public',
+		category: 'Hot Beans',
 		discount: { type: 'AMOUNT', amount_off: 1000 },
 		metadata: {
 			name: 'Black Friday Coupon',
@@ -76,7 +76,7 @@ exports.vouchers = [
 		code: '50%OFF',
 		object: 'voucher',
 		type: 'DISCOUNT_VOUCHER',
-		category: 'Public',
+		category: 'Hot Beans',
 		discount: { type: 'PERCENT', percent_off: 50 },
 		metadata: {
 			name: '50% Off',
@@ -90,7 +90,7 @@ exports.vouchers = [
 		code: 'UPTO100',
 		object: 'voucher',
 		type: 'DISCOUNT_VOUCHER',
-		category: 'Public',
+		category: 'Hot Beans',
 		discount: { type: 'PERCENT', percent_off: 50, amount_limit: 10000 },
 		metadata: {
 			name: 'Discount up to $100',
@@ -104,7 +104,7 @@ exports.vouchers = [
 		code: '15%VISA',
 		object: 'voucher',
 		type: 'DISCOUNT_VOUCHER',
-		category: 'Public',
+		category: 'Hot Beans',
 		discount: { type: 'PERCENT', percent_off: 15 },
 		metadata: {
 			name: 'Visa Voucher',
