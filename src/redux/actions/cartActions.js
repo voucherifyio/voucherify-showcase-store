@@ -3,7 +3,6 @@ import {
 	setRedemptionPayload,
 	setOrderPayload,
 	setValidatePayload,
-	getOrderId,
 	sendPayload,
 } from '../../utils';
 import _cloneDeep from 'lodash.clonedeep';
@@ -107,7 +106,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
 	try {
 		dispatch(getDiscountRequest());
 		const promotion = await new Promise((resolve, reject) => {
-			window.Voucherify.setIdentity(currentCustomer.source_id);
+			window.Voucherify.setIdentity(currentCustomer.id);
 
 			const promotionCampaigns = campaigns.find(
 				(camp) => camp.id === activeCartDiscount
@@ -205,11 +204,9 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				items,
 				paymentMethod
 			);
-			checkoutPayload.source_id = getOrderId();
 			checkoutPayload.status = 'FULFILLED';
 			await sendPayload(checkoutPayload, 'order');
 			dispatch(clearCart());
-			dispatch(setOrderId(checkoutPayload.source_id));
 		} else {
 			const checkoutPayload = setRedemptionPayload(
 				currentCustomer,
@@ -221,16 +218,14 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				// If voucher is applied
 				const discountCode = discount.code;
 				checkoutPayload.code = discountCode;
-				const res = await sendPayload(checkoutPayload, 'redeem');
+				await sendPayload(checkoutPayload, 'redeem');
 				dispatch(clearCart());
-				dispatch(setOrderId(res.id));
 			} else if (discount.hasOwnProperty('banner')) {
 				// If promotion is applied
 				const promotionId = discount.id;
 				checkoutPayload.promotionId = promotionId;
-				const res = await sendPayload(checkoutPayload, 'redeem');
+				await sendPayload(checkoutPayload, 'redeem');
 				dispatch(clearCart());
-				dispatch(setOrderId(res.order.id));
 			}
 		}
 	} catch (error) {

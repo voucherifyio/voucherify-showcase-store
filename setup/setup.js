@@ -4,7 +4,7 @@ const voucherify = require('voucherify')({
 	applicationId: process.env.REACT_APP_BACKEND_APP_ID,
 	clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
-const { campaigns, vouchers, products, segments } = require('./data');
+const { campaigns, vouchers, products, segments, rewards } = require('./data');
 
 const setupCampaigns = () => {
 	const campaignPromises = campaigns.map((campaign) => {
@@ -41,6 +41,31 @@ const setupCampaigns = () => {
 		.then(() => console.log('[SUCCESS] All campaigns setup'))
 		.catch((error) =>
 			console.log('[ERROR] There was an error creating campaigns', error)
+		);
+};
+
+const setupRewards = () => {
+	const rewardsPromises = rewards.map((rewards) => {
+		const thisReward = voucherify.rewards.create(reward);
+		return thisReward
+			.then((rew) => {
+				const needsId = rewards.find((r) => r.name === rew.name);
+				needsId.voucherifyId = camp.id;
+				console.log(
+					`[SUCCESS] Rewards created ${needsId.name} - ${needsId.voucherifyId}`
+				);
+			})
+			.catch((error) =>
+				console.log(
+					`[ERROR] There was an error creating reward ${reward.name}`,
+					error
+				)
+			);
+	});
+	return Promise.all(rewardsPromises)
+		.then(() => console.log('[SUCCESS] All rewards setup'))
+		.catch((error) =>
+			console.log('[ERROR] There was an error creating rewards', error)
 		);
 };
 
@@ -104,7 +129,7 @@ const setupProducts = () => {
 		);
 };
 
-const setupCustomerSegments = () => {
+const setupSegments = () => {
 	const segmentCreationPromises = segments.map((segment) => {
 		const thisSegment = voucherify.segments.create(segment);
 		return thisSegment
@@ -310,12 +335,53 @@ const setupValidationRules = async () => {
 			},
 		},
 		{
+			name: 'Referral Campaign Tier 1 & 2 - Reward - Validation Rule',
+			error: { message: 'Check campaign rules' },
+			rules: {
+				1: {
+					name: 'order.amount',
+					error: { message: 'Total cart value must be more than $50' },
+					rules: {},
+					conditions: {
+						$more_than: [5000],
+					},
+				},
+				logic: '1',
+			},
+		},
+		{
+			name: 'Referral Campaign - Validation Rule',
+			error: { message: 'Check campaign rules' },
+			rules: {
+				1: {
+					name: 'customer.segment',
+					error: { message: 'Avaliable only for new customers' },
+					rules: {},
+					conditions: {
+						$is: [
+							segments.find((s) => s.name === 'Customers without orders')
+								.voucherifyId,
+						],
+					},
+				},
+				2: {
+					name: 'campaign.redemptions.customers_count',
+					error: { message: 'Only one redemption per customer in campaign' },
+					rules: {},
+					conditions: {
+						$less_than_or_equal: [1],
+					},
+				},
+				logic: '(1) and (2)',
+			},
+		},
+		{
 			name: 'Get 5% off your first purchase',
 			error: { message: 'Check campaign rules' },
 			rules: {
 				1: {
 					name: 'customer.segment',
-					error: { message: 'Available only for new customers' },
+					error: { message: 'Avaliable only for new customers' },
 					rules: {},
 					conditions: {
 						$is: [
@@ -586,11 +652,45 @@ const setupValidationRules = async () => {
 	}
 };
 
+const setupRewardsAssigments = async () => {
+	const rewardsAssigmentPromises = () => {
+		const rewardsPerCampaign = rewards.map((reward) => {
+			const needsId = reward.voucherifyId;
+			const campaign = campaigns.find((camp) => camp.name === reward.name)
+				.voucherifyId;
+
+			const rewardAssigment = voucherify.rewards.createAssignment(needsId, {
+				campaign: campaign.voucherifyId,
+			});
+			return rewardAssigment
+				.then((assigment) => {
+					console.log(`[SUCCESS] Reward assigment created ${assigment.id}`);
+				})
+				.catch((error) =>
+					console.log(
+						`[ERROR] There was an error creating reward assigment ${needsId}`,
+						error
+					)
+				);
+		});
+		return _flatten(rewardsPerCampaign);
+	};
+
+	try {
+		await Promise.all(rewardsAssigmentPromises());
+		console.log('[SUCCESS] All reward assignments created');
+	} catch (error) {
+		console.log('[ERROR] There was an error creating reward assigments', error);
+	}
+};
+
 setupCampaigns()
 	.then(setupVouchers)
+	.then(setupRewards)
 	.then(setupProducts)
-	.then(setupCustomerSegments)
+	.then(setupSegments)
 	.then(setupValidationRules)
+	.then(setupRewardsAssigments)
 	.then(() => console.log('[SUCCESS] Setup finished'))
 	.catch((error) =>
 		console.log('[ERROR] There was an error creating project', error)

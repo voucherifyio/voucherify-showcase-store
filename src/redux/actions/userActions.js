@@ -27,11 +27,10 @@ import {
 	ENABLE_SIDEBAR,
 	SET_CURRENT_CART_DISCOUNT,
 	ADD_PUBLISHED_CODES,
-	SET_NAVIGATION_RIBBON_VOUCHER,
 	IS_OLD_APP_VERSION,
 	SET_CURRENT_APP_VERSION,
+	ADD_NEXT_CUSTOMERS_SUCCESS,
 } from '../constants';
-import { getProducts } from './storeActions';
 
 export const isOldAppVersion = () => {
 	return { type: IS_OLD_APP_VERSION };
@@ -52,6 +51,13 @@ export const startUserSessionSuccess = ({ sessionId, publishedCodes }) => {
 	};
 };
 
+export const addNextCustomersSuccess = ({ publishedCodes }) => {
+	return {
+		type: ADD_NEXT_CUSTOMERS_SUCCESS,
+		payload: { publishedCodes },
+	};
+};
+
 export const startUserSessionError = () => {
 	return { type: START_USER_SESSION_ERROR };
 };
@@ -59,8 +65,8 @@ export const startUserSessionError = () => {
 export const getCustomersRequest = () => {
 	return { type: GET_CUSTOMERS_REQUEST };
 };
-export const getCustomersSuccess = ({ availableCustomers }) => {
-	return { type: GET_CUSTOMERS_SUCCESS, payload: { availableCustomers } };
+export const getCustomersSuccess = ({ customers }) => {
+	return { type: GET_CUSTOMERS_SUCCESS, payload: { customers } };
 };
 
 export const getCustomersError = () => {
@@ -110,13 +116,6 @@ export const getVouchersSuccess = (vouchers) => {
 	return { type: GET_VOUCHERS_SUCCESS, payload: { vouchers } };
 };
 
-export const setNavigationRibbonVoucher = (navigationRibbonVoucher) => {
-	return {
-		type: SET_NAVIGATION_RIBBON_VOUCHER,
-		payload: { navigationRibbonVoucher },
-	};
-};
-
 export const addPublishedCodes = (currentCustomer, campaign) => {
 	return { type: ADD_PUBLISHED_CODES, payload: { currentCustomer, campaign } };
 };
@@ -156,7 +155,6 @@ export const newSession = () => async (dispatch) => {
 		credentials: 'include',
 	});
 	await dispatch(isOldAppVersion());
-	await dispatch(getProducts());
 	return dispatch(startUserSession());
 };
 
@@ -197,25 +195,55 @@ export const startUserSession = () => async (dispatch) => {
 	}
 };
 
-export const getCustomers = () => async (dispatch, getState) => {
-	const { sessionId, currentCustomer } = getState().userReducer;
+export const addNextCustomers = () => async (dispatch) => {
 	try {
 		dispatch(getCustomersRequest());
 		const res = await fetch(
-			`${process.env.REACT_APP_API_URL || ''}/customers/all/${sessionId}`,
+			`${process.env.REACT_APP_API_URL || ''}/start/addNextCustomers`,
 			{
 				credentials: 'include',
 			}
 		);
-		const availableCustomers = await res.json();
-		dispatch(getCustomersSuccess({ availableCustomers }));
-		// Check if availableCustomers includes currentCustomer
+
+		const nextPublishedCodes = await res.json();
+
+		dispatch(
+			addNextCustomersSuccess({
+				publishedCodes: nextPublishedCodes.coupons,
+			})
+		);
+
+		await dispatch(getCustomers());
+		await dispatch(getCampaigns());
+		await dispatch(getVouchers());
+	} catch (error) {
+		console.log('[addNextCustomers][Error]', error);
+		dispatch(startUserSessionError());
+	}
+};
+
+export const getCustomers = () => async (dispatch, getState) => {
+	const { publishedCodes, currentCustomer } = getState().userReducer;
+	try {
+		dispatch(getCustomersRequest());
+		const res = await fetch(
+			`${process.env.REACT_APP_API_URL || ''}/customers/all`,
+			{
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				credentials: 'include',
+				body: JSON.stringify({
+					publishedCodes,
+				}),
+			}
+		);
+		const customers = await res.json();
+		dispatch(getCustomersSuccess({ customers }));
+		// Check if customers includes currentCustomer
 		// if there is an issue with localStorage or server, remove currentCustomer
 		if (
 			currentCustomer !== null &&
-			!_map(availableCustomers, 'source_id', []).includes(
-				_get(currentCustomer, 'source_id')
-			)
+			!_map(customers, 'id', []).includes(_get(currentCustomer, 'id'))
 		) {
 			dispatch(removeCurrentCustomer());
 		}
@@ -259,10 +287,20 @@ export const getCampaigns = () => async (dispatch, getState) => {
 			publishedCodes.forEach((code) => {
 				code.campaigns.forEach((camp) => {
 					if (camp.campaign === camps.name) {
-						camps.coupons.push({
-							currentCustomer: code.currentCustomer,
-							customerDataCoupon: camp.code,
-						});
+						// Is this coupon a reward?
+						if (camp.is_reward) {
+							camps.coupons.push({
+								currentCustomer: code.currentCustomer,
+								customerDataCoupon: camp.code,
+								customerReward: true,
+								isNewReward: true,
+							});
+						} else {
+							camps.coupons.push({
+								currentCustomer: code.currentCustomer,
+								customerDataCoupon: camp.code,
+							});
+						}
 					}
 				});
 			});
@@ -299,17 +337,6 @@ export const getVouchers = () => async (dispatch) => {
 		});
 		const vouchers = await res.json();
 
-		const vouchersWithoutValidationRules = vouchers.filter(
-			(voucher) => voucher.metadata.assigned_val_rules === ''
-		);
-
-		const singleVoucher =
-			vouchersWithoutValidationRules[
-				Math.floor(Math.random() * vouchersWithoutValidationRules.length)
-			];
-
-		dispatch(setNavigationRibbonVoucher(singleVoucher));
-
 		dispatch(getVouchersSuccess(vouchers));
 	} catch (error) {
 		console.log('[getVouchers][Error]', error);
@@ -322,18 +349,18 @@ export const updateCurrentCustomerEmail = (email) => async (
 	getState
 ) => {
 	const { currentCustomer } = getState().userReducer;
+	const id = currentCustomer.id;
 	try {
-		dispatch(getCurrentCustomerRequest());
+		// dispatch(getCurrentCustomerRequest());
 		const res = await fetch(
-			`${process.env.REACT_APP_API_URL || ''}/customers/${
-				currentCustomer.source_id
-			}`,
+			`${process.env.REACT_APP_API_URL || ''}/customers/update`,
 			{
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				credentials: 'include',
 				body: JSON.stringify({
 					email,
+					id,
 				}),
 			}
 		);
@@ -348,9 +375,7 @@ export const publishCampaign = (campaign) => async (dispatch, getState) => {
 	const { currentCustomer } = getState().userReducer;
 	try {
 		const res = await fetch(
-			`${
-				process.env.REACT_APP_API_URL || ''
-			}/distributions/publications/create`,
+			`${process.env.REACT_APP_API_URL || ''}/distributions/create`,
 			{
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -359,7 +384,7 @@ export const publishCampaign = (campaign) => async (dispatch, getState) => {
 			}
 		);
 		const publishedCampaign = await res.json();
-		dispatch(addPublishedCodes(currentCustomer.source_id, publishedCampaign));
+		dispatch(addPublishedCodes(currentCustomer.id, publishedCampaign));
 	} catch (error) {
 		console.log('[publishCampaign][Error]', error);
 	}

@@ -125,6 +125,14 @@ Campaign metadata
 | `img_url`                 | string | Image which will be displayed together with description on main carousel on in the product page. |
 | `promotion_product`       | string | Exact name of the product which should be labeled as "Promotion" on main page.                   |
 
+## Campaign - Referral Campaign (Enabling Referral Campaign)
+
+To create Referral Campaing which works with this demo store you need to follow this exact pattern. Creating Referral Campaign with tier rewards & validation rules is not yet possible through API. That's why we need to create this campaign by dashboard.
+
+All other necessary elements for this first Referral Campaign - Rewards, Rewards Assigments, Validation Rules and Segments - are created during demo store setup. We just need to connect them together.
+
+This first Referral Campaign will be reflected in the Navigation bar.
+
 ## Errors
 
 Feel free to contact me regarding any demo store issues - piotr.gacek[at]voucherify.io

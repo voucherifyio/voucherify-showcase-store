@@ -15,7 +15,7 @@ const DiscountCarouselBanner = ({
 	const [modalShow, setModalShow] = useState(false);
 
 	const couponForCurrentCustomer = campaign.coupons.find(
-		(coupon) => coupon.currentCustomer === currentCustomer.source_id
+		(coupon) => coupon.currentCustomer === currentCustomer.id
 	);
 
 	return (
@@ -59,8 +59,7 @@ const DiscountCarouselBanner = ({
 							text="Get code"
 							code={
 								campaign.coupons.find(
-									(coupon) =>
-										coupon.currentCustomer === currentCustomer.source_id
+									(coupon) => coupon.currentCustomer === currentCustomer.id
 								).customerDataCoupon
 							}
 						/>

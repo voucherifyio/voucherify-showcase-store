@@ -36,7 +36,7 @@ const SidebarPersonalDiscounts = ({
 		for (let i = 0; i < couponCampaigns.length; i++) {
 			!_isEmpty(couponCampaigns[i].coupons) &&
 				couponCampaigns[i].coupons.find(
-					(coupon) => coupon.currentCustomer === currentCustomer.source_id
+					(coupon) => coupon.currentCustomer === currentCustomer.id
 				) &&
 				campCount++;
 		}
@@ -51,7 +51,7 @@ const SidebarPersonalDiscounts = ({
 					<SidebarQualifications />
 					<div className="sidebarSectionHeading accordionSection">
 						<span className="sidebarSectionTitle">
-							Personal Codes ({countCampaings()})
+							Personal Codes ({countCampaings()}){' '}
 						</span>
 					</div>
 
@@ -68,8 +68,7 @@ const SidebarPersonalDiscounts = ({
 								<div key={campaign.name}>
 									{!_isEmpty(campaign.coupons) &&
 										campaign.coupons.find(
-											(coupon) =>
-												coupon.currentCustomer === currentCustomer.source_id
+											(coupon) => coupon.currentCustomer === currentCustomer.id
 										) && (
 											<Accordion
 												square
@@ -95,8 +94,7 @@ const SidebarPersonalDiscounts = ({
 														code={
 															campaign.coupons.find(
 																(coupon) =>
-																	coupon.currentCustomer ===
-																	currentCustomer.source_id
+																	coupon.currentCustomer === currentCustomer.id
 															).customerDataCoupon
 														}
 													/>
@@ -119,7 +117,7 @@ const mapStateToProps = (state) => {
 		fetchingCoupons: state.userReducer.fetchingCoupons,
 		vouchers: state.userReducer.vouchers,
 		campaigns: state.userReducer.campaigns,
-		availableCustomers: state.userReducer.availableCustomers,
+		customers: state.userReducer.customers,
 		fetchingCustomers: state.userReducer.fetchingCustomers,
 		items: state.cartReducer.items,
 		discount: state.cartReducer.discount,
@@ -134,7 +132,7 @@ SidebarPersonalDiscounts.propTypes = {
 	vouchers: PropTypes.array,
 	discount: PropTypes.object,
 	campaigns: PropTypes.array,
-	availableCustomers: PropTypes.array,
+	customers: PropTypes.array,
 	fetchingCustomers: PropTypes.bool,
 	dispatch: PropTypes.func,
 	items: PropTypes.array,

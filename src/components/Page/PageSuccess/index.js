@@ -1,57 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import Spinner from 'react-bootstrap/Spinner';
-import { setOrderId } from '../../../redux/actions/cartActions';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Redirect } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
 
-const PageSuccess = ({ orderId, dispatch }) => {
-  const [redirect, setRedirect] = useState(false);
+const PageSuccess = () => {
+	const [redirect, setRedirect] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setRedirect(true);
-      dispatch(setOrderId(null));
-    }, 3000);
-  });
+	useEffect(() => {
+		const redirectTimer = setTimeout(() => setRedirect(true), 3000);
+		return () => {
+			clearTimeout(redirectTimer);
+		};
+	}, []);
 
-  return (
-    <>
-      {redirect ? (
-        <Redirect to="/" />
-      ) : (
-        <div className="page">
-          {orderId ? (
-            <Row>
-              <Col>
-                <div className="centeredContent">
-                  <h1 className="pageTitle">Order {orderId} completed!</h1>
-                  <h6>You will be redirected to homepage shortly</h6>
-                </div>
-              </Col>
-            </Row>
-          ) : (
-            <Spinner animation="border" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          )}
-        </div>
-      )}
-    </>
-  );
+	return (
+		<>
+			{redirect ? (
+				<Redirect to="/" />
+			) : (
+				<div className="page">
+					<Row>
+						<Col>
+							<div className="centeredContent">
+								<h1 className="pageTitle">Order completed!</h1>
+								<h6>You will be redirected to homepage shortly</h6>
+								<Spinner animation="border" role="status">
+									<span className="sr-only">Loading...</span>
+								</Spinner>
+							</div>
+						</Col>
+					</Row>
+				</div>
+			)}
+		</>
+	);
 };
 
-const mapStateToProps = (state) => {
-  return {
-    orderId: state.cartReducer.orderId,
-  };
-};
-
-export default connect(mapStateToProps)(PageSuccess);
-
-PageSuccess.propTypes = {
-  orderId: PropTypes.string,
-  dispatch: PropTypes.func,
-};
+export default PageSuccess;

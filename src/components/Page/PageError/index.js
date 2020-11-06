@@ -4,31 +4,32 @@ import Col from 'react-bootstrap/Col';
 import { Redirect } from 'react-router-dom';
 
 const PageError = () => {
-  const [redirect, setRedirect] = useState(false);
+	const [redirect, setRedirect] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setRedirect(true);
-    }, 3000);
-  });
+	useEffect(() => {
+		const errorTimer = setTimeout(() => setRedirect(true), 3000);
+		return () => {
+			clearTimeout(errorTimer);
+		};
+	}, []);
 
-  return (
-    <>
-      {redirect ? (
-        <Redirect to="/" />
-      ) : (
-        <div className="page">
-          <Row>
-            <Col>
-              <div className="centeredContent">
-                <h1 className="pageTitle">Oops!</h1>
-                <h6>Sorry, an error has occured - going back to homepage</h6>
-              </div>
-            </Col>
-          </Row>
-        </div>
-      )}
-    </>
-  );
+	return (
+		<>
+			{redirect ? (
+				<Redirect to="/" />
+			) : (
+				<div className="page">
+					<Row>
+						<Col>
+							<div className="centeredContent">
+								<h1 className="pageTitle">Oops!</h1>
+								<h6>Sorry, an error has occured - going back to homepage</h6>
+							</div>
+						</Col>
+					</Row>
+				</div>
+			)}
+		</>
+	);
 };
 export default PageError;

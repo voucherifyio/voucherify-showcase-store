@@ -10,11 +10,7 @@ import VoucherifyLogo from '../../assets/VoucherifyLogo.png';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import IconButton from '@material-ui/core/IconButton';
 
-const CustomersModal = ({
-	availableCustomers,
-	fetchingCustomers,
-	campaigns,
-}) => {
+const CustomersModal = ({ customers, fetchingCustomers, campaigns }) => {
 	/* eslint-disable */
 	const herokuLink =
 		'https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F';
@@ -22,9 +18,7 @@ const CustomersModal = ({
 
 	return (
 		<div className="customersModalWrapper">
-			{_isEmpty(availableCustomers) &&
-			fetchingCustomers &&
-			_isEmpty(campaigns) ? (
+			{_isEmpty(customers) && fetchingCustomers && _isEmpty(campaigns) ? (
 				<Spinner animation="grow" role="status">
 					<span className="sr-only">Loading...</span>
 				</Spinner>
@@ -46,7 +40,7 @@ const CustomersModal = ({
 						</p>
 					</div>
 					<div className="customersModalCustomers">
-						{availableCustomers.map((customer) => (
+						{customers.map((customer) => (
 							<CustomersModalCustomer key={customer.name} customer={customer} />
 						))}
 					</div>
@@ -89,7 +83,7 @@ const CustomersModal = ({
 
 const mapStateToProps = (state) => {
 	return {
-		availableCustomers: state.userReducer.availableCustomers,
+		customers: state.userReducer.customers,
 		fetchingCustomers: state.userReducer.fetchingCustomers,
 		campaigns: state.userReducer.campaigns,
 	};
@@ -98,7 +92,7 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(CustomersModal);
 
 CustomersModal.propTypes = {
-	availableCustomers: PropTypes.array,
+	customers: PropTypes.array,
 	fetchingCustomers: PropTypes.bool,
 	campaigns: PropTypes.array,
 };

@@ -151,6 +151,12 @@ a:hover {
 .paymentButton {
 	width: 100%;
 }
+.centeredContent {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
 
 @media (max-width: 575.98px) {
 	.mainContent.sidebar .sidebarWrapper {

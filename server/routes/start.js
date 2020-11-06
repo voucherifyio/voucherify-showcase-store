@@ -30,19 +30,29 @@ const allCampigns = async () => {
 	}
 };
 
-function publishCouponsForCustomer(id, campaigns) {
+function publishCouponsForCustomer(sourceId, campaigns) {
 	const params = {
 		customer: {
-			source_id: id,
+			source_id: sourceId,
 		},
 	};
-	return campaigns
-		.map((campaign) => campaign.name)
-		.map((campaign) =>
-			voucherify.distributions.publications.create(
-				Object.assign(params, { campaign })
+
+	// We're not publishing coupons for Reward Campaings - Those coupons will be published by Reward Logic
+	return (
+		campaigns
+			// TODO: fix campaign name
+			// .filter(
+			// (campaign) =>
+			// campaign.name !== 'Referral Campaign Tier 1 - Reward' &&
+			// campaign.name !== 'Referral Campaign Tier 2 - Reward'
+			// )
+			.map((campaign) => campaign.name)
+			.map((campaign) =>
+				voucherify.distributions.publications.create(
+					Object.assign(params, { campaign })
+				)
 			)
-		);
+	);
 }
 router.route('/newSession').get(async (req, res) => {
 	req.session.destroy();
@@ -50,7 +60,7 @@ router.route('/newSession').get(async (req, res) => {
 	return res.status(200).end();
 });
 
-router.route('*').get(async (req, res) => {
+router.route('/').get(async (req, res) => {
 	const campaigns = await allCampigns();
 
 	if (req.session.views) {
@@ -128,7 +138,7 @@ router.route('*').get(async (req, res) => {
 					);
 				}
 				return {
-					currentCustomer: customer.source_id,
+					currentCustomer: customer.id,
 					campaigns: coupons.map((coupon) => coupon.voucher),
 				};
 			})
@@ -137,6 +147,89 @@ router.route('*').get(async (req, res) => {
 		return res.json({
 			session: req.session.id,
 			coupons: createdCoupons,
+		});
+	} catch (e) {
+		console.error(`[Session][Error] - ${e}`);
+		return res.status(500).end();
+	}
+});
+
+router.route('/addNextCustomers').get(async (req, res) => {
+	const campaigns = await allCampigns();
+
+	try {
+		const nextCustomers = [];
+
+		for (let i = 0; i < 3; i++) {
+			const fakeFirstName = faker.name.firstName();
+			const fakeLastName = faker.name.lastName();
+
+			const nextCustomer = {
+				source_id: `${req.session.id}referralCustomer${i + 1}`,
+				name: `${fakeFirstName} ${fakeLastName}`,
+				metadata: {
+					firstName: fakeFirstName,
+					demostore_id: `referralCustomer${i + 1}`,
+					description: 'New customer for referral campaign purposes',
+					title: `Referral Friend ${i + 1}`,
+				},
+				address: {
+					city: faker.address.city(),
+					state: faker.address.state(),
+					line_1: faker.address.streetName(),
+					country: faker.address.country(),
+					postal_code: faker.address.zipCode('## ###'),
+				},
+			};
+			nextCustomers.push(nextCustomer);
+		}
+
+		const createdNextCustomers = await Promise.all(
+			nextCustomers.map((customer) => {
+				return voucherify.customers.create(customer);
+			})
+		);
+
+		const createdNextCoupons = await Promise.all(
+			createdNextCustomers.map(async (customer) => {
+				const coupons = await Promise.all(
+					publishCouponsForCustomer(customer.source_id, campaigns)
+				).catch((e) => console.error(`[Publishing coupons][Error] - ${e}`));
+
+				// Assing validation rules for voucher "Happy Birthday"
+				const customerCoupons = coupons.filter(
+					(coupon) => coupon.voucher.name === 'Happy Birthday'
+				);
+
+				const uniqueCoupon = customerCoupons.find(
+					(coupon) => coupon.tracking_id === customer.source_id
+				);
+
+				if (typeof uniqueCoupon !== 'undefined') {
+					const individualValRule = customer.metadata.individual_val_rule;
+
+					const validationRulesList = await voucherify.validationRules.list();
+
+					const customerValidationRuleId = validationRulesList.data.find(
+						(ValidationRule) => ValidationRule.name === individualValRule
+					).id;
+
+					const assignment = { voucher: uniqueCoupon.voucher.code };
+					await voucherify.validationRules.createAssignment(
+						customerValidationRuleId,
+						assignment
+					);
+				}
+				return {
+					currentCustomer: customer.id,
+					campaigns: coupons.map((coupon) => coupon.voucher),
+				};
+			})
+		);
+
+		return res.json({
+			session: req.session.id,
+			coupons: createdNextCoupons,
 		});
 	} catch (e) {
 		console.error(`[Session][Error] - ${e}`);

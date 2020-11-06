@@ -2,7 +2,6 @@
 exports.customers = [
 	{
 		metadata: {
-			country: 'UK',
 			demostore_id: 'customer1',
 			individual_val_rule: 'Happy Birthday Customer 1',
 			description:
@@ -21,7 +20,6 @@ exports.customers = [
 	},
 	{
 		metadata: {
-			country: 'USA',
 			demostore_id: 'customer2',
 			individual_val_rule: 'Happy Birthday Customer 2',
 			description: 'He already spent $300 in Hot Beans store',
@@ -39,7 +37,6 @@ exports.customers = [
 	},
 	{
 		metadata: {
-			country: 'PL',
 			demostore_id: 'customer3',
 			individual_val_rule: 'Happy Birthday Customer 3',
 			description: 'He can take part in special partnership campaign',
@@ -116,7 +113,75 @@ exports.vouchers = [
 	},
 ];
 
+exports.rewards = [
+	{ name: 'Referral Campaign - Tier 1 - Reward' },
+	{ name: 'Referral Campaign - Tier 2 - Reward' },
+];
+
 exports.campaigns = [
+	{
+		name: 'Referral Campaign',
+		type: 'AUTO_UPDATE',
+		campaign_type: 'REFERRAL_PROGRAM',
+		referral_rogram: {
+			conversion_event_type: 'redemption',
+		},
+		voucher: {
+			is_referral_code: true,
+			discount: {
+				type: 'AMOUNT',
+				amount_off: 1000,
+			},
+			redemption: {
+				quantity: null,
+			},
+		},
+		metadata: {
+			assigned_val_rules: 'Referral Campaign - Validation Rule',
+			redemption_steps:
+				'Referre segment: New customers; First reward: 1 referred customer; Final reward: 3 referred customers',
+			description:
+				'Share your referral voucher code with three of your friends! If your friends will be new customers of our shop, they will get a special discount! For referring one friend you will get first reward - but if you referr three friends you will get even bigger reward!',
+		},
+	},
+	{
+		name: 'Referral Campaign Tier 1 - Reward',
+		type: 'AUTO_UPDATE',
+		metadata: {
+			auto_publish: false,
+			assigned_val_rules:
+				'Referral Campaign Tier 1 & 2 - Reward - Validation Rule',
+		},
+		voucher: {
+			type: 'DISCOUNT_VOUCHER',
+			discount: {
+				percent_off: 5,
+				type: 'PERCENT',
+			},
+			redemption: {
+				quantity: 1,
+			},
+		},
+	},
+	{
+		name: 'Referral Campaign Tier 2 - Reward',
+		type: 'AUTO_UPDATE',
+		metadata: {
+			auto_publish: false,
+			assigned_val_rules:
+				'Referral Campaign Tier 1 & 2 - Reward - Validation Rule',
+		},
+		voucher: {
+			type: 'DISCOUNT_VOUCHER',
+			discount: {
+				percent_off: 10,
+				type: 'PERCENT',
+			},
+			redemption: {
+				quantity: 1,
+			},
+		},
+	},
 	{
 		name: 'Get 5% off your first purchase',
 		type: 'AUTO_UPDATE',
@@ -130,7 +195,7 @@ exports.campaigns = [
 		metadata: {
 			assigned_val_rules: 'Get 5% off your first purchase',
 			description:
-				'Make an order and enjoy a 5% discount. Available only for new customers.',
+				'Make an order and enjoy a 5% discount. Avaliable only for new customers.',
 			redemption_steps:
 				'Customer Segment: Customers without any previous purchases',
 			order: 1,
@@ -249,7 +314,7 @@ exports.campaigns = [
 		metadata: {
 			assigned_val_rules: 'Partnership Campaign',
 			description:
-				'If your location is Poland, enjoy a 13% discount available only for our Polish customers.',
+				'If your location is Poland, enjoy a 13% discount avaliable only for our Polish customers.',
 			redemption_steps: 'Customers segment: Customers from Poland',
 			order: 5,
 			carousel_banner_img_url:
@@ -367,6 +432,18 @@ exports.segments = [
 	{
 		type: 'auto-update',
 		name: 'Get 5% off your first purchase',
+		filter: {
+			junction: 'and',
+			'summary.orders.total_count': {
+				conditions: {
+					$is: [0],
+				},
+			},
+		},
+	},
+	{
+		type: 'auto-update',
+		name: 'Customers without orders',
 		filter: {
 			junction: 'and',
 			'summary.orders.total_count': {

@@ -7,11 +7,7 @@ import Sidebar from '../Sidebar';
 import Ribbon from '../Ribbon';
 import { getProducts } from '../../redux/actions/storeActions';
 import { getTotals, getDiscount } from '../../redux/actions/cartActions';
-import {
-	startUserSession,
-	getQualifications,
-	checkVersion,
-} from '../../redux/actions/userActions';
+import { checkVersion } from '../../redux/actions/userActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _has from 'lodash.has';
@@ -23,6 +19,8 @@ import 'voucherify.js';
 import 'react-toastify/dist/ReactToastify.css';
 import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { prepareMessages } from '../../redux/actions/webhookActions';
+import { loadState } from '../../redux/localStorage';
 
 window.Voucherify.initialize(
 	process.env.REACT_APP_FRONTEND_APP_ID,
@@ -36,15 +34,32 @@ const App = ({
 	paymentMethod,
 	currentCustomer,
 	enableSidebar,
+	customers,
+	sessionId,
 }) => {
+	const state = loadState();
+
+	useEffect(() => {
+		if (_isEmpty(state) || _isEmpty(state.storeReducer.products)) {
+			const fetchProducts = async () => {
+				await dispatch(getProducts());
+			};
+			fetchProducts();
+		}
+	}, [state, dispatch]);
+
 	useEffect(() => {
 		const startSession = async () => {
 			await dispatch(checkVersion());
-			await dispatch(startUserSession());
-			await dispatch(getProducts());
 		};
 		startSession();
 	}, [dispatch]);
+
+	useEffect(() => {
+		if (!_isEmpty(customers)) {
+			dispatch(prepareMessages(customers));
+		}
+	}, [dispatch, customers]);
 
 	useEffect(() => {
 		if (!_isEmpty(currentCustomer)) {
@@ -58,11 +73,6 @@ const App = ({
 		}
 	}, [dispatch, items, paymentMethod, discount]);
 
-	useEffect(() => {
-		if (!_isEmpty(currentCustomer)) {
-			dispatch(getQualifications());
-		}
-	}, [dispatch, currentCustomer, paymentMethod, items]);
 	if (currentCustomer === null) {
 		return <CustomersModal />;
 	} else {
@@ -90,6 +100,9 @@ const mapStateToProps = (state) => {
 		discount: state.cartReducer.discount,
 		paymentMethod: state.userReducer.paymentMethod,
 		enableSidebar: state.userReducer.enableSidebar,
+		campaigns: state.userReducer.campaigns,
+		customers: state.userReducer.customers,
+		sessionId: state.userReducer.sessionId,
 	};
 };
 
@@ -100,6 +113,7 @@ App.propTypes = {
 	discount: PropTypes.object,
 	paymentMethod: PropTypes.string,
 	enableSidebar: PropTypes.bool,
+	products: PropTypes.array,
 };
 
 export default connect(mapStateToProps)(App);
