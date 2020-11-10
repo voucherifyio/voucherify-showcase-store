@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
@@ -14,7 +14,7 @@ import _isEmpty from 'lodash.isempty';
 import {
 	setEnableSidebar,
 	newSession,
-	addNextCustomers,
+	newCustomers,
 } from '../../redux/actions/userActions';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { getCurrentCustomer } from '../../redux/actions/userActions';
@@ -23,6 +23,9 @@ import AppModal from '../App/AppModal';
 import VoucherifyButton from '../App/VoucherifyButton';
 import Spinner from 'react-bootstrap/Spinner';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
+const refCamp = (campaigns) =>
+	campaigns.find((camp) => camp.name === 'Referral Campaign');
 
 const StyledBadge = withStyles(() => ({
 	badge: {
@@ -44,20 +47,19 @@ const NavigationMenu = ({
 	const [referralCampaign, setReferralCampaign] = useState(null);
 	const [referralCampaignCode, setReferralCampaignCode] = useState(null);
 
+	const referralCamp = useMemo(() => refCamp(campaigns), [campaigns]);
+
 	useEffect(() => {
-		const referralCampaign = campaigns.find(
-			(camp) => camp.name === 'Referral Campaign'
-		);
-		if (!_isEmpty(referralCampaign)) {
-			const referralCampaignCode = !_isEmpty(referralCampaign.coupons)
-				? referralCampaign.coupons.find(
+		if (!_isEmpty(referralCamp)) {
+			const referralCampaignCode = !_isEmpty(referralCamp.coupons)
+				? referralCamp.coupons.find(
 						(coupon) => coupon.currentCustomer === currentCustomer.id
 				  ).customerDataCoupon
 				: '';
-			setReferralCampaign(referralCampaign);
+			setReferralCampaign(referralCamp);
 			setReferralCampaignCode(referralCampaignCode);
 		}
-	}, [campaigns, currentCustomer]);
+	}, [referralCamp, campaigns, currentCustomer]);
 
 	const handleLogOut = () => {
 		dispatch(clearMessages());
@@ -118,8 +120,8 @@ const NavigationMenu = ({
 						{/* Let's enable creation of new customers only once */}
 						{customers.length !== 6 && (
 							<NavDropdown.Item
-								onClick={() => dispatch(addNextCustomers())}
-								key={'addNextCustomers'}
+								onClick={() => dispatch(newCustomers())}
+								key={'newcustomers'}
 								className="navigationMenuUserDropdownItem"
 							>
 								<div className="customerNavigationTitle customerAddNew">
@@ -136,7 +138,10 @@ const NavigationMenu = ({
 				{!_isEmpty(referralCampaign) && !_isEmpty(referralCampaignCode) && (
 					<>
 						<Tooltip title="Referr a friend!">
-							<IconButton onClick={() => setModalShow(true)}>
+							<IconButton
+								onClick={() => setModalShow(true)}
+								className="navigationMenuIcon"
+							>
 								<GroupAddIcon />
 							</IconButton>
 						</Tooltip>
@@ -177,7 +182,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(NavigationMenu);
+export default connect(mapStateToProps)(React.memo(NavigationMenu));
 
 NavigationMenu.propTypes = {
 	itemsTotalCount: PropTypes.number,

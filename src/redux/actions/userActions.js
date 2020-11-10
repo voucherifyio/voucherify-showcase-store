@@ -29,7 +29,7 @@ import {
 	ADD_PUBLISHED_CODES,
 	IS_OLD_APP_VERSION,
 	SET_CURRENT_APP_VERSION,
-	ADD_NEXT_CUSTOMERS_SUCCESS,
+	ADD_NEW_CUSTOMERS_SUCCESS,
 } from '../constants';
 
 export const isOldAppVersion = () => {
@@ -51,9 +51,9 @@ export const startUserSessionSuccess = ({ sessionId, publishedCodes }) => {
 	};
 };
 
-export const addNextCustomersSuccess = ({ publishedCodes }) => {
+export const newCustomersSuccess = ({ publishedCodes }) => {
 	return {
-		type: ADD_NEXT_CUSTOMERS_SUCCESS,
+		type: ADD_NEW_CUSTOMERS_SUCCESS,
 		payload: { publishedCodes },
 	};
 };
@@ -195,20 +195,21 @@ export const startUserSession = () => async (dispatch) => {
 	}
 };
 
-export const addNextCustomers = () => async (dispatch) => {
+export const newCustomers = () => async (dispatch) => {
 	try {
 		dispatch(getCustomersRequest());
 		const res = await fetch(
-			`${process.env.REACT_APP_API_URL || ''}/start/addNextCustomers`,
+			`${process.env.REACT_APP_API_URL || ''}/start/newcustomers`,
 			{
 				credentials: 'include',
 			}
 		);
 
 		const nextPublishedCodes = await res.json();
+		console.log(nextPublishedCodes);
 
 		dispatch(
-			addNextCustomersSuccess({
+			newCustomersSuccess({
 				publishedCodes: nextPublishedCodes.coupons,
 			})
 		);
@@ -217,7 +218,7 @@ export const addNextCustomers = () => async (dispatch) => {
 		await dispatch(getCampaigns());
 		await dispatch(getVouchers());
 	} catch (error) {
-		console.log('[addNextCustomers][Error]', error);
+		console.log('[newCustomers][Error]', error);
 		dispatch(startUserSessionError());
 	}
 };

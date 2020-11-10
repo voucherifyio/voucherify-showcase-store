@@ -26,4 +26,5 @@ export default AppModal;
 AppModal.propTypes = {
 	onHide: PropTypes.func,
 	show: PropTypes.bool,
+	children: PropTypes.array,
 };

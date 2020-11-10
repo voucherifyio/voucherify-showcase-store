@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import _isEmpty from 'lodash.isempty';
 import Spinner from 'react-bootstrap/Spinner';
@@ -10,15 +10,21 @@ import VoucherifyLogo from '../../assets/VoucherifyLogo.png';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import IconButton from '@material-ui/core/IconButton';
 
-const CustomersModal = ({ customers, fetchingCustomers, campaigns }) => {
+const CustomersModal = ({ customers, campaigns }) => {
+	const [isLoaded, setIsLoaded] = useState(false);
 	/* eslint-disable */
 	const herokuLink =
 		'https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F';
 	/* eslint-enable */
 
+	useEffect(() => {
+		if (!_isEmpty(customers) && !_isEmpty(campaigns)) {
+			setIsLoaded(true);
+		}
+	}, [campaigns, customers]);
 	return (
 		<div className="customersModalWrapper">
-			{_isEmpty(customers) && fetchingCustomers && _isEmpty(campaigns) ? (
+			{!isLoaded ? (
 				<Spinner animation="grow" role="status">
 					<span className="sr-only">Loading...</span>
 				</Spinner>
@@ -84,15 +90,13 @@ const CustomersModal = ({ customers, fetchingCustomers, campaigns }) => {
 const mapStateToProps = (state) => {
 	return {
 		customers: state.userReducer.customers,
-		fetchingCustomers: state.userReducer.fetchingCustomers,
 		campaigns: state.userReducer.campaigns,
 	};
 };
 
-export default connect(mapStateToProps)(CustomersModal);
+export default connect(mapStateToProps)(React.memo(CustomersModal));
 
 CustomersModal.propTypes = {
 	customers: PropTypes.array,
-	fetchingCustomers: PropTypes.bool,
 	campaigns: PropTypes.array,
 };

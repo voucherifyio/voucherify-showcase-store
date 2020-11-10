@@ -1,3 +1,4 @@
+
 # Voucherify Showcase Store - "Hot Beans" [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/voucherifyio/voucherify-showcase-store/)
 
 [Documentation](https://docs.voucherify.io/docs/welcome) | [API Reference](https://docs.voucherify.io/reference) | [Help Center](https://support.voucherify.io) | [Installation](#installation) | [Local installation](#local-installation) | [Local development](#local-development) | [Usage](#usage) | [Errors](#errors) | [Changelog](#changelog)
@@ -16,7 +17,19 @@ In your Project Dashboard navigate to your Project Settings.
 
 ![Navigate to Project Settings](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/ProjectSettings.png 'Project Settings')
 
-Copy your Voucherify `Application ID` and `Application Secret Key` for both Application Keys and Client-side Keys to your environment variables:
+Create new Webhook endpoint with target URL: `https://YOUR_APP_URL/webhooks`
+
+![Create new Webhook](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/CreateWebhook.png 'Webhook')
+
+If you are using local development server, set up tunelling of your app with [Ngrok](https://ngrok.com/) - use `./ngrok http localhost:3000` and then paste forwarded https address as `YOUR_APP_URL`.
+
+![Ngrok forwarded address](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/Ngrok.png 'Ngrok')
+
+Select webhook events: `voucher.published` and `customer.rewarded`
+
+![Prepared Webhook](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/PreparedWebhook.png 'Webhook')
+
+Next, copy your Voucherify `Application ID` and `Application Secret Key` for both Application Keys and Client-side Keys to your environment variables:
 
 ![Getting Application Keys](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/ServerSide.png 'Application Keys')
 
@@ -40,6 +53,8 @@ Your environment variables should look like this:
 The fastest way to install the demo store is use 'Deploy to Heroku' button and providing requried enviroment variables.
 
 After deployment, the script runs post-install where it populates your Voucherify account with custom products, validation rules, campaigns, and vouchers.
+
+If you want to use integrated Referral Campaign, you need to create Reward Tiers. Learn more at [Enabling Referral Campaign](#enabling-referral-campaign)
 
 ## Local installation
 
@@ -125,13 +140,53 @@ Campaign metadata
 | `img_url`                 | string | Image which will be displayed together with description on main carousel on in the product page. |
 | `promotion_product`       | string | Exact name of the product which should be labeled as "Promotion" on main page.                   |
 
-## Campaign - Referral Campaign (Enabling Referral Campaign)
+## Enabling Referral Campaign
 
-To create Referral Campaing which works with this demo store you need to follow this exact pattern. Creating Referral Campaign with tier rewards & validation rules is not yet possible through API. That's why we need to create this campaign by dashboard.
+Creating complete Referral Campaign with tier rewards & validation rules is not yet possible through API. That's why to fully use our predefined Referral Campaign we need to set this up through dashboard.
 
-All other necessary elements for this first Referral Campaign - Rewards, Rewards Assigments, Validation Rules and Segments - are created during demo store setup. We just need to connect them together.
+All other necessary elements for this first Referral Campaign - Rewards, Rewards Assigments and Validation Rules - are created during demo store setup. We just need to create two Referral Campaigns Tiers and connect each tier with available reward.
 
 This first Referral Campaign will be reflected in the Navigation bar.
+
+Firstly, navigate to the Referral Campaign details and then to the Rewards tab. Click `Edit` on the Referrer reward section.
+
+![Campaign Details](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/CampaignDetails.png 'Campaign Details')
+
+Create New Tier
+
+![Create New Tier](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/CreateNewTier.png 'Create New Tier')
+
+Name it however you want. Set `Numbers of referees who redeemed the referral code is` to 1 and `Total count of customer orders` to exactly 0.
+
+![Setup Tier](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/SetupTier.png 'Setup Tier')
+
+On the next page select reward `Referral Campaign Tier 1 - Reward` and click `Add reward`.
+
+![Add Reward](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/AddReward.png 'Add Reward')
+
+On the next page click `Done`.
+
+![Distribution](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/Distribution.png 'Distribution')
+
+You have just created first Referral Campaign reward tier. You just need to create last one. Select `Create New Tier` once again.
+
+![Second Tier](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/SecondTier.png 'Second Tier')
+
+Name it however you want. Set `Numbers of referees who redeemed the referral code is` to 3 and `Total count of customer orders` to exactly 0.
+
+![Setup Second Tier](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/SetupTier2.png 'Setup Second Tier')
+
+On the next page select reward `Referral Campaign Tier 2 - Reward` and click `Add reward`.
+
+![Add Second Reward](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/AddReward2.png 'Add Second Reward')
+
+On the next page click `Done`.
+
+![Distribution](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/Distribution2.png 'Distribution')
+
+After all, remember to save your Referral Campaign.
+
+![Save changes](https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/instructions/SaveCampaign.png 'Save changes')
 
 ## Errors
 

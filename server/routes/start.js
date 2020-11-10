@@ -154,7 +154,7 @@ router.route('/').get(async (req, res) => {
 	}
 });
 
-router.route('/addNextCustomers').get(async (req, res) => {
+router.route('/newcustomers').get(async (req, res) => {
 	const campaigns = await allCampigns();
 
 	try {

@@ -95,7 +95,9 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(DiscountCarouselSignUpModal);
+export default connect(mapStateToProps)(
+	React.memo(DiscountCarouselSignUpModal)
+);
 
 DiscountCarouselSignUpModal.propTypes = {
 	onHide: PropTypes.func,

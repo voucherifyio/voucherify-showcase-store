@@ -24,7 +24,7 @@ import {
 	DISABLE_SIDEBAR,
 	SET_CURRENT_CART_DISCOUNT,
 	ADD_PUBLISHED_CODES,
-	ADD_NEXT_CUSTOMERS_SUCCESS,
+	ADD_NEW_CUSTOMERS_SUCCESS,
 	SET_CURRENT_APP_VERSION,
 } from '../constants';
 
@@ -51,7 +51,7 @@ const initialState = {
 
 export const userReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case ADD_NEXT_CUSTOMERS_SUCCESS: {
+		case ADD_NEW_CUSTOMERS_SUCCESS: {
 			return {
 				...state,
 				publishedCodes: [

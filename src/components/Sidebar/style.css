@@ -154,6 +154,9 @@
 	margin-bottom: 1rem;
 }
 
+.tabIcon {
+	align-self: center;
+}
 .titleTooltip {
 	margin-left: 0.5rem;
 	cursor: help;

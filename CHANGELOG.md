@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.6.0] - 10.11.2020
+
+### Added
+
+- MAJOR Webhook integration
+- MAJOR Referral Campaings integration
+- MAJOR Create new customers for referral campaign integration
+- MINOR Localstorage improvements
+- MINOR Application optimizations
+
 ## [2.5.0] - 02.10.2020
 
 ### Added

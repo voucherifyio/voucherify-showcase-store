@@ -4,7 +4,7 @@ const voucherify = require('voucherify')({
 	applicationId: process.env.REACT_APP_BACKEND_APP_ID,
 	clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
 });
-const { campaigns, vouchers, products, segments, rewards } = require('./data');
+const { campaigns, vouchers, products, segments } = require('./data');
 
 const setupCampaigns = () => {
 	const campaignPromises = campaigns.map((campaign) => {
@@ -44,13 +44,36 @@ const setupCampaigns = () => {
 		);
 };
 
-const setupRewards = () => {
-	const rewardsPromises = rewards.map((rewards) => {
+const setupRewards = async () => {
+	const rewards = [
+		{
+			name: 'Referral Campaign Tier 1 - Reward',
+			parameters: {
+				campaign: {
+					id: campaigns.find(
+						(c) => c.name === 'Referral Campaign Tier 1 - Reward'
+					).voucherifyId,
+				},
+			},
+		},
+		{
+			name: 'Referral Campaign Tier 2 - Reward',
+			parameters: {
+				campaign: {
+					id: campaigns.find(
+						(c) => c.name === 'Referral Campaign Tier 2 - Reward'
+					).voucherifyId,
+				},
+			},
+		},
+	];
+
+	const rewardsPromises = rewards.map((reward) => {
 		const thisReward = voucherify.rewards.create(reward);
 		return thisReward
 			.then((rew) => {
 				const needsId = rewards.find((r) => r.name === rew.name);
-				needsId.voucherifyId = camp.id;
+				needsId.voucherifyId = rew.id;
 				console.log(
 					`[SUCCESS] Rewards created ${needsId.name} - ${needsId.voucherifyId}`
 				);
@@ -154,6 +177,7 @@ const setupSegments = () => {
 };
 
 const setupValidationRules = async () => {
+	console.log(segments);
 	const rules = [
 		{
 			name: 'Buy Two, Get Three',
@@ -652,45 +676,12 @@ const setupValidationRules = async () => {
 	}
 };
 
-const setupRewardsAssigments = async () => {
-	const rewardsAssigmentPromises = () => {
-		const rewardsPerCampaign = rewards.map((reward) => {
-			const needsId = reward.voucherifyId;
-			const campaign = campaigns.find((camp) => camp.name === reward.name)
-				.voucherifyId;
-
-			const rewardAssigment = voucherify.rewards.createAssignment(needsId, {
-				campaign: campaign.voucherifyId,
-			});
-			return rewardAssigment
-				.then((assigment) => {
-					console.log(`[SUCCESS] Reward assigment created ${assigment.id}`);
-				})
-				.catch((error) =>
-					console.log(
-						`[ERROR] There was an error creating reward assigment ${needsId}`,
-						error
-					)
-				);
-		});
-		return _flatten(rewardsPerCampaign);
-	};
-
-	try {
-		await Promise.all(rewardsAssigmentPromises());
-		console.log('[SUCCESS] All reward assignments created');
-	} catch (error) {
-		console.log('[ERROR] There was an error creating reward assigments', error);
-	}
-};
-
 setupCampaigns()
 	.then(setupVouchers)
 	.then(setupRewards)
 	.then(setupProducts)
 	.then(setupSegments)
 	.then(setupValidationRules)
-	.then(setupRewardsAssigments)
 	.then(() => console.log('[SUCCESS] Setup finished'))
 	.catch((error) =>
 		console.log('[ERROR] There was an error creating project', error)

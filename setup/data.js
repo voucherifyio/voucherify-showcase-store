@@ -113,11 +113,6 @@ exports.vouchers = [
 	},
 ];
 
-exports.rewards = [
-	{ name: 'Referral Campaign - Tier 1 - Reward' },
-	{ name: 'Referral Campaign - Tier 2 - Reward' },
-];
-
 exports.campaigns = [
 	{
 		name: 'Referral Campaign',

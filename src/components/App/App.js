@@ -44,9 +44,10 @@ const App = ({
 			const fetchProducts = async () => {
 				await dispatch(getProducts());
 			};
+
 			fetchProducts();
 		}
-	}, [state, dispatch]);
+	}, [dispatch, state]);
 
 	useEffect(() => {
 		const startSession = async () => {
@@ -116,4 +117,4 @@ App.propTypes = {
 	products: PropTypes.array,
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(React.memo(App));

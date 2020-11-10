@@ -7,6 +7,7 @@ import SidebarCartDiscounts from './SidebarCartDiscounts';
 import PersonIcon from '@material-ui/icons/Person';
 import GroupIcon from '@material-ui/icons/Group';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import IconButton from '@material-ui/core/IconButton';
 import './style.css';
 import { connect } from 'react-redux';
 import { setEnableSidebar } from '../../redux/actions/userActions';
@@ -111,21 +112,24 @@ const Sidebar = ({ enableSidebar, dispatch }) => {
 					<Tooltip title="Check cart discounts">
 						<Tab icon={<ShoppingCartIcon />} {...a11yProps(3)} />
 					</Tooltip>
-					<Tooltip title="Check documentation">
-						<Tab
-							className="tabLinks"
-							component="a"
-							href="https://github.com/voucherifyio/voucherify-showcase-store"
-							icon={<GitHubIcon />}
-						/>
-					</Tooltip>
-					<Tooltip title="Deploy">
-						<Tab
-							component="a"
-							href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F"
-							icon={<LaunchIcon />}
-						/>
-					</Tooltip>
+					<div className="tabLinks tabIcon">
+						<Tooltip title="Check documentation">
+							<a href="https://github.com/voucherifyio/voucherify-showcase-store">
+								<IconButton>
+									<GitHubIcon />
+								</IconButton>
+							</a>
+						</Tooltip>
+					</div>
+					<div className="tabIcon">
+						<Tooltip title="Deploy">
+							<a href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F">
+								<IconButton>
+									<LaunchIcon />
+								</IconButton>
+							</a>
+						</Tooltip>
+					</div>
 				</Tabs>
 				<TabPanel value={value} index={1}>
 					<SidebarPersonalDiscounts />

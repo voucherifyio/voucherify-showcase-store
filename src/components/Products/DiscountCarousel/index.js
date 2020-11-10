@@ -53,4 +53,4 @@ DiscountCarousel.propTypes = {
 	campaigns: PropTypes.array,
 };
 
-export default connect(mapStateToProps)(DiscountCarousel);
+export default connect(mapStateToProps)(React.memo(DiscountCarousel));

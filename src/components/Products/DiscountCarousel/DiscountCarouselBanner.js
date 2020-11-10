@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './style.css';
@@ -17,6 +17,10 @@ const DiscountCarouselBanner = ({
 	const couponForCurrentCustomer = campaign.coupons.find(
 		(coupon) => coupon.currentCustomer === currentCustomer.id
 	);
+
+	const handleOnHide = useCallback(() => {
+		setModalShow(!modalShow);
+	}, [modalShow]);
 
 	return (
 		<>
@@ -85,7 +89,7 @@ const DiscountCarouselBanner = ({
 			<DiscountCarouselSignUpModal
 				campaign={campaign}
 				show={modalShow}
-				onHide={() => setModalShow(false)}
+				onHide={handleOnHide}
 			/>
 		</>
 	);
@@ -106,4 +110,4 @@ DiscountCarouselBanner.propTypes = {
 	products: PropTypes.array,
 };
 
-export default connect(mapStateToProps)(DiscountCarouselBanner);
+export default connect(mapStateToProps)(React.memo(DiscountCarouselBanner));
