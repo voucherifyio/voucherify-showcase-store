@@ -1,34 +1,34 @@
 {
-  "name": "Voucherify React Demo Store - 'Hot Beans'",
-  "description": "Set up your own Voucherify demo store to learn our API",
-  "keywords": ["voucherify", "API"],
-  "website": "https://www.voucherify.io",
-  "repository": "https://github.com/voucherifyio/voucherify-showcase-store",
-  "env": {
-    "REACT_APP_BACKEND_APP_ID": {
-      "description": "Server-side Application ID"
-    },
-    "REACT_APP_BACKEND_KEY": {
-      "description": "Server-side Application Secret Key"
-    },
-    "REACT_APP_FRONTEND_APP_ID": {
-      "description": "Client-side Application ID"
-    },
-    "REACT_APP_FRONTEND_KEY": {
-      "description": "Client-side Application Secret Key"
-    },
-    "SESSION_SECRET": {
-      "description": "Session secret password",
-      "generator": "secret"
-    },
-    "REACT_APP_VERSION": {
-      "description": "App version",
-      "value": "2.5.0"
-    }
-  },
-  "addons": [
-    {
-      "plan": "heroku-redis:hobby-dev"
-    }
-  ]
+	"name": "Voucherify React Demo Store - 'Hot Beans'",
+	"description": "Set up your own Voucherify demo store to learn our API",
+	"keywords": ["voucherify", "API"],
+	"website": "https://www.voucherify.io",
+	"repository": "https://github.com/voucherifyio/voucherify-showcase-store",
+	"env": {
+		"REACT_APP_BACKEND_APP_ID": {
+			"description": "Server-side Application ID"
+		},
+		"REACT_APP_BACKEND_KEY": {
+			"description": "Server-side Application Secret Key"
+		},
+		"REACT_APP_FRONTEND_APP_ID": {
+			"description": "Client-side Application ID"
+		},
+		"REACT_APP_FRONTEND_KEY": {
+			"description": "Client-side Application Secret Key"
+		},
+		"SESSION_SECRET": {
+			"description": "Session secret password",
+			"generator": "secret"
+		},
+		"REACT_APP_VERSION": {
+			"description": "App version",
+			"value": "2.6.1"
+		}
+	},
+	"addons": [
+		{
+			"plan": "heroku-redis:hobby-dev"
+		}
+	]
 }
