@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './style.css';
@@ -18,9 +18,9 @@ const DiscountCarouselBanner = ({
 		(coupon) => coupon.currentCustomer === currentCustomer.id
 	);
 
-	const handleOnHide = useCallback(() => {
+	const handleOnHide = () => {
 		setModalShow(!modalShow);
-	}, [modalShow]);
+	};
 
 	return (
 		<>

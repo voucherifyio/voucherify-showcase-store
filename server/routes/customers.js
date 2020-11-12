@@ -25,6 +25,7 @@ router.route('/update').post(async (req, res) => {
 			id,
 			email,
 		});
+		console.log(customer);
 		res.json(customer);
 	} catch (e) {
 		console.error(`[Customer][Update][Error] - ${e}`);

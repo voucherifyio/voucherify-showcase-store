@@ -27,6 +27,7 @@ import {
 	ADD_NEW_CUSTOMERS_SUCCESS,
 	SET_CURRENT_APP_VERSION,
 } from '../constants';
+import _isEmpty from 'lodash.isempty';
 
 const initialState = {
 	currentCustomer: null,
@@ -199,9 +200,24 @@ export const userReducer = (state = initialState, action) => {
 			};
 		}
 		case GET_CURRENT_CUSTOMER_SUCCESS: {
+			let currentCustomer;
+			if (
+				!_isEmpty(state.currentCustomer) &&
+				!_isEmpty(state.currentCustomer.assets)
+			) {
+				currentCustomer = {
+					...action.payload.currentCustomer,
+					assets: state.currentCustomer.assets,
+				};
+			} else {
+				currentCustomer = {
+					...action.payload.currentCustomer,
+				};
+			}
+
 			return {
 				...state,
-				currentCustomer: action.payload.currentCustomer,
+				currentCustomer,
 				fetchingCustomer: false,
 			};
 		}

@@ -46,7 +46,6 @@ const NavigationMenu = ({
 	const [modalShow, setModalShow] = useState(false);
 	const [referralCampaign, setReferralCampaign] = useState(null);
 	const [referralCampaignCode, setReferralCampaignCode] = useState(null);
-
 	const referralCamp = useMemo(() => refCamp(campaigns), [campaigns]);
 
 	useEffect(() => {

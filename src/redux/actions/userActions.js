@@ -365,7 +365,8 @@ export const updateCurrentCustomerEmail = (email) => async (
 				}),
 			}
 		);
-		const updatedCurrentCustomer = await res.json();
+    const updatedCurrentCustomer = await res.json();
+    console.log(updatedCurrentCustomer)
 		dispatch(getCurrentCustomerSuccess(updatedCurrentCustomer));
 	} catch (error) {
 		console.log('[updateCurrentCustomerEmail][Error]', error);

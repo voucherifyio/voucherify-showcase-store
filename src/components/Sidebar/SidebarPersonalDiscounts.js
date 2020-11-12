@@ -41,16 +41,13 @@ const SidebarPersonalDiscounts = ({
 	const handleChange = (panel) => (event, newExpanded) => {
 		setExpanded(newExpanded ? panel : false);
 	};
-
 	const discountedCampaings = useMemo(() => discountCampaigns(campaigns), [
 		campaigns,
 	]);
-
 	const filteredCouponCampaigns = useMemo(
 		() => couponCampaigns(discountedCampaings),
 		[discountedCampaings]
 	);
-
 	// We're counting campaings for each Customer based on published coupons
 	const countedCampaigns = useMemo(
 		() => countCampaigns(filteredCouponCampaigns, currentCustomer),
