@@ -52,14 +52,23 @@ const ProductCard = ({ product, addItemToCart, campaigns }) => {
 					</div>
 				</Link>
 				<div className="productCardContent">
-					<h6 className="productCardTitle">{product.name}</h6>
-					<div className="productCardDetails"></div>
-					<Button
-						onClick={handleAddItemToCart}
-						className="voucherifyButtonDark"
-					>
-						${(product.price / 100).toFixed(2)} - Add to cart
-					</Button>
+					{!_isEmpty(product.name.split('-')) ? (
+						<>
+							<h6 className="productCardTitle">{product.name.split('-')[0]}</h6>
+							<h5 className="productCardTitle">{product.name.split('-')[1]}</h5>
+						</>
+					) : (
+						<h5 className="productCardTitle">{product.name}</h5>
+					)}
+
+					<div className="productCardDetails">
+						<Button
+							onClick={handleAddItemToCart}
+							className="voucherifyButtonDark"
+						>
+							${(product.price / 100).toFixed(2)} - Add to cart
+						</Button>
+					</div>
 				</div>
 			</div>
 		</Col>

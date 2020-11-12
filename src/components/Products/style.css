@@ -53,6 +53,9 @@
 .productBadges {
 	margin-bottom: 0.5rem;
 }
+.productCardDetails {
+	flex-grow: 1;
+}
 
 .campaignCard {
 	box-shadow: var(--custom-box-shadow);
@@ -78,14 +81,13 @@
 
 .productCardContent {
 	padding: 15px;
-	min-height: 115px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 }
 
 .productCardDetails {
-	text-align: left;
+	/* text-align: left; */
 }
 
 .productCardTitle {
