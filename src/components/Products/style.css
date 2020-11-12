@@ -78,7 +78,7 @@
 
 .productCardContent {
 	padding: 15px;
-	min-height: 50px;
+	min-height: 115px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;

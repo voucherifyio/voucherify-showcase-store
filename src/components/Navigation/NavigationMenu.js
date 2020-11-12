@@ -23,6 +23,7 @@ import AppModal from '../App/AppModal';
 import VoucherifyButton from '../App/VoucherifyButton';
 import Spinner from 'react-bootstrap/Spinner';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import VoucherifyInformation from '../App/VoucherifyInformation';
 
 const refCamp = (campaigns) =>
 	campaigns.find((camp) => camp.name === 'Referral Campaign');
@@ -147,6 +148,23 @@ const NavigationMenu = ({
 						<AppModal show={modalShow} onHide={() => setModalShow(false)}>
 							{referralCampaign.name}
 							<p>{referralCampaign.metadata.description}</p>
+							<VoucherifyInformation>
+								<p>
+									Copy the code below and switch shop customers{' '}
+									<b>(Click on the customer avatar)</b> If you need, you can
+									create <b>three more customers</b> to use in your referral
+									campaigns!
+								</p>
+								<p>
+									After redeeming the referral code as other customer, switch
+									back to{' '}
+									<b>
+										{currentCustomer.name} ({currentCustomer.metadata.title})
+									</b>{' '}
+									to get a reward - if you successfully referred one or three
+									customers!
+								</p>
+							</VoucherifyInformation>
 							<VoucherifyButton code={referralCampaignCode} />
 						</AppModal>
 					</>

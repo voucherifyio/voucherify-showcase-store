@@ -36,9 +36,9 @@ const CustomersModal = ({ customers, campaigns }) => {
 							Welcome to Hot Beans — Voucherify demo store
 						</h1>
 						<p className="customersModalDesc">
-							Log in to explore various promotional workflows we have predefined
-							in Voucherify dashboard. You can enable and disable active
-							promotions in the control panel on your right.{' '}
+							Log in to explore various promotional and referral workflows we
+							have predefined in Voucherify dashboard. You can enable and
+							disable active promotions in the control panel on your right.{' '}
 							<span className="customersModalDescBold">
 								Remember to switch between customers to learn how promotion
 								personalization works!

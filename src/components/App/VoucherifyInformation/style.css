@@ -1,0 +1,40 @@
+.voucherifyInformation {
+	margin-top: 1rem;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 1rem;
+	background-color: var(--bg-sidebar);
+	flex-wrap: wrap;
+	justify-content: center;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+}
+
+.voucherifyInformationLogo {
+	width: 5%;
+}
+.voucherifyInformationText {
+	font-size: 0.8rem;
+	width: 95%;
+	padding-left: 0.5rem;
+}
+
+.voucherifyInformationLogoWrapper {
+	width: 24px !important;
+	margin: 0 auto;
+}
+
+@media (max-width: 575.98px) {
+	.voucherifyInformation {
+		flex-direction: column;
+		padding: 0.5rem;
+	}
+	.voucherifyInformationText {
+		margin-bottom: 0.5rem !important;
+		font-size: 0.6rem;
+	}
+}

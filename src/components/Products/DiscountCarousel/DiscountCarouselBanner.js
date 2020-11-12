@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './style.css';
 import VoucherifyButton from '../../App/VoucherifyButton';
-import VoucherifyLogoSquare from '../../../assets/VoucherifyLogoSquare.png';
 import _isEmpty from 'lodash.isempty';
 import DiscountCarouselSignUpModal from './DiscountCarouselSignUpModal';
+import VoucherifyInformation from '../../App/VoucherifyInformation';
 
 const DiscountCarouselBanner = ({
 	campaign,
@@ -49,14 +49,9 @@ const DiscountCarouselBanner = ({
 					)}
 					{campaign.campaign_type === 'PROMOTION' &&
 						campaign.name !== currentCartDiscount && (
-							<div className="carouselBannerDescriptionPromotion">
-								<div className="carouselVoucherifyLogo">
-									<img src={VoucherifyLogoSquare} alt="" />
-								</div>
-								<div className="carouselBannerDescriptionPromotionText">
-									Enable this promotion in the sidebar
-								</div>
-							</div>
+							<VoucherifyInformation>
+								Enable this promotion in the sidebar
+							</VoucherifyInformation>
 						)}
 					{!_isEmpty(couponForCurrentCustomer) && (
 						<VoucherifyButton
