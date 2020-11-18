@@ -35,7 +35,6 @@ const App = ({
 	currentCustomer,
 	enableSidebar,
 	customers,
-	sessionId,
 }) => {
 	const state = loadState();
 
@@ -103,7 +102,6 @@ const mapStateToProps = (state) => {
 		enableSidebar: state.userReducer.enableSidebar,
 		campaigns: state.userReducer.campaigns,
 		customers: state.userReducer.customers,
-		sessionId: state.userReducer.sessionId,
 	};
 };
 

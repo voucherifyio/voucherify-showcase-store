@@ -7,6 +7,7 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import SidebarRewards from './SidebarRewards';
 import SidebarQualifications from './SidebarQualifications';
 import { connect } from 'react-redux';
 import SidebarCustomer from './SidebarCustomer';
@@ -15,9 +16,21 @@ import PropTypes from 'prop-types';
 const discountCampaigns = (campaigns) =>
 	_orderBy(campaigns, ['metadata']['order'], ['asc']);
 
+const rewardsCampaigns = (campaigns) =>
+	campaigns.filter(
+		(camp) =>
+			camp.name === 'Referral Campaign Tier 1 - Reward' ||
+			camp.name === 'Referral Campaign Tier 2 - Reward'
+	);
+
 // We need to filter out Campaigns which does not have coupons avaliable.
 const couponCampaigns = (discountCampaigns) =>
-	discountCampaigns.filter((camp) => camp.campaign_type !== 'PROMOTION');
+	discountCampaigns.filter(
+		(camp) =>
+			camp.campaign_type !== 'PROMOTION' &&
+			camp.name !== 'Referral Campaign Tier 1 - Reward' &&
+			camp.name !== 'Referral Campaign Tier 2 - Reward'
+	);
 
 // This is the case for the Cart Discounts and for not yet active coupons
 const countCampaigns = (filteredCouponCampaigns, currentCustomer) => {
@@ -41,14 +54,19 @@ const SidebarPersonalDiscounts = ({
 	const handleChange = (panel) => (event, newExpanded) => {
 		setExpanded(newExpanded ? panel : false);
 	};
-	const discountedCampaings = useMemo(() => discountCampaigns(campaigns), [
+	const discountedCampaigns = useMemo(() => discountCampaigns(campaigns), [
 		campaigns,
 	]);
-	const filteredCouponCampaigns = useMemo(
-		() => couponCampaigns(discountedCampaings),
-		[discountedCampaings]
+	const filteredRewardCampaigns = useMemo(
+		() => rewardsCampaigns(discountedCampaigns),
+		[discountedCampaigns]
 	);
-	// We're counting campaings for each Customer based on published coupons
+	const filteredCouponCampaigns = useMemo(
+		() => couponCampaigns(discountedCampaigns),
+		[discountedCampaigns]
+	);
+
+	// We're counting Campaigns for each Customer based on published coupons
 	const countedCampaigns = useMemo(
 		() => countCampaigns(filteredCouponCampaigns, currentCustomer),
 		[filteredCouponCampaigns, currentCustomer]
@@ -59,6 +77,7 @@ const SidebarPersonalDiscounts = ({
 			{!_isEmpty(currentCustomer) && <SidebarCustomer />}
 			{!_isEmpty(campaigns) && !_isEmpty(currentCustomer) && (
 				<>
+					<SidebarRewards filteredRewardCampaigns={filteredRewardCampaigns} />
 					<SidebarQualifications />
 					<div className="sidebarSectionHeading accordionSection">
 						<span className="sidebarSectionTitle">

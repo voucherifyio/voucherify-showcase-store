@@ -46,9 +46,19 @@ const CustomersModal = ({ customers, campaigns }) => {
 						</p>
 					</div>
 					<div className="customersModalCustomers">
-						{customers.map((customer) => (
-							<CustomersModalCustomer key={customer.name} customer={customer} />
-						))}
+						{customers
+							.filter(
+								(cust) =>
+									cust.metadata.title !== 'Referral Friend #1' &&
+									cust.metadata.title !== 'Referral Friend #2' &&
+									cust.metadata.title !== 'Referral Friend #3'
+							)
+							.map((customer) => (
+								<CustomersModalCustomer
+									key={customer.name}
+									customer={customer}
+								/>
+							))}
 					</div>
 					<div className="customersModalSourceLinks">
 						<div className="sourceLinkWrapper">

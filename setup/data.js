@@ -52,6 +52,48 @@ exports.customers = [
 			postal_code: '01-002',
 		},
 	},
+	{
+		metadata: {
+			demostore_id: 'referralCustomer1',
+			description: 'Customer for referral campaign purposes',
+			title: 'Referral Friend #1',
+		},
+		address: {
+			city: 'München',
+			state: 'Freistaat Bayern',
+			line_1: 'Rosenstrasse 44',
+			country: 'Germany',
+			postal_code: '81337',
+		},
+	},
+	{
+		metadata: {
+			demostore_id: 'referralCustomer2',
+			description: 'Customer for referral campaign purposes',
+			title: 'Referral Friend #2',
+		},
+		address: {
+			city: 'Airdrie',
+			state: 'North Lanarkshire',
+			line_1: '22 Asfordby Rd',
+			country: 'Scotland',
+			postal_code: 'ML6 1YN',
+		},
+	},
+	{
+		metadata: {
+			demostore_id: 'referralCustomer3',
+			description: 'Customer for referral campaign purposes',
+			title: 'Referral Friend #3',
+		},
+		address: {
+			city: 'Tulsa',
+			state: 'Oklahoma',
+			line_1: '4882  Henry Ford Avenue',
+			country: 'United States',
+			postal_code: '74119',
+		},
+	},
 ];
 
 exports.vouchers = [
@@ -118,7 +160,7 @@ exports.campaigns = [
 		name: 'Referral Campaign',
 		type: 'AUTO_UPDATE',
 		campaign_type: 'REFERRAL_PROGRAM',
-		referral_rogram: {
+		referral_program: {
 			conversion_event_type: 'redemption',
 		},
 		voucher: {
@@ -134,9 +176,9 @@ exports.campaigns = [
 		metadata: {
 			assigned_val_rules: 'Referral Campaign - Validation Rule',
 			redemption_steps:
-				'Referre segment: New customers; First reward: 1 referred customer; Final reward: 3 referred customers',
+				'First reward: 1 referred customer; Final reward: 3 referred customers',
 			description:
-				'Share your referral voucher code with three of your friends! If your friends will be new customers of our shop, they will get a special discount! For referring one friend you will get first reward - but if you referr three friends you will get even bigger reward!',
+				"Share your referral code with three of your friends! For one	referral you will get voucher with 5% discount, for three it's 10%. New customers only!",
 		},
 	},
 	{
@@ -427,18 +469,6 @@ exports.segments = [
 	{
 		type: 'auto-update',
 		name: 'Get 5% off your first purchase',
-		filter: {
-			junction: 'and',
-			'summary.orders.total_count': {
-				conditions: {
-					$is: [0],
-				},
-			},
-		},
-	},
-	{
-		type: 'auto-update',
-		name: 'Customers without orders',
 		filter: {
 			junction: 'and',
 			'summary.orders.total_count': {

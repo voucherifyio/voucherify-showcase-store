@@ -11,19 +11,13 @@ import Col from 'react-bootstrap/Col';
 import Tooltip from '@material-ui/core/Tooltip';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import _isEmpty from 'lodash.isempty';
-import {
-	setEnableSidebar,
-	newSession,
-	newCustomers,
-} from '../../redux/actions/userActions';
+import { setEnableSidebar, newSession } from '../../redux/actions/userActions';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { getCurrentCustomer } from '../../redux/actions/userActions';
 import { clearMessages } from '../../redux/actions/webhookActions';
-import AppModal from '../App/AppModal';
-import VoucherifyButton from '../App/VoucherifyButton';
 import Spinner from 'react-bootstrap/Spinner';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import VoucherifyInformation from '../App/VoucherifyInformation';
+import ReferralCampaignModal from './ReferralCampaignModal';
 
 const refCamp = (campaigns) =>
 	campaigns.find((camp) => camp.name === 'Referral Campaign');
@@ -47,7 +41,17 @@ const NavigationMenu = ({
 	const [modalShow, setModalShow] = useState(false);
 	const [referralCampaign, setReferralCampaign] = useState(null);
 	const [referralCampaignCode, setReferralCampaignCode] = useState(null);
+	const [showBadge, setShowBadge] = useState(true);
 	const referralCamp = useMemo(() => refCamp(campaigns), [campaigns]);
+
+	const handleOnHide = () => {
+		setModalShow(!modalShow);
+	};
+
+	const handleSelectCustomer = (id) => {
+		dispatch(getCurrentCustomer(id));
+		setModalShow(false);
+	};
 
 	useEffect(() => {
 		if (!_isEmpty(referralCamp)) {
@@ -116,57 +120,37 @@ const NavigationMenu = ({
 									</div>
 								</NavDropdown.Item>
 							))}
-
-						{/* Let's enable creation of new customers only once */}
-						{customers.length !== 6 && (
-							<NavDropdown.Item
-								onClick={() => dispatch(newCustomers())}
-								key={'newcustomers'}
-								className="navigationMenuUserDropdownItem"
-							>
-								<div className="customerNavigationTitle customerAddNew">
-									Add customers
-								</div>
-								<div className="customerNavigationDescription">
-									Create 3 additional customers for testing out referral
-									campaigns
-								</div>
-							</NavDropdown.Item>
-						)}
 					</NavDropdown>
 				)}
 				{!_isEmpty(referralCampaign) && !_isEmpty(referralCampaignCode) && (
 					<>
-						<Tooltip title="Referr a friend!">
-							<IconButton
-								onClick={() => setModalShow(true)}
-								className="navigationMenuIcon"
-							>
-								<GroupAddIcon />
-							</IconButton>
-						</Tooltip>
-						<AppModal show={modalShow} onHide={() => setModalShow(false)}>
-							{referralCampaign.name}
-							<p>{referralCampaign.metadata.description}</p>
-							<VoucherifyInformation>
-								<p>
-									Copy the code below and switch shop customers{' '}
-									<b>(Click on the customer avatar)</b> If you need, you can
-									create <b>three more customers</b> to use in your referral
-									campaigns!
-								</p>
-								<p>
-									After redeeming the referral code as other customer, switch
-									back to{' '}
-									<b>
-										{currentCustomer.name} ({currentCustomer.metadata.title})
-									</b>{' '}
-									to get a reward - if you successfully referred one or three
-									customers!
-								</p>
-							</VoucherifyInformation>
-							<VoucherifyButton code={referralCampaignCode} />
-						</AppModal>
+						<div className="customBadgeWrapper">
+							<div
+								className={
+									showBadge
+										? 'customBadge pulsate'
+										: 'customBadge pulsate hidden'
+								}
+							></div>
+							<Tooltip title="Referr a friend!">
+								<IconButton
+									onClick={() => {
+										setModalShow(true);
+										setShowBadge(false);
+									}}
+									className="navigationMenuIcon"
+								>
+									<GroupAddIcon />
+								</IconButton>
+							</Tooltip>
+						</div>
+						<ReferralCampaignModal
+							show={modalShow}
+							onHide={handleOnHide}
+							referralCampaign={referralCampaign}
+							referralCampaignCode={referralCampaignCode}
+							handleSelectCustomer={handleSelectCustomer}
+						/>
 					</>
 				)}
 				<Tooltip title="Go to cart">

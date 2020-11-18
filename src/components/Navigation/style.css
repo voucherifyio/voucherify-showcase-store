@@ -103,6 +103,42 @@
 .customerAddNew {
 	color: var(--orange);
 }
+.referralCustomers {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.referralCustomers__customer {
+	/* border: 1px solid var(--black); */
+	border-radius: 10px;
+	padding: 1rem;
+	text-align: center;
+	transition: all 0.4s ease;
+	margin: 1rem 0;
+	box-shadow: var(--custom-box-shadow2);
+	cursor: pointer;
+}
+
+.referralCustomers__name {
+	font-size: 0.9rem;
+}
+
+.referralCustomers__title {
+	font-size: 0.8rem;
+}
+.referralCustomers__button {
+	width: 100%;
+	border-radius: 10px;
+	border: unset;
+	padding: 1em 0;
+}
+
+.code-btn__wrapper {
+	display: flex;
+	justify-content: center;
+}
+
 @media (max-width: 575.98px) {
 	.navigation {
 		height: unset;
@@ -174,6 +210,9 @@
 }
 
 @media (max-width: 991.98px) {
+	.referralCustomers__customer {
+		width: 100%;
+	}
 }
 
 @media (max-width: 1199.98px) {

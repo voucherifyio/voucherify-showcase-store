@@ -378,17 +378,6 @@ const setupValidationRules = async () => {
 			error: { message: 'Check campaign rules' },
 			rules: {
 				1: {
-					name: 'customer.segment',
-					error: { message: 'Avaliable only for new customers' },
-					rules: {},
-					conditions: {
-						$is: [
-							segments.find((s) => s.name === 'Customers without orders')
-								.voucherifyId,
-						],
-					},
-				},
-				2: {
 					name: 'campaign.redemptions.customers_count',
 					error: { message: 'Only one redemption per customer in campaign' },
 					rules: {},
@@ -396,7 +385,7 @@ const setupValidationRules = async () => {
 						$less_than_or_equal: [1],
 					},
 				},
-				logic: '(1) and (2)',
+				logic: '1',
 			},
 		},
 		{

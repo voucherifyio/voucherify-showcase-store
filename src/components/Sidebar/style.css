@@ -14,6 +14,10 @@
 .currentTab {
 	color: var(--orange) !important;
 }
+.campaignRewardChip {
+	background-color: var(--orange) !important;
+	color: white !important;
+}
 
 .sidebarWrapper {
 	font-size: 0.9rem;
@@ -174,6 +178,20 @@
 	color: var(--lightgrey);
 }
 
+.sidebarSectionCustomerDataCockpit {
+	display: inline-flex;
+	align-items: center;
+	color: var(--orange) !important;
+	height: 40px;
+	font-weight: 700;
+	transition: background-color 0.2s ease;
+	/* padding: 0 10px; */
+}
+
+.sidebarSectionCustomerDataCockpit:hover {
+	color: var(--orange) !important;
+	background-color: #dfdede;
+}
 .qualificationSection {
 	padding-right: 0.5rem !important;
 }
@@ -229,6 +247,51 @@
 
 .sidebarWrapper .campaignStepText {
 	margin-bottom: 0px;
+}
+
+.customBadgeWrapper {
+	position: relative;
+}
+
+.hidden {
+	display: none !important;
+}
+.customBadge {
+	position: absolute;
+	background-color: var(--orange);
+	border-radius: 50%;
+	color: #fff;
+	width: 15px;
+	height: 15px;
+	right: 0;
+}
+
+.pulsate::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	animation: pulse 1s ease infinite;
+	border-radius: 50%;
+	border: 4px double var(--orange);
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	60% {
+		transform: scale(1.3);
+		opacity: 0.4;
+	}
+	100% {
+		transform: scale(1.4);
+		opacity: 0;
+	}
 }
 
 @media (max-width: 575.98px) {

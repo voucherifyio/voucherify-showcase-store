@@ -72,7 +72,7 @@ const SidebarCartDiscounts = ({
 	const cartDiscountCampaigns = discountCampaigns.filter(
 		(camp) => camp.campaign_type === 'PROMOTION'
 	);
-	// We're counting campaings for each Customer based on published coupons
+	// We're counting Campaigns for each Customer based on published coupons
 
 	return (
 		<div className="accordions">

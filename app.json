@@ -5,6 +5,10 @@
 	"website": "https://www.voucherify.io",
 	"repository": "https://github.com/voucherifyio/voucherify-showcase-store",
 	"env": {
+		"SETUP_APP": {
+			"description": "Should app setup the products & campaigns?",
+			"value": true
+		},
 		"REACT_APP_BACKEND_APP_ID": {
 			"description": "Server-side Application ID"
 		},

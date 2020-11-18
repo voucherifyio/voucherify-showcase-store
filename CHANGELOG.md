@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - MAJOR Webhook integration
-- MAJOR Referral Campaings integration
+- MAJOR Referral Campaigns integration
 - MAJOR Create new customers for referral campaign integration
 - MINOR Localstorage improvements
 - MINOR Application optimizations
@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - MAJOR Store design upgrade
-- MAJOR You can add your own vouchers and campaings to the demo store - see README to learn more
+- MAJOR You can add your own vouchers and Campaigns to the demo store - see README to learn more
 - MINOR New discounts
 - MINOR Improvements
 
@@ -62,7 +62,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - MAJOR Create customers per new store session
-- MAJOR Create campaings / vouchers for each new deployed store
+- MAJOR Create Campaigns / vouchers for each new deployed store
 - MAJOR Implemented validation rules
 
 ### Fixed

@@ -73,11 +73,11 @@ const SidebarCustomer = ({ currentCustomer, dispatch }) => {
 					</p>
 					<a
 						href={currentCustomer.assets.cockpit_url}
-						className="sidebarSectionCustomerData"
+						className="sidebarSectionCustomerDataCockpit"
 						rel="noopener noreferrer"
 						target="_blank"
 					>
-						Check customer cockpit
+						&nbsp;> Check customer cockpit&nbsp;
 					</a>
 				</div>
 			</div>
