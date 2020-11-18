@@ -132,7 +132,7 @@ const NavigationMenu = ({
 										: 'customBadge pulsate hidden'
 								}
 							></div>
-							<Tooltip title="Referr a friend!">
+							<Tooltip title="Refer a friend!">
 								<IconButton
 									onClick={() => {
 										setModalShow(true);
