@@ -55,6 +55,8 @@ After deployment, the script runs post-install, where it populates your Voucheri
 
 If you want to use an integrated Referral Campaign, you need to create Reward Tiers. Learn more at [Enabling Referral Campaign](#enabling-referral-campaign)
 
+If you want to list Customer Rewards & Loyalty Programs on the external Customer Cockpit rembember to [set up your Brand Details](https://support.voucherify.io/article/181-customer-cockpit-overview)
+
 ## Local installation
 
 In the project folder run, `npm install` to set up the application. After that, the app runs a postinstall script to create Campaigns, Products Validation Rules, and Validation Rules assignment.
