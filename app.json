@@ -27,7 +27,7 @@
 		},
 		"REACT_APP_VERSION": {
 			"description": "App version",
-			"value": "2.6.1"
+			"value": "3.2.1"
 		}
 	},
 	"addons": [
