@@ -16,6 +16,8 @@
 
 .voucherifyInformationLogo {
 	width: 5%;
+	align-self: flex-start;
+	padding-top: 5px;
 }
 .voucherifyInformationText {
 	font-size: 0.8rem;

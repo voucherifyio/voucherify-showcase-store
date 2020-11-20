@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import AppModal from '../App/AppModal';
 import VoucherifyButton from '../App/VoucherifyButton';
 import VoucherifyInformation from '../App/VoucherifyInformation';
+import Button from 'react-bootstrap/Button';
 
 const ReferralCampaignModal = ({
 	currentCustomer,
@@ -52,12 +53,12 @@ const ReferralCampaignModal = ({
 								<h6 className="referralCustomers__title">
 									{customer.metadata.title}
 								</h6>
-								<button
-									className="referralCustomers__button"
+								<Button
 									onClick={() => handleSelectCustomer(customer.id)}
+									className="voucherifyButtonDark"
 								>
 									Login
-								</button>
+								</Button>
 							</div>
 						))}
 				</div>

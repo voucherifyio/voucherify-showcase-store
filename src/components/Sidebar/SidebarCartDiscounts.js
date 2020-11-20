@@ -122,6 +122,11 @@ const SidebarCartDiscounts = ({
 									id={campaign.id}
 									expanded={expanded === campaign.id}
 									onChange={handleChange(campaign.id)}
+									className={
+										expanded === campaign.id
+											? 'accordionBackground open'
+											: 'accordionBackground'
+									}
 								>
 									<AccordionSummary
 										expandIcon={<ExpandMoreIcon />}

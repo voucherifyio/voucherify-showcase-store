@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.6.2] - 20.11.2020
+
+### Added
+
+- MINOR Ui improvements
+
 ## [2.6.1] - 10.11.2020
 
 ### Added

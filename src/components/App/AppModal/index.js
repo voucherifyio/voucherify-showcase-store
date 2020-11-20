@@ -16,7 +16,7 @@ const AppModal = ({ show, onHide, children }) => {
 			<Modal.Header closeButton className="modalHeader">
 				{children[0]}
 			</Modal.Header>
-			<Modal.Body>{children.slice(1)}</Modal.Body>
+			<Modal.Body className="modalBody">{children.slice(1)}</Modal.Body>
 		</Modal>
 	);
 };

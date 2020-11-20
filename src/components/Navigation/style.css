@@ -114,10 +114,13 @@
 	border-radius: 10px;
 	padding: 1rem;
 	text-align: center;
-	transition: all 0.4s ease;
+	transition: all 0.2s ease 0s;
 	margin: 1rem 0;
-	box-shadow: var(--custom-box-shadow2);
 	cursor: pointer;
+}
+
+.referralCustomers__customer:hover {
+	box-shadow: var(--custom-box-shadow);
 }
 
 .referralCustomers__name {
@@ -126,12 +129,6 @@
 
 .referralCustomers__title {
 	font-size: 0.8rem;
-}
-.referralCustomers__button {
-	width: 100%;
-	border-radius: 10px;
-	border: unset;
-	padding: 1em 0;
 }
 
 .code-btn__wrapper {

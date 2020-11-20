@@ -211,6 +211,10 @@
 	border-top: 1px solid var(--lightgrey);
 }
 
+.accordionBackground:hover {
+	box-shadow: var(--custom-box-shadow2);
+	z-index: 2;
+}
 .accordions:last-child {
 	border-bottom: 1px solid var(--lightgrey);
 }
