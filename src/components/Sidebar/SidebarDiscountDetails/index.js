@@ -7,10 +7,13 @@ import VoucherifyButton from '../../App/VoucherifyButton';
 import SidebarDiscountDetailsTier from './SidebarDiscountDetailsTier';
 import './style.css';
 
-const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
+const SidebarDiscountDetails = ({
+	campaign,
+	code = 'cartDiscount',
+	coupon,
+}) => {
 	let discountText = '';
 	let discountProduct = '';
-
 	// if this is a Voucher
 	if (!_isEmpty(campaign.code)) {
 		if (campaign.discount.type === 'PERCENT') {
@@ -26,12 +29,16 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
 
 	// if this is a Campaign
 	if (!_isEmpty(campaign.voucher)) {
-		if (campaign.voucher.discount.type === 'PERCENT') {
-			discountText = `${campaign.voucher.discount.percent_off}% off`;
-		} else if (campaign.voucher.discount.type === 'AMOUNT') {
-			discountText = `$${(campaign.voucher.discount.amount_off / 100).toFixed(
-				2
-			)} off`;
+		if (campaign.voucher.discount) {
+			if (campaign.voucher.discount.type === 'PERCENT') {
+				discountText = `${campaign.voucher.discount.percent_off}% off`;
+			} else if (campaign.voucher.discount.type === 'AMOUNT') {
+				discountText = `$${(campaign.voucher.discount.amount_off / 100).toFixed(
+					2
+				)} off`;
+			}
+		} else if (campaign.voucher.type === 'GIFT_VOUCHER') {
+			discountText = `$${(campaign.voucher.gift.amount / 100).toFixed(2)}`;
 		}
 
 		if (!_isEmpty(campaign.metadata.discount_suffix)) {
@@ -44,7 +51,10 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
 			<div key={campaign.name}>
 				{code !== 'cartDiscount' && (
 					<p className="discountDescription">
-						Discount{' '}
+						{campaign.hasOwnProperty('voucher') &&
+						campaign.voucher.type === 'GIFT_VOUCHER'
+							? 'Gift card '
+							: 'Discount '}
 						<span className="discountDescriptionAmount">{discountText}</span>
 						{discountProduct}
 					</p>
@@ -52,6 +62,16 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
 
 				{/* We're checking if the Campaign has a voucher code */}
 				{code !== 'cartDiscount' && <VoucherifyButton code={code} />}
+				{campaign.campaign_type === 'GIFT_VOUCHERS' && (
+					<div className="campaignDescription">
+						<p>
+							Current balance: $
+							{coupon.hasOwnProperty('giftCardBalance')
+								? coupon.giftCardBalance / 100
+								: coupon.giftCardAmount / 100}
+						</p>
+					</div>
+				)}
 				{campaign.metadata.description && (
 					<div
 						className="campaignDescription"
@@ -113,4 +133,5 @@ export default SidebarDiscountDetails;
 SidebarDiscountDetails.propTypes = {
 	campaign: PropTypes.object.isRequired,
 	code: PropTypes.string,
+	coupon: PropTypes.object,
 };

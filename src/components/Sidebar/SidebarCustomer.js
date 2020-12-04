@@ -71,6 +71,12 @@ const SidebarCustomer = ({ currentCustomer, dispatch }) => {
 							{currentCustomer.loyalty.referred_customers}
 						</span>
 					</p>
+					<p className="sidebarSectionCustomerData">
+						Total Loyalty Points:{' '}
+						<span className="sidebarSectionCustomerDataContent">
+							{currentCustomer.loyalty.points}
+						</span>
+					</p>
 					<a
 						href={currentCustomer.assets.cockpit_url}
 						className="sidebarSectionCustomerDataCockpit"

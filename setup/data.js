@@ -157,6 +157,48 @@ exports.vouchers = [
 
 exports.campaigns = [
 	{
+		name: 'Loyalty Campaign',
+		metadata: {
+			assigned_rewards:
+				'Loyalty Campaign - Reward 1; Loyalty Campaign - Reward 2; Loyalty Campaign - Reward 3',
+			assigned_rewards_points: '100; null; 150',
+			redemption_steps: '',
+			description: 'Use your loyalty card to exchange points for rewards',
+		},
+		type: 'AUTO_UPDATE',
+		auto_join: false,
+		voucher: {
+			type: 'LOYALTY_CARD',
+			loyalty_card: {
+				points: 0,
+			},
+			code_config: {
+				pattern: 'HOT-BEANS-#######',
+			},
+		},
+		vouchers_count: 0,
+		campaign_type: 'LOYALTY_PROGRAM',
+		join_once: false,
+	},
+	{
+		name: 'Gift Cards Campaign',
+		type: 'AUTO_UPDATE',
+		voucher: {
+			type: 'GIFT_VOUCHER',
+			gift: {
+				amount: 10000,
+			},
+			redemption: {
+				quantity: null,
+			},
+		},
+		metadata: {
+			assigned_val_rules: 'Gift Cards Campaign - Validation Rule',
+			redemption_steps: 'Cart value: > $50',
+			description: 'Use your gift card to buy some amazing coffee!',
+		},
+	},
+	{
 		name: 'Referral Campaign',
 		type: 'AUTO_UPDATE',
 		campaign_type: 'REFERRAL_PROGRAM',
@@ -179,6 +221,23 @@ exports.campaigns = [
 				'First reward: 1 referred customer; Final reward: 3 referred customers',
 			description:
 				"Share your referral code with three of your friends! For one	referral you will get voucher with 5% discount, for three it's 10%. New customers only!",
+		},
+	},
+	{
+		name: 'Loyalty Campaign - Reward 1',
+		type: 'AUTO_UPDATE',
+		metadata: {
+			auto_publish: false,
+		},
+		voucher: {
+			type: 'DISCOUNT_VOUCHER',
+			discount: {
+				percent_off: 10,
+				type: 'PERCENT',
+			},
+			redemption: {
+				quantity: 1,
+			},
 		},
 	},
 	{
@@ -469,6 +528,30 @@ exports.segments = [
 	{
 		type: 'auto-update',
 		name: 'Get 5% off your first purchase',
+		filter: {
+			junction: 'and',
+			'summary.orders.total_count': {
+				conditions: {
+					$is: [0],
+				},
+			},
+		},
+	},
+	{
+		type: 'auto-update',
+		name: 'Loyalty Members',
+		filter: {
+			junction: 'and',
+			'summary.orders.total_count': {
+				conditions: {
+					$is: [1],
+				},
+			},
+		},
+	},
+	{
+		type: 'auto-update',
+		name: 'New customers',
 		filter: {
 			junction: 'and',
 			'summary.orders.total_count': {

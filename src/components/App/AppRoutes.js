@@ -22,4 +22,4 @@ const AppRoutes = () => {
 	);
 };
 
-export default React.memo(AppRoutes);
+export default AppRoutes;

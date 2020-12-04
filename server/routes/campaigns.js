@@ -12,8 +12,8 @@ router.route('/').get(async (req, res) => {
 		const campaigns = allCampaigns.campaigns.filter(
 			(campaign) =>
 				campaign.name !== 'Referral Reward - 15% Discount' &&
-				campaign.name !== 'Predefined Gift Cards' &&
-				campaign.campaign_type !== 'GIFT_VOUCHERS'
+				campaign.name !== 'Predefined Gift Cards'
+			// && campaign.campaign_type !== 'GIFT_VOUCHERS'
 		);
 		return res.json(campaigns);
 	} catch (e) {

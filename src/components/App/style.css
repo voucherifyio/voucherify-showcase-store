@@ -102,7 +102,21 @@ a:hover {
 .buttonWrapper {
 	display: flex;
 }
+.productRewardWrapper {
+	display: flex;
+	justify-content: center;
+	height: 200px !important;
+	/* flex-direction: column; */
+}
 
+.productRewardWrapper > img {
+	max-height: 100%;
+	/* max-width: 100%; */
+}
+
+.productRewardWrapper + h4 {
+	text-align: center;
+}
 .voucherifyButtonOrange {
 	color: var(--white) !important;
 	font-family: 'Lato' !important;

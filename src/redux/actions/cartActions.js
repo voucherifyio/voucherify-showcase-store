@@ -20,9 +20,14 @@ import {
 	SET_PAYMENT_METHOD,
 	REMOVE_DISCOUNT,
 } from '../constants';
+import { updateGiftCardBalance } from './userActions';
 
 export const getDiscountRequest = () => {
 	return { type: GET_DISCOUNT_REQUEST };
+};
+
+export const addProductReward = (productReward) => {
+	return { type: 'ADD_PRODUCT_REWARD', payload: { productReward } };
 };
 
 export const getDiscountError = () => {
@@ -111,7 +116,6 @@ export const getCartDiscount = (activeCartDiscount) => async (
 			const promotionCampaigns = campaigns.find(
 				(camp) => camp.id === activeCartDiscount
 			).tiers;
-
 			window.Voucherify.validate(getCartDiscountPayload, (res) => {
 				const promotions = res.promotions;
 				const foundPromotions = promotions.filter((o1) =>
@@ -204,7 +208,7 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				items,
 				paymentMethod
 			);
-			checkoutPayload.status = 'FULFILLED';
+			checkoutPayload.status = 'PAID';
 			await sendPayload(checkoutPayload, 'order');
 			dispatch(clearCart());
 		} else {
@@ -214,7 +218,23 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				items,
 				paymentMethod
 			);
-			if (discount.hasOwnProperty('code')) {
+			if (discount.hasOwnProperty('code') && discount.hasOwnProperty('gift')) {
+				const discountCode = discount.code;
+				const giftCardBalanceAfterRedemption =
+					discount.gift.balance - discount.order.discount_amount;
+				const campaignName = discount.campaign;
+				checkoutPayload.code = discountCode;
+				const giftCardCode = discountCode;
+				await sendPayload(checkoutPayload, 'redeem');
+				dispatch(clearCart());
+				dispatch(
+					updateGiftCardBalance(
+						campaignName,
+						giftCardCode,
+						giftCardBalanceAfterRedemption
+					)
+				);
+			} else if (discount.hasOwnProperty('code')) {
 				// If voucher is applied
 				const discountCode = discount.code;
 				checkoutPayload.code = discountCode;

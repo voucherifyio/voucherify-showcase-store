@@ -27,6 +27,10 @@ window.Voucherify.initialize(
 	process.env.REACT_APP_FRONTEND_KEY
 );
 
+if (Boolean(process.env.REACT_APP_API_ENDPOINT)) {
+	window.Voucherify.setBaseUrl(process.env.REACT_APP_API_ENDPOINT);
+}
+
 const App = ({
 	dispatch,
 	items,
@@ -68,7 +72,7 @@ const App = ({
 	}, [currentCustomer, dispatch, discount, items]);
 
 	useEffect(() => {
-		if (!_isEmpty(discount) && !_has(discount, 'code')) {
+		if (!_isEmpty(discount) && _has(discount, 'code')) {
 			dispatch(getDiscount(discount.code));
 		}
 	}, [dispatch, items, paymentMethod, discount]);
@@ -115,4 +119,4 @@ App.propTypes = {
 	products: PropTypes.array,
 };
 
-export default connect(mapStateToProps)(React.memo(App));
+export default connect(mapStateToProps)(App);

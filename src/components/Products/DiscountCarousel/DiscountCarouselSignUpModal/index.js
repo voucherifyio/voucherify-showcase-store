@@ -6,6 +6,7 @@ import {
 	updateCurrentCustomerEmail,
 	publishCampaign,
 	// getCampaigns,
+	// createEvent,
 } from '../../../../redux/actions/userActions';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -32,6 +33,16 @@ const DiscountCarouselSignUpModal = ({
 
 	const asyncDispatch = async () => {
 		await dispatch(updateCurrentCustomerEmail(email));
+		await fetch(`${process.env.REACT_APP_API_URL || ''}/events/create`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			credentials: 'include',
+			body: JSON.stringify({
+				eventName: 'newsletter_subscribed',
+				currentCustomer,
+			}),
+		});
+		// await dispatch(createEvent('newsletter_subscribed'));
 		await dispatch(publishCampaign(campaign));
 		// await dispatch(getCampaigns());
 		onHide();
@@ -95,9 +106,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(
-	React.memo(DiscountCarouselSignUpModal)
-);
+export default connect(mapStateToProps)(DiscountCarouselSignUpModal);
 
 DiscountCarouselSignUpModal.propTypes = {
 	onHide: PropTypes.func,

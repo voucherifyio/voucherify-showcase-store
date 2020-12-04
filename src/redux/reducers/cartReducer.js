@@ -17,6 +17,7 @@ import _isEmpty from 'lodash.isempty';
 
 const initialState = {
 	items: [],
+	productRewards: [],
 	totalAmount: 0,
 	itemsTotalCount: 0,
 	totalAmountAfterDiscount: 0,
@@ -32,6 +33,12 @@ export const cartReducer = (state = initialState, action) => {
 			return {
 				...state,
 				fetchingDiscount: true,
+			};
+		}
+		case 'ADD_PRODUCT_REWARD': {
+			return {
+				...state,
+				productRewards: [...state.productRewards, action.payload.productReward],
 			};
 		}
 		case GET_TOTALS: {
@@ -107,6 +114,36 @@ export const cartReducer = (state = initialState, action) => {
 							discountedAmount,
 						};
 					}
+					return {
+						...state,
+						totalAmount,
+						itemsTotalCount,
+						totalAmountAfterDiscount,
+						discountedAmount,
+					};
+				} else if (_has(discount, 'gift')) {
+					let discountedAmount = discount.gift.balance;
+
+					if (discountedAmount > totalAmount) {
+						discountedAmount = totalAmount;
+					}
+
+					totalAmountAfterDiscount = totalAmount - discountedAmount;
+
+					if (totalAmountAfterDiscount < 0) {
+						totalAmountAfterDiscount = 0;
+					}
+
+					return {
+						...state,
+						totalAmount,
+						itemsTotalCount,
+						totalAmountAfterDiscount,
+						discountedAmount,
+					};
+				} else if (discount.hasOwnProperty('loyalty')) {
+					const discountedAmount = discount.order.discount_amount;
+					totalAmountAfterDiscount = totalAmount - discountedAmount;
 					return {
 						...state,
 						totalAmount,

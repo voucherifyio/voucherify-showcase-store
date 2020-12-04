@@ -62,7 +62,7 @@ const VoucherifyButton = ({
 	}
 };
 
-export default React.memo(VoucherifyButton);
+export default VoucherifyButton;
 
 VoucherifyButton.propTypes = {
 	code: PropTypes.string,

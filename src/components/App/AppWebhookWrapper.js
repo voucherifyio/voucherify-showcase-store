@@ -12,11 +12,12 @@ import {
 	getCampaigns,
 	addPublishedCodes,
 } from '../../redux/actions/userActions';
-
+import { addProductReward } from '../../redux/actions/cartActions';
 const AppWebhookWrapper = ({
 	dispatch,
 	customers,
 	currentCustomer,
+	products,
 	webhookMessages,
 }) => {
 	const [modalShow, setModalShow] = useState(false);
@@ -25,6 +26,7 @@ const AppWebhookWrapper = ({
 		const socket = socketIOClient(`${process.env.REACT_APP_API_URL || ''}`);
 		socket.on('new-message', (data) => {
 			const voucher = data.data.voucher;
+			console.log(data);
 			switch (data.type) {
 				case 'voucher.published':
 					if (customers.find((customer) => customer.id === voucher.holder_id)) {
@@ -45,38 +47,58 @@ const AppWebhookWrapper = ({
 							return setModalShow(true);
 						}
 					}
-
 					return;
+
 				case 'customer.rewarded':
-					const customerId = voucher.holder_id;
+					const customerId =
+						voucher !== undefined ? voucher.holder_id : data.data.object.id;
 					let message;
+
 					if (customers.find((customer) => customer.id === customerId)) {
-						if (voucher.campaign === 'Referral Campaign Tier 1 - Reward') {
-							message = {
-								id: voucher.id,
-								title: 'Your reward is here!',
-								body:
-									'Thanks for referring your friend! Referr two more to get even bigger reward!',
-								code: voucher.code,
-							};
+						if (voucher !== undefined) {
+							if (voucher.campaign === 'Referral Campaign Tier 1 - Reward') {
+								message = {
+									id: voucher.id,
+									title: 'Your reward is here!',
+									body:
+										'Thanks for referring your friend! Referr two more to get even bigger reward!',
+									code: voucher.code,
+								};
+							} else if (
+								voucher.campaign === 'Referral Campaign Tier 2 - Reward'
+							) {
+								message = {
+									id: voucher.id,
+									title: 'Your reward is here!',
+									body:
+										'You rule! Thanks for referring three new customers! Here is your final reward!',
+									code: voucher.code,
+								};
+							} else if (voucher.code) {
+								message = {
+									id: voucher.id,
+									title: 'Your reward is here!',
+									body: 'Get the code right now!',
+									code: voucher.code,
+								};
+							}
 						} else if (
-							voucher.campaign === 'Referral Campaign Tier 2 - Reward'
+							data.data.related_object.hasOwnProperty('parameters') &&
+							data.data.related_object.parameters.hasOwnProperty('product')
 						) {
 							message = {
-								id: voucher.id,
-								title: 'Your reward is here!',
-								body:
-									'You rule! Thanks for referring three new customers! Here is your final reward!',
-								code: voucher.code,
+								id: data.data.related_object.id,
+								title: 'You get a free product',
+								body: 'Contact us to claim your free product!',
+								product: products.find(
+									(p) => p.id === data.data.related_object.parameters.product.id
+								).name,
 							};
-						} else {
-							message = {
-								id: voucher.id,
-								title: 'Your reward is here!',
-								body: 'Get the code right now!',
-								code: voucher.code,
-							};
+							dispatch(
+								addProductReward(data.data.related_object.parameters.product.id)
+							);
 						}
+
 						dispatch(
 							addPublishedCodes(customerId, {
 								...voucher,
@@ -94,7 +116,7 @@ const AppWebhookWrapper = ({
 					return;
 			}
 		});
-	}, [dispatch, customers]);
+	}, [dispatch, customers, products]);
 
 	const currentMessageCustomer = webhookMessages.find(
 		(msg) => msg.customerId === currentCustomer.id
@@ -120,7 +142,24 @@ const AppWebhookWrapper = ({
 			>
 				{currentMessageCustomer.messages[0].title}
 				<p>{currentMessageCustomer.messages[0].body}</p>
-				<VoucherifyButton code={currentMessageCustomer.messages[0].code} />
+				{currentMessageCustomer.messages[0].hasOwnProperty('code') && (
+					<VoucherifyButton code={currentMessageCustomer.messages[0].code} />
+				)}
+				{currentMessageCustomer.messages[0].hasOwnProperty('product') && (
+					<>
+						<div className="productRewardWrapper">
+							<img
+								src={
+									products.find(
+										(p) => p.name === currentMessageCustomer.messages[0].product
+									).image_url
+								}
+								alt=""
+							/>
+						</div>
+						<h4>{currentMessageCustomer.messages[0].product}</h4>
+					</>
+				)}
 			</AppModal>
 		);
 	} else {
@@ -133,6 +172,7 @@ const mapStateToProps = (state) => {
 		currentCustomer: state.userReducer.currentCustomer,
 		customers: state.userReducer.customers,
 		webhookMessages: state.webhookReducer.webhookMessages,
+		products: state.storeReducer.products,
 	};
 };
 

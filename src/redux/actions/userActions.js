@@ -30,6 +30,7 @@ import {
 	IS_OLD_APP_VERSION,
 	SET_CURRENT_APP_VERSION,
 	ADD_NEW_CUSTOMERS_SUCCESS,
+	UPDATE_GIFT_CARD_BALANCE,
 } from '../constants';
 
 export const isOldAppVersion = () => {
@@ -42,6 +43,17 @@ export const setCurrentAppVersion = (appVersion) => {
 
 export const startUserSessionRequest = () => {
 	return { type: START_USER_SESSION_REQUEST };
+};
+
+export const updateGiftCardBalance = (
+	campaignName,
+	giftCardCode,
+	giftCardBalanceAfterRedemption
+) => {
+	return {
+		type: UPDATE_GIFT_CARD_BALANCE,
+		payload: { campaignName, giftCardCode, giftCardBalanceAfterRedemption },
+	};
 };
 
 export const startUserSessionSuccess = ({ sessionId, publishedCodes }) => {
@@ -206,7 +218,6 @@ export const newCustomers = () => async (dispatch) => {
 		);
 
 		const nextPublishedCodes = await res.json();
-		console.log(nextPublishedCodes);
 
 		dispatch(
 			newCustomersSuccess({
@@ -291,15 +302,22 @@ export const getCampaigns = () => async (dispatch, getState) => {
 						// Is this coupon a reward?
 						if (camp.is_reward) {
 							camps.coupons.push({
-								currentCustomer: code.currentCustomer,
-								customerDataCoupon: camp.code,
+								customer: code.currentCustomer,
+								code: camp.code,
 								customerReward: true,
 								isNewReward: true,
 							});
+						} else if (camp.type === 'GIFT_VOUCHER') {
+							camps.coupons.push({
+								customer: code.currentCustomer,
+								code: camp.code,
+								giftCardAmount: camp.gift.amount,
+								giftCardBalance: camp.gift.amount,
+							});
 						} else {
 							camps.coupons.push({
-								currentCustomer: code.currentCustomer,
-								customerDataCoupon: camp.code,
+								customer: code.currentCustomer,
+								code: camp.code,
 							});
 						}
 					}
@@ -352,7 +370,6 @@ export const updateCurrentCustomerEmail = (email) => async (
 	const { currentCustomer } = getState().userReducer;
 	const id = currentCustomer.id;
 	try {
-		// dispatch(getCurrentCustomerRequest());
 		const res = await fetch(
 			`${process.env.REACT_APP_API_URL || ''}/customers/update`,
 			{
@@ -365,14 +382,12 @@ export const updateCurrentCustomerEmail = (email) => async (
 				}),
 			}
 		);
-    const updatedCurrentCustomer = await res.json();
-    console.log(updatedCurrentCustomer)
-		dispatch(getCurrentCustomerSuccess(updatedCurrentCustomer));
+		const updatedCurrentCustomer = await res.json();
+		dispatch(getCurrentCustomer(updatedCurrentCustomer.id));
 	} catch (error) {
 		console.log('[updateCurrentCustomerEmail][Error]', error);
 	}
 };
-
 export const publishCampaign = (campaign) => async (dispatch, getState) => {
 	const { currentCustomer } = getState().userReducer;
 	try {

@@ -7,9 +7,7 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SidebarQualifications from './SidebarQualifications';
 import { connect } from 'react-redux';
-import SidebarCustomer from './SidebarCustomer';
 import PropTypes from 'prop-types';
 
 const discountCampaigns = (campaigns) =>
@@ -22,7 +20,7 @@ const couponCampaigns = (discountCampaigns) =>
 			camp.campaign_type !== 'PROMOTION' &&
 			!camp.name.toLowerCase().includes('reward') &&
 			camp.campaign_type !== 'LOYALTY_PROGRAM' &&
-			camp.campaign_type !== 'REFERRAL_PROGRAM' &&
+			camp.campaign_type === 'REFERRAL_PROGRAM' &&
 			camp.campaign_type !== 'GIFT_VOUCHERS'
 	);
 
@@ -65,13 +63,11 @@ const SidebarPersonalDiscounts = ({
 
 	return (
 		<div>
-			{!_isEmpty(currentCustomer) && <SidebarCustomer />}
 			{!_isEmpty(campaigns) && !_isEmpty(currentCustomer) && (
 				<>
-					<SidebarQualifications />
 					<div className="sidebarSectionHeading accordionSection">
 						<span className="sidebarSectionTitle">
-							Personal Codes ({countedCampaigns}){' '}
+							Referral Campaigns ({countedCampaigns}){' '}
 						</span>
 					</div>
 

@@ -30,6 +30,7 @@
 		"lodash.isempty": "^4.4.0",
 		"lodash.map": "^4.6.0",
 		"lodash.orderby": "^4.6.0",
+		"per-env": "^1.0.2",
 		"popper.js": "^1.16.1",
 		"prop-types": "^15.7.2",
 		"react": "^16.13.1",
@@ -53,7 +54,9 @@
 		"ws": "^7.3.1"
 	},
 	"scripts": {
-		"postinstall": "if-env SETUP_APP=true && node ./setup/setup.js && react-scripts build || react-scripts build",
+		"postinstall": "per-env",
+		"postinstall:development": "react-scripts build",
+		"postinstall:production": "node ./setup/setup.js && react-scripts build || react-scripts build",
 		"setup": "node ./setup/setup.js",
 		"dev": "NODE_ENV=development PORT=3001 REACT_APP_API_URL=http://localhost:3000 react-scripts start",
 		"dev-server": "NODE_ENV=development REACT_APP_URL=http://localhost:3001 nodemon server/server.js",

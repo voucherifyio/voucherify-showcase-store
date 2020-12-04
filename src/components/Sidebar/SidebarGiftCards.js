@@ -7,9 +7,7 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SidebarQualifications from './SidebarQualifications';
 import { connect } from 'react-redux';
-import SidebarCustomer from './SidebarCustomer';
 import PropTypes from 'prop-types';
 
 const discountCampaigns = (campaigns) =>
@@ -23,7 +21,7 @@ const couponCampaigns = (discountCampaigns) =>
 			!camp.name.toLowerCase().includes('reward') &&
 			camp.campaign_type !== 'LOYALTY_PROGRAM' &&
 			camp.campaign_type !== 'REFERRAL_PROGRAM' &&
-			camp.campaign_type !== 'GIFT_VOUCHERS'
+			camp.campaign_type === 'GIFT_VOUCHERS'
 	);
 
 // This is the case for the Cart Discounts and for not yet active coupons
@@ -39,11 +37,7 @@ const countCampaigns = (filteredCouponCampaigns, currentCustomer) => {
 	return campCount;
 };
 
-const SidebarPersonalDiscounts = ({
-	currentCustomer,
-	campaigns,
-	fetchingCoupons,
-}) => {
+const SidebarGiftCards = ({ currentCustomer, campaigns, fetchingCoupons }) => {
 	const [expanded, setExpanded] = useState('');
 	const handleChange = (panel) => (event, newExpanded) => {
 		setExpanded(newExpanded ? panel : false);
@@ -65,13 +59,11 @@ const SidebarPersonalDiscounts = ({
 
 	return (
 		<div>
-			{!_isEmpty(currentCustomer) && <SidebarCustomer />}
 			{!_isEmpty(campaigns) && !_isEmpty(currentCustomer) && (
 				<>
-					<SidebarQualifications />
 					<div className="sidebarSectionHeading accordionSection">
 						<span className="sidebarSectionTitle">
-							Personal Codes ({countedCampaigns}){' '}
+							Gift Cards ({countedCampaigns}){' '}
 						</span>
 					</div>
 
@@ -147,9 +139,9 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(SidebarPersonalDiscounts);
+export default connect(mapStateToProps)(SidebarGiftCards);
 
-SidebarPersonalDiscounts.propTypes = {
+SidebarGiftCards.propTypes = {
 	currentCustomer: PropTypes.object,
 	fetchingCoupons: PropTypes.bool,
 	vouchers: PropTypes.array,

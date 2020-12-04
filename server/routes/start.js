@@ -6,7 +6,11 @@ const faker = require('faker');
 const voucherify = voucherifyClient({
 	applicationId: process.env.REACT_APP_BACKEND_APP_ID,
 	clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
+	apiUrl: Boolean(process.env.REACT_APP_API_ENDPOINT)
+		? process.env.REACT_APP_API_ENDPOINT
+		: 'https://api.voucherify.io',
 });
+
 const storeCustomers = data.customers;
 
 const allCampigns = async () => {
@@ -105,7 +109,7 @@ router.route('/').get(async (req, res) => {
 			],
 			amount: 30000,
 			customer: dummyOrderCustomer,
-			status: 'FULFILLED',
+			status: 'PAID',
 		});
 
 		const createdCoupons = await Promise.all(

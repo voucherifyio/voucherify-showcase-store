@@ -104,7 +104,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(React.memo(CustomersModal));
+export default connect(mapStateToProps)(CustomersModal);
 
 CustomersModal.propTypes = {
 	customers: PropTypes.array,

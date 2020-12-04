@@ -89,4 +89,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	};
 };
 
-export default connect(null, mapDispatchToProps)(React.memo(ProductCard));
+export default connect(null, mapDispatchToProps)(ProductCard);

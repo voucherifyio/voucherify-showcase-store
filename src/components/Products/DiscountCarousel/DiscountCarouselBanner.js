@@ -15,7 +15,7 @@ const DiscountCarouselBanner = ({
 	const [modalShow, setModalShow] = useState(false);
 
 	const couponForCurrentCustomer = campaign.coupons.find(
-		(coupon) => coupon.currentCustomer === currentCustomer.id
+		(coupon) => coupon.customer === currentCustomer.id
 	);
 
 	const handleOnHide = () => {
@@ -58,8 +58,8 @@ const DiscountCarouselBanner = ({
 							text="Get code"
 							code={
 								campaign.coupons.find(
-									(coupon) => coupon.currentCustomer === currentCustomer.id
-								).customerDataCoupon
+									(coupon) => coupon.customer === currentCustomer.id
+								).code
 							}
 						/>
 					)}
@@ -105,4 +105,4 @@ DiscountCarouselBanner.propTypes = {
 	products: PropTypes.array,
 };
 
-export default connect(mapStateToProps)(React.memo(DiscountCarouselBanner));
+export default connect(mapStateToProps)(DiscountCarouselBanner);

@@ -26,11 +26,13 @@ import {
 	ADD_PUBLISHED_CODES,
 	ADD_NEW_CUSTOMERS_SUCCESS,
 	SET_CURRENT_APP_VERSION,
+	UPDATE_GIFT_CARD_BALANCE,
 } from '../constants';
 import _isEmpty from 'lodash.isempty';
 
 const initialState = {
 	currentCustomer: null,
+	productRewards: [],
 	customers: null,
 	publishedCodes: null,
 	campaigns: null,
@@ -52,6 +54,19 @@ const initialState = {
 
 export const userReducer = (state = initialState, action) => {
 	switch (action.type) {
+		case UPDATE_GIFT_CARD_BALANCE: {
+			const giftCardBalanceAfterRedemption =
+				action.payload.giftCardBalanceAfterRedemption;
+			const campaigns = state.campaigns;
+
+			campaigns
+				.find((camp) => camp.name === action.payload.campaignName)
+				.coupons.find(
+					(coupon) => coupon.code === action.payload.giftCardCode
+				).giftCardBalance = giftCardBalanceAfterRedemption;
+
+			return { ...state, campaigns };
+		}
 		case ADD_NEW_CUSTOMERS_SUCCESS: {
 			return {
 				...state,
@@ -162,11 +177,38 @@ export const userReducer = (state = initialState, action) => {
 			};
 		}
 		case GET_CAMPAIGNS_SUCCESS: {
-			return {
-				...state,
-				campaigns: action.payload.campaigns,
-				fetchingCoupons: false,
-			};
+			const newCampaings = action.payload.campaigns;
+
+			const oldCampaings = state.campaigns;
+			if (oldCampaings !== null) {
+				newCampaings.forEach((camp) => {
+					camp.coupons.forEach((coupon) => {
+						if (
+							coupon.hasOwnProperty('giftCardAmount') &&
+							coupon.giftCardAmount >
+								oldCampaings
+									.find((c) => c.name === camp.name)
+									.coupons.find((cu) => cu.code === coupon.code).giftCardBalance
+						) {
+							coupon.giftCardBalance = oldCampaings
+								.find((c) => c.name === camp.name)
+								.coupons.find((cu) => cu.code === coupon.code).giftCardBalance;
+						}
+					});
+				});
+
+				return {
+					...state,
+					campaigns: newCampaings,
+					fetchingCoupons: false,
+				};
+			} else {
+				return {
+					...state,
+					campaigns: action.payload.campaigns,
+					fetchingCoupons: false,
+				};
+			}
 		}
 		case GET_CAMPAIGNS_ERROR: {
 			return {
@@ -207,7 +249,7 @@ export const userReducer = (state = initialState, action) => {
 			) {
 				currentCustomer = {
 					...action.payload.currentCustomer,
-					assets: state.currentCustomer.assets,
+					assets: { ...action.payload.currentCustomer.assets },
 				};
 			} else {
 				currentCustomer = {

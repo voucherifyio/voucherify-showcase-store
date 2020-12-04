@@ -57,7 +57,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(React.memo(Products));
+export default connect(mapStateToProps)(Products);
 
 Products.propTypes = {
 	fetchingProducts: PropTypes.bool.isRequired,

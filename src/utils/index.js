@@ -19,9 +19,9 @@ export const setValidatePayload = (
 		},
 		amount: total,
 		items: cartItems.map(setCartItemsPayload),
-		metadata: {
-			card: paymentMethod,
-		},
+		//	metadata: {
+		//		card: paymentMethod,
+		//	},
 	};
 };
 

@@ -75,7 +75,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(React.memo(ReferralCampaignModal));
+export default connect(mapStateToProps)(ReferralCampaignModal);
 
 ReferralCampaignModal.propTypes = {
 	currentCustomer: PropTypes.object,

@@ -18,6 +18,7 @@ import { clearMessages } from '../../redux/actions/webhookActions';
 import Spinner from 'react-bootstrap/Spinner';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ReferralCampaignModal from './ReferralCampaignModal';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 
 const refCamp = (campaigns) =>
 	campaigns.find((camp) => camp.name === 'Referral Campaign');
@@ -57,8 +58,8 @@ const NavigationMenu = ({
 		if (!_isEmpty(referralCamp)) {
 			const referralCampaignCode = !_isEmpty(referralCamp.coupons)
 				? referralCamp.coupons.find(
-						(coupon) => coupon.currentCustomer === currentCustomer.id
-				  ).customerDataCoupon
+						(coupon) => coupon.customer === currentCustomer.id
+				  ).code
 				: '';
 			setReferralCampaign(referralCamp);
 			setReferralCampaignCode(referralCampaignCode);
@@ -122,6 +123,16 @@ const NavigationMenu = ({
 							))}
 					</NavDropdown>
 				)}
+				<Tooltip title="Your dashboard">
+					<IconButton
+						href={currentCustomer.assets.cockpit_url}
+						rel="noopener noreferrer"
+						target="_blank"
+						className="navigationMenuIcon"
+					>
+						<DashboardIcon />
+					</IconButton>
+				</Tooltip>
 				{!_isEmpty(referralCampaign) && !_isEmpty(referralCampaignCode) && (
 					<>
 						<div className="customBadgeWrapper">
@@ -183,7 +194,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(React.memo(NavigationMenu));
+export default connect(mapStateToProps)(NavigationMenu);
 
 NavigationMenu.propTypes = {
 	itemsTotalCount: PropTypes.number,
