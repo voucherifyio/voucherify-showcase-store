@@ -28,6 +28,10 @@
 		"REACT_APP_VERSION": {
 			"description": "App version",
 			"value": "2.6.3"
+		},
+		"REACT_APP_API_ENDPOINT": {
+			"description": "Voucherify endpoint",
+			"required": false
 		}
 	},
 	"addons": [
