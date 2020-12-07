@@ -64,7 +64,7 @@ const DiscountCarouselBanner = ({
 						/>
 					)}
 					{_isEmpty(couponForCurrentCustomer) &&
-						campaign.name === 'Join our newsletter and get 5% discount' && (
+						campaign.name === 'Join our newsletter and get $5 discount' && (
 							<VoucherifyButton
 								onClickFunction={() => setModalShow(true)}
 								text="Sign up"

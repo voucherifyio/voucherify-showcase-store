@@ -163,8 +163,12 @@ exports.campaigns = [
 				'Loyalty Reward - Voucher; Loyalty Reward - Pay by Points; Loyalty Reward - Free coffee',
 			assigned_rewards_points: '100; null; 150',
 			redemption_steps: '',
+			earning_rules:
+				"Entering Segment 'Loyal Customers' (at least one purchase): 100 points; Newsletter signup: 80 points; Product purchase: 1 point for every $10 spent",
+			rewards:
+				'Reward 1: Discount Voucher 10%; Reward 2: Pay by points - 1 point = $0.50; Reward 3: Hard Beans - Brazil',
 			description:
-				'To get into the loyalty program, you have to make any purchase. Next, earn points by buying our items and by subscribing to our newsletter. You can exchange Loyalty Points for discount (apply the loyalty card code in the checkout) or you can redeem Loyalty Points for voucher or free coffe through your customer cockpit',
+				'Earn points by shopping and by subscribing to our newsletter. You can exchange Loyalty Points for discount (apply the loyalty card code in the checkout) or you can redeem Loyalty Points for voucher or free coffee through your customer cockpit',
 		},
 		type: 'AUTO_UPDATE',
 		auto_join: false,
@@ -382,7 +386,7 @@ exports.campaigns = [
 		},
 	},
 	{
-		name: 'Join our newsletter and get 5% discount',
+		name: 'Join our newsletter and get $5 discount',
 		type: 'AUTO_UPDATE',
 		voucher: {
 			type: 'DISCOUNT_VOUCHER',
@@ -390,7 +394,7 @@ exports.campaigns = [
 		},
 		metadata: {
 			description:
-				'Unite coffee lovers of the world. Join our newsletter to get an extra 5% discount on all orders.',
+				'Unite coffee lovers of the world. Join our newsletter to get an extra $5 discount on all orders.',
 			redemption_steps: 'Customers action: Subscribed to newsletter',
 			order: 3,
 			assigned_val_rules: '',
@@ -538,7 +542,7 @@ exports.segments = [
 	},
 	{
 		type: 'auto-update',
-		name: 'Loyalty Members',
+		name: 'Loyal Customers',
 		filter: {
 			junction: 'and',
 			'summary.orders.total_count': {

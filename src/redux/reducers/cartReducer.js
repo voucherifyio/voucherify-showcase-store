@@ -142,8 +142,18 @@ export const cartReducer = (state = initialState, action) => {
 						discountedAmount,
 					};
 				} else if (discount.hasOwnProperty('loyalty')) {
-					const discountedAmount = discount.order.discount_amount;
+					let discountedAmount;
+
+					if (discount.order.discount_amount < totalAmount) {
+						discountedAmount = discount.order.discount_amount;
+					} else if (discount.order.discount_amount > totalAmount) {
+						discountedAmount = totalAmount;
+					}
 					totalAmountAfterDiscount = totalAmount - discountedAmount;
+					if (totalAmountAfterDiscount < 0) {
+						totalAmountAfterDiscount = 0;
+					}
+
 					return {
 						...state,
 						totalAmount,

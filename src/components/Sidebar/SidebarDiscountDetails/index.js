@@ -91,6 +91,32 @@ const SidebarDiscountDetails = ({
 						dangerouslySetInnerHTML={{ __html: campaign.metadata.description }}
 					></div>
 				)}
+				{campaign.metadata.earning_rules && (
+					<div>
+						<p className="redemptionRules">Basic earning rules</p>
+						<div className="redemptionRulesWrapper">
+							{campaign.metadata.earning_rules.split(';').map((rule) => (
+								<div key={rule} className="redemptionRulesStep">
+									<ArrowRightIcon />
+									<div>{rule}</div>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+				{campaign.metadata.rewards && (
+					<div>
+						<p className="redemptionRules">Campaign Rewards</p>
+						<div className="redemptionRulesWrapper">
+							{campaign.metadata.rewards.split(';').map((reward) => (
+								<div key={reward} className="redemptionRulesStep">
+									<ArrowRightIcon />
+									<div>{reward}</div>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
 				{campaign.metadata.redemption_steps && (
 					<div>
 						<p className="redemptionRules">Redemption rules</p>

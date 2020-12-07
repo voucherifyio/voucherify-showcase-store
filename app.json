@@ -26,7 +26,7 @@
 			"value": "2.6.3"
 		},
 		"REACT_APP_API_ENDPOINT": {
-			"description": "Voucherify endpoint",
+			"description": "Voucherify endpoint. Defaults to https://api.voucherify.io",
 			"required": false
 		}
 	},

@@ -49,7 +49,6 @@ const setupCampaigns = () => {
 					camp.campaign_type === 'LOYALTY_PROGRAM' &&
 					camp.name === 'Loyalty Campaign'
 				) {
-					console.log(camp);
 					const earningRules = [
 						{
 							event: 'customer.segment.entered',
@@ -58,10 +57,10 @@ const setupCampaigns = () => {
 								type: 'FIXED',
 							},
 							source: {
-								banner: 'Enter Loyalty Members Segment',
+								banner: 'Enter Loyal Customers Segment',
 							},
 							segment: {
-								id: segments.find((s) => s.name === 'Loyalty Members')
+								id: segments.find((s) => s.name === 'Loyal Customers')
 									.voucherifyId,
 							},
 						},
