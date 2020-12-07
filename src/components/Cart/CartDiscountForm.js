@@ -35,7 +35,9 @@ const CartDiscountForm = ({ dispatch, disable }) => {
 							<Form.Control
 								type="text"
 								placeholder={
-									disable ? 'Disabled' : 'Your coupon or referral code'
+									disable
+										? 'Disabled'
+										: 'Your coupon, referral code or loyalty card'
 								}
 								value={code}
 								onChange={handleChange}

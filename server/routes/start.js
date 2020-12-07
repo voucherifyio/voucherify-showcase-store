@@ -47,8 +47,8 @@ function publishCouponsForCustomer(sourceId, campaigns) {
 			// TODO: fix campaign name
 			// .filter(
 			// (campaign) =>
-			// campaign.name !== 'Referral Campaign Tier 1 - Reward' &&
-			// campaign.name !== 'Referral Campaign Tier 2 - Reward'
+			// campaign.name !== 'Referral Reward Tier 1 - Voucher 5%' &&
+			// campaign.name !== 'Referral Reward Tier 2 - Voucher 10%'
 			// )
 			.map((campaign) => campaign.name)
 			.map((campaign) =>

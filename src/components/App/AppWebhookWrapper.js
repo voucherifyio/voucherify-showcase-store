@@ -56,7 +56,7 @@ const AppWebhookWrapper = ({
 
 					if (customers.find((customer) => customer.id === customerId)) {
 						if (voucher !== undefined) {
-							if (voucher.campaign === 'Referral Campaign Tier 1 - Reward') {
+							if (voucher.campaign === 'Referral Reward Tier 1 - Voucher 5%') {
 								message = {
 									id: voucher.id,
 									title: 'Your reward is here!',
@@ -65,7 +65,7 @@ const AppWebhookWrapper = ({
 									code: voucher.code,
 								};
 							} else if (
-								voucher.campaign === 'Referral Campaign Tier 2 - Reward'
+								voucher.campaign === 'Referral Reward Tier 2 - Voucher 10%'
 							) {
 								message = {
 									id: voucher.id,

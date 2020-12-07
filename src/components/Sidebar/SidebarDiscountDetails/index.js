@@ -14,7 +14,22 @@ const SidebarDiscountDetails = ({
 }) => {
 	let discountText = '';
 	let discountProduct = '';
+	let discountPrefix = '';
+
 	// if this is a Voucher
+
+	if (campaign.hasOwnProperty('voucher')) {
+		if (campaign.voucher.type === 'GIFT_VOUCHER') {
+			discountPrefix = 'Gift Card ';
+		} else if (campaign.voucher.type === 'LOYALTY_CARD') {
+			discountPrefix = 'Loyalty Card ';
+		} else {
+			discountPrefix = 'Discount ';
+		}
+	} else {
+		discountPrefix = 'Discount ';
+	}
+
 	if (!_isEmpty(campaign.code)) {
 		if (campaign.discount.type === 'PERCENT') {
 			discountText = `${campaign.discount.percent_off}% off`;
@@ -51,10 +66,8 @@ const SidebarDiscountDetails = ({
 			<div key={campaign.name}>
 				{code !== 'cartDiscount' && (
 					<p className="discountDescription">
-						{campaign.hasOwnProperty('voucher') &&
-						campaign.voucher.type === 'GIFT_VOUCHER'
-							? 'Gift card '
-							: 'Discount '}
+						{discountPrefix}
+
 						<span className="discountDescriptionAmount">{discountText}</span>
 						{discountProduct}
 					</p>

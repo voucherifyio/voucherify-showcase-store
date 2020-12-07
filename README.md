@@ -153,11 +153,11 @@ All other necessary elements for this first Referral Campaign - Rewards, Rewards
 
 - Set `Numbers of referees who redeemed the referral code is` to 1 and `Total count of customer orders` to exactly 0.
 
-- On the next page, select reward `Referral Campaign Tier 1 - Reward` and click `Add reward`.
+- On the next page, select reward `Referral Reward Tier 1 - Voucher 5%` and click `Add reward`.
 
 - Then click `Done`.
 
-Repeat this process one more time - this time selecting reward `Referral Campaign Tier 2 - Reward`. Remember to save changes to the campaign.
+Repeat this process one more time - this time selecting reward `Referral Reward Tier 2 - Voucher 10%`. Remember to save changes to the campaign.
 
 [Learn more how to create Referral Program](https://cookbook.voucherify.io/article/240-airbnb-referral-program)
 

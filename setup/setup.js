@@ -123,36 +123,36 @@ const setupCampaigns = () => {
 const setupRewards = async () => {
 	const rewards = [
 		{
-			name: 'Referral Campaign Tier 1 - Reward',
+			name: 'Referral Reward Tier 1 - Voucher 5%',
 			parameters: {
 				campaign: {
 					id: campaigns.find(
-						(c) => c.name === 'Referral Campaign Tier 1 - Reward'
+						(c) => c.name === 'Referral Reward Tier 1 - Voucher 5%'
 					).voucherifyId,
 				},
 			},
 		},
 		{
-			name: 'Referral Campaign Tier 2 - Reward',
+			name: 'Referral Reward Tier 2 - Voucher 10%',
 			parameters: {
 				campaign: {
 					id: campaigns.find(
-						(c) => c.name === 'Referral Campaign Tier 2 - Reward'
+						(c) => c.name === 'Referral Reward Tier 2 - Voucher 10%'
 					).voucherifyId,
 				},
 			},
 		},
 		{
-			name: 'Loyalty Campaign - Reward 1',
+			name: 'Loyalty Reward - Voucher',
 			parameters: {
 				campaign: {
-					id: campaigns.find((c) => c.name === 'Loyalty Campaign - Reward 1')
+					id: campaigns.find((c) => c.name === 'Loyalty Reward - Voucher')
 						.voucherifyId,
 				},
 			},
 		},
 		{
-			name: 'Loyalty Campaign - Reward 2',
+			name: 'Loyalty Reward - Pay by Points',
 			type: 'COIN',
 			parameters: {
 				coin: {
@@ -161,7 +161,7 @@ const setupRewards = async () => {
 			},
 		},
 		{
-			name: 'Loyalty Campaign - Reward 3',
+			name: 'Loyalty Reward - Free coffee',
 			parameters: {
 				product: {
 					id: products.find((p) => p.name === 'Hard Beans - Brazil')
@@ -501,7 +501,7 @@ const setupValidationRules = async () => {
 			},
 		},
 		{
-			name: 'Referral Campaign Tier 1 & 2 - Reward - Validation Rule',
+			name: 'Referral Reward Tier 1 & 2 - Validation Rule',
 			error: { message: 'Check campaign rules' },
 			rules: {
 				1: {

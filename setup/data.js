@@ -160,10 +160,11 @@ exports.campaigns = [
 		name: 'Loyalty Campaign',
 		metadata: {
 			assigned_rewards:
-				'Loyalty Campaign - Reward 1; Loyalty Campaign - Reward 2; Loyalty Campaign - Reward 3',
+				'Loyalty Reward - Voucher; Loyalty Reward - Pay by Points; Loyalty Reward - Free coffee',
 			assigned_rewards_points: '100; null; 150',
 			redemption_steps: '',
-			description: 'Use your loyalty card to exchange points for rewards',
+			description:
+				'To get into the loyalty program, you have to make any purchase. Next, earn points by buying our items and by subscribing to our newsletter. You can exchange Loyalty Points for discount (apply the loyalty card code in the checkout) or you can redeem Loyalty Points for voucher or free coffe through your customer cockpit',
 		},
 		type: 'AUTO_UPDATE',
 		auto_join: false,
@@ -224,7 +225,7 @@ exports.campaigns = [
 		},
 	},
 	{
-		name: 'Loyalty Campaign - Reward 1',
+		name: 'Loyalty Reward - Voucher',
 		type: 'AUTO_UPDATE',
 		metadata: {
 			auto_publish: false,
@@ -241,12 +242,11 @@ exports.campaigns = [
 		},
 	},
 	{
-		name: 'Referral Campaign Tier 1 - Reward',
+		name: 'Referral Reward Tier 1 - Voucher 5%',
 		type: 'AUTO_UPDATE',
 		metadata: {
 			auto_publish: false,
-			assigned_val_rules:
-				'Referral Campaign Tier 1 & 2 - Reward - Validation Rule',
+			assigned_val_rules: 'Referral Reward Tier 1 & 2 - Validation Rule',
 		},
 		voucher: {
 			type: 'DISCOUNT_VOUCHER',
@@ -260,12 +260,11 @@ exports.campaigns = [
 		},
 	},
 	{
-		name: 'Referral Campaign Tier 2 - Reward',
+		name: 'Referral Reward Tier 2 - Voucher 10%',
 		type: 'AUTO_UPDATE',
 		metadata: {
 			auto_publish: false,
-			assigned_val_rules:
-				'Referral Campaign Tier 1 & 2 - Reward - Validation Rule',
+			assigned_val_rules: 'Referral Reward Tier 1 & 2 - Validation Rule',
 		},
 		voucher: {
 			type: 'DISCOUNT_VOUCHER',
