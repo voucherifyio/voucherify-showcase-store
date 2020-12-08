@@ -58,9 +58,8 @@ export const cartReducer = (state = initialState, action) => {
 			);
 			let totalAmountAfterDiscount = totalAmount;
 			const discountedAmount = 0;
-
-			if (state.discount !== null) {
-				const discount = state.discount;
+			const discount = state.discount;
+			if (discount !== null) {
 				if (_has(discount, 'applicable_to')) {
 					const applicableProducts = [];
 					let applicableProductInCart = '';
@@ -78,6 +77,7 @@ export const cartReducer = (state = initialState, action) => {
 						let discountedAmount =
 							applicableProductInCart.price *
 							(discount.discount.percent_off / 100);
+
 						if (
 							discount.discount.amount_limit &&
 							discount.discount.amount_limit < discountedAmount
@@ -99,13 +99,18 @@ export const cartReducer = (state = initialState, action) => {
 						!_isEmpty(applicableProducts) &&
 						discount.discount.type === 'AMOUNT'
 					) {
-						const discountedAmount = discount.discount.amount_off;
+						let discountedAmount;
 
-						totalAmountAfterDiscount =
-							applicableProductInCart.total - discountedAmount;
+						if (discount.discount.amount_off < totalAmount) {
+							discountedAmount = discount.discount.amount_off;
+						} else if (discount.discount.amount_off >= totalAmount) {
+							discountedAmount = totalAmount;
+						}
+						totalAmountAfterDiscount = totalAmount - discountedAmount;
 						if (totalAmountAfterDiscount < 0) {
 							totalAmountAfterDiscount = 0;
 						}
+
 						return {
 							...state,
 							totalAmount,
@@ -122,14 +127,14 @@ export const cartReducer = (state = initialState, action) => {
 						discountedAmount,
 					};
 				} else if (_has(discount, 'gift')) {
-					let discountedAmount = discount.gift.balance;
+					let discountedAmount;
 
-					if (discountedAmount > totalAmount) {
+					if (discount.gift.balance < totalAmount) {
+						discountedAmount = discount.gift.balance;
+					} else if (discount.gift.balance >= totalAmount) {
 						discountedAmount = totalAmount;
 					}
-
 					totalAmountAfterDiscount = totalAmount - discountedAmount;
-
 					if (totalAmountAfterDiscount < 0) {
 						totalAmountAfterDiscount = 0;
 					}
@@ -146,7 +151,7 @@ export const cartReducer = (state = initialState, action) => {
 
 					if (discount.order.discount_amount < totalAmount) {
 						discountedAmount = discount.order.discount_amount;
-					} else if (discount.order.discount_amount > totalAmount) {
+					} else if (discount.order.discount_amount >= totalAmount) {
 						discountedAmount = totalAmount;
 					}
 					totalAmountAfterDiscount = totalAmount - discountedAmount;
@@ -186,10 +191,14 @@ export const cartReducer = (state = initialState, action) => {
 						discountedAmount,
 					};
 				} else if (discount.discount.type === 'AMOUNT') {
-					const discountedAmount = discount.discount.amount_off;
+					let discountedAmount;
 
+					if (discount.discount.amount_off < totalAmount) {
+						discountedAmount = discount.discount.amount_off;
+					} else if (discount.discount.amount_off >= totalAmount) {
+						discountedAmount = totalAmount;
+					}
 					totalAmountAfterDiscount = totalAmount - discountedAmount;
-
 					if (totalAmountAfterDiscount < 0) {
 						totalAmountAfterDiscount = 0;
 					}
@@ -207,6 +216,7 @@ export const cartReducer = (state = initialState, action) => {
 					totalAmountAfterDiscount = 0;
 				}
 			}
+
 			return {
 				...state,
 				totalAmount,

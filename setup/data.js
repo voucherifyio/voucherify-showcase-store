@@ -162,13 +162,15 @@ exports.campaigns = [
 			assigned_rewards:
 				'Loyalty Reward - Voucher; Loyalty Reward - Pay by Points; Loyalty Reward - Free coffee',
 			assigned_rewards_points: '100; null; 150',
-			redemption_steps: '',
+			redemption_steps: 'Enter Program: Fill out Loyalty Program Form',
 			earning_rules:
 				"Entering Segment 'Loyal Customers' (at least one purchase): 100 points; Newsletter signup: 80 points; Product purchase: 1 point for every $10 spent",
 			rewards:
 				'Reward 1: Discount Voucher 10%; Reward 2: Pay by points - 1 point = $0.50; Reward 3: Hard Beans - Brazil',
+			tiers:
+				'Name: Newbie; Points: 100 - 150 | Name: Aspiring coffee maniac; Points: 151 - 200; Earning rule changes: Newsletter singup for 100 points; Reward changes: Discount voucher for 50 points | Name: Coffe prodigy; Points: +201; Reward changes: Discount voucher for 10 points, Free coffee for 10 points',
 			description:
-				'Earn points by shopping and by subscribing to our newsletter. You can exchange Loyalty Points for discount (apply the loyalty card code in the checkout) or you can redeem Loyalty Points for voucher or free coffee through your customer cockpit',
+				'Earn points by shopping and by subscribing to our newsletter. You can exchange loyalty points for discounts (apply the loyalty card code in the checkout), use points to pay for your order, or get a free coffee through your customer cockpit.',
 		},
 		type: 'AUTO_UPDATE',
 		auto_join: false,
@@ -250,6 +252,7 @@ exports.campaigns = [
 		type: 'AUTO_UPDATE',
 		metadata: {
 			auto_publish: false,
+			redemption_steps: 'Cart value: > $50',
 			assigned_val_rules: 'Referral Reward Tier 1 & 2 - Validation Rule',
 		},
 		voucher: {
@@ -267,6 +270,7 @@ exports.campaigns = [
 		name: 'Referral Reward Tier 2 - Voucher 10%',
 		type: 'AUTO_UPDATE',
 		metadata: {
+			redemption_steps: 'Cart value: > $50',
 			auto_publish: false,
 			assigned_val_rules: 'Referral Reward Tier 1 & 2 - Validation Rule',
 		},
@@ -356,7 +360,7 @@ exports.campaigns = [
 			assigned_val_rules: '5% off for Illy - Arabica',
 			promotion_product: 'Illy - Arabica',
 			description:
-				'Make an order above 50$ and have Illy - Arabica in your cart to get a 5% discount on your order.',
+				'Make an order above $50 and have Illy - Arabica in your cart to get a 5% discount on your order.',
 			redemption_steps: 'Cart value: > $50; Cart contains: Illy - Arabica',
 			order: 2,
 			carousel_banner_img_url:
@@ -375,7 +379,7 @@ exports.campaigns = [
 		metadata: {
 			assigned_val_rules: 'Double Trouble',
 			description:
-				'Get a double-pack of Johan & Nyström - Bourbon to get a 15$ off your order.',
+				'Get a double-pack of Johan & Nyström - Bourbon to get a $15 off your order.',
 			redemption_steps: 'Cart contains: 2x Johan & Nyström - Bourbon',
 			order: 3,
 			promotion_product: 'Johan & Nyström - Bourbon',
@@ -388,13 +392,15 @@ exports.campaigns = [
 	{
 		name: 'Join our newsletter and get $5 discount',
 		type: 'AUTO_UPDATE',
+		join_once: true,
 		voucher: {
 			type: 'DISCOUNT_VOUCHER',
 			discount: { amount_off: 500, type: 'AMOUNT' },
+			redemption: { quantity: 1 },
 		},
 		metadata: {
 			description:
-				'Unite coffee lovers of the world. Join our newsletter to get an extra $5 discount on all orders.',
+				'Unite coffee lovers of the world. Join our newsletter to get an extra $5 discount on your next order.',
 			redemption_steps: 'Customers action: Subscribed to newsletter',
 			order: 3,
 			assigned_val_rules: '',
@@ -426,7 +432,7 @@ exports.campaigns = [
 		metadata: {
 			assigned_val_rules: 'Final Tier - $10 off; First Tier - $3 off',
 			description:
-				'Make an order below 30$ and get a 3$ off your order. Enjoy a 10$ discount if your order exceeds 30$.',
+				'Make an order above $30 and get a $3 off your order. Enjoy a $10 discount if your order exceeds $100.',
 			carousel_banner_img_url:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner3.jpg',
 		},
@@ -471,7 +477,7 @@ exports.campaigns = [
 		campaign_type: 'PROMOTION',
 		metadata: {
 			description:
-				'Enjoy a 50% discount on Hard Beans - Brazil blend. Simply add Hard Beans - Brazil and Johan & Nyström - Caravan to your cart. Get one pack of Hard Beans - Brazil completely for free if your order of Hard Beans - Brazil and Johan & Nyström - Caravan exceeds 100$.',
+				'Enjoy a 50% discount on Hard Beans - Brazil blend. Simply add Hard Beans - Brazil and Johan & Nyström - Caravan to your cart. Get one pack of Hard Beans - Brazil completely for free if your order of Hard Beans - Brazil and Johan & Nyström - Caravan exceeds $100.',
 			assigned_val_rules:
 				'Final Tier - 100% off for Hard Beans; First Tier - 50% off for Hard Beans',
 			carousel_banner_img_url:

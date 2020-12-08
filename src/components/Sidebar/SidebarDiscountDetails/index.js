@@ -53,7 +53,12 @@ const SidebarDiscountDetails = ({
 				)} off`;
 			}
 		} else if (campaign.voucher.type === 'GIFT_VOUCHER') {
-			discountText = `$${(campaign.voucher.gift.amount / 100).toFixed(2)}`;
+			discountText = `$${
+				coupon.hasOwnProperty('giftCardBalance')
+					? (coupon.giftCardBalance / 100).toFixed(2)
+					: (coupon.giftCardAmount / 100).toFixed(2)
+			}`;
+			// discountText = `$${(campaign.voucher.gift.amount / 100).toFixed(2)}`;
 		}
 
 		if (!_isEmpty(campaign.metadata.discount_suffix)) {
@@ -75,21 +80,25 @@ const SidebarDiscountDetails = ({
 
 				{/* We're checking if the Campaign has a voucher code */}
 				{code !== 'cartDiscount' && <VoucherifyButton code={code} />}
-				{campaign.campaign_type === 'GIFT_VOUCHERS' && (
-					<div className="campaignDescription">
-						<p>
-							Current balance: $
-							{coupon.hasOwnProperty('giftCardBalance')
-								? coupon.giftCardBalance / 100
-								: coupon.giftCardAmount / 100}
-						</p>
-					</div>
-				)}
+
 				{campaign.metadata.description && (
 					<div
 						className="campaignDescription"
 						dangerouslySetInnerHTML={{ __html: campaign.metadata.description }}
 					></div>
+				)}
+				{campaign.metadata.redemption_steps && (
+					<div>
+						<p className="redemptionRules">Redemption rules</p>
+						<div className="redemptionRulesWrapper">
+							{campaign.metadata.redemption_steps.split(';').map((step) => (
+								<div key={step} className="redemptionRulesStep">
+									<ArrowRightIcon />
+									<div>{step}</div>
+								</div>
+							))}
+						</div>
+					</div>
 				)}
 				{campaign.metadata.earning_rules && (
 					<div>
@@ -117,14 +126,19 @@ const SidebarDiscountDetails = ({
 						</div>
 					</div>
 				)}
-				{campaign.metadata.redemption_steps && (
+				{campaign.metadata.tiers && (
 					<div>
-						<p className="redemptionRules">Redemption rules</p>
+						<p className="redemptionRules">Tiers</p>
 						<div className="redemptionRulesWrapper">
-							{campaign.metadata.redemption_steps.split(';').map((step) => (
-								<div key={step} className="redemptionRulesStep">
-									<ArrowRightIcon />
-									<div>{step}</div>
+							{campaign.metadata.tiers.split('|').map((tier, index) => (
+								<div key={tier} className="loyaltyTier">
+									<p className="tierTitle">Tier {index + 1}</p>
+									{tier.split(';').map((tierStep) => (
+										<div className="loyaltyTierStep" key={tierStep}>
+											<ArrowRightIcon />
+											<div>{tierStep}</div>
+										</div>
+									))}
 								</div>
 							))}
 						</div>

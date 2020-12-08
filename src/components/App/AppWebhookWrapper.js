@@ -25,6 +25,7 @@ const AppWebhookWrapper = ({
 	useEffect(() => {
 		const socket = socketIOClient(`${process.env.REACT_APP_API_URL || ''}`);
 		socket.on('new-message', (data) => {
+			console.log(data);
 			const voucher = data.data.voucher;
 			switch (data.type) {
 				case 'voucher.published':
@@ -38,7 +39,7 @@ const AppWebhookWrapper = ({
 								id: voucher.id,
 								title: 'Your coupon is here!',
 								body:
-									'Hi! Thank you for subscribing to our newsletter! Here is your 5% discount that you can use for your next order. Enjoy!',
+									'Hi! Thank you for subscribing to our newsletter! Here is your $5 discount that you can use for your next order. Enjoy!',
 								code: voucher.code,
 							};
 

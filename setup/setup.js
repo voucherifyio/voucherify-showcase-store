@@ -333,11 +333,16 @@ const setupValidationRules = async () => {
 					},
 					rules: {
 						1: {
+							name: 'product.quantity',
+							rules: {},
+							conditions: { $more_than_or_equal: [2] },
+						},
+						2: {
 							name: 'product.discount_applicable',
 							rules: {},
 							conditions: { $is: [true] },
 						},
-						logic: '1',
+						logic: '(1 and 2)',
 					},
 					conditions: {
 						$is: [
