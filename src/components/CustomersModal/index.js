@@ -7,9 +7,7 @@ import ArrowLine from '../../assets/ArrowLine.png';
 import CustomersModalCustomer from './CustomersModalCustomer';
 import './style.css';
 import VoucherifyLogo from '../../assets/VoucherifyLogo.png';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import IconButton from '@material-ui/core/IconButton';
-
+import ArrowIcon from '../../assets/ArrowIcon.png';
 const CustomersModal = ({ customers, campaigns }) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	/* eslint-disable */
@@ -62,20 +60,20 @@ const CustomersModal = ({ customers, campaigns }) => {
 					</div>
 					<div className="customersModalSourceLinks">
 						<div className="sourceLinkWrapper">
-							<p className="sourceLinkText">Connect to Voucherify</p>
-							<a href={herokuLink}>
-								<img
-									src="https://www.herokucdn.com/deploy/button.svg"
-									alt="Deploy"
-								/>
+							<a href={herokuLink} className="customersModalArrowLink">
+								<img className="customersModalArrow" alt="" src={ArrowIcon} />
+								<div className="customersModalLink">
+									Connect this showcase to your Voucherify account
+								</div>
 							</a>
 						</div>
 						<div className="sourceLinkWrapper">
-							<p className="sourceLinkText">Source code</p>
-							<a href="https://github.com/voucherifyio/voucherify-showcase-store">
-								<IconButton>
-									<GitHubIcon />
-								</IconButton>
+							<a
+								href="https://github.com/voucherifyio/voucherify-showcase-store"
+								className="customersModalArrowLink"
+							>
+								<img className="customersModalArrow" alt="" src={ArrowIcon} />
+								<div className="customersModalLink">Check the source code</div>
 							</a>
 						</div>
 					</div>

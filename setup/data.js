@@ -337,9 +337,9 @@ exports.campaigns = [
 		metadata: {
 			assigned_val_rules: 'Buy Two, Get Three',
 			description:
-				'Purchase Johan & Nyström - Fika and Johan & Nyström - Sumatra blend to get one Johan & Nyström - Sumatra blend for free.',
+				'Add 1x Johan & Nyström - Fika and 2x Johan & Nyström - Sumatra blend to get one 1x Johan & Nyström - Sumatra blend for free.',
 			redemption_steps:
-				'Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra',
+				'Cart contains: 1x Johan & Nyström - Fika, 2x Johan & Nyström - Sumatra',
 			order: 1,
 			discount_suffix: '1x Johan & Nyström - Sumatra',
 			promotion_product: 'Johan & Nyström - Sumatra',

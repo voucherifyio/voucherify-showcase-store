@@ -111,7 +111,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
 	try {
 		dispatch(getDiscountRequest());
 		const promotion = await new Promise((resolve, reject) => {
-			window.Voucherify.setIdentity(currentCustomer.id);
+			window.Voucherify.setIdentity(currentCustomer.source_id);
 
 			const promotionCampaigns = campaigns.find(
 				(camp) => camp.id === activeCartDiscount
@@ -148,12 +148,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
 
 export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 	const { currentCustomer } = getState().userReducer;
-	const {
-		totalAmount,
-		items,
-		paymentMethod,
-		discount,
-	} = getState().cartReducer;
+	const { totalAmount, items, paymentMethod } = getState().cartReducer;
 	const getDiscountPayload = setValidatePayload(
 		currentCustomer,
 		totalAmount,
@@ -161,7 +156,6 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 		paymentMethod
 	);
 	getDiscountPayload.code = voucherCode;
-	const currentDiscount = discount;
 	try {
 		dispatch(getDiscountRequest());
 		let discount = await new Promise((resolve, reject) => {
@@ -179,12 +173,7 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 				}
 			});
 		});
-		if (_isEmpty(currentDiscount)) {
-			dispatch(getDiscountSuccess(discount));
-		} else {
-			discount = currentDiscount;
-			dispatch(getDiscountSuccess(discount));
-		}
+		dispatch(getDiscountSuccess(discount));
 	} catch (error) {
 		console.log('[getDiscount]', error);
 		dispatch(getDiscountError());

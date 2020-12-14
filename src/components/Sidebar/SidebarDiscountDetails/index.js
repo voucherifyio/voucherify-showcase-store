@@ -128,7 +128,7 @@ const SidebarDiscountDetails = ({
 				)}
 				{campaign.metadata.tiers && (
 					<div>
-						<p className="redemptionRules">Tiers</p>
+						<p className="redemptionRules">Loyalty Tiers</p>
 						<div className="redemptionRulesWrapper">
 							{campaign.metadata.tiers.split('|').map((tier, index) => (
 								<div key={tier} className="loyaltyTier">

@@ -75,7 +75,7 @@ const App = ({
 		if (!_isEmpty(discount) && _has(discount, 'code')) {
 			dispatch(getDiscount(discount.code));
 		}
-	}, [dispatch, items, paymentMethod, discount]);
+	}, [dispatch, items, paymentMethod]);
 
 	if (currentCustomer === null) {
 		return <CustomersModal />;
