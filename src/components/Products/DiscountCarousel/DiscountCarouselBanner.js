@@ -39,13 +39,19 @@ const DiscountCarouselBanner = ({
 					}
 				>
 					<h3 className="carouselBannerTitle">{campaign.name}</h3>
-					{campaign.metadata.description && (
+					{campaign.metadata.description &&
+					campaign.name !== 'Loyalty Campaign' ? (
 						<div
 							className="carouselBannerDescription"
 							dangerouslySetInnerHTML={{
 								__html: campaign.metadata.description,
 							}}
 						></div>
+					) : (
+						<div className="carouselBannerDescription">
+							You will automatically join our loyalty program after your first
+							purchase - or after signup for our newsletter!
+						</div>
 					)}
 					{campaign.campaign_type === 'PROMOTION' &&
 						campaign.name !== currentCartDiscount && (

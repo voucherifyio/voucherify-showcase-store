@@ -159,10 +159,12 @@ exports.campaigns = [
 	{
 		name: 'Loyalty Campaign',
 		metadata: {
+			auto_publish: false,
 			assigned_rewards:
 				'Loyalty Reward - Voucher; Loyalty Reward - Pay by Points; Loyalty Reward - Free coffee',
 			assigned_rewards_points: '100; null; 150',
-			redemption_steps: 'Enter Program: Fill out Loyalty Program Form',
+			redemption_steps:
+				'Enter Program: Make first purchase or after signup for newsletter!',
 			earning_rules:
 				"Entering Segment 'Loyal Customers' (at least one purchase): 100 points; Newsletter signup: 80 points; Product purchase: 1 point for every $10 spent",
 			rewards:
@@ -170,10 +172,12 @@ exports.campaigns = [
 			tiers:
 				'Name: Newbie; Points: 100 - 150 | Name: Aspiring coffee maniac; Points: 151 - 200; Earning rule changes: Newsletter singup for 100 points; Reward changes: Discount voucher for 50 points | Name: Coffe prodigy; Points: +201; Reward changes: Discount voucher for 10 points, Free coffee for 10 points',
 			description:
-				'Earn points by shopping and by subscribing to our newsletter. You can exchange loyalty points for discounts (apply the loyalty card code in the checkout), use points to pay for your order, or get a free coffee through your customer cockpit.',
+				'You will join our Loyalty Program after your first purchase! Exchange loyalty points for discounts (apply the loyalty card code in the checkout), use points to pay for your order, or get a free coffee through your customer cockpit.',
+			carousel_banner_img_url:
+				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner6.jpg',
 		},
 		type: 'AUTO_UPDATE',
-		auto_join: false,
+		auto_join: true,
 		voucher: {
 			type: 'LOYALTY_CARD',
 			loyalty_card: {

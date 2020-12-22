@@ -25,16 +25,14 @@ const AppWebhookWrapper = ({
 	useEffect(() => {
 		const socket = socketIOClient(`${process.env.REACT_APP_API_URL || ''}`);
 		socket.on('new-message', (data) => {
-			console.log(data);
 			const voucher = data.data.voucher;
 			switch (data.type) {
 				case 'voucher.published':
 					if (customers.find((customer) => customer.id === voucher.holder_id)) {
+						const customerId = voucher.holder_id;
 						if (
 							voucher.campaign === 'Join our newsletter and get $5 discount'
 						) {
-							const customerId = voucher.holder_id;
-
 							const message = {
 								id: voucher.id,
 								title: 'Your coupon is here!',
@@ -44,6 +42,22 @@ const AppWebhookWrapper = ({
 							};
 
 							dispatch(getMessage(customerId, message));
+							dispatch(getCampaigns());
+							return setModalShow(true);
+						} else if (voucher.campaign === 'Loyalty Campaign') {
+							const message = {
+								id: voucher.id,
+								title: 'Welcome to our Loyalty Campaign',
+								body:
+									'Exchange loyalty points for discounts (apply the loyalty card code in the checkout), use points to pay for your order, or get a free coffee through your customer cockpit.',
+								code: voucher.code,
+							};
+							dispatch(getMessage(customerId, message));
+							dispatch(
+								addPublishedCodes(customerId, {
+									...voucher,
+								})
+							);
 							dispatch(getCampaigns());
 							return setModalShow(true);
 						}

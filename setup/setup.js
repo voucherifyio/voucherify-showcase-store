@@ -64,19 +64,6 @@ const setupCampaigns = () => {
 									.voucherifyId,
 							},
 						},
-						// {
-						// 	event: 'newsletter_subscribed',
-						// 	loyalty: {
-						// 		points: 80,
-						// 		type: 'FIXED',
-						// 	},
-						// 	custom_event: {
-						// 		schema_id: '',
-						// 	},
-						// 	source: {
-						// 		banner: 'Subscribe to our newsletter',
-						// 	},
-						// },
 						{
 							event: 'order.paid',
 							loyalty: {
