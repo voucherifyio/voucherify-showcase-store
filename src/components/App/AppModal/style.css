@@ -1,0 +1,8 @@
+.modalHeader {
+	font-weight: 700;
+	font-size: 1.2rem;
+}
+
+.modalBody {
+	padding: 40px !important;
+}

@@ -5,12 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.6.2] - 20.11.2020
+
+### Added
+
+- MINOR Ui improvements
+
+## [2.6.1] - 10.11.2020
+
+### Added
+
+- MAJOR Webhook integration
+- MAJOR Referral Campaigns integration
+- MAJOR Create new customers for referral campaign integration
+- MINOR Localstorage improvements
+- MINOR Application optimizations
+
 ## [2.5.0] - 02.10.2020
 
 ### Added
 
 - MAJOR Store design upgrade
-- MAJOR You can add your own vouchers and campaings to the demo store - see README to learn more
+- MAJOR You can add your own vouchers and Campaigns to the demo store - see README to learn more
 - MINOR New discounts
 - MINOR Improvements
 
@@ -52,7 +68,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - MAJOR Create customers per new store session
-- MAJOR Create campaings / vouchers for each new deployed store
+- MAJOR Create Campaigns / vouchers for each new deployed store
 - MAJOR Implemented validation rules
 
 ### Fixed

@@ -7,11 +7,29 @@ import VoucherifyButton from '../../App/VoucherifyButton';
 import SidebarDiscountDetailsTier from './SidebarDiscountDetailsTier';
 import './style.css';
 
-const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
+const SidebarDiscountDetails = ({
+	campaign,
+	code = 'cartDiscount',
+	coupon,
+}) => {
 	let discountText = '';
 	let discountProduct = '';
+	let discountPrefix = '';
 
 	// if this is a Voucher
+
+	if (campaign.hasOwnProperty('voucher')) {
+		if (campaign.voucher.type === 'GIFT_VOUCHER') {
+			discountPrefix = 'Gift Card ';
+		} else if (campaign.voucher.type === 'LOYALTY_CARD') {
+			discountPrefix = 'Loyalty Card ';
+		} else {
+			discountPrefix = 'Discount ';
+		}
+	} else {
+		discountPrefix = 'Discount ';
+	}
+
 	if (!_isEmpty(campaign.code)) {
 		if (campaign.discount.type === 'PERCENT') {
 			discountText = `${campaign.discount.percent_off}% off`;
@@ -26,12 +44,21 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
 
 	// if this is a Campaign
 	if (!_isEmpty(campaign.voucher)) {
-		if (campaign.voucher.discount.type === 'PERCENT') {
-			discountText = `${campaign.voucher.discount.percent_off}% off`;
-		} else if (campaign.voucher.discount.type === 'AMOUNT') {
-			discountText = `$${(campaign.voucher.discount.amount_off / 100).toFixed(
-				2
-			)} off`;
+		if (campaign.voucher.discount) {
+			if (campaign.voucher.discount.type === 'PERCENT') {
+				discountText = `${campaign.voucher.discount.percent_off}% off`;
+			} else if (campaign.voucher.discount.type === 'AMOUNT') {
+				discountText = `$${(campaign.voucher.discount.amount_off / 100).toFixed(
+					2
+				)} off`;
+			}
+		} else if (campaign.voucher.type === 'GIFT_VOUCHER') {
+			discountText = `$${
+				coupon.hasOwnProperty('giftCardBalance')
+					? (coupon.giftCardBalance / 100).toFixed(2)
+					: (coupon.giftCardAmount / 100).toFixed(2)
+			}`;
+			// discountText = `$${(campaign.voucher.gift.amount / 100).toFixed(2)}`;
 		}
 
 		if (!_isEmpty(campaign.metadata.discount_suffix)) {
@@ -44,7 +71,8 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
 			<div key={campaign.name}>
 				{code !== 'cartDiscount' && (
 					<p className="discountDescription">
-						Discount{' '}
+						{discountPrefix}
+
 						<span className="discountDescriptionAmount">{discountText}</span>
 						{discountProduct}
 					</p>
@@ -52,6 +80,7 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
 
 				{/* We're checking if the Campaign has a voucher code */}
 				{code !== 'cartDiscount' && <VoucherifyButton code={code} />}
+
 				{campaign.metadata.description && (
 					<div
 						className="campaignDescription"
@@ -66,6 +95,50 @@ const SidebarDiscountDetails = ({ campaign, code = 'cartDiscount' }) => {
 								<div key={step} className="redemptionRulesStep">
 									<ArrowRightIcon />
 									<div>{step}</div>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+				{campaign.metadata.earning_rules && (
+					<div>
+						<p className="redemptionRules">Basic earning rules</p>
+						<div className="redemptionRulesWrapper">
+							{campaign.metadata.earning_rules.split(';').map((rule) => (
+								<div key={rule} className="redemptionRulesStep">
+									<ArrowRightIcon />
+									<div>{rule}</div>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+				{campaign.metadata.rewards && (
+					<div>
+						<p className="redemptionRules">Campaign Rewards</p>
+						<div className="redemptionRulesWrapper">
+							{campaign.metadata.rewards.split(';').map((reward) => (
+								<div key={reward} className="redemptionRulesStep">
+									<ArrowRightIcon />
+									<div>{reward}</div>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+				{campaign.metadata.tiers && (
+					<div>
+						<p className="redemptionRules">Loyalty Tiers</p>
+						<div className="redemptionRulesWrapper">
+							{campaign.metadata.tiers.split('|').map((tier, index) => (
+								<div key={tier} className="loyaltyTier">
+									<p className="tierTitle">Tier {index + 1}</p>
+									{tier.split(';').map((tierStep) => (
+										<div className="loyaltyTierStep" key={tierStep}>
+											<ArrowRightIcon />
+											<div>{tierStep}</div>
+										</div>
+									))}
 								</div>
 							))}
 						</div>
@@ -113,4 +186,5 @@ export default SidebarDiscountDetails;
 SidebarDiscountDetails.propTypes = {
 	campaign: PropTypes.object.isRequired,
 	code: PropTypes.string,
+	coupon: PropTypes.object,
 };

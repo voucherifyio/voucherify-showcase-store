@@ -6,10 +6,14 @@ const faker = require('faker');
 const voucherify = voucherifyClient({
 	applicationId: process.env.REACT_APP_BACKEND_APP_ID,
 	clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
+	apiUrl: Boolean(process.env.REACT_APP_API_ENDPOINT)
+		? process.env.REACT_APP_API_ENDPOINT
+		: 'https://api.voucherify.io',
 });
+
 const storeCustomers = data.customers;
 
-const allCampigns = async () => {
+const getCampaigns = async () => {
 	try {
 		const allCampaigns = await voucherify.campaigns.list();
 		// Filter out campaigns not created by setup.js
@@ -30,12 +34,14 @@ const allCampigns = async () => {
 	}
 };
 
-function publishCouponsForCustomer(id, campaigns) {
+function publishCouponsForCustomer(sourceId, campaigns) {
 	const params = {
 		customer: {
-			source_id: id,
+			source_id: sourceId,
 		},
 	};
+
+	// We're not publishing coupons for Reward Campaigns - Those coupons will be published by Reward Logic
 	return campaigns
 		.map((campaign) => campaign.name)
 		.map((campaign) =>
@@ -50,8 +56,8 @@ router.route('/newSession').get(async (req, res) => {
 	return res.status(200).end();
 });
 
-router.route('*').get(async (req, res) => {
-	const campaigns = await allCampigns();
+router.route('/').get(async (req, res) => {
+	const campaigns = await getCampaigns();
 
 	if (req.session.views) {
 		console.log(`[Session][Re-visit] ${req.session.id} - ${req.session.views}`);
@@ -95,7 +101,7 @@ router.route('*').get(async (req, res) => {
 			],
 			amount: 30000,
 			customer: dummyOrderCustomer,
-			status: 'FULFILLED',
+			status: 'PAID',
 		});
 
 		const createdCoupons = await Promise.all(
@@ -128,7 +134,7 @@ router.route('*').get(async (req, res) => {
 					);
 				}
 				return {
-					currentCustomer: customer.source_id,
+					currentCustomer: customer.id,
 					campaigns: coupons.map((coupon) => coupon.voucher),
 				};
 			})

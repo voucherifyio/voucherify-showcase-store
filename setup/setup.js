@@ -6,6 +6,29 @@ const voucherify = require('voucherify')({
 });
 const { campaigns, vouchers, products, segments } = require('./data');
 
+const setupSegments = () => {
+	const segmentCreationPromises = segments.map((segment) => {
+		const thisSegment = voucherify.segments.create(segment);
+		return thisSegment
+			.then((seg) => {
+				const needsId = segments.find((s) => s.name === segment.name);
+				needsId.voucherifyId = seg.id;
+				return seg;
+			})
+			.catch((error) =>
+				console.log(
+					`[ERROR] There was an error creating segment ${segment.name}`,
+					error
+				)
+			);
+	});
+	return Promise.all(segmentCreationPromises)
+		.then(() => console.log('[SUCCESS] All segments setup'))
+		.catch((error) =>
+			console.log('[ERROR] There was an error creating segments', error)
+		);
+};
+
 const setupCampaigns = () => {
 	const campaignPromises = campaigns.map((campaign) => {
 		const thisCampaign = voucherify.campaigns.create(campaign);
@@ -13,9 +36,7 @@ const setupCampaigns = () => {
 			.then((camp) => {
 				const needsId = campaigns.find((c) => c.name === camp.name);
 				needsId.voucherifyId = camp.id;
-				console.log(
-					`[SUCCESS] Campaign created ${needsId.name} - ${needsId.voucherifyId}`
-				);
+
 				if (camp.campaign_type === 'PROMOTION') {
 					return camp.promotion.tiers.forEach((tier) => {
 						let needsPromoId = campaigns.find((c) => c.name === camp.name);
@@ -23,10 +44,52 @@ const setupCampaigns = () => {
 							(t) => t.name === tier.name
 						);
 						needsPromoId.voucherifyId = tier.id;
-						console.log(
-							`[SUCCESS] Promotion Tier created ${needsPromoId.name}  - ${needsPromoId.voucherifyId}`
-						);
 					});
+				} else if (
+					camp.campaign_type === 'LOYALTY_PROGRAM' &&
+					camp.name === 'Loyalty Campaign'
+				) {
+					const earningRules = [
+						{
+							event: 'customer.segment.entered',
+							loyalty: {
+								points: 100,
+								type: 'FIXED',
+							},
+							source: {
+								banner: 'Enter Loyal Customers Segment',
+							},
+							segment: {
+								id: segments.find((s) => s.name === 'Loyal Customers')
+									.voucherifyId,
+							},
+						},
+						{
+							event: 'order.paid',
+							loyalty: {
+								type: 'PROPORTIONAL',
+								order: {
+									amount: {
+										every: 1000,
+										points: 1,
+									},
+								},
+							},
+							source: { banner: 'Earn loyalty points' },
+						},
+					];
+					try {
+						earningRules.map((earningRule) => {
+							return voucherify.loyalties.createEarningRule(camp.id, [
+								earningRule,
+							]);
+						});
+					} catch (error) {
+						console.log(
+							`[ERROR] There was an error creating earning rule ${earningRule.source.banner}`,
+							error
+						);
+					}
 				}
 			})
 			.catch((error) =>
@@ -36,12 +99,137 @@ const setupCampaigns = () => {
 				)
 			);
 	});
-
 	return Promise.all(campaignPromises)
 		.then(() => console.log('[SUCCESS] All campaigns setup'))
 		.catch((error) =>
 			console.log('[ERROR] There was an error creating campaigns', error)
 		);
+};
+
+const setupRewards = async () => {
+	const rewards = [
+		{
+			name: 'Referral Reward Tier 1 - Voucher 5%',
+			parameters: {
+				campaign: {
+					id: campaigns.find(
+						(c) => c.name === 'Referral Reward Tier 1 - Voucher 5%'
+					).voucherifyId,
+				},
+			},
+		},
+		{
+			name: 'Referral Reward Tier 2 - Voucher 10%',
+			parameters: {
+				campaign: {
+					id: campaigns.find(
+						(c) => c.name === 'Referral Reward Tier 2 - Voucher 10%'
+					).voucherifyId,
+				},
+			},
+		},
+		{
+			name: 'Loyalty Reward - Voucher',
+			parameters: {
+				campaign: {
+					id: campaigns.find((c) => c.name === 'Loyalty Reward - Voucher')
+						.voucherifyId,
+				},
+			},
+		},
+		{
+			name: 'Loyalty Reward - Pay by Points',
+			type: 'COIN',
+			parameters: {
+				coin: {
+					exchange_ratio: 0.5,
+				},
+			},
+		},
+		{
+			name: 'Loyalty Reward - Free coffee',
+			parameters: {
+				product: {
+					id: products.find((p) => p.name === 'Hard Beans - Brazil')
+						.voucherifyId,
+				},
+			},
+			redeemed: null,
+			stock: '1',
+			type: 'MATERIAL',
+		},
+	];
+
+	const rewardsPromises = rewards.map((reward) => {
+		const thisReward = voucherify.rewards.create(reward);
+		return thisReward
+			.then((rew) => {
+				const needsId = rewards.find((r) => r.name === rew.name);
+				needsId.voucherifyId = rew.id;
+			})
+			.catch((error) =>
+				console.log(
+					`[ERROR] There was an error creating reward ${reward.name}`,
+					error
+				)
+			);
+	});
+
+	const loyaltyCampaignsRewardAssigmentsPromises = () => {
+		const assignmentsPerLoyaltyCampaign = campaigns.map((campaign) => {
+			if (campaign.campaign_type === 'LOYALTY_PROGRAM') {
+				const demostoreRewards = campaign.metadata.assigned_rewards.split('; ');
+				const demostoreRewardsPoints = campaign.metadata.assigned_rewards_points.split(
+					'; '
+				);
+
+				demostoreRewards.map((demostoreReward, index) => {
+					const needsId = rewards.find(
+						(reward) => reward.name === demostoreReward
+					).voucherifyId;
+					const campId = campaign.voucherifyId;
+
+					let loyaltyCampaignsRewardsAssigment;
+					if (demostoreRewardsPoints[index] !== 'null') {
+						loyaltyCampaignsRewardsAssigment = voucherify.loyalties.createRewardAssignments(
+							campId,
+							[
+								{
+									reward: needsId,
+									parameters: {
+										loyalty: {
+											points: parseInt(demostoreRewardsPoints[index], 10),
+										},
+									},
+								},
+							]
+						);
+					} else if (demostoreRewardsPoints[index] === 'null') {
+						loyaltyCampaignsRewardsAssigment = voucherify.loyalties.createRewardAssignments(
+							campId,
+							[
+								{
+									reward: needsId,
+								},
+							]
+						);
+					}
+				});
+			}
+		});
+		return _flatten(assignmentsPerLoyaltyCampaign);
+	};
+
+	try {
+		await Promise.all(rewardsPromises);
+		await Promise.all(loyaltyCampaignsRewardAssigmentsPromises());
+		console.log('[SUCCESS] All rewards & reward assigments setup');
+	} catch (error) {
+		console.log(
+			'[ERROR] There was an error creating rewards & reward assigments ',
+			error
+		);
+	}
 };
 
 const setupVouchers = () => {
@@ -51,7 +239,6 @@ const setupVouchers = () => {
 			(vouch) => {
 				const needsId = vouchers.find((v) => v.code === vouch.code);
 				needsId.voucherifyId = vouch.id;
-				console.log(`[SUCCESS] Voucher created ${needsId.code}`);
 			},
 			(error) =>
 				console.log(
@@ -103,31 +290,6 @@ const setupProducts = () => {
 			console.log('[ERROR] There was an error creating products', error)
 		);
 };
-
-const setupCustomerSegments = () => {
-	const segmentCreationPromises = segments.map((segment) => {
-		const thisSegment = voucherify.segments.create(segment);
-		return thisSegment
-			.then((seg) => {
-				const needsId = segments.find((s) => s.name === segment.name);
-				needsId.voucherifyId = seg.id;
-				console.log(`[SUCCESS] Segment created ${needsId.name}`);
-				return seg;
-			})
-			.catch((error) =>
-				console.log(
-					`[ERROR] There was an error creating segment ${segment.name}`,
-					error
-				)
-			);
-	});
-	return Promise.all(segmentCreationPromises)
-		.then(() => console.log('[SUCCESS] All segments setup'))
-		.catch((error) =>
-			console.log('[ERROR] There was an error creating segments', error)
-		);
-};
-
 const setupValidationRules = async () => {
 	const rules = [
 		{
@@ -158,11 +320,16 @@ const setupValidationRules = async () => {
 					},
 					rules: {
 						1: {
+							name: 'product.quantity',
+							rules: {},
+							conditions: { $more_than_or_equal: [2] },
+						},
+						2: {
 							name: 'product.discount_applicable',
 							rules: {},
 							conditions: { $is: [true] },
 						},
-						logic: '1',
+						logic: '(1 and 2)',
 					},
 					conditions: {
 						$is: [
@@ -310,12 +477,57 @@ const setupValidationRules = async () => {
 			},
 		},
 		{
+			name: 'Gift Cards Campaign - Validation Rule',
+			error: { message: 'Check campaign rules' },
+			rules: {
+				1: {
+					name: 'order.amount',
+					error: { message: 'Total cart value must be more than $50' },
+					rules: {},
+					conditions: {
+						$more_than: [5000],
+					},
+				},
+				logic: '1',
+			},
+		},
+		{
+			name: 'Referral Reward Tier 1 & 2 - Validation Rule',
+			error: { message: 'Check campaign rules' },
+			rules: {
+				1: {
+					name: 'order.amount',
+					error: { message: 'Total cart value must be more than $50' },
+					rules: {},
+					conditions: {
+						$more_than: [5000],
+					},
+				},
+				logic: '1',
+			},
+		},
+		{
+			name: 'Referral Campaign - Validation Rule',
+			error: { message: 'Check campaign rules' },
+			rules: {
+				1: {
+					name: 'campaign.redemptions.customers_count',
+					error: { message: 'Only one redemption per customer in campaign' },
+					rules: {},
+					conditions: {
+						$less_than_or_equal: [1],
+					},
+				},
+				logic: '1',
+			},
+		},
+		{
 			name: 'Get 5% off your first purchase',
 			error: { message: 'Check campaign rules' },
 			rules: {
 				1: {
 					name: 'customer.segment',
-					error: { message: 'Available only for new customers' },
+					error: { message: 'Avaliable only for new customers' },
 					rules: {},
 					conditions: {
 						$is: [
@@ -479,9 +691,6 @@ const setupValidationRules = async () => {
 			.then((rule) => {
 				const needsId = rules.find((res) => res.name === ruleDefinition.name);
 				needsId.voucherifyId = rule.id;
-				console.log(
-					`[SUCCESS] Validation rule created ${needsId.name} - ${needsId.voucherifyId}`
-				);
 				return rule;
 			})
 			.catch((error) =>
@@ -508,18 +717,12 @@ const setupValidationRules = async () => {
 						needsId,
 						{ promotion_tier: tier.voucherifyId }
 					);
-					return validationRulesPromotionsAssigment
-						.then((assigment) => {
-							console.log(
-								`[SUCCESS] Promotion Tier assigment created ${assigment.id}`
-							);
-						})
-						.catch((error) =>
-							console.log(
-								`[ERROR] There was an error creating Promotion Tier assigment ${needsId}`,
-								error
-							)
-						);
+					return validationRulesPromotionsAssigment.catch((error) =>
+						console.log(
+							`[ERROR] There was an error creating Promotion Tier assigment ${needsId}`,
+							error
+						)
+					);
 				});
 			}
 			const demostoreValRules = campaign.metadata.assigned_val_rules.split(
@@ -532,16 +735,12 @@ const setupValidationRules = async () => {
 					needsId,
 					{ campaign: campaign.voucherifyId }
 				);
-				return validationRulesCampaignsAssigment
-					.then((assigment) => {
-						console.log(`[SUCCESS] Campaign assigment created ${assigment.id}`);
-					})
-					.catch((error) =>
-						console.log(
-							`[ERROR] There was an error creating campaign assigment ${needsId}`,
-							error
-						)
-					);
+				return validationRulesCampaignsAssigment.catch((error) =>
+					console.log(
+						`[ERROR] There was an error creating campaign assigment ${needsId}`,
+						error
+					)
+				);
 			});
 		});
 		return _flatten(assignmentsPerCampaign);
@@ -560,16 +759,12 @@ const setupValidationRules = async () => {
 					needsId,
 					{ voucher: voucher.code }
 				);
-				return validationRulesVouchersAssigment
-					.then((assigment) => {
-						console.log(`[SUCCESS] Voucher assigment created ${assigment.id}`);
-					})
-					.catch((error) =>
-						console.log(
-							`[ERROR] There was an error creating voucher assigment ${needsId}`,
-							error
-						)
-					);
+				return validationRulesVouchersAssigment.catch((error) =>
+					console.log(
+						`[ERROR] There was an error creating voucher assigment ${needsId}`,
+						error
+					)
+				);
 			});
 		});
 		return _flatten(valRulesPerVoucher);
@@ -586,10 +781,11 @@ const setupValidationRules = async () => {
 	}
 };
 
-setupCampaigns()
-	.then(setupVouchers)
+setupSegments()
 	.then(setupProducts)
-	.then(setupCustomerSegments)
+	.then(setupCampaigns)
+	.then(setupVouchers)
+	.then(setupRewards)
 	.then(setupValidationRules)
 	.then(() => console.log('[SUCCESS] Setup finished'))
 	.catch((error) =>

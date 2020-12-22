@@ -1,6 +1,6 @@
 {
 	"name": "hot-beans",
-	"version": "3.5.0",
+	"version": "2.6.2",
 	"engines": {
 		"node": "12.0.0"
 	},
@@ -42,6 +42,9 @@
 		"redis": "^3.0.2",
 		"redux": "^4.0.5",
 		"redux-thunk": "^2.3.0",
+		"reselect": "^4.0.0",
+		"socket.io": "^2.3.0",
+		"socket.io-client": "^2.3.1",
 		"voucherify": "^5.2.0",
 		"voucherify.js": "^1.32.0"
 	},

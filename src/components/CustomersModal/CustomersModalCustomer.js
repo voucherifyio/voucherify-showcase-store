@@ -3,10 +3,11 @@ import { getCurrentCustomer } from '../../redux/actions/userActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ArrowIcon from '../../assets/ArrowIcon.png';
+import _isEmpty from 'lodash.isempty';
 
 const CustomersModalCustomer = ({ customer, dispatch }) => {
 	const handleSelectCustomer = (customer) => {
-		dispatch(getCurrentCustomer(customer.source_id));
+		dispatch(getCurrentCustomer(customer.id));
 	};
 
 	return (
@@ -14,13 +15,16 @@ const CustomersModalCustomer = ({ customer, dispatch }) => {
 			className="customersModalCustomer"
 			onClick={() => handleSelectCustomer(customer)}
 		>
-			<div className="customersModalCustomerImgWrapper">
-				<img
-					alt="Customer Avatar"
-					src={customer.metadata.avatar}
-					className="customersModalCustomerImg"
-				></img>
-			</div>
+			{!_isEmpty(customer.metadata.avatar) && (
+				<div className="customersModalCustomerImgWrapper">
+					<img
+						alt="Customer Avatar"
+						src={customer.metadata.avatar}
+						className="customersModalCustomerImg"
+					></img>
+				</div>
+			)}
+
 			<div className="customersModalCustomerDescWrapper">
 				<h2 className="customersModalCustomerTitle">
 					{customer.metadata.title}

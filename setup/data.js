@@ -2,7 +2,6 @@
 exports.customers = [
 	{
 		metadata: {
-			country: 'UK',
 			demostore_id: 'customer1',
 			individual_val_rule: 'Happy Birthday Customer 1',
 			description:
@@ -21,7 +20,6 @@ exports.customers = [
 	},
 	{
 		metadata: {
-			country: 'USA',
 			demostore_id: 'customer2',
 			individual_val_rule: 'Happy Birthday Customer 2',
 			description: 'He already spent $300 in Hot Beans store',
@@ -39,7 +37,6 @@ exports.customers = [
 	},
 	{
 		metadata: {
-			country: 'PL',
 			demostore_id: 'customer3',
 			individual_val_rule: 'Happy Birthday Customer 3',
 			description: 'He can take part in special partnership campaign',
@@ -53,6 +50,48 @@ exports.customers = [
 			line_1: 'Wspólna 2/24',
 			country: 'Poland',
 			postal_code: '01-002',
+		},
+	},
+	{
+		metadata: {
+			demostore_id: 'referralCustomer1',
+			description: 'Customer for referral campaign purposes',
+			title: 'Referral Friend #1',
+		},
+		address: {
+			city: 'München',
+			state: 'Freistaat Bayern',
+			line_1: 'Rosenstrasse 44',
+			country: 'Germany',
+			postal_code: '81337',
+		},
+	},
+	{
+		metadata: {
+			demostore_id: 'referralCustomer2',
+			description: 'Customer for referral campaign purposes',
+			title: 'Referral Friend #2',
+		},
+		address: {
+			city: 'Airdrie',
+			state: 'North Lanarkshire',
+			line_1: '22 Asfordby Rd',
+			country: 'Scotland',
+			postal_code: 'ML6 1YN',
+		},
+	},
+	{
+		metadata: {
+			demostore_id: 'referralCustomer3',
+			description: 'Customer for referral campaign purposes',
+			title: 'Referral Friend #3',
+		},
+		address: {
+			city: 'Tulsa',
+			state: 'Oklahoma',
+			line_1: '4882  Henry Ford Avenue',
+			country: 'United States',
+			postal_code: '74119',
 		},
 	},
 ];
@@ -118,6 +157,139 @@ exports.vouchers = [
 
 exports.campaigns = [
 	{
+		name: 'Loyalty Campaign',
+		metadata: {
+			auto_publish: false,
+			assigned_rewards:
+				'Loyalty Reward - Voucher; Loyalty Reward - Pay by Points; Loyalty Reward - Free coffee',
+			assigned_rewards_points: '100; null; 150',
+			redemption_steps:
+				'Enter Program: Make first purchase or after signup for newsletter!',
+			earning_rules:
+				"Entering Segment 'Loyal Customers' (at least one purchase): 100 points; Newsletter signup: 80 points; Product purchase: 1 point for every $10 spent",
+			rewards:
+				'Reward 1: Discount Voucher 10%; Reward 2: Pay by points - 1 point = $0.50; Reward 3: Hard Beans - Brazil',
+			tiers:
+				'Name: Newbie; Points: 100 - 150 | Name: Aspiring coffee maniac; Points: 151 - 200; Earning rule changes: Newsletter singup for 100 points; Reward changes: Discount voucher for 50 points | Name: Coffe prodigy; Points: +201; Reward changes: Discount voucher for 10 points, Free coffee for 10 points',
+			description:
+				'You will join our Loyalty Program after your first purchase! Exchange loyalty points for discounts (apply the loyalty card code in the checkout), use points to pay for your order, or get a free coffee through your customer cockpit.',
+			carousel_banner_img_url:
+				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner6.jpg',
+		},
+		type: 'AUTO_UPDATE',
+		auto_join: true,
+		voucher: {
+			type: 'LOYALTY_CARD',
+			loyalty_card: {
+				points: 0,
+			},
+			code_config: {
+				pattern: 'HOT-BEANS-#######',
+			},
+		},
+		vouchers_count: 0,
+		campaign_type: 'LOYALTY_PROGRAM',
+		join_once: false,
+	},
+	{
+		name: 'Gift Cards Campaign',
+		type: 'AUTO_UPDATE',
+		voucher: {
+			type: 'GIFT_VOUCHER',
+			gift: {
+				amount: 10000,
+			},
+			redemption: {
+				quantity: null,
+			},
+		},
+		metadata: {
+			assigned_val_rules: 'Gift Cards Campaign - Validation Rule',
+			redemption_steps: 'Cart value: > $50',
+			description: 'Use your gift card to buy some amazing coffee!',
+		},
+	},
+	{
+		name: 'Referral Campaign',
+		type: 'AUTO_UPDATE',
+		campaign_type: 'REFERRAL_PROGRAM',
+		referral_program: {
+			conversion_event_type: 'redemption',
+		},
+		voucher: {
+			is_referral_code: true,
+			discount: {
+				type: 'AMOUNT',
+				amount_off: 1000,
+			},
+			redemption: {
+				quantity: null,
+			},
+		},
+		metadata: {
+			assigned_val_rules: 'Referral Campaign - Validation Rule',
+			redemption_steps:
+				'First reward: 1 referred customer; Final reward: 3 referred customers',
+			description:
+				"Share your referral code with three of your friends! For one	referral you will get voucher with 5% discount, for three it's 10%. New customers only!",
+		},
+	},
+	{
+		name: 'Loyalty Reward - Voucher',
+		type: 'AUTO_UPDATE',
+		metadata: {
+			auto_publish: false,
+		},
+		voucher: {
+			type: 'DISCOUNT_VOUCHER',
+			discount: {
+				percent_off: 10,
+				type: 'PERCENT',
+			},
+			redemption: {
+				quantity: 1,
+			},
+		},
+	},
+	{
+		name: 'Referral Reward Tier 1 - Voucher 5%',
+		type: 'AUTO_UPDATE',
+		metadata: {
+			auto_publish: false,
+			redemption_steps: 'Cart value: > $50',
+			assigned_val_rules: 'Referral Reward Tier 1 & 2 - Validation Rule',
+		},
+		voucher: {
+			type: 'DISCOUNT_VOUCHER',
+			discount: {
+				percent_off: 5,
+				type: 'PERCENT',
+			},
+			redemption: {
+				quantity: 1,
+			},
+		},
+	},
+	{
+		name: 'Referral Reward Tier 2 - Voucher 10%',
+		type: 'AUTO_UPDATE',
+		metadata: {
+			redemption_steps: 'Cart value: > $50',
+			auto_publish: false,
+			assigned_val_rules: 'Referral Reward Tier 1 & 2 - Validation Rule',
+		},
+		voucher: {
+			type: 'DISCOUNT_VOUCHER',
+			discount: {
+				percent_off: 10,
+				type: 'PERCENT',
+			},
+			redemption: {
+				quantity: 1,
+			},
+		},
+	},
+	{
 		name: 'Get 5% off your first purchase',
 		type: 'AUTO_UPDATE',
 		voucher: {
@@ -130,7 +302,7 @@ exports.campaigns = [
 		metadata: {
 			assigned_val_rules: 'Get 5% off your first purchase',
 			description:
-				'Make an order and enjoy a 5% discount. Available only for new customers.',
+				'Make an order and enjoy a 5% discount. Avaliable only for new customers.',
 			redemption_steps:
 				'Customer Segment: Customers without any previous purchases',
 			order: 1,
@@ -169,9 +341,9 @@ exports.campaigns = [
 		metadata: {
 			assigned_val_rules: 'Buy Two, Get Three',
 			description:
-				'Purchase Johan & Nyström - Fika and Johan & Nyström - Sumatra blend to get one Johan & Nyström - Sumatra blend for free.',
+				'Add 1x Johan & Nyström - Fika and 2x Johan & Nyström - Sumatra blend to get one 1x Johan & Nyström - Sumatra blend for free.',
 			redemption_steps:
-				'Cart contains: 1x Johan & Nyström - Fika, 1x Johan & Nyström - Sumatra',
+				'Cart contains: 1x Johan & Nyström - Fika, 2x Johan & Nyström - Sumatra',
 			order: 1,
 			discount_suffix: '1x Johan & Nyström - Sumatra',
 			promotion_product: 'Johan & Nyström - Sumatra',
@@ -192,7 +364,7 @@ exports.campaigns = [
 			assigned_val_rules: '5% off for Illy - Arabica',
 			promotion_product: 'Illy - Arabica',
 			description:
-				'Make an order above 50$ and have Illy - Arabica in your cart to get a 5% discount on your order.',
+				'Make an order above $50 and have Illy - Arabica in your cart to get a 5% discount on your order.',
 			redemption_steps: 'Cart value: > $50; Cart contains: Illy - Arabica',
 			order: 2,
 			carousel_banner_img_url:
@@ -211,7 +383,7 @@ exports.campaigns = [
 		metadata: {
 			assigned_val_rules: 'Double Trouble',
 			description:
-				'Get a double-pack of Johan & Nyström - Bourbon to get a 15$ off your order.',
+				'Get a double-pack of Johan & Nyström - Bourbon to get a $15 off your order.',
 			redemption_steps: 'Cart contains: 2x Johan & Nyström - Bourbon',
 			order: 3,
 			promotion_product: 'Johan & Nyström - Bourbon',
@@ -222,15 +394,17 @@ exports.campaigns = [
 		},
 	},
 	{
-		name: 'Join our newsletter and get 5% discount',
+		name: 'Join our newsletter and get $5 discount',
 		type: 'AUTO_UPDATE',
+		join_once: true,
 		voucher: {
 			type: 'DISCOUNT_VOUCHER',
 			discount: { amount_off: 500, type: 'AMOUNT' },
+			redemption: { quantity: 1 },
 		},
 		metadata: {
 			description:
-				'Unite coffee lovers of the world. Join our newsletter to get an extra 5% discount on all orders.',
+				'Unite coffee lovers of the world. Join our newsletter to get an extra $5 discount on your next order.',
 			redemption_steps: 'Customers action: Subscribed to newsletter',
 			order: 3,
 			assigned_val_rules: '',
@@ -249,7 +423,7 @@ exports.campaigns = [
 		metadata: {
 			assigned_val_rules: 'Partnership Campaign',
 			description:
-				'If your location is Poland, enjoy a 13% discount available only for our Polish customers.',
+				'If your location is Poland, enjoy a 13% discount avaliable only for our Polish customers.',
 			redemption_steps: 'Customers segment: Customers from Poland',
 			order: 5,
 			carousel_banner_img_url:
@@ -262,7 +436,7 @@ exports.campaigns = [
 		metadata: {
 			assigned_val_rules: 'Final Tier - $10 off; First Tier - $3 off',
 			description:
-				'Make an order below 30$ and get a 3$ off your order. Enjoy a 10$ discount if your order exceeds 30$.',
+				'Make an order above $30 and get a $3 off your order. Enjoy a $10 discount if your order exceeds $100.',
 			carousel_banner_img_url:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner3.jpg',
 		},
@@ -307,7 +481,7 @@ exports.campaigns = [
 		campaign_type: 'PROMOTION',
 		metadata: {
 			description:
-				'Enjoy a 50% discount on Hard Beans - Brazil blend. Simply add Hard Beans - Brazil and Johan & Nyström - Caravan to your cart. Get one pack of Hard Beans - Brazil completely for free if your order of Hard Beans - Brazil and Johan & Nyström - Caravan exceeds 100$.',
+				'Enjoy a 50% discount on Hard Beans - Brazil blend. Simply add Hard Beans - Brazil and Johan & Nyström - Caravan to your cart. Get one pack of Hard Beans - Brazil completely for free if your order of Hard Beans - Brazil and Johan & Nyström - Caravan exceeds $100.',
 			assigned_val_rules:
 				'Final Tier - 100% off for Hard Beans; First Tier - 50% off for Hard Beans',
 			carousel_banner_img_url:
@@ -367,6 +541,30 @@ exports.segments = [
 	{
 		type: 'auto-update',
 		name: 'Get 5% off your first purchase',
+		filter: {
+			junction: 'and',
+			'summary.orders.total_count': {
+				conditions: {
+					$is: [0],
+				},
+			},
+		},
+	},
+	{
+		type: 'auto-update',
+		name: 'Loyal Customers',
+		filter: {
+			junction: 'and',
+			'summary.orders.total_count': {
+				conditions: {
+					$is: [1],
+				},
+			},
+		},
+	},
+	{
+		type: 'auto-update',
+		name: 'New customers',
 		filter: {
 			junction: 'and',
 			'summary.orders.total_count': {

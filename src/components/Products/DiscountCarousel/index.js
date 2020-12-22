@@ -9,35 +9,37 @@ import _isEmpty from 'lodash.isempty';
 
 const DiscountCarousel = ({ campaigns }) => {
 	return (
-		<div className="carouselWrapper">
-			<Carousel
-				showThumbs={false}
-				stopOnHover={true}
-				showStatus={false}
-				autoPlay={true}
-				interval={5000}
-			>
-				{/* We filter out campaigns without banners and descriptions */}
-				{campaigns
-					.filter(
-						(camp) =>
-							!_isEmpty(camp.metadata.carousel_banner_img_url) &&
-							!_isEmpty(camp.metadata.description)
-					)
-					.map((campaign, i) => (
-						<div
-							key={i}
-							className="carousel"
-							style={{
-								background: `url(${campaign.metadata.carousel_banner_img_url}) no-repeat center`,
-								backgroundSize: 'cover',
-							}}
-						>
-							<DiscountCarouselBanner campaign={campaign} />
-						</div>
-					))}
-			</Carousel>
-		</div>
+		<>
+			<div className="carouselWrapper">
+				<Carousel
+					showThumbs={false}
+					stopOnHover={true}
+					showStatus={false}
+					autoPlay={true}
+					interval={5000}
+				>
+					{/* We filter out campaigns without banners and descriptions */}
+					{campaigns
+						.filter(
+							(camp) =>
+								!_isEmpty(camp.metadata.carousel_banner_img_url) &&
+								!_isEmpty(camp.metadata.description)
+						)
+						.map((campaign, i) => (
+							<div
+								key={i}
+								className="carousel"
+								style={{
+									background: `url(${campaign.metadata.carousel_banner_img_url}) no-repeat center`,
+									backgroundSize: 'cover',
+								}}
+							>
+								<DiscountCarouselBanner campaign={campaign} />
+							</div>
+						))}
+				</Carousel>
+			</div>
+		</>
 	);
 };
 

@@ -7,6 +7,8 @@
 	--black: black;
 	--lightgrey: #7a7a7a;
 	--custom-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	--custom-box-shadow2: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0,
+		0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
 	--link-black-hover: #7a7a7a;
 	--bg-sidebar: #f8f7f7;
 	--green: green;
@@ -15,7 +17,9 @@
 html {
 	font-size: 16px;
 }
-
+img {
+	max-width: 100%;
+}
 body {
 	background-color: var(--bg-white) !important;
 	font-family: 'Lato', sans-serif !important;
@@ -98,7 +102,21 @@ a:hover {
 .buttonWrapper {
 	display: flex;
 }
+.productRewardWrapper {
+	display: flex;
+	justify-content: center;
+	height: 200px !important;
+	/* flex-direction: column; */
+}
 
+.productRewardWrapper > img {
+	max-height: 100%;
+	/* max-width: 100%; */
+}
+
+.productRewardWrapper + h4 {
+	text-align: center;
+}
 .voucherifyButtonOrange {
 	color: var(--white) !important;
 	font-family: 'Lato' !important;
@@ -150,6 +168,12 @@ a:hover {
 
 .paymentButton {
 	width: 100%;
+}
+.centeredContent {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 
 @media (max-width: 575.98px) {

@@ -3,7 +3,6 @@ import {
 	setRedemptionPayload,
 	setOrderPayload,
 	setValidatePayload,
-	getOrderId,
 	sendPayload,
 } from '../../utils';
 import _cloneDeep from 'lodash.clonedeep';
@@ -21,9 +20,14 @@ import {
 	SET_PAYMENT_METHOD,
 	REMOVE_DISCOUNT,
 } from '../constants';
+import { updateGiftCardBalance } from './userActions';
 
 export const getDiscountRequest = () => {
 	return { type: GET_DISCOUNT_REQUEST };
+};
+
+export const addProductReward = (productReward) => {
+	return { type: 'ADD_PRODUCT_REWARD', payload: { productReward } };
 };
 
 export const getDiscountError = () => {
@@ -112,7 +116,6 @@ export const getCartDiscount = (activeCartDiscount) => async (
 			const promotionCampaigns = campaigns.find(
 				(camp) => camp.id === activeCartDiscount
 			).tiers;
-
 			window.Voucherify.validate(getCartDiscountPayload, (res) => {
 				const promotions = res.promotions;
 				const foundPromotions = promotions.filter((o1) =>
@@ -145,12 +148,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
 
 export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 	const { currentCustomer } = getState().userReducer;
-	const {
-		totalAmount,
-		items,
-		paymentMethod,
-		discount,
-	} = getState().cartReducer;
+	const { totalAmount, items, paymentMethod } = getState().cartReducer;
 	const getDiscountPayload = setValidatePayload(
 		currentCustomer,
 		totalAmount,
@@ -158,7 +156,6 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 		paymentMethod
 	);
 	getDiscountPayload.code = voucherCode;
-	const currentDiscount = discount;
 	try {
 		dispatch(getDiscountRequest());
 		let discount = await new Promise((resolve, reject) => {
@@ -176,12 +173,7 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 				}
 			});
 		});
-		if (_isEmpty(currentDiscount)) {
-			dispatch(getDiscountSuccess(discount));
-		} else {
-			discount = currentDiscount;
-			dispatch(getDiscountSuccess(discount));
-		}
+		dispatch(getDiscountSuccess(discount));
 	} catch (error) {
 		console.log('[getDiscount]', error);
 		dispatch(getDiscountError());
@@ -205,11 +197,9 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				items,
 				paymentMethod
 			);
-			checkoutPayload.source_id = getOrderId();
-			checkoutPayload.status = 'FULFILLED';
+			checkoutPayload.status = 'PAID';
 			await sendPayload(checkoutPayload, 'order');
 			dispatch(clearCart());
-			dispatch(setOrderId(checkoutPayload.source_id));
 		} else {
 			const checkoutPayload = setRedemptionPayload(
 				currentCustomer,
@@ -217,20 +207,34 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				items,
 				paymentMethod
 			);
-			if (discount.hasOwnProperty('code')) {
+			if (discount.hasOwnProperty('code') && discount.hasOwnProperty('gift')) {
+				const discountCode = discount.code;
+				const giftCardBalanceAfterRedemption =
+					discount.gift.balance - discount.order.discount_amount;
+				const campaignName = discount.campaign;
+				checkoutPayload.code = discountCode;
+				const giftCardCode = discountCode;
+				await sendPayload(checkoutPayload, 'redeem');
+				dispatch(clearCart());
+				dispatch(
+					updateGiftCardBalance(
+						campaignName,
+						giftCardCode,
+						giftCardBalanceAfterRedemption
+					)
+				);
+			} else if (discount.hasOwnProperty('code')) {
 				// If voucher is applied
 				const discountCode = discount.code;
 				checkoutPayload.code = discountCode;
-				const res = await sendPayload(checkoutPayload, 'redeem');
+				await sendPayload(checkoutPayload, 'redeem');
 				dispatch(clearCart());
-				dispatch(setOrderId(res.id));
 			} else if (discount.hasOwnProperty('banner')) {
 				// If promotion is applied
 				const promotionId = discount.id;
 				checkoutPayload.promotionId = promotionId;
-				const res = await sendPayload(checkoutPayload, 'redeem');
+				await sendPayload(checkoutPayload, 'redeem');
 				dispatch(clearCart());
-				dispatch(setOrderId(res.order.id));
 			}
 		}
 	} catch (error) {

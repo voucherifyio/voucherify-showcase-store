@@ -60,8 +60,6 @@ const SidebarCartDiscounts = ({
 	useEffect(() => {
 		if (enableCartDiscounts && currentCartDiscount) {
 			dispatch(getCartDiscount(currentCartDiscount));
-		} else if (!enableCartDiscounts) {
-			dispatch(setCurrentCartDiscount(''));
 		} else if (currentCartDiscount === '') {
 			dispatch(removePromotionFromCart());
 			dispatch(setCurrentCartDiscount(''));
@@ -74,7 +72,7 @@ const SidebarCartDiscounts = ({
 	const cartDiscountCampaigns = discountCampaigns.filter(
 		(camp) => camp.campaign_type === 'PROMOTION'
 	);
-	// We're counting campaings for each Customer based on published coupons
+	// We're counting Campaigns for each Customer based on published coupons
 
 	return (
 		<div className="accordions">
@@ -91,7 +89,7 @@ const SidebarCartDiscounts = ({
 						<div className="cartDiscountDescription">
 							<ShowMoreText anchorClass="readMore" lines={2}>
 								<p>
-									The qualification endpoint returns all promotions available to
+									The qualification endpoint returns all promotions avaliable to
 									the given customer profile and orders that meet predefined
 									validation rules such as total order value or the minimum
 									number of items in the cart.
@@ -124,6 +122,11 @@ const SidebarCartDiscounts = ({
 									id={campaign.id}
 									expanded={expanded === campaign.id}
 									onChange={handleChange(campaign.id)}
+									className={
+										expanded === campaign.id
+											? 'accordionBackground open'
+											: 'accordionBackground'
+									}
 								>
 									<AccordionSummary
 										expandIcon={<ExpandMoreIcon />}
@@ -163,7 +166,7 @@ const mapStateToProps = (state) => {
 		fetchingCoupons: state.userReducer.fetchingCoupons,
 		vouchers: state.userReducer.vouchers,
 		campaigns: state.userReducer.campaigns,
-		availableCustomers: state.userReducer.availableCustomers,
+		customers: state.userReducer.customers,
 		fetchingCustomers: state.userReducer.fetchingCustomers,
 		items: state.cartReducer.items,
 		discount: state.cartReducer.discount,
@@ -180,7 +183,7 @@ SidebarCartDiscounts.propTypes = {
 	vouchers: PropTypes.array,
 	discount: PropTypes.object,
 	campaigns: PropTypes.array,
-	availableCustomers: PropTypes.array,
+	customers: PropTypes.array,
 	fetchingCustomers: PropTypes.bool,
 	dispatch: PropTypes.func,
 	items: PropTypes.array,

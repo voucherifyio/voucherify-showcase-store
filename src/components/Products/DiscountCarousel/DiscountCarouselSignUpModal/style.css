@@ -5,22 +5,22 @@
 }
 
 .signUpModalFormTitle {
-  font-size: 1.1rem;
-  font-weight: 700;
+	font-size: 1.1rem;
+	font-weight: 700;
 }
 
 .signUpModalFormResult {
-  font-weight: 700;
-  font-size: 0.8rem;
+	font-weight: 700;
+	font-size: 0.8rem;
 }
 
 .emailInput {
-  margin: 2rem 0;
+	margin: 0.5rem 0;
 }
 
 .emailMutedText {
-  color: var(--lightgrey);
-  margin-top: 0.5rem !important;
-  font-size: 0.8rem;
-  font-weight: 700;
+	color: var(--lightgrey);
+	margin-top: 0.5rem !important;
+	font-size: 0.8rem;
+	font-weight: 700;
 }

@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './style.css';
 import VoucherifyButton from '../../App/VoucherifyButton';
-import VoucherifyLogoSquare from '../../../assets/VoucherifyLogoSquare.png';
 import _isEmpty from 'lodash.isempty';
 import DiscountCarouselSignUpModal from './DiscountCarouselSignUpModal';
+import VoucherifyInformation from '../../App/VoucherifyInformation';
 
 const DiscountCarouselBanner = ({
 	campaign,
@@ -15,8 +15,12 @@ const DiscountCarouselBanner = ({
 	const [modalShow, setModalShow] = useState(false);
 
 	const couponForCurrentCustomer = campaign.coupons.find(
-		(coupon) => coupon.currentCustomer === currentCustomer.source_id
+		(coupon) => coupon.customer === currentCustomer.id
 	);
+
+	const handleOnHide = () => {
+		setModalShow(!modalShow);
+	};
 
 	return (
 		<>
@@ -35,38 +39,38 @@ const DiscountCarouselBanner = ({
 					}
 				>
 					<h3 className="carouselBannerTitle">{campaign.name}</h3>
-					{campaign.metadata.description && (
+					{campaign.metadata.description &&
+					campaign.name !== 'Loyalty Campaign' ? (
 						<div
 							className="carouselBannerDescription"
 							dangerouslySetInnerHTML={{
 								__html: campaign.metadata.description,
 							}}
 						></div>
+					) : (
+						<div className="carouselBannerDescription">
+							You will automatically join our loyalty program after your first
+							purchase - or after signup for our newsletter!
+						</div>
 					)}
 					{campaign.campaign_type === 'PROMOTION' &&
 						campaign.name !== currentCartDiscount && (
-							<div className="carouselBannerDescriptionPromotion">
-								<div className="carouselVoucherifyLogo">
-									<img src={VoucherifyLogoSquare} alt="" />
-								</div>
-								<div className="carouselBannerDescriptionPromotionText">
-									Enable this promotion in the sidebar
-								</div>
-							</div>
+							<VoucherifyInformation>
+								Enable this promotion in the sidebar
+							</VoucherifyInformation>
 						)}
 					{!_isEmpty(couponForCurrentCustomer) && (
 						<VoucherifyButton
 							text="Get code"
 							code={
 								campaign.coupons.find(
-									(coupon) =>
-										coupon.currentCustomer === currentCustomer.source_id
-								).customerDataCoupon
+									(coupon) => coupon.customer === currentCustomer.id
+								).code
 							}
 						/>
 					)}
 					{_isEmpty(couponForCurrentCustomer) &&
-						campaign.name === 'Join our newsletter and get 5% discount' && (
+						campaign.name === 'Join our newsletter and get $5 discount' && (
 							<VoucherifyButton
 								onClickFunction={() => setModalShow(true)}
 								text="Sign up"
@@ -86,7 +90,7 @@ const DiscountCarouselBanner = ({
 			<DiscountCarouselSignUpModal
 				campaign={campaign}
 				show={modalShow}
-				onHide={() => setModalShow(false)}
+				onHide={handleOnHide}
 			/>
 		</>
 	);

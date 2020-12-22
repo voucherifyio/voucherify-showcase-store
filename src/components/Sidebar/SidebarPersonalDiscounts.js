@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import _orderBy from 'lodash.orderby';
 import _isEmpty from 'lodash.isempty';
 import SidebarDiscountDetails from './SidebarDiscountDetails';
@@ -12,6 +12,33 @@ import { connect } from 'react-redux';
 import SidebarCustomer from './SidebarCustomer';
 import PropTypes from 'prop-types';
 
+const discountCampaigns = (campaigns) =>
+	_orderBy(campaigns, ['metadata']['order'], ['asc']);
+
+// Filtering campaigns for this particular sidebar panel.
+const couponCampaigns = (discountCampaigns) =>
+	discountCampaigns.filter(
+		(camp) =>
+			camp.campaign_type !== 'PROMOTION' &&
+			!camp.name.toLowerCase().includes('reward') &&
+			camp.campaign_type !== 'LOYALTY_PROGRAM' &&
+			camp.campaign_type !== 'REFERRAL_PROGRAM' &&
+			camp.campaign_type !== 'GIFT_VOUCHERS'
+	);
+
+// This is the case for the Cart Discounts and for not yet active coupons
+const countCampaigns = (filteredCouponCampaigns, currentCustomer) => {
+	let campCount = 0;
+	for (let i = 0; i < filteredCouponCampaigns.length; i++) {
+		!_isEmpty(filteredCouponCampaigns[i].coupons) &&
+			filteredCouponCampaigns[i].coupons.find(
+				(coupon) => coupon.customer === currentCustomer.id
+			) &&
+			campCount++;
+	}
+	return campCount;
+};
+
 const SidebarPersonalDiscounts = ({
 	currentCustomer,
 	campaigns,
@@ -21,27 +48,20 @@ const SidebarPersonalDiscounts = ({
 	const handleChange = (panel) => (event, newExpanded) => {
 		setExpanded(newExpanded ? panel : false);
 	};
+	const discountedCampaigns = useMemo(() => discountCampaigns(campaigns), [
+		campaigns,
+	]);
 
-	const discountCampaigns = _orderBy(campaigns, ['metadata']['order'], ['asc']);
-
-	// We need to filter out Campaigns which does not have coupons avaliable.
-	// This is the case for the Cart Discounts and for not yet active coupons
-	const couponCampaigns = discountCampaigns.filter(
-		(camp) => camp.campaign_type !== 'PROMOTION'
+	const filteredCouponCampaigns = useMemo(
+		() => couponCampaigns(discountedCampaigns),
+		[discountedCampaigns]
 	);
 
-	// We're counting campaings for each Customer based on published coupons
-	const countCampaings = () => {
-		let campCount = 0;
-		for (let i = 0; i < couponCampaigns.length; i++) {
-			!_isEmpty(couponCampaigns[i].coupons) &&
-				couponCampaigns[i].coupons.find(
-					(coupon) => coupon.currentCustomer === currentCustomer.source_id
-				) &&
-				campCount++;
-		}
-		return campCount;
-	};
+	// We're counting Campaigns for each Customer based on published coupons
+	const countedCampaigns = useMemo(
+		() => countCampaigns(filteredCouponCampaigns, currentCustomer),
+		[filteredCouponCampaigns, currentCustomer]
+	);
 
 	return (
 		<div>
@@ -51,7 +71,7 @@ const SidebarPersonalDiscounts = ({
 					<SidebarQualifications />
 					<div className="sidebarSectionHeading accordionSection">
 						<span className="sidebarSectionTitle">
-							Personal Codes ({countCampaings()})
+							Personal Codes ({countedCampaigns}){' '}
 						</span>
 					</div>
 
@@ -63,13 +83,12 @@ const SidebarPersonalDiscounts = ({
 						</div>
 					) : (
 						<div className="accordions">
-							{couponCampaigns.map((campaign) => (
+							{filteredCouponCampaigns.map((campaign) => (
 								// We're checking avaliable coupons for currentCustomer.
 								<div key={campaign.name}>
 									{!_isEmpty(campaign.coupons) &&
 										campaign.coupons.find(
-											(coupon) =>
-												coupon.currentCustomer === currentCustomer.source_id
+											(coupon) => coupon.customer === currentCustomer.id
 										) && (
 											<Accordion
 												square
@@ -92,12 +111,14 @@ const SidebarPersonalDiscounts = ({
 												<AccordionDetails>
 													<SidebarDiscountDetails
 														campaign={campaign}
+														coupon={campaign.coupons.find(
+															(coupon) => coupon.customer === currentCustomer.id
+														)}
 														code={
 															campaign.coupons.find(
 																(coupon) =>
-																	coupon.currentCustomer ===
-																	currentCustomer.source_id
-															).customerDataCoupon
+																	coupon.customer === currentCustomer.id
+															).code
 														}
 													/>
 												</AccordionDetails>
@@ -119,7 +140,7 @@ const mapStateToProps = (state) => {
 		fetchingCoupons: state.userReducer.fetchingCoupons,
 		vouchers: state.userReducer.vouchers,
 		campaigns: state.userReducer.campaigns,
-		availableCustomers: state.userReducer.availableCustomers,
+		customers: state.userReducer.customers,
 		fetchingCustomers: state.userReducer.fetchingCustomers,
 		items: state.cartReducer.items,
 		discount: state.cartReducer.discount,
@@ -134,7 +155,7 @@ SidebarPersonalDiscounts.propTypes = {
 	vouchers: PropTypes.array,
 	discount: PropTypes.object,
 	campaigns: PropTypes.array,
-	availableCustomers: PropTypes.array,
+	customers: PropTypes.array,
 	fetchingCustomers: PropTypes.bool,
 	dispatch: PropTypes.func,
 	items: PropTypes.array,
