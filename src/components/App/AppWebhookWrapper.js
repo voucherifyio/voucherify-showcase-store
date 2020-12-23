@@ -60,6 +60,39 @@ const AppWebhookWrapper = ({
 							);
 							dispatch(getCampaigns());
 							return setModalShow(true);
+						} else if (voucher.campaign === 'Let it snow 1') {
+							const message = {
+								id: voucher.id,
+								title: 'Cool, cool, cool!',
+								body:
+									'Here is your 10% discount - valid only if your order is above $50!',
+								code: voucher.code,
+							};
+							dispatch(getMessage(customerId, message));
+							dispatch(
+								addPublishedCodes(customerId, {
+									...voucher,
+								})
+							);
+							dispatch(getCampaigns());
+							return setModalShow(true);
+						} else if (voucher.campaign === 'Let it snow 2') {
+							const message = {
+								id: voucher.id,
+								title: "It's too cold!",
+								body:
+									'Here is your $40 gift card - valid only if your order is above $100!',
+								code: voucher.code,
+							};
+							console.log(voucher);
+							dispatch(getMessage(customerId, message));
+							dispatch(
+								addPublishedCodes(customerId, {
+									...voucher,
+								})
+							);
+							dispatch(getCampaigns());
+							return setModalShow(true);
 						}
 					}
 					return;

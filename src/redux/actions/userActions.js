@@ -363,7 +363,7 @@ export const getVouchers = () => async (dispatch) => {
 	}
 };
 
-export const updateCurrentCustomerEmail = (email) => async (
+export const updateCurrentCustomerData = (data) => async (
 	dispatch,
 	getState
 ) => {
@@ -377,19 +377,20 @@ export const updateCurrentCustomerEmail = (email) => async (
 				headers: { 'Content-Type': 'application/json' },
 				credentials: 'include',
 				body: JSON.stringify({
-					email,
 					id,
+					...data,
 				}),
 			}
 		);
 		const updatedCurrentCustomer = await res.json();
 		dispatch(getCurrentCustomer(updatedCurrentCustomer.id));
 	} catch (error) {
-		console.log('[updateCurrentCustomerEmail][Error]', error);
+		console.log('[updateCurrentCustomerData][Error]', error);
 	}
 };
 export const publishCampaign = (campaign) => async (dispatch, getState) => {
 	const { currentCustomer } = getState().userReducer;
+	console.log({ currentCustomer, campaign });
 	try {
 		const res = await fetch(
 			`${process.env.REACT_APP_API_URL || ''}/distributions/create`,

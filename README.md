@@ -48,8 +48,11 @@ Your environment variables should look like this:
 - `REACT_APP_BACKEND_KEY`="Your 'Application Keys' Secret Key"
 - `REACT_APP_FRONTEND_APP_ID`="Your 'Client-side Keys' Application ID"
 - `REACT_APP_FRONTEND_KEY`="Your 'Client-side Keys' Secret KEY"
+- REACT_APP_API_ENDPOINT="Optional endpoint url if your Voucherify project is not on Europe server - [read more](https://docs.voucherify.io/docs/api-endpoints)"
+  REACT_APP_VERSION = '2.6.3'
+  REACT_APP_OPEN_WEATHER_API_KEY="Required if you want to use [special geolocation campaign](#special-geolocation-campaigns)"
 
-The fastest way to install the demo store is to use the 'Deploy to Heroku' button and providing required environment variables.
+  The fastest way to install the demo store is to use the 'Deploy to Heroku' button and providing required environment variables.
 
 After deployment, the script runs post-install, where it populates your Voucherify account with custom products, validation rules, campaigns, and vouchers.
 
@@ -160,6 +163,14 @@ All other necessary elements for this first Referral Campaign - Rewards, Rewards
 Repeat this process one more time - this time selecting reward `Referral Reward Tier 2 - Voucher 10%`. Remember to save changes to the campaign.
 
 [Learn more how to create Referral Program](https://cookbook.voucherify.io/article/240-airbnb-referral-program)
+
+## Special Geolocation Campaigns
+
+We prepared a simple POC in which we're using the customer's current location to see if it's snowing in his place and if the temperature is lower than -15 degrees Celcius. You can try it out in our app - it's the last slide in the main slider.
+
+If both conditions are true, then we're publishing for this customer a unique gift card. If it's only snowing, then we're posting for this customer a unique discount voucher.
+
+This POC needs an [OpenWeatherApi](https://openweathermap.org/api) key to work. Full code for this POC is in [GelocationPromotion.js](/src/components/Products/DiscountCarousel/GeolocationPromotion.js)
 
 ## Errors
 

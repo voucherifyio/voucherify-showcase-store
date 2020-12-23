@@ -178,25 +178,42 @@ export const userReducer = (state = initialState, action) => {
 		}
 		case GET_CAMPAIGNS_SUCCESS: {
 			const newCampaings = action.payload.campaigns;
-
 			const oldCampaings = state.campaigns;
+
 			if (oldCampaings !== null) {
 				newCampaings.forEach((camp) => {
 					camp.coupons.forEach((coupon) => {
 						if (
-							coupon.hasOwnProperty('giftCardAmount') &&
-							coupon.giftCardAmount >
+							!_isEmpty(
+								oldCampaings.find((c) => c.name === camp.name).coupons
+							) &&
+							!_isEmpty(
 								oldCampaings
 									.find((c) => c.name === camp.name)
-									.coupons.find((cu) => cu.code === coupon.code).giftCardBalance
-						) {
-							coupon.giftCardBalance = oldCampaings
+									.coupons.find((cu) => cu.code === coupon.code)
+							) &&
+							oldCampaings
 								.find((c) => c.name === camp.name)
-								.coupons.find((cu) => cu.code === coupon.code).giftCardBalance;
+								.coupons.find((cu) => cu.code === coupon.code)
+								.hasOwnProperty('giftCardBalance')
+						) {
+							if (
+								coupon.hasOwnProperty('giftCardAmount') &&
+								coupon.giftCardAmount >
+									oldCampaings
+										.find((c) => c.name === camp.name)
+										.coupons.find((cu) => cu.code === coupon.code)
+										.giftCardBalance
+							) {
+								coupon.giftCardBalance = oldCampaings
+									.find((c) => c.name === camp.name)
+									.coupons.find(
+										(cu) => cu.code === coupon.code
+									).giftCardBalance;
+							}
 						}
 					});
 				});
-
 				return {
 					...state,
 					campaigns: newCampaings,

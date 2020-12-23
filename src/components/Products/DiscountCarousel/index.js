@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import './style.css';
 import DiscountCarouselBanner from './DiscountCarouselBanner';
 import _isEmpty from 'lodash.isempty';
+import GeolocationPromotion from './GeolocationPromotion';
 
 const DiscountCarousel = ({ campaigns }) => {
 	return (
@@ -37,6 +38,18 @@ const DiscountCarousel = ({ campaigns }) => {
 								<DiscountCarouselBanner campaign={campaign} />
 							</div>
 						))}
+					{process.env.REACT_APP_OPEN_WEATHER_API_KEY && (
+						<div
+							className="carousel"
+							style={{
+								background:
+									'url(https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner5.jpg) no-repeat center',
+								backgroundSize: 'cover',
+							}}
+						>
+							<GeolocationPromotion />
+						</div>
+					)}
 				</Carousel>
 			</div>
 		</>

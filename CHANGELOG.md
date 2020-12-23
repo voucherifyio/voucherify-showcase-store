@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.6.3] - 23.12.2020
+
+### Added
+
+- MINOR New campaign based on user geolocation
+
 ## [2.6.2] - 20.11.2020
 
 ### Added

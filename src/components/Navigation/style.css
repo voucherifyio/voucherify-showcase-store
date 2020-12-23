@@ -139,7 +139,9 @@
 @media (max-width: 575.98px) {
 	.navigation {
 		height: unset;
+		width: calc(100vw - 90px);
 	}
+
 	.navigationMenuUserDropdownItem {
 		width: 100% !important;
 	}

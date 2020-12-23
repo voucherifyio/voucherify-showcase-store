@@ -17,13 +17,12 @@ router.route('/:id').get(async (req, res) => {
 });
 
 router.route('/update').post(async (req, res) => {
-	const id = req.body.id;
-	const email = req.body.email;
+	// const id = req.body.id;
+	// const email = req.body.email;
 
 	try {
 		const customer = await voucherify.customers.update({
-			id,
-			email,
+			...req.body,
 		});
 		res.json(customer);
 	} catch (e) {

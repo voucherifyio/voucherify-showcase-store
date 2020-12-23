@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import './style.css';
 import { connect } from 'react-redux';
 import {
-	updateCurrentCustomerEmail,
+	updateCurrentCustomerData,
 	publishCampaign,
-	// getCampaigns,
-	// createEvent,
 } from '../../../../redux/actions/userActions';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -19,9 +17,7 @@ const DiscountCarouselSignUpModal = ({
 	currentCustomer,
 }) => {
 	const [email, setEmail] = useState(null);
-
 	const [submit, setSubmit] = useState(true);
-	// const [modalShow, setModalShow] = useState(false);
 	const handleChange = (event) => {
 		const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -32,7 +28,7 @@ const DiscountCarouselSignUpModal = ({
 	};
 
 	const asyncDispatch = async () => {
-		await dispatch(updateCurrentCustomerEmail(email));
+		await dispatch(updateCurrentCustomerData({ email }));
 		await fetch(`${process.env.REACT_APP_API_URL || ''}/events/create`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -42,9 +38,7 @@ const DiscountCarouselSignUpModal = ({
 				currentCustomer,
 			}),
 		});
-		// await dispatch(createEvent('newsletter_subscribed'));
 		await dispatch(publishCampaign(campaign));
-		// await dispatch(getCampaigns());
 		onHide();
 	};
 
@@ -112,4 +106,5 @@ DiscountCarouselSignUpModal.propTypes = {
 	onHide: PropTypes.func,
 	show: PropTypes.bool,
 	campaign: PropTypes.object,
+	currentCustomer: PropTypes.object,
 };

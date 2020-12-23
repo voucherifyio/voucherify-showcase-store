@@ -9,6 +9,8 @@ exports.customers = [
 			title: 'New Customer',
 			avatar:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/AliceMorgan.jpg',
+			isSnow: false,
+			isCold: false,
 		},
 		address: {
 			city: 'London',
@@ -26,6 +28,8 @@ exports.customers = [
 			title: 'Hot Beans Fan',
 			avatar:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/LewisMarshall.jpg',
+			isSnow: false,
+			isCold: false,
 		},
 		address: {
 			city: 'Los Angeles',
@@ -43,6 +47,8 @@ exports.customers = [
 			title: 'Partner Customer',
 			avatar:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/JohnDorian.jpg',
+			isSnow: false,
+			isCold: false,
 		},
 		address: {
 			city: 'Warsaw',
@@ -57,6 +63,8 @@ exports.customers = [
 			demostore_id: 'referralCustomer1',
 			description: 'Customer for referral campaign purposes',
 			title: 'Referral Friend #1',
+			isSnow: false,
+			isCold: false,
 		},
 		address: {
 			city: 'München',
@@ -71,6 +79,8 @@ exports.customers = [
 			demostore_id: 'referralCustomer2',
 			description: 'Customer for referral campaign purposes',
 			title: 'Referral Friend #2',
+			isSnow: false,
+			isCold: false,
 		},
 		address: {
 			city: 'Airdrie',
@@ -85,6 +95,8 @@ exports.customers = [
 			demostore_id: 'referralCustomer3',
 			description: 'Customer for referral campaign purposes',
 			title: 'Referral Friend #3',
+			isSnow: false,
+			isCold: false,
 		},
 		address: {
 			city: 'Tulsa',
@@ -195,7 +207,7 @@ exports.campaigns = [
 		name: 'Gift Cards Campaign',
 		type: 'AUTO_UPDATE',
 		voucher: {
-			type: 'GIFT_VOUCHER',
+			type: 'GIFT_VOUCHERS',
 			gift: {
 				amount: 10000,
 			},
@@ -524,6 +536,46 @@ exports.campaigns = [
 			],
 		},
 	},
+	{
+		name: 'Let it snow 1',
+		auto_join: false,
+		campaign_type: 'DISCOUNT_COUPONS',
+		join_once: true,
+		metadata: {
+			description:
+				'If it is snowing in your location, you will get a 10% discount voucher valid if your order is above 50$',
+			assigned_val_rules: 'Let it snow 1',
+			redemption_steps: 'Cart value: > $50',
+			auto_publish: false,
+		},
+		voucher: {
+			type: 'DISCOUNT_VOUCHER',
+			discount: { percent_off: 10, type: 'PERCENT' },
+		},
+		type: 'AUTO_UPDATE',
+	},
+	{
+		name: 'Let it snow 2',
+		auto_join: false,
+		join_once: true,
+		metadata: {
+			description:
+				'If it is snowing and the temperature is below -15C in your location, you will get a 40$ gift card, valid if your order is above 100$.',
+			assigned_val_rules: 'Let it snow 2',
+			redemption_steps: 'Cart value: > $100',
+			auto_publish: false,
+		},
+		voucher: {
+			type: 'GIFT_VOUCHER',
+			gift: {
+				amount: 4000,
+			},
+			redemption: {
+				quantity: null,
+			},
+		},
+		type: 'AUTO_UPDATE',
+	},
 ];
 
 exports.segments = [
@@ -570,6 +622,40 @@ exports.segments = [
 			'summary.orders.total_count': {
 				conditions: {
 					$is: [0],
+				},
+			},
+		},
+	},
+	{
+		type: 'auto-update',
+		name: 'Let it snow 1',
+		filter: {
+			junction: 'and',
+			'metadata.isSnow': {
+				conditions: {
+					$is: ['true'],
+				},
+			},
+			'metadata.isCold': {
+				conditions: {
+					$is: ['false'],
+				},
+			},
+		},
+	},
+	{
+		type: 'auto-update',
+		name: 'Let it snow 2',
+		filter: {
+			junction: 'and',
+			'metadata.isSnow': {
+				conditions: {
+					$is: ['true'],
+				},
+			},
+			'metadata.isCold': {
+				conditions: {
+					$is: ['true'],
 				},
 			},
 		},

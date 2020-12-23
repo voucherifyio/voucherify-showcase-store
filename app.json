@@ -28,6 +28,9 @@
 		"REACT_APP_API_ENDPOINT": {
 			"description": "Voucherify endpoint. Defaults to https://api.voucherify.io",
 			"required": false
+		},
+		"REACT_APP_OPEN_WEATHER_API_KEY": {
+			"description": "Provide Openweather Api Key if you want to enable location based promotions on Hot Beans"
 		}
 	},
 	"addons": [

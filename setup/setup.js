@@ -507,6 +507,36 @@ const setupValidationRules = async () => {
 			},
 		},
 		{
+			name: 'Let it snow 1',
+			error: { message: 'Check campaign rules' },
+			rules: {
+				1: {
+					name: 'order.amount',
+					error: { message: 'Total cart value must be more than $50' },
+					rules: {},
+					conditions: {
+						$more_than: [5000],
+					},
+				},
+				logic: '1',
+			},
+		},
+		{
+			name: 'Let it snow 2',
+			error: { message: 'Check campaign rules' },
+			rules: {
+				1: {
+					name: 'order.amount',
+					error: { message: 'Total cart value must be more than $100' },
+					rules: {},
+					conditions: {
+						$more_than: [10000],
+					},
+				},
+				logic: '1',
+			},
+		},
+		{
 			name: 'Referral Campaign - Validation Rule',
 			error: { message: 'Check campaign rules' },
 			rules: {
