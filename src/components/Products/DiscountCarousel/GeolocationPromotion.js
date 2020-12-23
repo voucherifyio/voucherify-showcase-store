@@ -23,8 +23,6 @@ const GeolocationPromotion = ({ dispatch }) => {
 	};
 
 	const locationSuccess = async (position) => {
-		setGeolocationText('Location sent!');
-
 		// We're passing receivied coordinates to OpenWeatherMap API
 		const lat = position.coords.latitude;
 		const lon = position.coords.longitude;
@@ -54,6 +52,12 @@ const GeolocationPromotion = ({ dispatch }) => {
 		} else if (isSnow && !isCold) {
 			// If it's snowing but it's less than -15 deg. celcius - we're publishing voucher from 'Let it snow 1' campaign
 			await dispatch(publishCampaign({ name: 'Let it snow 1' }));
+		} else {
+			// If none of the above, the customer can try one more time after 5 seconds
+			setGeolocationText('Better luck next time!');
+			setTimeout(() => {
+				setGeolocationText('Share geolocation');
+			}, 5000);
 		}
 	};
 

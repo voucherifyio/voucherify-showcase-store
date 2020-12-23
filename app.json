@@ -30,7 +30,8 @@
 			"required": false
 		},
 		"REACT_APP_OPEN_WEATHER_API_KEY": {
-			"description": "Provide Openweather Api Key if you want to enable location based promotions on Hot Beans"
+			"description": "Provide Openweather Api Key if you want to enable location based promotions on Hot Beans",
+			"required": false
 		}
 	},
 	"addons": [
