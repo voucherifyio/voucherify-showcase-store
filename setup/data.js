@@ -176,7 +176,7 @@ exports.campaigns = [
 				'Loyalty Reward - Voucher; Loyalty Reward - Pay by Points; Loyalty Reward - Free coffee',
 			assigned_rewards_points: '100; null; 150',
 			redemption_steps:
-				'Enter Program: Make first purchase or after signup for newsletter!',
+				'Enter Program: Make first purchase or signup for newsletter!',
 			earning_rules:
 				"Entering Segment 'Loyal Customers' (at least one purchase): 100 points; Newsletter signup: 80 points; Product purchase: 1 point for every $10 spent",
 			rewards:
