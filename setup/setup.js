@@ -3,6 +3,9 @@ const _flatten = require('lodash.flatten');
 const voucherify = require('voucherify')({
 	applicationId: process.env.REACT_APP_BACKEND_APP_ID,
 	clientSecretKey: process.env.REACT_APP_BACKEND_KEY,
+	apiUrl: Boolean(process.env.REACT_APP_API_ENDPOINT)
+		? process.env.REACT_APP_API_ENDPOINT
+		: 'https://api.voucherify.io',
 });
 const { campaigns, vouchers, products, segments } = require('./data');
 
