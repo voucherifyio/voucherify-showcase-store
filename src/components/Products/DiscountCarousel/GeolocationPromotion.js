@@ -64,15 +64,21 @@ const GeolocationPromotion = ({ dispatch }) => {
 	return (
 		<div className="carouselBanner">
 			<div className="carouselBannerText">
-				<h3 className="carouselBannerTitle">Is it snowing down there?</h3>
-				<div className="carouselBannerDescription">
+				<h3 className="carouselBannerTitle">
+					Is it snowing down there?{' '}
+					<span role="img" aria-label="Snowflake emoji">
+						❄️
+					</span>
+				</h3>
+				<div className="carouselBannerDescription carouselBannerDescriptionGeolocation">
 					<p>
-						If it is snowing in your location, you will get a 10% discount
-						voucher valid if your order is above 50$.
+						If it is <b>snowing</b> in your location, you will get a 10%
+						discount voucher (valid if your order is above $50).
 					</p>
 					<p>
-						If it is snowing and the temperature is below -15C in your location,
-						you will get a 40$ gift card, valid if your order is above 100$.
+						If it is <b>snowing and the temperature is below -15C </b>in your
+						location, you will get a $40 gift card (valid if your order is above
+						$100).
 					</p>
 				</div>
 				<VoucherifyButton

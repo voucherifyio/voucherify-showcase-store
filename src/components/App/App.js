@@ -75,6 +75,7 @@ const App = ({
 		if (!_isEmpty(discount) && _has(discount, 'code')) {
 			dispatch(getDiscount(discount.code));
 		}
+		//eslint-disable-next-line
 	}, [dispatch, items, paymentMethod]);
 
 	if (currentCustomer === null) {

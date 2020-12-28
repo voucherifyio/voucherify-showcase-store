@@ -2,6 +2,10 @@
 	height: 15px !important;
 }
 
+.carouselBannerDescriptionGeolocation {
+	text-align: left;
+}
+
 .carouselWrapper {
 	margin-bottom: 2rem;
 }
