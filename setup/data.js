@@ -207,7 +207,7 @@ exports.campaigns = [
 		name: 'Gift Cards Campaign',
 		type: 'AUTO_UPDATE',
 		voucher: {
-			type: 'GIFT_VOUCHERS',
+			type: 'GIFT_VOUCHER',
 			gift: {
 				amount: 10000,
 			},
