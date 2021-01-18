@@ -390,7 +390,6 @@ export const updateCurrentCustomerData = (data) => async (
 };
 export const publishCampaign = (campaign) => async (dispatch, getState) => {
 	const { currentCustomer } = getState().userReducer;
-	console.log({ currentCustomer, campaign });
 	try {
 		const res = await fetch(
 			`${process.env.REACT_APP_API_URL || ''}/distributions/create`,

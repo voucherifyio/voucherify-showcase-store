@@ -12,13 +12,23 @@ import Tooltip from '@material-ui/core/Tooltip';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import _isEmpty from 'lodash.isempty';
 import { setEnableSidebar, newSession } from '../../redux/actions/userActions';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { getCurrentCustomer } from '../../redux/actions/userActions';
 import { clearMessages } from '../../redux/actions/webhookActions';
 import Spinner from 'react-bootstrap/Spinner';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ReferralCampaignModal from './ReferralCampaignModal';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import _orderBy from 'lodash.orderby';
+import Switch from '@material-ui/core/Switch';
+import {
+	setEnableCartDiscounts,
+	setCurrentCartDiscount,
+} from '../../redux/actions/userActions';
+import {
+	getCartDiscount,
+	removePromotionFromCart,
+} from '../../redux/actions/cartActions';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
 const refCamp = (campaigns) =>
 	campaigns.find((camp) => camp.name === 'Referral Campaign');
@@ -30,6 +40,20 @@ const StyledBadge = withStyles(() => ({
 	},
 }))(Badge);
 
+const OrangeSwitch = withStyles({
+	switchBase: {
+		color: 'white',
+		'&$checked': {
+			color: 'var(--orange)',
+		},
+		'&$checked + $track': {
+			backgroundColor: 'var(--orange)',
+		},
+	},
+	checked: {},
+	track: {},
+})(Switch);
+
 const NavigationMenu = ({
 	itemsTotalCount,
 	currentCustomer,
@@ -38,11 +62,39 @@ const NavigationMenu = ({
 	dispatch,
 	fetchingCustomer,
 	fetchingCustomers,
+	currentCartDiscount,
+	enableCartDiscounts,
+	items,
 }) => {
 	const [modalShow, setModalShow] = useState(false);
 	const [referralCampaign, setReferralCampaign] = useState(null);
 	const [referralCampaignCode, setReferralCampaignCode] = useState(null);
 	const [showBadge, setShowBadge] = useState(true);
+
+	const handleSwitchChange = (panel) => (event, newActiveCartDiscount) => {
+		dispatch(setCurrentCartDiscount(newActiveCartDiscount ? panel : ''));
+	};
+
+	const handleDiscountSwitchChange = () => {
+		dispatch(setEnableCartDiscounts(!enableCartDiscounts));
+	};
+
+	useEffect(() => {
+		if (enableCartDiscounts && currentCartDiscount) {
+			dispatch(getCartDiscount(currentCartDiscount));
+		} else if (currentCartDiscount === '') {
+			dispatch(removePromotionFromCart());
+			dispatch(setCurrentCartDiscount(''));
+		}
+	}, [dispatch, currentCartDiscount, enableCartDiscounts, items]);
+
+	const discountCampaigns = _orderBy(campaigns, ['metadata']['order'], ['asc']);
+
+	// We're creating separate filter only for Cart Discounts
+	const cartDiscountCampaigns = discountCampaigns.filter(
+		(camp) => camp.campaign_type === 'PROMOTION'
+	);
+
 	const referralCamp = useMemo(() => refCamp(campaigns), [campaigns]);
 
 	const handleOnHide = () => {
@@ -78,7 +130,7 @@ const NavigationMenu = ({
 
 	return (
 		<>
-			<Col className="navigationMenu">
+			<Col sm={12} md={9} className="navigationMenu">
 				{fetchingCustomer || fetchingCustomers ? (
 					<div className="changeUserSpinner">
 						<Spinner animation="border" size="sm" role="status">
@@ -121,8 +173,52 @@ const NavigationMenu = ({
 									</div>
 								</NavDropdown.Item>
 							))}
+						<NavDropdown.Item onClick={handleLogOut}>
+							<div className="customerNavigationTitle">Log out</div>
+							<div className="customerNavigationDescription">
+								Generate new set of customers
+							</div>
+						</NavDropdown.Item>
 					</NavDropdown>
 				)}
+				<NavDropdown
+					className="navigationMenuUser"
+					title={
+						<Tooltip title="Select cart discount">
+							<div className="cartDiscountsMenu">
+								<MonetizationOnIcon className="navigationMenuUserAvatar" />
+								<b>Cart discounts</b>
+							</div>
+						</Tooltip>
+					}
+				>
+					<NavDropdown.Item onClick={(event) => event.stopPropagation()}>
+						<div onClick={(event) => event.stopPropagation()}>
+							<OrangeSwitch
+								color="default"
+								disabled={currentCartDiscount ? true : false}
+								checked={enableCartDiscounts}
+								onChange={() => handleDiscountSwitchChange()}
+							/>
+							Enable Cart Discounts
+						</div>
+					</NavDropdown.Item>
+					{cartDiscountCampaigns.map((campaign) => (
+						<NavDropdown.Item
+							key={campaign.id}
+							className="navigationMenuDropdownItemCartDiscount"
+						>
+							<OrangeSwitch
+								color="default"
+								disabled={!enableCartDiscounts}
+								checked={currentCartDiscount === campaign.id ? true : false}
+								onClick={(event) => event.stopPropagation()}
+								onChange={handleSwitchChange(campaign.id)}
+							/>
+							<p>{campaign.name}</p>
+						</NavDropdown.Item>
+					))}
+				</NavDropdown>
 				<Tooltip title="Your dashboard">
 					<IconButton
 						href={currentCustomer.assets.cockpit_url}
@@ -173,11 +269,6 @@ const NavigationMenu = ({
 						</IconButton>
 					</Link>
 				</Tooltip>
-				<Tooltip title="Generate new set of customers">
-					<IconButton className="navigationMenuIcon" onClick={handleLogOut}>
-						<ExitToAppIcon />
-					</IconButton>
-				</Tooltip>
 			</Col>
 		</>
 	);
@@ -191,6 +282,9 @@ const mapStateToProps = (state) => {
 		campaigns: state.userReducer.campaigns,
 		fetchingCustomer: state.userReducer.fetchingCustomer,
 		fetchingCustomers: state.userReducer.fetchingCustomers,
+		enableCartDiscounts: state.userReducer.enableCartDiscounts,
+		currentCartDiscount: state.userReducer.currentCartDiscount,
+		items: state.cartReducer.items,
 	};
 };
 

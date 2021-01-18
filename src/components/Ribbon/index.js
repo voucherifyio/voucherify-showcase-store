@@ -16,19 +16,7 @@ const Ribbon = ({ vouchers }) => {
 				(voucher) => voucher.code === '50%OFF'
 			);
 
-			let ribbonDiscountText = '';
-
-			if (navigationRibbonVoucher.discount.type === 'PERCENT') {
-				ribbonDiscountText = `${navigationRibbonVoucher.discount.percent_off}% off`;
-			} else if (navigationRibbonVoucher.discount.type === 'AMOUNT') {
-				ribbonDiscountText = `$${(
-					navigationRibbonVoucher.discount.amount_off / 100
-				).toFixed(2)} off`;
-			}
-
-			if (!_isEmpty(navigationRibbonVoucher.metadata.discount_suffix)) {
-				ribbonDiscountText += ` for ${navigationRibbonVoucher.metadata.discount_suffix}`;
-			}
+			const ribbonDiscountText = `${navigationRibbonVoucher.discount.percent_off}% off`;
 
 			setVoucher({
 				code: navigationRibbonVoucher.code,

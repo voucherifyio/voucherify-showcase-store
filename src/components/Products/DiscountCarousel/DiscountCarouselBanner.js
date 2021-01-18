@@ -56,7 +56,7 @@ const DiscountCarouselBanner = ({
 					{campaign.campaign_type === 'PROMOTION' &&
 						campaign.name !== currentCartDiscount && (
 							<VoucherifyInformation>
-								Enable this promotion in the sidebar
+								Enable this promotion in the header
 							</VoucherifyInformation>
 						)}
 					{!_isEmpty(couponForCurrentCustomer) && (

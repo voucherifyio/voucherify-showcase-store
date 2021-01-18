@@ -34,7 +34,14 @@ const setupSegments = () => {
 
 const setupCampaigns = () => {
 	const campaignPromises = campaigns.map((campaign) => {
-		const thisCampaign = voucherify.campaigns.create(campaign);
+		if (campaign.name === 'Let it snow') {
+			campaign.voucher.discount.unit_type = products.find(
+				(p) => p.name === campaign.metadata.assigned_unit_type
+			).voucherifyId;
+		}
+
+		thisCampaign = voucherify.campaigns.create(campaign);
+
 		return thisCampaign
 			.then((camp) => {
 				const needsId = campaigns.find((c) => c.name === camp.name);
@@ -510,7 +517,7 @@ const setupValidationRules = async () => {
 			},
 		},
 		{
-			name: 'Let it snow 1',
+			name: 'Let it snow',
 			error: { message: 'Check campaign rules' },
 			rules: {
 				1: {
@@ -521,24 +528,20 @@ const setupValidationRules = async () => {
 						$more_than: [5000],
 					},
 				},
-				logic: '1',
-			},
-		},
-		{
-			name: 'Let it snow 2',
-			error: { message: 'Check campaign rules' },
-			rules: {
-				1: {
-					name: 'order.amount',
-					error: { message: 'Total cart value must be more than $100' },
+				2: {
+					name: 'customer.segment',
+					error: { message: 'Avaliable only for customers in "Snow" segment' },
 					rules: {},
 					conditions: {
-						$more_than: [10000],
+						$is: [
+							segments.find((s) => s.name === 'Snow').voucherifyId,
+						],
 					},
 				},
 				logic: '1',
 			},
 		},
+
 		{
 			name: 'Referral Campaign - Validation Rule',
 			error: { message: 'Check campaign rules' },
@@ -564,8 +567,7 @@ const setupValidationRules = async () => {
 					rules: {},
 					conditions: {
 						$is: [
-							segments.find((s) => s.name === 'Get 5% off your first purchase')
-								.voucherifyId,
+							segments.find((s) => s.name === 'New Customers').voucherifyId,
 						],
 					},
 				},

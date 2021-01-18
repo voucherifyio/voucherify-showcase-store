@@ -47,8 +47,8 @@ const DiscountCarouselSignUpModal = ({
 		asyncDispatch();
 	};
 	return (
-		<AppModal show={show} onHide={onHide}>
-			{campaign.name}
+		<AppModal show={show} onHide={onHide} join>
+			<h1 className="signUpModalTitle">{campaign.name}</h1>
 			{currentCustomer.email ? (
 				<>
 					<p className="signUpModalFormResult">Thank you for subscribing!</p>
@@ -57,11 +57,20 @@ const DiscountCarouselSignUpModal = ({
 				<Form onSubmit={handleSubmit}>
 					<Form.Group controlId="formBasicEmail" className="emailInput">
 						<Form.Label>Your email address</Form.Label>
-						<Form.Control
-							type="email"
-							placeholder="Enter email"
-							onChange={handleChange}
-						/>
+						<div className="emailSubmitGroup">
+							<Form.Control
+								type="email"
+								placeholder="Enter email"
+								onChange={handleChange}
+							/>
+							<Button
+								disabled={submit}
+								className="voucherifyButtonOrange"
+								type="submit"
+							>
+								Submit
+							</Button>
+						</div>
 						<Form.Text className="emailMutedText">
 							This is a fake shop, no email will be sent. To find the newly
 							assigned coupon, check the customer profile in the sidebar. To
@@ -76,13 +85,6 @@ const DiscountCarouselSignUpModal = ({
 						</Form.Text>
 					</Form.Group>
 					<div className="buttonWrapper">
-						<Button
-							disabled={submit}
-							className="voucherifyButtonDark"
-							type="submit"
-						>
-							Submit
-						</Button>
 						<div className="buttonSeparator"></div>
 					</div>
 				</Form>

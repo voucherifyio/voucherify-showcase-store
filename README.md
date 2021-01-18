@@ -6,8 +6,8 @@ Simple react demo store for showcasing Voucherify abilities.
 
 - Store is connected directly to your Voucherify account
 - Setup script sets up dummy products, validation rules, vouchers, and campaigns
-- Each new visit creates three customers based on preset
-- You can track your demo store orders directly in the Voucherify dashboard
+- Each new visit creates six customers based on preset
+- You can track your orders directly in the Voucherify dashboard
 - Create coupons and campaigns in the dashboard and use them in the demo store
 
 ## Installation
@@ -91,19 +91,16 @@ You need to manually create and assign validation rules to your campaigns to mak
 
 Voucher settings:
 
-- `Campaign Type`: DISCOUNT VOUCHERS
 - `Category`: Hot Beans
-- `Program Size`: STANDALONE CODE
 
 Voucher metadata (optional):
 
-| Key                | Type   | Description                                     |
-| ------------------ | ------ | ----------------------------------------------- |
-| `name`             | string | Name of your voucher                            |
-| `description`      | string | Simple description of your voucher              |
-| `redemption_steps` | string | Steps to validate this voucher Separated by `;` |
+| Key           | Type   | Description                        |
+| ------------- | ------ | ---------------------------------- |
+| `name`        | string | Name of your voucher               |
+| `description` | string | Simple description of your voucher |
 
-#### Campaign (Personal codes)
+#### Campaign
 
 Campaign settings:
 
@@ -112,28 +109,18 @@ Campaign settings:
 
 Campaign metadata (optional):
 
-| Key                       | Type   | Description                                                                           |
-| ------------------------- | ------ | ------------------------------------------------------------------------------------- |
-| `description`             | string | Simple description of your voucher                                                    |
-| `carousel_banner_img_url` | string | Image displayed as background in the main carousel.                                   |
-| `img_url`                 | string | Image with description on the main carousel on the product page.                      |
-| `promotion_product`       | string | Exact name of the product which should have the label "Promotion" on the main page.   |
-| `discount_suffix`         | string | e.g: '1x Hard Beans' - displays name of product after discount amount in the Sidebar. |
-| `redemption_steps`        | string | Steps to be able to validate this campaign properly.Separated by `;`                  |
+| Key                       | Type   | Description                                                                         |
+| ------------------------- | ------ | ----------------------------------------------------------------------------------- |
+| `description`             | string | Simple description of your voucher                                                  |
+| `carousel_banner_img_url` | string | Image displayed as background in the main carousel.                                 |
+| `img_url`                 | string | Image with description on the main carousel on the product page.                    |
+| `promotion_product`       | string | Exact name of the product which should have the label "Promotion" on the main page. |
 
 #### Campaign - Cart Discounts (Cart discounts)
 
 Campaign settings:
 
 - `Campaign Type`: PROMOTION
-
-Discount Level metadata:
-
-| Key                  | Type   | Description                                                                                            |
-| -------------------- | ------ | ------------------------------------------------------------------------------------------------------ |
-| `qualification_name` | string | Name to be displayed in the Sidebar `Qualifications`. Otherwise, qualification will not display itself |
-| `discount_suffix`    | string | e.g: '1x Hard Beans' - displays name of discounted product on the Sidebar                              |
-| `redemption_steps`   | string | Steps to be able to validate this campaign properly.Separated by `;`                                   |
 
 Campaign metadata:
 
@@ -166,11 +153,11 @@ Repeat this process one more time - this time selecting reward `Referral Reward 
 
 ## Special Geolocation Campaigns
 
-We prepared a simple POC in which we're using the customer's current location to see if it's snowing in his place and if the temperature is lower than -15 degrees Celcius. You can try it out in our app - it's the last slide in the main slider.
+We prepared a simple POC in which we're using the customer's current location to see if it's snowing in his place. You can try it out in our app - it's the last slide in the main slider.
 
-If both conditions are true, then we're publishing for this customer a unique gift card. If it's only snowing, then we're posting for this customer a unique discount voucher.
+If condition is true, then we're publishing for this customer a unique discount voucher.
 
-This POC needs an [OpenWeatherApi](https://openweathermap.org/api) key to work. Full code for this POC is in [GelocationPromotion.js](/src/components/Products/DiscountCarousel/GeolocationPromotion.js)
+This POC needs an optional [OpenWeatherApi](https://openweathermap.org/api) key to work. Full code for this POC is in [GelocationPromotion.js](/src/components/Products/DiscountCarousel/GeolocationPromotion.js)
 
 ## Errors
 

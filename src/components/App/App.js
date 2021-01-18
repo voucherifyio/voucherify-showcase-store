@@ -3,7 +3,7 @@ import CustomersModal from '../CustomersModal';
 import Navigation from '../Navigation';
 import AppRoutes from './AppRoutes';
 import { ToastContainer } from 'react-toastify';
-import Sidebar from '../Sidebar';
+// import Sidebar from '../Sidebar';
 import Ribbon from '../Ribbon';
 import { getProducts } from '../../redux/actions/storeActions';
 import { getTotals, getDiscount } from '../../redux/actions/cartActions';
@@ -91,7 +91,7 @@ const App = ({
 					</Row>
 					<ToastContainer {...toastOptions} />
 				</Container>
-				<Sidebar />
+				{/* <Sidebar /> */}
 			</div>
 		);
 	}

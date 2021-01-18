@@ -4,5 +4,15 @@
 }
 
 .modalBody {
-	padding: 40px !important;
+	padding: 40px 120px !important;
+}
+
+.modalHeaderImage {
+	position: relative;
+}
+
+@media (max-width: 991.98px) {
+	.modalBody {
+		padding: 40px 20px !important;
+	}
 }

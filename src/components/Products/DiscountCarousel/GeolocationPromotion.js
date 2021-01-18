@@ -30,8 +30,6 @@ const GeolocationPromotion = ({ dispatch }) => {
 			`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}&units=metric`
 		);
 		const weather = await res.json();
-		const temp = weather.main.temp;
-		let isCold = false;
 		let isSnow = false;
 
 		// We're checking current weather for snow
@@ -41,24 +39,18 @@ const GeolocationPromotion = ({ dispatch }) => {
 			}
 		});
 
-		// We're checking if current temp is lower than -15 deg. celcius
-		if (temp < -15) {
-			isCold = true;
-		}
-
-		if (isSnow && isCold) {
-			// If it's snowing and it's more than -15 deg. celcius - we're publishing gift card from 'Let it snow 2' campaign
-			await dispatch(publishCampaign({ name: 'Let it snow 2' }));
-		} else if (isSnow && !isCold) {
-			// If it's snowing but it's less than -15 deg. celcius - we're publishing voucher from 'Let it snow 1' campaign
-			await dispatch(publishCampaign({ name: 'Let it snow 1' }));
+		if (isSnow) {
+			// If it's snowing we're publishing voucher from 'Let it snow' campaign
+			await dispatch(publishCampaign({ name: 'Let it snow' }));
+			setGeolocationText('Success!');
 		} else {
 			// If none of the above, the customer can try one more time after 5 seconds
 			setGeolocationText('Better luck next time!');
-			setTimeout(() => {
-				setGeolocationText('Share geolocation');
-			}, 5000);
 		}
+
+		setTimeout(() => {
+			setGeolocationText('Share geolocation');
+		}, 5000);
 	};
 
 	return (
@@ -72,13 +64,9 @@ const GeolocationPromotion = ({ dispatch }) => {
 				</h3>
 				<div className="carouselBannerDescription carouselBannerDescriptionGeolocation">
 					<p>
-						If it is <b>snowing</b> in your location, you will get a 10%
-						discount voucher (valid if your order is above $50).
-					</p>
-					<p>
-						If it is <b>snowing and the temperature is below -15C </b>in your
-						location, you will get a $40 gift card (valid if your order is above
-						$100).
+						If it is <b>snowing</b> in your location, you will get a a free
+						Kleen Kentean - Thermos 750ml discount voucher (valid if your order
+						is above $50).
 					</p>
 				</div>
 				<VoucherifyButton
