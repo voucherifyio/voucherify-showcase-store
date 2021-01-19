@@ -170,10 +170,15 @@
 .getQualificationsWrapper > * {
 	width: 100% !important;
 }
+
 @media (max-width: 991.98px) {
 	.navigation {
 		height: unset;
 		/* width: calc(100vw - 90px); */
+	}
+	.dropdown-menu.show {
+		max-height: 420%;
+		overflow-y: auto;
 	}
 
 	.navigationMenuUserDropdownItem {

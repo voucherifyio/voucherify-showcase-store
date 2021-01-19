@@ -223,6 +223,7 @@ exports.campaigns = [
 			},
 		},
 		metadata: {
+			auto_publish: false,
 			assigned_val_rules: 'Referral Campaign - Validation Rule',
 			description:
 				"Share your referral code with three of your friends! For one	referral you will get voucher with 5% discount, for three it's 10%. New customers only!",
@@ -557,7 +558,7 @@ exports.segments = [
 	},
 	{
 		type: 'auto-update',
-		name: 'New customers',
+		name: 'New Customers',
 		filter: {
 			junction: 'and',
 			'summary.orders.total_count': {

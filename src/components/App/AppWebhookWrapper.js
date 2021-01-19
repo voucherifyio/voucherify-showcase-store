@@ -27,11 +27,29 @@ const AppWebhookWrapper = ({
 	useEffect(() => {
 		const socket = socketIOClient(`${process.env.REACT_APP_API_URL || ''}`);
 		socket.on('new-message', (data) => {
+			console.log(data);
 			const voucher = data.data.voucher;
 			switch (data.type) {
 				case 'voucher.published':
 					if (customers.find((customer) => customer.id === voucher.holder_id)) {
 						const customerId = voucher.holder_id;
+						if ((voucher.campaign = 'Referral Campaign')) {
+							const message = {
+								id: voucher.id,
+								title: 'Welcome to Hot Beans Referral Campaign',
+								body:
+									'Nicely done! Share this code with your friends to get amazing rewards!',
+								code: voucher.code,
+							};
+							dispatch(getMessage(customerId, message));
+							dispatch(
+								addPublishedCodes(customerId, {
+									...voucher,
+								})
+							);
+							dispatch(getCampaigns());
+							return setModalShow(true);
+						}
 						if (
 							voucher.campaign === 'Join our newsletter and get $5 discount'
 						) {
@@ -190,12 +208,6 @@ const AppWebhookWrapper = ({
 					<p>18:30 (10 minutes ago)</p>
 				</div>
 				<p>{currentMessageCustomer.messages[0].body}</p>
-				<p>
-					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque,
-					magni quia quod ut harum sed ullam quis, ea praesentium iure, modi
-					asperiores culpa maxime eligendi excepturi debitis beatae laudantium
-					veniam?
-				</p>
 				{currentMessageCustomer.messages[0].hasOwnProperty('code') && (
 					<div className="emailCta">
 						<p>Here is your code, copy it to use in checkout</p>
