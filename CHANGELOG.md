@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.6.5] - 19.01.2021
+
+### Added
+
+- MAJOR - Moved Cart Discounts & Qualifications to the navigation bar
+- MINOR - Revamped Webhook messages UI
+- MINOR - Changed Referral Campaign enrollment logic
+
+### Removed
+
+- MAJOR - Removed sidebar
+
 ## [2.6.3] - 23.12.2020
 
 ### Added
