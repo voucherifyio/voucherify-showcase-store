@@ -8,7 +8,7 @@ import './style.css';
 const Navigation = () => {
 	return (
 		<Row noGutters className="navigation">
-			<Col sm={12} md={3} className="navigationLogoWrapper">
+			<Col sm={12} md={12} lg={3} className="navigationLogoWrapper">
 				<Link to="/">
 					<div className="navigationLogo">
 						<img

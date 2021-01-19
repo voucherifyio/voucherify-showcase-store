@@ -147,7 +147,30 @@
 	display: flex;
 	align-items: center;
 }
-@media (max-width: 767.98px) {
+
+.referralModalTitle {
+	font-weight: 900;
+	font-size: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.qualificationMenu {
+	cursor: default !important;
+}
+.getQualificationsWrapper {
+	display: flex;
+	justify-content: center;
+}
+
+.getQualificationsSpinner {
+	display: flex;
+	justify-content: center;
+}
+
+.getQualificationsWrapper > * {
+	width: 100% !important;
+}
+@media (max-width: 991.98px) {
 	.navigation {
 		height: unset;
 		/* width: calc(100vw - 90px); */

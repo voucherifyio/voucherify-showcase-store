@@ -27,8 +27,8 @@ import {
 	ADD_NEW_CUSTOMERS_SUCCESS,
 	SET_CURRENT_APP_VERSION,
 	UPDATE_GIFT_CARD_BALANCE,
-} from '../constants';
-import _isEmpty from 'lodash.isempty';
+} from "../constants";
+import _isEmpty from "lodash.isempty";
 
 const initialState = {
 	currentCustomer: null,
@@ -39,7 +39,7 @@ const initialState = {
 	promotions: null,
 	vouchers: null,
 	qualifications: null,
-	paymentMethod: 'Other',
+	paymentMethod: "Other",
 	sessionId: null,
 	fetchingCoupons: false,
 	fetchingPromotions: false,
@@ -50,6 +50,7 @@ const initialState = {
 	enableCartDiscounts: false,
 	enableSidebar: false,
 	currentCartDiscount: null,
+	appVersion: null,
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -195,10 +196,10 @@ export const userReducer = (state = initialState, action) => {
 							oldCampaings
 								.find((c) => c.name === camp.name)
 								.coupons.find((cu) => cu.code === coupon.code)
-								.hasOwnProperty('giftCardBalance')
+								.hasOwnProperty("giftCardBalance")
 						) {
 							if (
-								coupon.hasOwnProperty('giftCardAmount') &&
+								coupon.hasOwnProperty("giftCardAmount") &&
 								coupon.giftCardAmount >
 									oldCampaings
 										.find((c) => c.name === camp.name)

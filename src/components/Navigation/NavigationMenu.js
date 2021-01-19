@@ -23,12 +23,15 @@ import Switch from '@material-ui/core/Switch';
 import {
 	setEnableCartDiscounts,
 	setCurrentCartDiscount,
+	getQualifications,
 } from '../../redux/actions/userActions';
 import {
 	getCartDiscount,
 	removePromotionFromCart,
 } from '../../redux/actions/cartActions';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import VoucherifyButton from '../App/VoucherifyButton';
 
 const refCamp = (campaigns) =>
 	campaigns.find((camp) => camp.name === 'Referral Campaign');
@@ -65,6 +68,8 @@ const NavigationMenu = ({
 	currentCartDiscount,
 	enableCartDiscounts,
 	items,
+	qualifications,
+	fetchingQualifications,
 }) => {
 	const [modalShow, setModalShow] = useState(false);
 	const [referralCampaign, setReferralCampaign] = useState(null);
@@ -77,6 +82,10 @@ const NavigationMenu = ({
 
 	const handleDiscountSwitchChange = () => {
 		dispatch(setEnableCartDiscounts(!enableCartDiscounts));
+	};
+
+	const handleGetQualifications = () => {
+		dispatch(getQualifications());
 	};
 
 	useEffect(() => {
@@ -130,7 +139,7 @@ const NavigationMenu = ({
 
 	return (
 		<>
-			<Col sm={12} md={9} className="navigationMenu">
+			<Col sm={12} md={12} lg={9} className="navigationMenu">
 				{fetchingCustomer || fetchingCustomers ? (
 					<div className="changeUserSpinner">
 						<Spinner animation="border" size="sm" role="status">
@@ -219,6 +228,66 @@ const NavigationMenu = ({
 						</NavDropdown.Item>
 					))}
 				</NavDropdown>
+				<NavDropdown
+					className="navigationMenuUser qualificationMenu"
+					title={
+						<Tooltip title="Check qualifications">
+							<div className="cartDiscountsMenu qualificationMenu">
+								<HelpOutlineIcon className="navigationMenuUserAvatar" />
+								<b>Qualifications</b>
+							</div>
+						</Tooltip>
+					}
+				>
+					<NavDropdown.Item onClick={(event) => event.stopPropagation()}>
+						<div
+							className="getQualificationsWrapper qualificationMenu"
+							onClick={(event) => event.stopPropagation()}
+						>
+							<VoucherifyButton
+								onClickFunction={handleGetQualifications}
+								text="Get qualifications"
+							/>
+						</div>
+					</NavDropdown.Item>
+					{fetchingQualifications ? (
+						<NavDropdown.Item className="qualificationMenu">
+							<div className="sidebarSpinner getQualificationsSpinner">
+								<Spinner animation="border" role="status">
+									<span className="sr-only">Loading...</span>
+								</Spinner>
+							</div>
+						</NavDropdown.Item>
+					) : (
+						<>
+							{!_isEmpty(qualifications) && (
+								<>
+									{qualifications
+										.filter(
+											(qualification) =>
+												qualification.name ||
+												qualification.metadata.name ||
+												qualification.metadata.qualification_name ||
+												qualification.code
+										)
+										.map((qualification, index) => (
+											<NavDropdown.Item
+												key={index}
+												className="navigationMenuDropdownItemCartDiscount qualificationMenu"
+											>
+												<p>
+													{qualification.name ||
+														qualification.metadata.name ||
+														qualification.metadata.qualification_name ||
+														qualification.code}
+												</p>
+											</NavDropdown.Item>
+										))}
+								</>
+							)}
+						</>
+					)}
+				</NavDropdown>
 				<Tooltip title="Your dashboard">
 					<IconButton
 						href={currentCustomer.assets.cockpit_url}
@@ -285,6 +354,8 @@ const mapStateToProps = (state) => {
 		enableCartDiscounts: state.userReducer.enableCartDiscounts,
 		currentCartDiscount: state.userReducer.currentCartDiscount,
 		items: state.cartReducer.items,
+		qualifications: state.userReducer.qualifications,
+		fetchingQualifications: state.userReducer.fetchingQualifications,
 	};
 };
 
