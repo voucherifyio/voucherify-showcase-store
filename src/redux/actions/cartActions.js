@@ -158,7 +158,7 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 	getDiscountPayload.code = voucherCode;
 	try {
 		dispatch(getDiscountRequest());
-		let discount = await new Promise((resolve, reject) => {
+		const discount = await new Promise((resolve, reject) => {
 			window.Voucherify.setIdentity(currentCustomer.source_id);
 			window.Voucherify.validate(getDiscountPayload, (res) => {
 				if (res.valid) {
@@ -173,6 +173,20 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 				}
 			});
 		});
+
+		if (
+			discount.discount.hasOwnProperty('effect') &&
+			discount.discount.effect === 'ADD_NEW_ITEMS' &&
+			!items.find((i) => i.id === discount.discount.unit_type)
+		) {
+			dispatch(
+				addItemToCart(
+					discount.discount.unit_type,
+					discount.discount.unit_off,
+					'increment_count'
+				)
+			);
+		}
 		dispatch(getDiscountSuccess(discount));
 	} catch (error) {
 		console.log('[getDiscount]', error);

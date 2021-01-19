@@ -13,6 +13,8 @@ import {
 	addPublishedCodes,
 } from '../../redux/actions/userActions';
 import { addProductReward } from '../../redux/actions/cartActions';
+import PersonIcon from '@material-ui/icons/Person';
+
 const AppWebhookWrapper = ({
 	dispatch,
 	customers,
@@ -20,24 +22,41 @@ const AppWebhookWrapper = ({
 	products,
 	webhookMessages,
 }) => {
-	const [modalShow, setModalShow] = useState(false);
+	const [modalShow, setModalShow] = useState(true);
 
 	useEffect(() => {
 		const socket = socketIOClient(`${process.env.REACT_APP_API_URL || ''}`);
 		socket.on('new-message', (data) => {
+			console.log(data);
 			const voucher = data.data.voucher;
 			switch (data.type) {
 				case 'voucher.published':
 					if (customers.find((customer) => customer.id === voucher.holder_id)) {
 						const customerId = voucher.holder_id;
+						if ((voucher.campaign = 'Referral Campaign')) {
+							const message = {
+								id: voucher.id,
+								title: 'Welcome to Hot Beans Referral Campaign',
+								body:
+									'Nicely done! Share this code with your friends to get amazing rewards!',
+								code: voucher.code,
+							};
+							dispatch(getMessage(customerId, message));
+							dispatch(
+								addPublishedCodes(customerId, {
+									...voucher,
+								})
+							);
+							dispatch(getCampaigns());
+							return setModalShow(true);
+						}
 						if (
 							voucher.campaign === 'Join our newsletter and get $5 discount'
 						) {
 							const message = {
 								id: voucher.id,
-								title: 'Your coupon is here!',
-								body:
-									'Hi! Thank you for subscribing to our newsletter! Here is your $5 discount that you can use for your next order. Enjoy!',
+								title: voucher.metadata.message_title,
+								body: voucher.metadata.message_body,
 								code: voucher.code,
 							};
 
@@ -47,9 +66,8 @@ const AppWebhookWrapper = ({
 						} else if (voucher.campaign === 'Loyalty Campaign') {
 							const message = {
 								id: voucher.id,
-								title: 'Welcome to our Loyalty Campaign',
-								body:
-									'Exchange loyalty points for discounts (apply the loyalty card code in the checkout), use points to pay for your order, or get a free coffee through your customer cockpit.',
+								title: voucher.metadata.message_title,
+								body: voucher.metadata.message_body,
 								code: voucher.code,
 							};
 							dispatch(getMessage(customerId, message));
@@ -60,31 +78,13 @@ const AppWebhookWrapper = ({
 							);
 							dispatch(getCampaigns());
 							return setModalShow(true);
-						} else if (voucher.campaign === 'Let it snow 1') {
+						} else if (voucher.campaign === 'Let it snow') {
 							const message = {
 								id: voucher.id,
-								title: 'Cool, cool, cool!',
-								body:
-									'Here is your 10% discount - valid only if your order is above $50!',
+								title: voucher.metadata.message_title,
+								body: voucher.metadata.message_body,
 								code: voucher.code,
 							};
-							dispatch(getMessage(customerId, message));
-							dispatch(
-								addPublishedCodes(customerId, {
-									...voucher,
-								})
-							);
-							dispatch(getCampaigns());
-							return setModalShow(true);
-						} else if (voucher.campaign === 'Let it snow 2') {
-							const message = {
-								id: voucher.id,
-								title: "It's too cold!",
-								body:
-									'Here is your $40 gift card - valid only if your order is above $100!',
-								code: voucher.code,
-							};
-							console.log(voucher);
 							dispatch(getMessage(customerId, message));
 							dispatch(
 								addPublishedCodes(customerId, {
@@ -109,14 +109,12 @@ const AppWebhookWrapper = ({
 							message.id = voucher.id;
 							message.code = voucher.code;
 							if (voucher.campaign === 'Referral Reward Tier 1 - Voucher 5%') {
-								message.body =
-									'Thanks for referring your friend! Here is your discount voucher for 5%. Referr two more to get even bigger reward!';
+								message.body = voucher.metadata.message_body;
 								message.code = voucher.code;
 							} else if (
 								voucher.campaign === 'Referral Reward Tier 2 - Voucher 10%'
 							) {
-								message.body =
-									'You rule! Thanks for referring three new customers! Here is your final reward - discount voucher for 10%';
+								message.body = voucher.metadata.message_body;
 								message.code = voucher.code;
 							} else if (voucher.code) {
 								if (voucher.discount.hasOwnProperty('percent_off')) {
@@ -193,10 +191,28 @@ const AppWebhookWrapper = ({
 					dispatch(removeMessage(currentCustomer.id));
 				}}
 			>
-				{currentMessageCustomer.messages[0].title}
+				<h1 className="webhookModalTitle">
+					{currentMessageCustomer.messages[0].title}
+				</h1>
+				<div className="webhookModalEmailHeader">
+					<div className="emailIcon">
+						<PersonIcon />
+					</div>
+					<div>
+						<p>
+							<span className="emailFrom">Voucherify</span>{' '}
+							&lt;voucherify@voucherify.io&gt;
+						</p>
+						<p>To me</p>
+					</div>
+					<p>18:30 (10 minutes ago)</p>
+				</div>
 				<p>{currentMessageCustomer.messages[0].body}</p>
 				{currentMessageCustomer.messages[0].hasOwnProperty('code') && (
-					<VoucherifyButton code={currentMessageCustomer.messages[0].code} />
+					<div className="emailCta">
+						<p>Here is your code, copy it to use in checkout</p>
+						<VoucherifyButton code={currentMessageCustomer.messages[0].code} />
+					</div>
 				)}
 				{currentMessageCustomer.messages[0].hasOwnProperty('product') && (
 					<>
@@ -207,10 +223,12 @@ const AppWebhookWrapper = ({
 										(p) => p.name === currentMessageCustomer.messages[0].product
 									).image_url
 								}
-								alt=""
+								alt={currentMessageCustomer.messages[0].product}
 							/>
 						</div>
-						<h4>{currentMessageCustomer.messages[0].product}</h4>
+						<h4 className="emailProduct">
+							{currentMessageCustomer.messages[0].product}
+						</h4>
 					</>
 				)}
 			</AppModal>

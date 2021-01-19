@@ -16,8 +16,8 @@ const ReferralCampaignModal = ({
 	handleSelectCustomer,
 }) => {
 	return (
-		<AppModal show={show} onHide={onHide}>
-			{referralCampaign.name}
+		<AppModal show={show} onHide={onHide} join>
+			<h1 className="referralModalTitle">{referralCampaign.name}</h1>
 			<p>{referralCampaign.metadata.description}</p>
 			<div className="code-btn__wrapper">
 				<VoucherifyButton code={referralCampaignCode} />

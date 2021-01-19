@@ -10,7 +10,6 @@ exports.customers = [
 			avatar:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/AliceMorgan.jpg',
 			isSnow: false,
-			isCold: false,
 		},
 		address: {
 			city: 'London',
@@ -29,7 +28,6 @@ exports.customers = [
 			avatar:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/LewisMarshall.jpg',
 			isSnow: false,
-			isCold: false,
 		},
 		address: {
 			city: 'Los Angeles',
@@ -48,7 +46,6 @@ exports.customers = [
 			avatar:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/customers/JohnDorian.jpg',
 			isSnow: false,
-			isCold: false,
 		},
 		address: {
 			city: 'Warsaw',
@@ -64,7 +61,6 @@ exports.customers = [
 			description: 'Customer for referral campaign purposes',
 			title: 'Referral Friend #1',
 			isSnow: false,
-			isCold: false,
 		},
 		address: {
 			city: 'München',
@@ -80,7 +76,6 @@ exports.customers = [
 			description: 'Customer for referral campaign purposes',
 			title: 'Referral Friend #2',
 			isSnow: false,
-			isCold: false,
 		},
 		address: {
 			city: 'Airdrie',
@@ -96,7 +91,6 @@ exports.customers = [
 			description: 'Customer for referral campaign purposes',
 			title: 'Referral Friend #3',
 			isSnow: false,
-			isCold: false,
 		},
 		address: {
 			city: 'Tulsa',
@@ -119,7 +113,6 @@ exports.vouchers = [
 			name: 'Black Friday Coupon',
 			assigned_val_rules: 'Black Friday Coupon',
 			description: 'Global coupon',
-			redemption_steps: 'Only one redemption per customer',
 			order: 2,
 		},
 	},
@@ -133,7 +126,6 @@ exports.vouchers = [
 			name: '50% Off',
 			assigned_val_rules: '',
 			description: 'Global coupon',
-			redemption_steps: '',
 			order: 3,
 		},
 	},
@@ -147,7 +139,6 @@ exports.vouchers = [
 			name: 'Discount up to $100',
 			assigned_val_rules: '',
 			description: 'Global coupon',
-			redemption_steps: '',
 			order: 4,
 		},
 	},
@@ -161,7 +152,6 @@ exports.vouchers = [
 			name: 'Visa Voucher',
 			assigned_val_rules: 'Visa Voucher',
 			description: 'Global coupon',
-			redemption_steps: 'Cart value: > $100; Payment method: Visa',
 			order: 1,
 		},
 	},
@@ -171,18 +161,13 @@ exports.campaigns = [
 	{
 		name: 'Loyalty Campaign',
 		metadata: {
+			message_title: 'Welcome to our Loyalty Campaign',
+			message_body:
+				'Exchange loyalty points for discounts (apply the loyalty card code in the checkout), use points to pay for your order, or get a free coffee through your customer cockpit.',
 			auto_publish: false,
 			assigned_rewards:
 				'Loyalty Reward - Voucher; Loyalty Reward - Pay by Points; Loyalty Reward - Free coffee',
 			assigned_rewards_points: '100; null; 150',
-			redemption_steps:
-				'Enter Program: Make first purchase or signup for newsletter!',
-			earning_rules:
-				"Entering Segment 'Loyal Customers' (at least one purchase): 100 points; Newsletter signup: 80 points; Product purchase: 1 point for every $10 spent",
-			rewards:
-				'Reward 1: Discount Voucher 10%; Reward 2: Pay by points - 1 point = $0.50; Reward 3: Hard Beans - Brazil',
-			tiers:
-				'Name: Newbie; Points: 100 - 150 | Name: Aspiring coffee maniac; Points: 151 - 200; Earning rule changes: Newsletter singup for 100 points; Reward changes: Discount voucher for 50 points | Name: Coffe prodigy; Points: +201; Reward changes: Discount voucher for 10 points, Free coffee for 10 points',
 			description:
 				'You will join our Loyalty Program after your first purchase! Exchange loyalty points for discounts (apply the loyalty card code in the checkout), use points to pay for your order, or get a free coffee through your customer cockpit.',
 			carousel_banner_img_url:
@@ -217,7 +202,6 @@ exports.campaigns = [
 		},
 		metadata: {
 			assigned_val_rules: 'Gift Cards Campaign - Validation Rule',
-			redemption_steps: 'Cart value: > $50',
 			description: 'Use your gift card to buy some amazing coffee!',
 		},
 	},
@@ -239,9 +223,8 @@ exports.campaigns = [
 			},
 		},
 		metadata: {
+			auto_publish: false,
 			assigned_val_rules: 'Referral Campaign - Validation Rule',
-			redemption_steps:
-				'First reward: 1 referred customer; Final reward: 3 referred customers',
 			description:
 				"Share your referral code with three of your friends! For one	referral you will get voucher with 5% discount, for three it's 10%. New customers only!",
 		},
@@ -268,8 +251,9 @@ exports.campaigns = [
 		type: 'AUTO_UPDATE',
 		metadata: {
 			auto_publish: false,
-			redemption_steps: 'Cart value: > $50',
 			assigned_val_rules: 'Referral Reward Tier 1 & 2 - Validation Rule',
+			message_body:
+				'Thanks for referring your friend! Here is your discount voucher for 5%. Referr two more to get even bigger reward!',
 		},
 		voucher: {
 			type: 'DISCOUNT_VOUCHER',
@@ -286,7 +270,8 @@ exports.campaigns = [
 		name: 'Referral Reward Tier 2 - Voucher 10%',
 		type: 'AUTO_UPDATE',
 		metadata: {
-			redemption_steps: 'Cart value: > $50',
+			message_body:
+				'You rule! Thanks for referring three new customers! Here is your final reward - discount voucher for 10%',
 			auto_publish: false,
 			assigned_val_rules: 'Referral Reward Tier 1 & 2 - Validation Rule',
 		},
@@ -315,8 +300,6 @@ exports.campaigns = [
 			assigned_val_rules: 'Get 5% off your first purchase',
 			description:
 				'Make an order and enjoy a 5% discount. Avaliable only for new customers.',
-			redemption_steps:
-				'Customer Segment: Customers without any previous purchases',
 			order: 1,
 			carousel_banner_img_url:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner1.jpg',
@@ -337,7 +320,6 @@ exports.campaigns = [
 				'Happy Birthday Customer 2; Happy Birthday Customer 1; Happy Birthday Customer 3',
 			description:
 				'Special coupon - each customer has unique code for his/her use only.',
-			redemption_steps: 'Customer: Current customer',
 			order: 1,
 			carousel_banner_img_url:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner4.jpg',
@@ -354,10 +336,7 @@ exports.campaigns = [
 			assigned_val_rules: 'Buy Two, Get Three',
 			description:
 				'Add 1x Johan & Nyström - Fika and 2x Johan & Nyström - Sumatra blend to get one 1x Johan & Nyström - Sumatra blend for free.',
-			redemption_steps:
-				'Cart contains: 1x Johan & Nyström - Fika, 2x Johan & Nyström - Sumatra',
 			order: 1,
-			discount_suffix: '1x Johan & Nyström - Sumatra',
 			promotion_product: 'Johan & Nyström - Sumatra',
 			carousel_banner_img_url:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner4.jpg',
@@ -377,7 +356,6 @@ exports.campaigns = [
 			promotion_product: 'Illy - Arabica',
 			description:
 				'Make an order above $50 and have Illy - Arabica in your cart to get a 5% discount on your order.',
-			redemption_steps: 'Cart value: > $50; Cart contains: Illy - Arabica',
 			order: 2,
 			carousel_banner_img_url:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner5.jpg',
@@ -396,7 +374,6 @@ exports.campaigns = [
 			assigned_val_rules: 'Double Trouble',
 			description:
 				'Get a double-pack of Johan & Nyström - Bourbon to get a $15 off your order.',
-			redemption_steps: 'Cart contains: 2x Johan & Nyström - Bourbon',
 			order: 3,
 			promotion_product: 'Johan & Nyström - Bourbon',
 			carousel_banner_img_url:
@@ -415,9 +392,11 @@ exports.campaigns = [
 			redemption: { quantity: 1 },
 		},
 		metadata: {
+			message_title: 'Your newsletter coupon is here!',
+			message_body:
+				'Hi! Thank you for subscribing to our newsletter! Here is your $5 discount that you can use for your next order. Enjoy!',
 			description:
 				'Unite coffee lovers of the world. Join our newsletter to get an extra $5 discount on your next order.',
-			redemption_steps: 'Customers action: Subscribed to newsletter',
 			order: 3,
 			assigned_val_rules: '',
 			auto_publish: false,
@@ -436,7 +415,6 @@ exports.campaigns = [
 			assigned_val_rules: 'Partnership Campaign',
 			description:
 				'If your location is Poland, enjoy a 13% discount avaliable only for our Polish customers.',
-			redemption_steps: 'Customers segment: Customers from Poland',
 			order: 5,
 			carousel_banner_img_url:
 				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/carousel/banner2.jpg',
@@ -464,8 +442,6 @@ exports.campaigns = [
 						},
 					},
 					metadata: {
-						qualification_name: 'Final Tier - Buy more, save more',
-						redemption_steps: 'Cart value: > $100',
 						order: 1,
 					},
 				},
@@ -480,9 +456,7 @@ exports.campaigns = [
 						},
 					},
 					metadata: {
-						redemption_steps: 'Cart value: > $30',
 						order: 2,
-						qualification_name: 'First Tier - Buy more, save more',
 					},
 				},
 			],
@@ -511,11 +485,7 @@ exports.campaigns = [
 						discount: { percent_off: 100, type: 'PERCENT' },
 					},
 					metadata: {
-						discount_suffix: '1x Hard Beans - Brazil',
-						redemption_steps:
-							'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil; Cart value: > $100',
 						order: 1,
-						qualification_name: 'Final Tier - Get Hard Beans for free',
 					},
 				},
 				{
@@ -526,52 +496,36 @@ exports.campaigns = [
 						discount: { percent_off: 50, type: 'PERCENT' },
 					},
 					metadata: {
-						discount_suffix: '1x Hard Beans - Brazil',
-						redemption_steps:
-							'Cart contains: Johan & Nyström - Caravan, Hard Beans - Brazil',
 						order: 2,
-						qualification_name: 'First Tier - Get Hard Beans for free',
 					},
 				},
 			],
 		},
 	},
 	{
-		name: 'Let it snow 1',
+		name: 'Let it snow',
 		auto_join: false,
 		campaign_type: 'DISCOUNT_COUPONS',
 		join_once: true,
 		metadata: {
+			message_title: 'Cool, cool, cool!',
+			message_body:
+				'Here is your code for a free Kleen Kentean - Thermos 750ml! Let us keep you warm!',
 			description:
-				'If it is snowing in your location, you will get a 10% discount voucher valid if your order is above 50$',
-			assigned_val_rules: 'Let it snow 1',
-			redemption_steps: 'Cart value: > $50',
+				'If it is snowing in your location, you will get a free Kleen Kentean - Thermos 750ml valid if your order is above 50$',
+			assigned_val_rules: 'Let it snow',
+			assigned_unit_type: 'Kleen Kentean - Thermos 750ml',
 			auto_publish: false,
 		},
 		voucher: {
 			type: 'DISCOUNT_VOUCHER',
-			discount: { percent_off: 10, type: 'PERCENT' },
-		},
-		type: 'AUTO_UPDATE',
-	},
-	{
-		name: 'Let it snow 2',
-		auto_join: false,
-		join_once: true,
-		metadata: {
-			description:
-				'If it is snowing and the temperature is below -15C in your location, you will get a 40$ gift card, valid if your order is above 100$.',
-			assigned_val_rules: 'Let it snow 2',
-			redemption_steps: 'Cart value: > $100',
-			auto_publish: false,
-		},
-		voucher: {
-			type: 'GIFT_VOUCHER',
-			gift: {
-				amount: 4000,
+			discount: {
+				type: 'UNIT',
+				unit_off: 1.0,
+				effect: 'ADD_NEW_ITEMS',
 			},
 			redemption: {
-				quantity: null,
+				quantity: 1,
 			},
 		},
 		type: 'AUTO_UPDATE',
@@ -592,18 +546,6 @@ exports.segments = [
 	},
 	{
 		type: 'auto-update',
-		name: 'Get 5% off your first purchase',
-		filter: {
-			junction: 'and',
-			'summary.orders.total_count': {
-				conditions: {
-					$is: [0],
-				},
-			},
-		},
-	},
-	{
-		type: 'auto-update',
 		name: 'Loyal Customers',
 		filter: {
 			junction: 'and',
@@ -616,7 +558,7 @@ exports.segments = [
 	},
 	{
 		type: 'auto-update',
-		name: 'New customers',
+		name: 'New Customers',
 		filter: {
 			junction: 'and',
 			'summary.orders.total_count': {
@@ -628,32 +570,10 @@ exports.segments = [
 	},
 	{
 		type: 'auto-update',
-		name: 'Let it snow 1',
+		name: 'Snow',
 		filter: {
 			junction: 'and',
 			'metadata.isSnow': {
-				conditions: {
-					$is: ['true'],
-				},
-			},
-			'metadata.isCold': {
-				conditions: {
-					$is: ['false'],
-				},
-			},
-		},
-	},
-	{
-		type: 'auto-update',
-		name: 'Let it snow 2',
-		filter: {
-			junction: 'and',
-			'metadata.isSnow': {
-				conditions: {
-					$is: ['true'],
-				},
-			},
-			'metadata.isCold': {
 				conditions: {
 					$is: ['true'],
 				},
@@ -841,6 +761,22 @@ exports.products = [
 			weight: 250,
 			slug: '8003753900490',
 			sku: '8003753900490',
+		},
+	},
+	{
+		name: 'Kleen Kentean - Thermos 750ml',
+		source_id: '22',
+		price: 1500,
+		metadata: {
+			company: 'Kleen Kentean',
+			categories: ['Accessories'],
+			imgUrl:
+				'https://vf-asset.s3-eu-west-1.amazonaws.com/demostore-hot-beans/products/Kleen+Kentean+-+Thermos+750ml.jpg',
+			info:
+				'Basic coffee thermos, great for big adventures. Can keep the drink temperature for up to two hours.',
+			weight: 110,
+			slug: '80037539003320',
+			sku: '80037539003320',
 		},
 	},
 ];

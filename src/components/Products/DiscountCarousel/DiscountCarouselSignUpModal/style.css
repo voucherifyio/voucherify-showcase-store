@@ -1,9 +1,18 @@
-.signUpModalWrapper {
+.signUpModalTitle {
+	font-weight: 900;
+	font-size: 1.5rem;
+	margin-bottom: 1.5rem;
 }
 
-.signUpMOdalTitle {
+.emailSubmitGroup {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
+.emailSubmitGroup > * {
+	margin-right: 20px !important;
+}
 .signUpModalFormTitle {
 	font-size: 1.1rem;
 	font-weight: 700;

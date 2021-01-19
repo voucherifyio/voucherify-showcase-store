@@ -59,7 +59,28 @@ export const cartReducer = (state = initialState, action) => {
 			let totalAmountAfterDiscount = totalAmount;
 			const discountedAmount = 0;
 			const discount = state.discount;
+
 			if (discount !== null) {
+				const discountedProduct = state.items.find(
+					(i) => i.id === discount.discount.unit_type
+				);
+
+				if (_has(discount.discount, 'unit_off') && discountedProduct) {
+					const discountedAmount =
+						discountedProduct.price * discount.discount.unit_off;
+
+					totalAmountAfterDiscount = totalAmount - discountedAmount;
+					if (totalAmountAfterDiscount < 0) {
+						totalAmountAfterDiscount = 0;
+					}
+					return {
+						...state,
+						totalAmount,
+						itemsTotalCount,
+						totalAmountAfterDiscount,
+						discountedAmount,
+					};
+				}
 				if (_has(discount, 'applicable_to')) {
 					const applicableProducts = [];
 					let applicableProductInCart = '';
