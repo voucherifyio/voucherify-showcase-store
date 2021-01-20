@@ -165,6 +165,30 @@ After that, you will be able to publish a referral campaign code to a specific c
 
 [Learn more how to create Referral Program](https://cookbook.voucherify.io/article/240-airbnb-referral-program)
 
+## Setting up Loyalty Campaign
+
+Creating a complete Loyalty Campaign with tiers & custom events as earning rules is not yet possible through API. That's why to use our predefined Loyalty Campaign, we need to set this up through the dashboard.
+
+First, we need to add missing Earning Rule:
+
+- Edit your Loyalty Campaign
+
+- Navigate to Earning Rules section and create new rule with type `Custom event`
+
+- Name your earning rule and select event `newsletter_subscribed`
+
+- Set fixed amount of 100 points and click Done.
+
+Then we need to create Loyalty Campaign Tiers with mapped rules & points a below:
+
+| Tier name              | Min. - Max. Points | Mapped earning rule              | Mapped rewards                                                  |
+| ---------------------- | ------------------ | -------------------------------- | --------------------------------------------------------------- |
+| Newbie                 | 100 - 150          | None                             | None                                                            |
+| Aspiring coffee maniac | 151 - 200          | Newsletter Signup for 100 points | 10% discount code for 50 points                                 |
+| Coffee prodigy         | 201+               | None                             | 10% discount code for 10 points, Hot Beans Brazil for 10 points |
+
+[Learn more how to create Loyalty Program](https://cookbook.voucherify.io/article/223-multi-tier-loyalty-program)
+
 ## Special Geolocation Campaigns
 
 We prepared a simple POC in which we're using the customer's current location to see if it's snowing in his place. You can try it out in our app - it's the last slide in the main slider.
