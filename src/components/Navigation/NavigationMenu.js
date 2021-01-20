@@ -117,11 +117,18 @@ const NavigationMenu = ({
 
 	useEffect(() => {
 		if (!_isEmpty(referralCamp)) {
-			const referralCampaignCode = !_isEmpty(referralCamp.coupons)
-				? referralCamp.coupons.find(
-						(coupon) => coupon.customer === currentCustomer.id
-				  ).code
-				: '';
+			let referralCampaignCode = '';
+
+			if (!_isEmpty(referralCamp.coupons)) {
+				const referralCampFindCode = referralCamp.coupons.find(
+					(coupon) => coupon.customer === currentCustomer.id
+				);
+
+				if (referralCampFindCode) {
+					referralCampaignCode = referralCampFindCode.code;
+				}
+			}
+
 			setReferralCampaign(referralCamp);
 			setReferralCampaignCode(referralCampaignCode);
 		}
