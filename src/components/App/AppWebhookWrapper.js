@@ -27,13 +27,12 @@ const AppWebhookWrapper = ({
 	useEffect(() => {
 		const socket = socketIOClient(`${process.env.REACT_APP_API_URL || ''}`);
 		socket.on('new-message', (data) => {
-			console.log(data);
 			const voucher = data.data.voucher;
 			switch (data.type) {
 				case 'voucher.published':
 					if (customers.find((customer) => customer.id === voucher.holder_id)) {
 						const customerId = voucher.holder_id;
-						if ((voucher.campaign = 'Referral Campaign')) {
+						if (voucher.campaign === 'Referral Campaign') {
 							const message = {
 								id: voucher.id,
 								title: 'Welcome to Hot Beans Referral Campaign',
@@ -49,8 +48,7 @@ const AppWebhookWrapper = ({
 							);
 							dispatch(getCampaigns());
 							return setModalShow(true);
-						}
-						if (
+						} else if (
 							voucher.campaign === 'Join our newsletter and get $5 discount'
 						) {
 							const message = {
