@@ -1,8 +1,8 @@
-import { loadState } from "../localStorage";
-import _map from "lodash.map";
-import _get from "lodash.get";
-import _isEmpty from "lodash.isempty";
-import { setValidatePayload } from "../../utils";
+import { loadState } from '../localStorage';
+import _map from 'lodash.map';
+import _get from 'lodash.get';
+import _isEmpty from 'lodash.isempty';
+import { setValidatePayload } from '../../utils';
 import {
 	START_USER_SESSION_REQUEST,
 	START_USER_SESSION_SUCCESS,
@@ -31,7 +31,7 @@ import {
 	SET_CURRENT_APP_VERSION,
 	ADD_NEW_CUSTOMERS_SUCCESS,
 	UPDATE_GIFT_CARD_BALANCE,
-} from "../constants";
+} from '../constants';
 
 export const isOldAppVersion = () => {
 	return { type: IS_OLD_APP_VERSION };
@@ -159,14 +159,13 @@ export const checkVersion = () => async (dispatch) => {
 		loadState().userReducer.appVersion === null &&
 		loadState().userReducer.appVersion !== process.env.REACT_APP_VERSION
 	) {
-		console.log("dispatching new session...");
 		return dispatch(newSession());
 	}
 };
 
 export const newSession = () => async (dispatch) => {
-	await fetch(`${process.env.REACT_APP_API_URL || ""}/start/newSession`, {
-		credentials: "include",
+	await fetch(`${process.env.REACT_APP_API_URL || ''}/start/newSession`, {
+		credentials: 'include',
 	});
 	await dispatch(isOldAppVersion());
 	return dispatch(startUserSession());
@@ -176,8 +175,8 @@ export const startUserSession = () => async (dispatch) => {
 	try {
 		dispatch(startUserSessionRequest());
 		dispatch(setCurrentAppVersion(process.env.REACT_APP_VERSION));
-		const res = await fetch(`${process.env.REACT_APP_API_URL || ""}/start`, {
-			credentials: "include",
+		const res = await fetch(`${process.env.REACT_APP_API_URL || ''}/start`, {
+			credentials: 'include',
 		});
 		const userSession = await res.json();
 
@@ -204,7 +203,7 @@ export const startUserSession = () => async (dispatch) => {
 		await dispatch(getCampaigns());
 		await dispatch(getVouchers());
 	} catch (error) {
-		console.log("[startUserSession][Error]", error);
+		console.log('[startUserSession][Error]', error);
 		dispatch(startUserSessionError());
 	}
 };
@@ -213,9 +212,9 @@ export const newCustomers = () => async (dispatch) => {
 	try {
 		dispatch(getCustomersRequest());
 		const res = await fetch(
-			`${process.env.REACT_APP_API_URL || ""}/start/newcustomers`,
+			`${process.env.REACT_APP_API_URL || ''}/start/newcustomers`,
 			{
-				credentials: "include",
+				credentials: 'include',
 			}
 		);
 
@@ -231,7 +230,7 @@ export const newCustomers = () => async (dispatch) => {
 		await dispatch(getCampaigns());
 		await dispatch(getVouchers());
 	} catch (error) {
-		console.log("[newCustomers][Error]", error);
+		console.log('[newCustomers][Error]', error);
 		dispatch(startUserSessionError());
 	}
 };
@@ -241,11 +240,11 @@ export const getCustomers = () => async (dispatch, getState) => {
 	try {
 		dispatch(getCustomersRequest());
 		const res = await fetch(
-			`${process.env.REACT_APP_API_URL || ""}/customers/all`,
+			`${process.env.REACT_APP_API_URL || ''}/customers/all`,
 			{
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				credentials: "include",
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				credentials: 'include',
 				body: JSON.stringify({
 					publishedCodes,
 				}),
@@ -257,12 +256,12 @@ export const getCustomers = () => async (dispatch, getState) => {
 		// if there is an issue with localStorage or server, remove currentCustomer
 		if (
 			currentCustomer !== null &&
-			!_map(customers, "id", []).includes(_get(currentCustomer, "id"))
+			!_map(customers, 'id', []).includes(_get(currentCustomer, 'id'))
 		) {
 			dispatch(removeCurrentCustomer());
 		}
 	} catch (error) {
-		console.log("[getCustomers][Error]", error);
+		console.log('[getCustomers][Error]', error);
 		dispatch(getCustomersError());
 	}
 };
@@ -273,9 +272,9 @@ export const getCampaigns = () => async (dispatch, getState) => {
 	try {
 		dispatch(getCampaignsRequest());
 		const campRes = await fetch(
-			`${process.env.REACT_APP_API_URL || ""}/campaigns`,
+			`${process.env.REACT_APP_API_URL || ''}/campaigns`,
 			{
-				credentials: "include",
+				credentials: 'include',
 			}
 		);
 
@@ -309,7 +308,7 @@ export const getCampaigns = () => async (dispatch, getState) => {
 								customerReward: true,
 								isNewReward: true,
 							});
-						} else if (camp.type === "GIFT_VOUCHER") {
+						} else if (camp.type === 'GIFT_VOUCHER') {
 							camps.coupons.push({
 								customer: code.currentCustomer,
 								code: camp.code,
@@ -326,11 +325,11 @@ export const getCampaigns = () => async (dispatch, getState) => {
 				});
 			});
 
-			if (camps.campaign_type === "PROMOTION") {
+			if (camps.campaign_type === 'PROMOTION') {
 				const promotionResponse = await fetch(
-					`${process.env.REACT_APP_API_URL || ""}/promotions/${camps.id}`,
+					`${process.env.REACT_APP_API_URL || ''}/promotions/${camps.id}`,
 					{
-						include: "credentials",
+						include: 'credentials',
 					}
 				);
 
@@ -341,7 +340,7 @@ export const getCampaigns = () => async (dispatch, getState) => {
 		});
 		dispatch(getCampaignsSuccess(campaigns));
 	} catch (error) {
-		console.log("[getCampaigns][Error]", error);
+		console.log('[getCampaigns][Error]', error);
 		dispatch(getCampaignsError());
 	}
 };
@@ -353,14 +352,14 @@ const sleep = (ms) => {
 export const getVouchers = () => async (dispatch) => {
 	try {
 		dispatch(getVouchersRequest());
-		const res = await fetch(`${process.env.REACT_APP_API_URL || ""}/vouchers`, {
-			credentials: "include",
+		const res = await fetch(`${process.env.REACT_APP_API_URL || ''}/vouchers`, {
+			credentials: 'include',
 		});
 		const vouchers = await res.json();
 
 		dispatch(getVouchersSuccess(vouchers));
 	} catch (error) {
-		console.log("[getVouchers][Error]", error);
+		console.log('[getVouchers][Error]', error);
 		dispatch(getVouchersError());
 	}
 };
@@ -373,11 +372,11 @@ export const updateCurrentCustomerData = (data) => async (
 	const id = currentCustomer.id;
 	try {
 		const res = await fetch(
-			`${process.env.REACT_APP_API_URL || ""}/customers/update`,
+			`${process.env.REACT_APP_API_URL || ''}/customers/update`,
 			{
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				credentials: "include",
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				credentials: 'include',
 				body: JSON.stringify({
 					id,
 					...data,
@@ -387,44 +386,44 @@ export const updateCurrentCustomerData = (data) => async (
 		const updatedCurrentCustomer = await res.json();
 		dispatch(getCurrentCustomer(updatedCurrentCustomer.id));
 	} catch (error) {
-		console.log("[updateCurrentCustomerData][Error]", error);
+		console.log('[updateCurrentCustomerData][Error]', error);
 	}
 };
 export const publishCampaign = (campaign) => async (dispatch, getState) => {
 	const { currentCustomer } = getState().userReducer;
 	try {
 		const res = await fetch(
-			`${process.env.REACT_APP_API_URL || ""}/distributions/create`,
+			`${process.env.REACT_APP_API_URL || ''}/distributions/create`,
 			{
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				credentials: "include",
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				credentials: 'include',
 				body: JSON.stringify({ currentCustomer, campaign }),
 			}
 		);
 		const publishedCampaign = await res.json();
 		dispatch(addPublishedCodes(currentCustomer.id, publishedCampaign));
 	} catch (error) {
-		console.log("[publishCampaign][Error]", error);
+		console.log('[publishCampaign][Error]', error);
 	}
 };
 
-export const getCurrentCustomer = (id, type = "normal") => async (
+export const getCurrentCustomer = (id, type = 'normal') => async (
 	dispatch,
 	getState
 ) => {
 	try {
 		dispatch(getCurrentCustomerRequest());
 		const res = await fetch(
-			`${process.env.REACT_APP_API_URL || ""}/customers/${id}`,
+			`${process.env.REACT_APP_API_URL || ''}/customers/${id}`,
 			{
-				credentials: "include",
+				credentials: 'include',
 			}
 		);
 
 		const currentCustomer = await res.json();
 
-		if (type === "normal") {
+		if (type === 'normal') {
 			dispatch(getCurrentCustomerSuccess(currentCustomer));
 		} else {
 			const oldSelectedCustomer = getState().userReducer.currentCustomer;
@@ -434,7 +433,7 @@ export const getCurrentCustomer = (id, type = "normal") => async (
 			) {
 				// If true -> wait
 				await sleep(5000);
-				await dispatch(getCurrentCustomer(id, "update"));
+				await dispatch(getCurrentCustomer(id, 'update'));
 			} else {
 				await dispatch(getCurrentCustomer(id));
 				await dispatch(getCampaigns());
@@ -442,10 +441,10 @@ export const getCurrentCustomer = (id, type = "normal") => async (
 			}
 		}
 	} catch (error) {
-		if (type === "normal") {
-			console.log("[getCurrentCustomer][Error]", error);
+		if (type === 'normal') {
+			console.log('[getCurrentCustomer][Error]', error);
 		} else {
-			console.log("[getCurrentCustomer][Update][Error]", error);
+			console.log('[getCurrentCustomer][Update][Error]', error);
 		}
 		dispatch(getCurrentCustomerError());
 	}
@@ -463,18 +462,18 @@ export const getQualifications = () => async (dispatch, getState) => {
 	try {
 		dispatch(getQualificationsRequest());
 		const res = await fetch(
-			`${process.env.REACT_APP_API_URL || ""}/qualifications`,
+			`${process.env.REACT_APP_API_URL || ''}/qualifications`,
 			{
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				credentials: "include",
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				credentials: 'include',
 				body: JSON.stringify(qualificationsPayload),
 			}
 		);
 		const qualifications = await res.json();
 		dispatch(getQualificationsSuccess(qualifications));
 	} catch (error) {
-		console.log("[getQualifications][Error]", error);
+		console.log('[getQualifications][Error]', error);
 		dispatch(getQualificationsError());
 	}
 };

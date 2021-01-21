@@ -10,7 +10,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ClearIcon from '@material-ui/icons/Clear';
 
 const CartDiscount = ({ dispatch, discount, discountedAmount, products }) => {
-	console.log(discount);
 	return (
 		<Row className="discountSection" noGutters={true}>
 			{discount.discount.type === 'UNIT' && (
