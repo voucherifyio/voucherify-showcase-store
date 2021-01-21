@@ -1,0 +1,314 @@
+.sidebarWrapper::-webkit-scrollbar {
+	display: none;
+}
+
+.tab {
+	color: var(--orange) !important;
+	transition: all 0.2s ease-in-out;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+}
+
+.currentTab {
+	color: var(--orange) !important;
+}
+.campaignRewardChip {
+	background-color: var(--orange) !important;
+	color: white !important;
+}
+
+.sidebarWrapper {
+	font-size: 0.9rem;
+	box-shadow: var(--custom-box-shadow);
+	max-height: 100vh;
+	position: fixed;
+	top: 0;
+	right: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
+	min-height: 100vh;
+	width: 360px;
+	z-index: 17;
+	margin-right: 0px;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+	background-color: var(--bg-sidebar);
+}
+
+.MuiTabs-flexContainerVertical {
+	height: calc(100vh - 30px) !important;
+}
+.tabLinks {
+	margin-top: auto !important;
+}
+.sidebarContentWrapper {
+	display: flex;
+}
+
+.sidebarLabels {
+	min-width: 70px;
+	padding: 25px 0px;
+	border-right: 1px solid var(--lightgrey);
+}
+
+.MuiTabs-fixed {
+	position: fixed !important;
+	width: 70px !important;
+	height: 100% !important;
+	border-right: 1px solid var(--lightgrey) !important;
+}
+
+.sidebarTab {
+	width: 100%;
+	height: 100%;
+	padding: 25px 0px;
+}
+
+.sidebarWrapper .storeSidebarHeading {
+	margin-top: 1rem;
+	padding: 0.4rem 1rem;
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.MuiTab-root {
+	min-width: unset !important;
+}
+
+.qualificationChip {
+	height: 100% !important;
+	margin: 0.1rem;
+}
+
+.qualificationChipName {
+	font-family: 'Lato';
+	white-space: normal;
+	padding: 0.5rem 0 !important;
+	margin-bottom: 0px;
+	font-size: 0.7rem;
+	font-weight: 700;
+}
+
+.sidebarSection {
+	padding-left: 0.5rem;
+	padding-bottom: 1rem;
+}
+
+.sidebarSectionHeading {
+	margin-bottom: 0.5rem;
+}
+
+.sidebarSectionTitle {
+	font-family: 'Lato' !important;
+	font-weight: 700 !important;
+	font-size: 1rem;
+}
+
+.readMore {
+	font-weight: 700;
+	color: var(--orange) !important;
+}
+
+.readMore:hover {
+	color: var(--orange) !important;
+}
+
+.MuiAccordionSummary-content {
+	height: 40px;
+	align-items: center;
+}
+
+.accordionSection {
+	padding-left: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+.accordionTitle {
+	font-family: 'Lato';
+	font-weight: 700;
+	margin-bottom: 0px;
+	font-size: 0.9rem;
+}
+
+.cartDiscountSwitch {
+	align-items: center;
+	padding: 1rem 0.5rem;
+}
+
+.cartDiscountCampaignSwitch {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	padding: 0.5rem 0rem;
+}
+
+.MuiAccordionSummary-root {
+	padding: 0 0.5rem !important;
+	min-height: 40px !important;
+}
+
+.MuiAccordionDetails-root {
+	padding-left: 0.5rem !important;
+	padding-right: 0.5rem !important;
+}
+
+.sidebarSectionBody {
+	margin-bottom: 1rem;
+}
+
+.tabIcon {
+	align-self: center;
+}
+.titleTooltip {
+	margin-left: 0.5rem;
+	cursor: help;
+}
+
+.sidebarSpinner {
+	display: flex;
+	justify-content: center;
+	padding: 1rem 0;
+}
+
+.sidebarSectionCustomerData {
+	margin-bottom: 0.25rem;
+	font-size: 0.8rem;
+	color: var(--lightgrey);
+}
+
+.sidebarSectionCustomerDataCockpit {
+	display: inline-flex;
+	align-items: center;
+	color: var(--orange) !important;
+	height: 40px;
+	font-weight: 700;
+	transition: background-color 0.2s ease;
+	/* padding: 0 10px; */
+}
+
+.sidebarSectionCustomerDataCockpit:hover {
+	color: var(--orange) !important;
+	background-color: #dfdede;
+}
+.qualificationSection {
+	padding-right: 0.5rem !important;
+}
+
+.sidebarSectionCustomerDataContent {
+	font-weight: 700;
+	color: var(--black);
+}
+
+.accordionBackground {
+	background-color: var(--bg-white) !important;
+	transition: all 0.2s ease-in-out;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	border-top: 1px solid var(--lightgrey);
+}
+
+.accordionBackground:hover {
+	box-shadow: var(--custom-box-shadow2);
+	z-index: 2;
+}
+.accordions:last-child {
+	border-bottom: 1px solid var(--lightgrey);
+}
+
+.accordionBackground.open {
+	background-color: var(--bg-white) !important;
+	transition: all 0.2s ease-in-out;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+}
+
+.cartDiscountsTitle {
+	margin-bottom: 0.5rem;
+}
+
+.qualificationDescription {
+	padding-right: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+.cartDiscountDescription {
+	padding-right: 0.5rem;
+}
+
+.sidebarWrapper .sectionHeading {
+	font-weight: 700;
+}
+
+.sidebarWrapper .campaignStepDescription {
+	margin-left: 10px;
+}
+
+.sidebarWrapper .campaignStepText {
+	margin-bottom: 0px;
+}
+
+.customBadgeWrapper {
+	position: relative;
+}
+
+.hidden {
+	display: none !important;
+}
+.customBadge {
+	position: absolute;
+	background-color: var(--orange);
+	border-radius: 50%;
+	color: #fff;
+	width: 15px;
+	height: 15px;
+	right: 0;
+}
+
+.pulsate::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	animation: pulse 1s ease infinite;
+	border-radius: 50%;
+	border: 4px double var(--orange);
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	60% {
+		transform: scale(1.3);
+		opacity: 0.4;
+	}
+	100% {
+		transform: scale(1.4);
+		opacity: 0;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.sidebarWrapper {
+		width: 100%;
+	}
+}
+
+@media (max-width: 767.98px) {
+}
+
+@media (max-width: 991.98px) {
+}
+
+@media (max-width: 1199.98px) {
+}

@@ -10,16 +10,18 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ClearIcon from '@material-ui/icons/Clear';
 
 const CartDiscount = ({ dispatch, discount, discountedAmount, products }) => {
+	console.log(discount);
 	return (
 		<Row className="discountSection" noGutters={true}>
-			{discount.discount.type === 'UNIT' ? (
+			{discount.discount.type === 'UNIT' && (
 				<Col xs={12} sm={4} className="sectionTitle">
 					Unit discount for{' '}
 					<span className="discounted">
 						{products.find((p) => p.id === discount.discount.unit_type).name}
 					</span>
 				</Col>
-			) : (
+			)}
+			{discount.hasOwnProperty('code') && (
 				<Col xs={12} sm={4} className="sectionTitle">
 					Discount code <span className="discounted">{discount.code}</span>
 				</Col>
