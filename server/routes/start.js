@@ -74,13 +74,12 @@ router.route('/').get(async (req, res) => {
 	try {
 		// Create new customers if this is a new session
 		const createdCustomers = await Promise.all(
-			storeCustomers.map((customer, index) => {
+			storeCustomers.map((customer) => {
 				// Here let's fake the names and source_id
 				const fakeFirstName = faker.name.firstName();
 				const fakeLastName = faker.name.lastName();
 
-				// customer.source_id = `${req.session.id}${customer.metadata.demostore_id}`;
-				customer.source_id = `${req.session.id}@fakecustomer${index}.com`;
+				customer.source_id = `${fakeFirstName}@fakemail.com`;
 				customer.name = `${fakeFirstName} ${fakeLastName}`;
 				customer.metadata.firstName = fakeFirstName;
 
