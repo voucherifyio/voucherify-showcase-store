@@ -80,8 +80,7 @@ export const cartReducer = (state = initialState, action) => {
 						totalAmountAfterDiscount,
 						discountedAmount,
 					};
-				}
-				if (
+				} else if (
 					_has(discount, 'applicable_to') &&
 					discount.applicable_to.total > 0
 				) {
