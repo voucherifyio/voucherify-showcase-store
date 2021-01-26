@@ -175,6 +175,7 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 		});
 
 		if (
+			discount.hasOwnProperty('discount') &&
 			discount.discount.hasOwnProperty('effect') &&
 			discount.discount.effect === 'ADD_NEW_ITEMS' &&
 			!items.find((i) => i.id === discount.discount.unit_type)
