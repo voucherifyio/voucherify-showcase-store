@@ -67,7 +67,7 @@ export const cartReducer = (state = initialState, action) => {
 
 				if (_has(discount.discount, 'unit_off') && discountedProduct) {
 					const discountedAmount =
-						discountedProduct.price * discount.discount.unit_off;
+						discountedProduct.price * discount.discount?.unit_off;
 
 					totalAmountAfterDiscount = totalAmount - discountedAmount;
 					if (totalAmountAfterDiscount < 0) {
