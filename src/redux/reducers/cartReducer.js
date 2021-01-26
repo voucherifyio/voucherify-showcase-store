@@ -11,9 +11,7 @@ import {
 	SET_PAYMENT_METHOD,
 	REMOVE_DISCOUNT,
 } from '../constants';
-import _has from 'lodash.has';
 import _cloneDeep from 'lodash.clonedeep';
-import _isEmpty from 'lodash.isempty';
 
 const initialState = {
 	items: [],
@@ -43,7 +41,7 @@ export const cartReducer = (state = initialState, action) => {
 		}
 		case GET_TOTALS: {
 			// eslint-disable-next-line prefer-const
-			let { totalAmount, itemsTotalCount } = state.items.reduce(
+			const { totalAmount, itemsTotalCount } = state.items.reduce(
 				(items, currentItem) => {
 					const { price, count } = currentItem;
 					const itemTotalAmount = price * count;
@@ -56,190 +54,134 @@ export const cartReducer = (state = initialState, action) => {
 					itemsTotalCount: 0,
 				}
 			);
+
 			let totalAmountAfterDiscount = totalAmount;
-			const discountedAmount = 0;
-			const discount = state.discount;
+			let discountedAmount = 0;
+			const voucher = state.discount;
 
-			if (discount !== null) {
-				const discountedProduct = state.items.find(
-					(i) => i.id === discount.discount?.unit_type
-				);
+			if (voucher) {
+				// We're checking if there is a discount
 
-				if (_has(discount.discount, 'unit_off') && discountedProduct) {
-					const discountedAmount =
-						discountedProduct.price * discount.discount.unit_off;
+				if (voucher.applicable_to?.total > 0) {
+					// We're checking if discount has 'applicable_to' property and has more than 0 applicalbe products
 
-					totalAmountAfterDiscount = totalAmount - discountedAmount;
-					if (totalAmountAfterDiscount < 0) {
-						totalAmountAfterDiscount = 0;
+					let productInCart;
+					// We're checking if there are products in cart to which voucher can be applied
+
+					const products = voucher.applicable_to.data.map((e) => e.id);
+
+					for (let i = 0; i < products.length; i++) {
+						productInCart = state.items.find((item) => item.id === products[i]);
 					}
-					return {
-						...state,
-						totalAmount,
-						itemsTotalCount,
-						totalAmountAfterDiscount,
-						discountedAmount,
-					};
-				} else if (
-					_has(discount, 'applicable_to') &&
-					discount.applicable_to.total > 0
-				) {
-					const applicableProducts = [];
-					let applicableProductInCart = '';
-					discount.applicable_to.data.map((e) => applicableProducts.push(e.id));
+					if (productInCart && voucher.discount.type === 'PERCENT') {
+						// If there is a discounted product in cart and discount type is PERCENT
 
-					for (let i = 0; i < applicableProducts.length; i++) {
-						applicableProductInCart = state.items.find(
-							(item) => item.id === applicableProducts[i]
-						);
-					}
-					if (
-						!_isEmpty(applicableProductInCart) &&
-						discount.discount.type === 'PERCENT'
-					) {
-						let discountedAmount =
-							applicableProductInCart.price *
-							(discount.discount.percent_off / 100);
+						discountedAmount =
+							productInCart.price * (voucher.discount.percent_off / 100);
 
 						if (
-							discount.discount.amount_limit &&
-							discount.discount.amount_limit < discountedAmount
+							voucher.discount.amount_limit &&
+							voucher.discount.amount_limit < discountedAmount
 						) {
-							discountedAmount = discount.discount.amount_limit;
+							discountedAmount = voucher.discount.amount_limit;
 						}
+
 						totalAmountAfterDiscount = totalAmount - discountedAmount;
+
 						if (totalAmountAfterDiscount < 0) {
 							totalAmountAfterDiscount = 0;
 						}
-						return {
-							...state,
-							totalAmount,
-							itemsTotalCount,
-							totalAmountAfterDiscount,
-							discountedAmount,
-						};
-					} else if (
-						!_isEmpty(applicableProducts) &&
-						discount.discount.type === 'AMOUNT'
-					) {
-						let discountedAmount;
+					} else if (productInCart && voucher.discount.type === 'AMOUNT') {
+						// If there is a discounted product in cart and discount type is AMOUNT
 
-						if (discount.discount.amount_off < totalAmount) {
-							discountedAmount = discount.discount.amount_off;
-						} else if (discount.discount.amount_off >= totalAmount) {
+						if (voucher.discount.amount_off < totalAmount) {
+							discountedAmount = voucher.discount.amount_off;
+						} else if (voucher.discount.amount_off >= totalAmount) {
 							discountedAmount = totalAmount;
 						}
 						totalAmountAfterDiscount = totalAmount - discountedAmount;
 						if (totalAmountAfterDiscount < 0) {
 							totalAmountAfterDiscount = 0;
 						}
-
-						return {
-							...state,
-							totalAmount,
-							itemsTotalCount,
-							totalAmountAfterDiscount,
-							discountedAmount,
-						};
 					}
-					return {
-						...state,
-						totalAmount,
-						itemsTotalCount,
-						totalAmountAfterDiscount,
-						discountedAmount,
-					};
-				} else if (_has(discount, 'gift')) {
-					let discountedAmount;
+				} else if (voucher.hasOwnProperty('discount')) {
+					// We're checking if discount has 'discount' property
 
-					if (discount.gift.balance < totalAmount) {
-						discountedAmount = discount.gift.balance;
-					} else if (discount.gift.balance >= totalAmount) {
+					if (voucher.discount.type === 'UNIT') {
+						// We're checking if discount type is UNIT
+
+						const discountedProduct = state.items.find(
+							(i) => i.id === voucher.discount.unit_type
+						);
+
+						discountedAmount =
+							discountedProduct.price * voucher.discount.unit_off;
+
+						totalAmountAfterDiscount = totalAmount - discountedAmount;
+
+						if (totalAmountAfterDiscount < 0) {
+							totalAmountAfterDiscount = 0;
+						}
+					} else if (voucher.discount.type === 'PERCENT') {
+						// We're checking if discount type is PERCENT
+
+						discountedAmount =
+							totalAmount * (voucher.discount.percent_off / 100);
+
+						if (
+							voucher.discount.amount_limit &&
+							voucher.discount.amount_limit < discountedAmount
+						) {
+							discountedAmount = voucher.discount.amount_limit;
+						}
+
+						totalAmountAfterDiscount = totalAmount - discountedAmount;
+
+						if (totalAmountAfterDiscount < 0) {
+							totalAmountAfterDiscount = 0;
+						}
+					} else if (voucher.discount.type === 'AMOUNT') {
+						// We're checking if discount type is AMOUNT
+
+						if (voucher.discount.amount_off < totalAmount) {
+							discountedAmount = voucher.discount.amount_off;
+						} else if (voucher.discount.amount_off >= totalAmount) {
+							discountedAmount = totalAmount;
+						}
+						totalAmountAfterDiscount = totalAmount - discountedAmount;
+
+						if (totalAmountAfterDiscount < 0) {
+							totalAmountAfterDiscount = 0;
+						}
+					}
+				} else if (voucher.hasOwnProperty('gift')) {
+					// We're checking if discount has 'gift' property
+
+					if (voucher.gift.balance < totalAmount) {
+						discountedAmount = voucher.gift.balance;
+					} else if (voucher.gift.balance >= totalAmount) {
 						discountedAmount = totalAmount;
 					}
 					totalAmountAfterDiscount = totalAmount - discountedAmount;
 					if (totalAmountAfterDiscount < 0) {
 						totalAmountAfterDiscount = 0;
 					}
+				} else if (voucher.hasOwnProperty('loyalty')) {
+					// We're checking if discount has 'loyalty' property
 
-					return {
-						...state,
-						totalAmount,
-						itemsTotalCount,
-						totalAmountAfterDiscount,
-						discountedAmount,
-					};
-				} else if (discount.hasOwnProperty('loyalty')) {
 					let discountedAmount;
 
-					if (discount.order.discount_amount < totalAmount) {
-						discountedAmount = discount.order.discount_amount;
-					} else if (discount.order.discount_amount >= totalAmount) {
+					if (voucher.order.discount_amount < totalAmount) {
+						discountedAmount = voucher.order.discount_amount;
+					} else if (voucher.order.discount_amount >= totalAmount) {
 						discountedAmount = totalAmount;
 					}
 					totalAmountAfterDiscount = totalAmount - discountedAmount;
 					if (totalAmountAfterDiscount < 0) {
 						totalAmountAfterDiscount = 0;
 					}
-
-					return {
-						...state,
-						totalAmount,
-						itemsTotalCount,
-						totalAmountAfterDiscount,
-						discountedAmount,
-					};
-				} else if (discount.discount.type === 'PERCENT') {
-					let discountedAmount =
-						totalAmount * (discount.discount.percent_off / 100);
-
-					if (
-						discount.discount.amount_limit &&
-						discount.discount.amount_limit < discountedAmount
-					) {
-						discountedAmount = discount.discount.amount_limit;
-					}
-
-					totalAmountAfterDiscount = totalAmount - discountedAmount;
-
-					if (totalAmountAfterDiscount < 0) {
-						totalAmountAfterDiscount = 0;
-					}
-
-					return {
-						...state,
-						totalAmount,
-						itemsTotalCount,
-						totalAmountAfterDiscount,
-						discountedAmount,
-					};
-				} else if (discount.discount.type === 'AMOUNT') {
-					let discountedAmount;
-
-					if (discount.discount.amount_off < totalAmount) {
-						discountedAmount = discount.discount.amount_off;
-					} else if (discount.discount.amount_off >= totalAmount) {
-						discountedAmount = totalAmount;
-					}
-					totalAmountAfterDiscount = totalAmount - discountedAmount;
-					if (totalAmountAfterDiscount < 0) {
-						totalAmountAfterDiscount = 0;
-					}
-
-					return {
-						...state,
-						totalAmount,
-						itemsTotalCount,
-						totalAmountAfterDiscount,
-						discountedAmount,
-					};
-				}
-
-				if (totalAmountAfterDiscount < 0) {
-					totalAmountAfterDiscount = 0;
 				}
 			}
-
 			return {
 				...state,
 				totalAmount,
