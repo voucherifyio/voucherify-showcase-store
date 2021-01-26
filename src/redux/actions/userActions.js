@@ -413,6 +413,7 @@ export const getCurrentCustomer = (id, type = 'normal') => async (
 	getState
 ) => {
 	try {
+		console.log('id: ', id);
 		dispatch(getCurrentCustomerRequest());
 		const res = await fetch(
 			`${process.env.REACT_APP_API_URL || ''}/customers/${id}`,
@@ -423,15 +424,21 @@ export const getCurrentCustomer = (id, type = 'normal') => async (
 
 		const currentCustomer = await res.json();
 
+		console.log('customer: ', currentCustomer);
+
 		if (type === 'normal') {
 			dispatch(getCurrentCustomerSuccess(currentCustomer));
 		} else {
-			const oldSelectedCustomer = getState().userReducer.currentCustomer;
+      const oldSelectedCustomer = getState().userReducer.currentCustomer;
+      
+      console.log('old customer: ', oldSelectedCustomer)
+      
 			if (
 				oldSelectedCustomer.summary.orders.total_amount ===
 				currentCustomer.summary.orders.total_amount
 			) {
 				// If true -> wait
+				console.log('waiting...');
 				await sleep(5000);
 				await dispatch(getCurrentCustomer(id, 'update'));
 			} else {

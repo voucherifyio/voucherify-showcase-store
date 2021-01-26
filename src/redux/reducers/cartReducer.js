@@ -62,7 +62,7 @@ export const cartReducer = (state = initialState, action) => {
 
 			if (discount !== null) {
 				const discountedProduct = state.items.find(
-					(i) => i.id === discount.discount.unit_type
+					(i) => i.id === discount.discount?.unit_type
 				);
 
 				if (_has(discount.discount, 'unit_off') && discountedProduct) {
@@ -80,8 +80,10 @@ export const cartReducer = (state = initialState, action) => {
 						totalAmountAfterDiscount,
 						discountedAmount,
 					};
-				}
-				if (_has(discount, 'applicable_to')) {
+				} else if (
+					_has(discount, 'applicable_to') &&
+					discount.applicable_to.total > 0
+				) {
 					const applicableProducts = [];
 					let applicableProductInCart = '';
 					discount.applicable_to.data.map((e) => applicableProducts.push(e.id));
