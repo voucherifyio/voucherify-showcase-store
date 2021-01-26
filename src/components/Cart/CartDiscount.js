@@ -31,7 +31,8 @@ const CartDiscount = ({ dispatch, discount, discountedAmount, products }) => {
 					Cart Discount <span className="discounted">{discount.name}</span>
 				</Col>
 			)}
-			{discount.discount.type === 'UNIT' ? (
+			{discount.hasOwnProperty('discount') &&
+			discount.discount.type === 'UNIT' ? (
 				<Col xs={6} sm={7} className="discountAmount">
 					<span className="discounted">
 						$
