@@ -1,6 +1,6 @@
 {
 	"name": "hot-beans",
-	"version": "2.6.2",
+	"version": "2.6.5",
 	"private": true,
 	"dependencies": {
 		"@material-ui/core": "^4.11.0",
