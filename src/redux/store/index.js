@@ -7,23 +7,23 @@ import { saveState, loadState } from '../localStorage';
 const preloadedState = loadState();
 
 const composeEnhancer =
-  (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      trace: true,
-      traceLimit: 25,
-    })) ||
-  compose;
+	(window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+			trace: true,
+			traceLimit: 25,
+		})) ||
+	compose;
 
 export const store = createStore(
-  rootReducer,
-  preloadedState,
-  composeEnhancer(applyMiddleware(thunkMiddleware))
+	rootReducer,
+	preloadedState,
+	composeEnhancer(applyMiddleware(thunkMiddleware))
 );
 
 store.subscribe(
-  throttle(() => {
-    saveState(store.getState());
-  }, 1000)
+	throttle(() => {
+			saveState(store.getState());
+	}, 1000)
 );
 
 export default store;

@@ -54,7 +54,7 @@ Your environment variables should look like this:
 
   The fastest way to install the demo store is to use the 'Deploy to Heroku' button and providing required environment variables.
 
-After deployment, the script runs post-install, where it populates your Voucherify account with custom products, validation rules, campaigns, and vouchers.
+After deployment, the script run `npm run setup`, to populate your Voucherify account with custom products, validation rules, campaigns, and vouchers.
 
 If you want to use an integrated Referral Campaign, you need to create Reward Tiers. Learn more at [Enabling Referral Campaign](#enabling-referral-campaign)
 
