@@ -413,7 +413,6 @@ export const getCurrentCustomer = (id, type = 'normal') => async (
 	getState
 ) => {
 	try {
-		console.log('id: ', id);
 		dispatch(getCurrentCustomerRequest());
 		const res = await fetch(
 			`${process.env.REACT_APP_API_URL || ''}/customers/${id}`,

@@ -10,7 +10,6 @@ router.route('/redeem').post(async (req, res) => {
 	try {
 		if (code) {
 			const redemption = await voucherify.redemptions.redeem(code, req.body);
-			console.log(redemption);
 			return res.json(redemption);
 		} else {
 			const redemption = await voucherify.promotions.tiers.redeem(

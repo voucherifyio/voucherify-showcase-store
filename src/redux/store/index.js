@@ -22,7 +22,7 @@ export const store = createStore(
 
 store.subscribe(
 	throttle(() => {
-			saveState(store.getState());
+		saveState(store.getState());
 	}, 1000)
 );
 
