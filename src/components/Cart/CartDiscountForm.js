@@ -6,8 +6,9 @@ import { getDiscount } from '../../redux/actions/cartActions';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+import _orderBy from 'lodash.orderby';
 
-const CartDiscountForm = ({ dispatch, disable }) => {
+const CartDiscountForm = ({ dispatch, disable, campaigns }) => {
 	const [code, setCode] = useState('');
 	const handleChange = (event) => {
 		setCode(event.target.value);
@@ -22,6 +23,13 @@ const CartDiscountForm = ({ dispatch, disable }) => {
 			dispatch(getDiscount(code));
 		}
 	};
+
+	const discountCampaigns = _orderBy(campaigns, ['metadata']['order'], ['asc']);
+
+	// We're creating separate filter only for Cart Discounts
+	const cartDiscountCampaigns = discountCampaigns.filter(
+		(camp) => camp.campaign_type === 'PROMOTION'
+	);
 
 	return (
 		<Row className="discountSection" noGutters={true}>
@@ -59,17 +67,40 @@ const CartDiscountForm = ({ dispatch, disable }) => {
 					</Form.Row>
 				</Form>
 				{disable && (
-					<p className="cartDiscountsInformation">
-						With cart discounts enabled you cannot use other vouchers. Disable
-						cart discounts in the sidebar to use personal and public codes
-					</p>
+					<div>
+						<p className="cartDiscountsInformation">
+							With cart discounts enabled you cannot use other vouchers. Disable
+							cart discounts in the sidebar to use personal and public codes
+						</p>
+						{cartDiscountCampaigns.map((campaign) => (
+							<div
+								key={campaign.id}
+								className="navigationMenuDropdownItemCartDiscount"
+							>
+								<div>{campaign.name}</div>
+								{/* <OrangeSwitch
+									color="default"
+									disabled={!enableCartDiscounts}
+									checked={currentCartDiscount === campaign.id ? true : false}
+									onClick={(event) => event.stopPropagation()}
+									onChange={handleSwitchChange(campaign.id)}
+								/>
+								<p>{campaign.name}</p> */}
+							</div>
+						))}
+					</div>
 				)}
 			</Col>
 		</Row>
 	);
 };
 
-export default connect()(CartDiscountForm);
+const mapStateToProps = (state) => {
+	return {
+		campaigns: state.userReducer.campaigns,
+	};
+};
+export default connect(mapStateToProps)(CartDiscountForm);
 
 CartDiscountForm.propTypes = {
 	dispatch: PropTypes.func.isRequired,

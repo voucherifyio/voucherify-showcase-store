@@ -30,7 +30,12 @@ const AppWebhookWrapper = ({
 			const voucher = data.data.voucher;
 			switch (data.type) {
 				case 'voucher.published':
-					if (customers.find((customer) => customer.id === voucher.holder_id)) {
+					if (
+						customers.find((customer) => customer.id === voucher.holder_id) &&
+						(!voucher.metadata.hasOwnProperty('auto_publish') ||
+							(voucher.metadata.hasOwnProperty('auto_publish') &&
+								voucher.metadata.auto_publish === false))
+					) {
 						const customerId = voucher.holder_id;
 						if (voucher.campaign === 'Referral Campaign') {
 							const message = {
@@ -81,6 +86,26 @@ const AppWebhookWrapper = ({
 								id: voucher.id,
 								title: voucher.metadata.message_title,
 								body: voucher.metadata.message_body,
+								code: voucher.code,
+							};
+							dispatch(getMessage(customerId, message));
+							dispatch(
+								addPublishedCodes(customerId, {
+									...voucher,
+								})
+							);
+							dispatch(getCampaigns());
+							return setModalShow(true);
+						} else {
+							const title = voucher.campaign
+								? `Here is your coupon from ${voucher.campaign}`
+								: `Here is your ${voucher.code} coupon`;
+
+							const message = {
+								id: voucher.id,
+								title,
+								body:
+									'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
 								code: voucher.code,
 							};
 							dispatch(getMessage(customerId, message));
@@ -185,7 +210,9 @@ const AppWebhookWrapper = ({
 			<AppModal
 				show={modalShow}
 				onHide={() => {
-					setModalShow(false);
+					if (currentMessageCustomer.messages.length === 0) {
+						setModalShow(false);
+					}
 					dispatch(removeMessage(currentCustomer.id));
 				}}
 			>

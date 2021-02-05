@@ -31,7 +31,17 @@ import {
 	SET_CURRENT_APP_VERSION,
 	ADD_NEW_CUSTOMERS_SUCCESS,
 	UPDATE_GIFT_CARD_BALANCE,
+	SET_API_CALL,
+	SET_API_RESPONSE,
 } from '../constants';
+
+export const setApiCall = (apiCall) => {
+	return { type: SET_API_CALL, payload: { apiCall } };
+};
+
+export const setApiResponse = (apiResponse) => {
+	return { type: SET_API_RESPONSE, payload: { apiResponse } };
+};
 
 export const isOldAppVersion = () => {
 	return { type: IS_OLD_APP_VERSION };
@@ -462,6 +472,8 @@ export const getQualifications = () => async (dispatch, getState) => {
 	);
 	try {
 		dispatch(getQualificationsRequest());
+
+		dispatch(setApiCall(qualificationsPayload));
 		const res = await fetch(
 			`${process.env.REACT_APP_API_URL || ''}/qualifications`,
 			{
@@ -472,9 +484,14 @@ export const getQualifications = () => async (dispatch, getState) => {
 			}
 		);
 		const qualifications = await res.json();
+
 		dispatch(getQualificationsSuccess(qualifications));
+		dispatch(setApiResponse(qualifications));
 	} catch (error) {
 		console.log('[getQualifications][Error]', error);
+
+		dispatch(setApiResponse(error.toString()));
+
 		dispatch(getQualificationsError());
 	}
 };

@@ -18,7 +18,6 @@ import Spinner from 'react-bootstrap/Spinner';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ReferralCampaignModal from './ReferralCampaignModal';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import _orderBy from 'lodash.orderby';
 import Switch from '@material-ui/core/Switch';
 import {
 	setEnableCartDiscounts,
@@ -27,9 +26,9 @@ import {
 } from '../../redux/actions/userActions';
 import {
 	getCartDiscount,
+	removeDiscount,
 	removePromotionFromCart,
 } from '../../redux/actions/cartActions';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import VoucherifyButton from '../App/VoucherifyButton';
 
@@ -76,12 +75,9 @@ const NavigationMenu = ({
 	const [referralCampaignCode, setReferralCampaignCode] = useState(null);
 	const [showBadge, setShowBadge] = useState(true);
 
-	const handleSwitchChange = (panel) => (event, newActiveCartDiscount) => {
-		dispatch(setCurrentCartDiscount(newActiveCartDiscount ? panel : ''));
-	};
-
 	const handleDiscountSwitchChange = () => {
 		dispatch(setEnableCartDiscounts(!enableCartDiscounts));
+		dispatch(removeDiscount());
 	};
 
 	const handleGetQualifications = () => {
@@ -96,13 +92,6 @@ const NavigationMenu = ({
 			dispatch(setCurrentCartDiscount(''));
 		}
 	}, [dispatch, currentCartDiscount, enableCartDiscounts, items]);
-
-	const discountCampaigns = _orderBy(campaigns, ['metadata']['order'], ['asc']);
-
-	// We're creating separate filter only for Cart Discounts
-	const cartDiscountCampaigns = discountCampaigns.filter(
-		(camp) => camp.campaign_type === 'PROMOTION'
-	);
 
 	const referralCamp = useMemo(() => refCamp(campaigns), [campaigns]);
 
@@ -197,50 +186,30 @@ const NavigationMenu = ({
 						</NavDropdown.Item>
 					</NavDropdown>
 				)}
-				<NavDropdown
-					className="navigationMenuUser"
-					title={
-						<Tooltip title="Select cart discount">
-							<div className="cartDiscountsMenu">
-								<MonetizationOnIcon className="navigationMenuUserAvatar" />
-								<b>Cart discounts</b>
-							</div>
-						</Tooltip>
-					}
+				<div
+					onClick={(event) => event.stopPropagation()}
+					className="navigationMenuUser "
 				>
-					<NavDropdown.Item onClick={(event) => event.stopPropagation()}>
-						<div onClick={(event) => event.stopPropagation()}>
-							<OrangeSwitch
-								color="default"
-								disabled={currentCartDiscount ? true : false}
-								checked={enableCartDiscounts}
-								onChange={() => handleDiscountSwitchChange()}
-							/>
-							Enable Cart Discounts
-						</div>
-					</NavDropdown.Item>
-					{cartDiscountCampaigns.map((campaign) => (
-						<NavDropdown.Item
-							key={campaign.id}
-							className="navigationMenuDropdownItemCartDiscount"
-						>
-							<OrangeSwitch
-								color="default"
-								disabled={!enableCartDiscounts}
-								checked={currentCartDiscount === campaign.id ? true : false}
-								onClick={(event) => event.stopPropagation()}
-								onChange={handleSwitchChange(campaign.id)}
-							/>
-							<p>{campaign.name}</p>
-						</NavDropdown.Item>
-					))}
-				</NavDropdown>
+					<OrangeSwitch
+						color="default"
+						disabled={currentCartDiscount ? true : false}
+						checked={enableCartDiscounts}
+						onChange={() => handleDiscountSwitchChange()}
+					/>
+					<p className="navigationCartDiscount">
+						<b>Cart Discounts</b>
+					</p>
+				</div>
+
 				<NavDropdown
 					className="navigationMenuUser qualificationMenu"
 					title={
 						<Tooltip title="Check qualifications">
 							<div className="cartDiscountsMenu qualificationMenu">
-								<HelpOutlineIcon className="navigationMenuUserAvatar" />
+								<HelpOutlineIcon
+									style={{ color: 'rgba(0, 0, 0, 0.54)' }}
+									className="navigationMenuUserAvatar"
+								/>
 								<b>Qualifications</b>
 							</div>
 						</Tooltip>
@@ -277,19 +246,21 @@ const NavigationMenu = ({
 												qualification.metadata.qualification_name ||
 												qualification.code
 										)
-										.map((qualification, index) => (
-											<NavDropdown.Item
-												key={index}
-												className="navigationMenuDropdownItemCartDiscount qualificationMenu"
-											>
-												<p>
-													{qualification.name ||
-														qualification.metadata.name ||
-														qualification.metadata.qualification_name ||
-														qualification.code}
-												</p>
-											</NavDropdown.Item>
-										))}
+										.map((qualification, index) => {
+											return (
+												<NavDropdown.Item
+													key={index}
+													className="navigationMenuDropdownItemCartDiscount qualificationMenu navigationMenuDropdownItemQualification"
+												>
+													<p>
+														{qualification.name ||
+															qualification.metadata.name ||
+															qualification.metadata.qualification_name ||
+															qualification.code}
+													</p>
+												</NavDropdown.Item>
+											);
+										})}
 								</>
 							)}
 						</>
@@ -302,7 +273,7 @@ const NavigationMenu = ({
 						target="_blank"
 						className="navigationMenuIcon"
 					>
-						<DashboardIcon />
+						<DashboardIcon style={{ color: 'rgba(0, 0, 0, 0.54)' }} />
 					</IconButton>
 				</Tooltip>
 				{!_isEmpty(referralCampaign) && !_isEmpty(referralCampaignCode) && (

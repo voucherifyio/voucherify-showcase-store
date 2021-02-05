@@ -20,7 +20,11 @@ import {
 	SET_PAYMENT_METHOD,
 	REMOVE_DISCOUNT,
 } from '../constants';
-import { updateGiftCardBalance } from './userActions';
+import {
+	setApiCall,
+	setApiResponse,
+	updateGiftCardBalance,
+} from './userActions';
 
 export const getDiscountRequest = () => {
 	return { type: GET_DISCOUNT_REQUEST };
@@ -116,7 +120,11 @@ export const getCartDiscount = (activeCartDiscount) => async (
 			const promotionCampaigns = campaigns.find(
 				(camp) => camp.id === activeCartDiscount
 			).tiers;
+
+			dispatch(setApiCall(getCartDiscountPayload));
+
 			window.Voucherify.validate(getCartDiscountPayload, (res) => {
+				dispatch(setApiResponse(res));
 				const promotions = res.promotions;
 				const foundPromotions = promotions.filter((o1) =>
 					promotionCampaigns.some((o2) => o1.id === o2.id)
@@ -129,6 +137,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
 					resolve(discount);
 				} else {
 					toast.error('You are not eligible for the Cart Discount');
+					dispatch(setApiResponse(res.reason));
 					reject(new Error(res.reason));
 				}
 			});
@@ -142,6 +151,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
 		}
 	} catch (error) {
 		console.log('[getCartDiscount]', error);
+		dispatch(setApiResponse(error.toString()));
 		dispatch(getDiscountError());
 	}
 };
@@ -158,6 +168,7 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 	getDiscountPayload.code = voucherCode;
 	try {
 		dispatch(getDiscountRequest());
+		dispatch(setApiCall(getDiscountPayload));
 		const discount = await new Promise((resolve, reject) => {
 			window.Voucherify.setIdentity(currentCustomer.source_id);
 			window.Voucherify.validate(getDiscountPayload, (res) => {
@@ -186,10 +197,12 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 				)
 			);
 		}
+		dispatch(setApiResponse(discount));
 		dispatch(getDiscountSuccess(discount));
 	} catch (error) {
 		console.log('[getDiscount]', error);
 		dispatch(getDiscountError());
+		dispatch(setApiResponse(error.toString()));
 	}
 };
 
@@ -211,7 +224,10 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				paymentMethod
 			);
 			checkoutPayload.status = 'PAID';
-			await sendPayload(checkoutPayload, 'order');
+
+			dispatch(setApiCall(checkoutPayload));
+			const order = await sendPayload(checkoutPayload, 'order');
+			dispatch(setApiResponse(order));
 			dispatch(clearCart());
 		} else {
 			const checkoutPayload = setRedemptionPayload(
@@ -227,7 +243,12 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				const campaignName = discount.campaign;
 				checkoutPayload.code = discountCode;
 				const giftCardCode = discountCode;
-				await sendPayload(checkoutPayload, 'redeem');
+
+				dispatch(setApiCall(checkoutPayload));
+
+				const order = await sendPayload(checkoutPayload, 'redeem');
+
+				dispatch(setApiResponse(order));
 				dispatch(clearCart());
 				dispatch(
 					updateGiftCardBalance(
@@ -240,18 +261,24 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				// If voucher is applied
 				const discountCode = discount.code;
 				checkoutPayload.code = discountCode;
-				await sendPayload(checkoutPayload, 'redeem');
+				dispatch(setApiCall(checkoutPayload));
+				const order = await sendPayload(checkoutPayload, 'redeem');
+				dispatch(setApiResponse(order));
 				dispatch(clearCart());
 			} else if (discount.hasOwnProperty('banner')) {
 				// If promotion is applied
 				const promotionId = discount.id;
 				checkoutPayload.promotionId = promotionId;
-				await sendPayload(checkoutPayload, 'redeem');
+
+				dispatch(setApiCall(checkoutPayload));
+				const order = await sendPayload(checkoutPayload, 'redeem');
+				dispatch(setApiResponse(order));
 				dispatch(clearCart());
 			}
 		}
 	} catch (error) {
 		toast.error('There was a problem with your purchase');
 		console.log('[checkoutCart]', error);
+		dispatch(setApiResponse(error.toString()));
 	}
 };

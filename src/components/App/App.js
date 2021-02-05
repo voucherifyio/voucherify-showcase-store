@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import CustomersModal from '../CustomersModal';
 import Navigation from '../Navigation';
+import Sidebar from '../Sidebar';
 import AppRoutes from './AppRoutes';
 import { ToastContainer } from 'react-toastify';
 import Ribbon from '../Ribbon';
@@ -89,6 +90,7 @@ const App = ({
 					</Row>
 					<ToastContainer {...toastOptions} />
 				</Container>
+				<Sidebar />
 			</div>
 		);
 	}
