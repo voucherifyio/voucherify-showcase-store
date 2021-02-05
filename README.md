@@ -49,7 +49,7 @@ Your environment variables should look like this:
 - `REACT_APP_FRONTEND_APP_ID`="Your 'Client-side Keys' Application ID"
 - `REACT_APP_FRONTEND_KEY`="Your 'Client-side Keys' Secret KEY"
 - `REACT_APP_API_ENDPOINT` ="Optional endpoint url if your Voucherify project is not on Europe server - [read more](https://docs.voucherify.io/docs/api-endpoints)"
-- `REACT_APP_VERSION` = '2.6.3'
+- `REACT_APP_VERSION` = '2.6.5'
 - `REACT_APP_OPEN_WEATHER_API_KEY`="Required if you want to use [special geolocation campaign](#special-geolocation-campaigns)"
 
   The fastest way to install the demo store is to use the 'Deploy to Heroku' button and providing required environment variables.
