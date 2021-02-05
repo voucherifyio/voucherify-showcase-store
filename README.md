@@ -1,6 +1,6 @@
 # Voucherify Showcase Store - "Hot Beans" [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/voucherifyio/voucherify-showcase-store/)
 
-[Documentation](https://docs.voucherify.io/docs/welcome) | [API Reference](https://docs.voucherify.io/reference) | [Help Center](https://support.voucherify.io) | [Installation](#installation) | [Local installation](#local-installation) | [Local development](#local-development) | [Usage](#usage) | [Errors](#errors) | [Changelog](#changelog)
+[Documentation](https://docs.voucherify.io/docs/welcome) | [API Reference](https://docs.voucherify.io/reference) | [Help Center](https://support.voucherify.io) | [Installation](#installation) | [Local development](#local-development) | [Usage](#usage) | [Errors](#errors) | [Changelog](#changelog)
 
 Simple react demo store for showcasing Voucherify abilities.
 
@@ -54,17 +54,13 @@ Your environment variables should look like this:
 
   The fastest way to install the demo store is to use the 'Deploy to Heroku' button and providing required environment variables.
 
-After deployment, the script run `npm run setup`, to populate your Voucherify account with custom products, validation rules, campaigns, and vouchers.
+After deployment, the script run `npm run setup` (or if you are using Heroku server - `Heroku run npm setup`), to populate your Voucherify account with custom products, validation rules, campaigns, and vouchers.
+
+After setting up, run `npm start` to serve the entire app from port 3000.
 
 If you want to use an integrated Referral Campaign, you need to create Reward Tiers. Learn more at [Enabling Referral Campaign](#enabling-referral-campaign)
 
-If you want to list Customer Rewards & Loyalty Programs on the external Customer Cockpit rembember to [set up your Brand Details](https://support.voucherify.io/article/181-customer-cockpit-overview)
-
-## Local installation
-
-In the project folder run, `npm install` to set up the application. After that, the app runs a postinstall script to create Campaigns, Products Validation Rules, and Validation Rules assignment.
-
-After setting up, run `npm start` to serve the entire app from port 3000.
+If you want to list Customer Rewards & Loyalty Programs on the external Customer Cockpit remember to [set up your Brand Details](https://support.voucherify.io/article/181-customer-cockpit-overview)
 
 ## Local development
 
