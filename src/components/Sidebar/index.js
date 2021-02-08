@@ -43,7 +43,13 @@ TabPanel.propTypes = {
 	index: PropTypes.number,
 };
 
-const Sidebar = ({ enableSidebar, dispatch, apiCall, apiResponse }) => {
+const Sidebar = ({
+	enableSidebar,
+	dispatch,
+	apiCall,
+	apiResponse,
+	apiCallResponse,
+}) => {
 	const [toggle, setToggle] = useState(enableSidebar);
 	const [value, setValue] = useState(1);
 	const [expanded, setExpanded] = useState('');
@@ -131,7 +137,7 @@ const Sidebar = ({ enableSidebar, dispatch, apiCall, apiResponse }) => {
 				</Tabs>
 				<TabPanel value={value} index={1}>
 					<div className="voucherifyApi">Voucherify API</div>
-					<Accordion
+					{/* <Accordion
 						square
 						key={'api-request'}
 						expanded={expanded === 'api-request'}
@@ -165,42 +171,54 @@ const Sidebar = ({ enableSidebar, dispatch, apiCall, apiResponse }) => {
 								</pre>
 							</div>
 						</AccordionDetails>
-					</Accordion>
-					<Accordion
-						square
-						key={'api-response'}
-						expanded={expanded === 'api-response'}
-						onChange={handleTabChange('api-response')}
-						className={
-							expanded === 'api-response'
-								? 'accordionBackground open'
-								: 'accordionBackground'
-						}
-					>
-						<AccordionSummary
-							expandIcon={<ExpandMoreIcon />}
-							aria-controls="api-response"
-							id="api-response"
-						>
-							<p className="accordionTitle">Response</p>&nbsp;
-							<CallReceivedIcon style={{ color: 'rgba(0, 0, 0, 0.54)' }} />
-						</AccordionSummary>
-						<AccordionDetails>
-							<div className="apiBlock">
-								<pre style={{ whiteSpace: 'break-spaces' }}>
-									{apiResponse ? (
-										<code
-											dangerouslySetInnerHTML={{
-												__html: formatHighlight(apiResponse),
-											}}
+					</Accordion> */}
+					{apiCallResponse.map((callOrResponse, index) => {
+						return (
+							<Accordion
+								square
+								key={`api-data-${index}`}
+								expanded={expanded === `api-data-${index}`}
+								onChange={handleTabChange(`api-data-${index}`)}
+								className={
+									expanded === `api-data-${index}`
+										? 'accordionBackground open'
+										: 'accordionBackground'
+								}
+							>
+								<AccordionSummary
+									expandIcon={<ExpandMoreIcon />}
+									aria-controls={`api-response-${index}`}
+									id={`api-response-${index}`}
+								>
+									<p className="accordionTitle">{callOrResponse.type}</p>&nbsp;
+									{callOrResponse.type === 'Response' ? (
+										<CallReceivedIcon
+											style={{ color: 'rgba(0, 0, 0, 0.54)' }}
 										/>
 									) : (
-										<code>No api response yet</code>
+										<CallMadeIcon style={{ color: 'rgba(0, 0, 0, 0.54)' }} />
 									)}
-								</pre>
-							</div>
-						</AccordionDetails>
-					</Accordion>
+								</AccordionSummary>
+								<AccordionDetails>
+									<div className="apiBlock">
+										<pre style={{ whiteSpace: 'break-spaces' }}>
+											{callOrResponse ? (
+												<code
+													dangerouslySetInnerHTML={{
+														__html: formatHighlight(callOrResponse.data),
+													}}
+												/>
+											) : (
+												<code>
+													No api {callOrResponse.type.toLowerCase()} yet
+												</code>
+											)}
+										</pre>
+									</div>
+								</AccordionDetails>
+							</Accordion>
+						);
+					})}
 				</TabPanel>
 			</div>
 		</div>
@@ -212,6 +230,7 @@ const mapStateToProps = (state) => {
 		enableSidebar: state.userReducer.enableSidebar,
 		apiCall: state.userReducer.apiCall,
 		apiResponse: state.userReducer.apiResponse,
+		apiCallResponse: state.userReducer.apiCallResponse,
 	};
 };
 

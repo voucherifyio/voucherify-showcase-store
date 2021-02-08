@@ -53,23 +53,56 @@ const initialState = {
 	enableSidebar: false,
 	currentCartDiscount: null,
 	appVersion: null,
-	apiResponse: null,
-	apiCall: null,
+	apiResponse: [],
+	apiCall: [],
+	apiCallResponse: [],
 };
 
 export const userReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case SET_API_RESPONSE: {
-			return {
-				...state,
-				apiResponse: action.payload.apiResponse,
-			};
+			if (state.apiCallResponse.length === 10) {
+				const newApiCallResponse = [...state.apiCallResponse];
+				newApiCallResponse.shift();
+
+				return {
+					...state,
+					apiCallResponse: [
+						...newApiCallResponse,
+						{ data: action.payload.apiResponse, type: 'Response' },
+					],
+				};
+			} else {
+				return {
+					...state,
+					apiCallResponse: [
+						...state.apiCallResponse,
+						{ data: action.payload.apiResponse, type: 'Response' },
+					],
+				};
+			}
 		}
 		case SET_API_CALL: {
-			return {
-				...state,
-				apiCall: action.payload.apiCall,
-			};
+			if (state.apiCallResponse.length === 10) {
+				const newApiCallResponse = [...state.apiCallResponse];
+				newApiCallResponse.shift();
+
+				return {
+					...state,
+					apiCallResponse: [
+						...newApiCallResponse,
+						{ data: action.payload.apiCall, type: 'Request' },
+					],
+				};
+			} else {
+				return {
+					...state,
+					apiCallResponse: [
+						...state.apiCallResponse,
+						{ data: action.payload.apiCall, type: 'Request' },
+					],
+				};
+			}
 		}
 		case UPDATE_GIFT_CARD_BALANCE: {
 			const giftCardBalanceAfterRedemption =
