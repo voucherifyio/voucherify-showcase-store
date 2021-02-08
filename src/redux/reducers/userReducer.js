@@ -27,8 +27,6 @@ import {
 	ADD_NEW_CUSTOMERS_SUCCESS,
 	SET_CURRENT_APP_VERSION,
 	UPDATE_GIFT_CARD_BALANCE,
-	SET_API_RESPONSE,
-	SET_API_CALL,
 } from '../constants';
 import _isEmpty from 'lodash.isempty';
 
@@ -53,24 +51,10 @@ const initialState = {
 	enableSidebar: false,
 	currentCartDiscount: null,
 	appVersion: null,
-	apiResponse: null,
-	apiCall: null,
 };
 
 export const userReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case SET_API_RESPONSE: {
-			return {
-				...state,
-				apiResponse: action.payload.apiResponse,
-			};
-		}
-		case SET_API_CALL: {
-			return {
-				...state,
-				apiCall: action.payload.apiCall,
-			};
-		}
 		case UPDATE_GIFT_CARD_BALANCE: {
 			const giftCardBalanceAfterRedemption =
 				action.payload.giftCardBalanceAfterRedemption;

@@ -53,9 +53,9 @@ a:hover {
 	color: var(--orange) !important;
 }
 
-.mainContent.sidebar .sidebarWrapper {
+/* .mainContent.sidebar .sidebarWrapper {
 	right: -290px;
-}
+} */
 
 .webhookModalTitle {
 	font-weight: 900;
