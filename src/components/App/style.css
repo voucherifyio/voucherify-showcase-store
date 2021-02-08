@@ -53,9 +53,9 @@ a:hover {
 	color: var(--orange) !important;
 }
 
-.mainContent.sidebar .sidebarWrapper {
+/* .mainContent.sidebar .sidebarWrapper {
 	right: -290px;
-}
+} */
 
 .webhookModalTitle {
 	font-weight: 900;
@@ -124,7 +124,7 @@ a:hover {
 }
 
 .pageContainer {
-	padding-bottom: 5rem;
+	padding-bottom: 2rem;
 }
 
 .page {
@@ -229,11 +229,12 @@ a:hover {
 
 @media (max-width: 575.98px) {
 	.mainContent.sidebar .sidebarWrapper {
-		right: calc(-100vw + 70px);
+		/* right: calc(-100vw + 70px); */
+		right: calc(-100% + 70px);
 	}
 
 	.mainContent {
-		/* margin-right: 70px; */
+		margin-right: 70px;
 	}
 
 	.pageTitle {

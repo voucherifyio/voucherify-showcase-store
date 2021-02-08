@@ -9,7 +9,9 @@
 	padding: 0px 0 12px 0;
 	height: 82px;
 }
-
+.navigationMenuDropdownItemQualification:hover {
+	background-color: unset !important;
+}
 .navigationLogoWrapper {
 	padding-left: 0px;
 }
@@ -156,6 +158,10 @@
 
 .qualificationMenu {
 	cursor: default !important;
+}
+.navigationCartDiscount {
+	margin: 0;
+	align-self: center;
 }
 .getQualificationsWrapper {
 	display: flex;

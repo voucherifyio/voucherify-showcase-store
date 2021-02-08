@@ -26,7 +26,7 @@ const getCampaigns = async () => {
 		campaigns = campaigns.filter(
 			(campaign) =>
 				campaign.campaign_type !== 'PROMOTION' &&
-				campaign.metadata.auto_publish !== false
+				campaign.metadata.auto_publish === true
 		);
 		return campaigns;
 	} catch (e) {
@@ -82,16 +82,17 @@ router.route('/').get(async (req, res) => {
 				customer.source_id = `${fakeFirstName}@fakemail.com`;
 				customer.name = `${fakeFirstName} ${fakeLastName}`;
 				customer.metadata.firstName = fakeFirstName;
+				// customer.metadata
 
 				return voucherify.customers.create(customer);
 			})
 		);
 		// We're setting up dummy order for one of the customers
 		const dummyOrderCustomer = _find(storeCustomers, {
-			source_id: `${req.session.id}customer2`,
+			metadata: { demostore_id: 'customer2' },
 		});
 		await voucherify.orders.create({
-			source_id: 'hot_beans_dummyorder',
+			source_id: `hot_beans_dummyorder_${req.session.id}`,
 			items: [
 				{
 					quantity: 1,

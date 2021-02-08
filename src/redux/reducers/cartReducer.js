@@ -169,8 +169,6 @@ export const cartReducer = (state = initialState, action) => {
 				} else if (voucher.hasOwnProperty('loyalty')) {
 					// We're checking if discount has 'loyalty' property
 
-					let discountedAmount;
-
 					if (voucher.order.discount_amount < totalAmount) {
 						discountedAmount = voucher.order.discount_amount;
 					} else if (voucher.order.discount_amount >= totalAmount) {

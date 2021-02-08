@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _isEmpty from 'lodash.isempty';
 import Col from 'react-bootstrap/Col';
+import CartPromotionsList from './CartPromotionsList';
 
 const CartList = ({ items, discount, enableCartDiscounts }) => {
 	const [discountForm, setDiscountForm] = useState(true);
@@ -35,7 +36,10 @@ const CartList = ({ items, discount, enableCartDiscounts }) => {
 					<CartItem key={item.id} id={item.id} />
 				))}
 				<PaymentMethod />
-				{discountForm && <CartDiscountForm disable={disableForm} />}
+				{discountForm && !disableForm && (
+					<CartDiscountForm disable={disableForm} />
+				)}
+				{disableForm && <CartPromotionsList />}
 				{!_isEmpty(discount) && <CartDiscount />}
 				<CartTotals />
 			</div>

@@ -27,8 +27,8 @@ import {
 	ADD_NEW_CUSTOMERS_SUCCESS,
 	SET_CURRENT_APP_VERSION,
 	UPDATE_GIFT_CARD_BALANCE,
-} from "../constants";
-import _isEmpty from "lodash.isempty";
+} from '../constants';
+import _isEmpty from 'lodash.isempty';
 
 const initialState = {
 	currentCustomer: null,
@@ -39,7 +39,7 @@ const initialState = {
 	promotions: null,
 	vouchers: null,
 	qualifications: null,
-	paymentMethod: "Other",
+	paymentMethod: 'Other',
 	sessionId: null,
 	fetchingCoupons: false,
 	fetchingPromotions: false,
@@ -178,35 +178,35 @@ export const userReducer = (state = initialState, action) => {
 			};
 		}
 		case GET_CAMPAIGNS_SUCCESS: {
-			const newCampaings = action.payload.campaigns;
-			const oldCampaings = state.campaigns;
+			const newCampaigns = action.payload.campaigns;
+			const oldCampaigns = state.campaigns;
 
-			if (oldCampaings !== null) {
-				newCampaings.forEach((camp) => {
+			if (oldCampaigns !== null) {
+				newCampaigns.forEach((camp) => {
 					camp.coupons.forEach((coupon) => {
 						if (
 							!_isEmpty(
-								oldCampaings.find((c) => c.name === camp.name).coupons
+								oldCampaigns.find((c) => c.name === camp.name).coupons
 							) &&
 							!_isEmpty(
-								oldCampaings
+								oldCampaigns
 									.find((c) => c.name === camp.name)
 									.coupons.find((cu) => cu.code === coupon.code)
 							) &&
-							oldCampaings
+							oldCampaigns
 								.find((c) => c.name === camp.name)
 								.coupons.find((cu) => cu.code === coupon.code)
-								.hasOwnProperty("giftCardBalance")
+								.hasOwnProperty('giftCardBalance')
 						) {
 							if (
-								coupon.hasOwnProperty("giftCardAmount") &&
+								coupon.hasOwnProperty('giftCardAmount') &&
 								coupon.giftCardAmount >
-									oldCampaings
+									oldCampaigns
 										.find((c) => c.name === camp.name)
 										.coupons.find((cu) => cu.code === coupon.code)
 										.giftCardBalance
 							) {
-								coupon.giftCardBalance = oldCampaings
+								coupon.giftCardBalance = oldCampaigns
 									.find((c) => c.name === camp.name)
 									.coupons.find(
 										(cu) => cu.code === coupon.code
@@ -217,7 +217,7 @@ export const userReducer = (state = initialState, action) => {
 				});
 				return {
 					...state,
-					campaigns: newCampaings,
+					campaigns: newCampaigns,
 					fetchingCoupons: false,
 				};
 			} else {

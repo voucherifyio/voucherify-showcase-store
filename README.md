@@ -131,18 +131,6 @@ Campaign metadata:
 
 Creating a complete Referral Campaign with tier rewards & validation rules is not yet possible through API. That's why to use our predefined Referral Campaign, we need to set this up through the dashboard.
 
-Firstly, we need to create a Landing Page, through which we will publish referral codes to our customers.
-
-- From your project dashboard, create a new Landing Page and set its goal to 'Enrol in a referral program.'
-
-- Select a template
-
-- In template settings, set `Source ID` as an `e-mail` and disable `Double Opt-in.`
-
-- Prepare your landing page as it suits you and release it.
-
-- In your `Project Settings`, enable `Client-side publication` and `Client-side customer creation`. You also need to set your webhook endpoint if it is not selected.
-
 All other necessary elements for this first Referral Campaign - Rewards, Rewards Assignments, and Validation Rules - are created during the demo store setup. We need to create two Referral Campaigns Tiers and connect each tier with available rewards.
 
 - Navigate to the Referral Campaign details and then select the Rewards tab. Click `Edit` on the Referrer reward section.
@@ -157,7 +145,9 @@ All other necessary elements for this first Referral Campaign - Rewards, Rewards
 
 Repeat this process one more time - this time selecting reward `Referral Reward Tier 2 - Voucher 10%`. Remember to save changes to the campaign.
 
-After that, you will be able to publish a referral campaign code to a specific customer by passing his / her `source_id` as an `e-mail` in the Landing Page form.
+After that, you will be able to publish a referral campaign code to a specific customer by passing his / her `source_id` as an `e-mail` in the Landing Page form (with goal set as 'Enrol in a referral program.') or by manually publishing a referral code.
+
+Remember, if you're using Landing Page to publish codes, go to your `Project Settings` and enable `Client-side publication` and `Client-side customer creation`. You also need to set your webhook endpoint if it is not selected.
 
 [Learn more how to create Referral Program](https://cookbook.voucherify.io/article/240-airbnb-referral-program)
 

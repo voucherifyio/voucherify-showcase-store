@@ -116,6 +116,7 @@ export const getCartDiscount = (activeCartDiscount) => async (
 			const promotionCampaigns = campaigns.find(
 				(camp) => camp.id === activeCartDiscount
 			).tiers;
+
 			window.Voucherify.validate(getCartDiscountPayload, (res) => {
 				const promotions = res.promotions;
 				const foundPromotions = promotions.filter((o1) =>
@@ -211,6 +212,7 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				paymentMethod
 			);
 			checkoutPayload.status = 'PAID';
+
 			await sendPayload(checkoutPayload, 'order');
 			dispatch(clearCart());
 		} else {
@@ -227,7 +229,9 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				const campaignName = discount.campaign;
 				checkoutPayload.code = discountCode;
 				const giftCardCode = discountCode;
+
 				await sendPayload(checkoutPayload, 'redeem');
+
 				dispatch(clearCart());
 				dispatch(
 					updateGiftCardBalance(
@@ -246,6 +250,7 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				// If promotion is applied
 				const promotionId = discount.id;
 				checkoutPayload.promotionId = promotionId;
+
 				await sendPayload(checkoutPayload, 'redeem');
 				dispatch(clearCart());
 			}

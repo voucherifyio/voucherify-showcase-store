@@ -110,6 +110,7 @@ exports.vouchers = [
 		category: 'Hot Beans',
 		discount: { type: 'AMOUNT', amount_off: 1000 },
 		metadata: {
+			auto_publish: true,
 			name: 'Black Friday Coupon',
 			assigned_val_rules: 'Black Friday Coupon',
 			description: 'Global coupon',
@@ -123,6 +124,7 @@ exports.vouchers = [
 		category: 'Hot Beans',
 		discount: { type: 'PERCENT', percent_off: 50 },
 		metadata: {
+			auto_publish: true,
 			name: '50% Off',
 			assigned_val_rules: '',
 			description: 'Global coupon',
@@ -136,6 +138,7 @@ exports.vouchers = [
 		category: 'Hot Beans',
 		discount: { type: 'PERCENT', percent_off: 50, amount_limit: 10000 },
 		metadata: {
+			auto_publish: true,
 			name: 'Discount up to $100',
 			assigned_val_rules: '',
 			description: 'Global coupon',
@@ -149,6 +152,7 @@ exports.vouchers = [
 		category: 'Hot Beans',
 		discount: { type: 'PERCENT', percent_off: 15 },
 		metadata: {
+			auto_publish: true,
 			name: 'Visa Voucher',
 			assigned_val_rules: 'Visa Voucher',
 			description: 'Global coupon',
@@ -201,6 +205,7 @@ exports.campaigns = [
 			},
 		},
 		metadata: {
+			auto_publish: true,
 			assigned_val_rules: 'Gift Cards Campaign - Validation Rule',
 			description: 'Use your gift card to buy some amazing coffee!',
 		},
@@ -297,6 +302,7 @@ exports.campaigns = [
 			},
 		},
 		metadata: {
+			auto_publish: true,
 			assigned_val_rules: 'Get 5% off your first purchase',
 			description:
 				'Make an order and enjoy a 5% discount. Avaliable only for new customers.',
@@ -316,6 +322,7 @@ exports.campaigns = [
 			},
 		},
 		metadata: {
+			auto_publish: true,
 			assigned_val_rules:
 				'Happy Birthday Customer 2; Happy Birthday Customer 1; Happy Birthday Customer 3',
 			description:
@@ -333,6 +340,7 @@ exports.campaigns = [
 			discount: { percent_off: 100, type: 'PERCENT' },
 		},
 		metadata: {
+			auto_publish: true,
 			assigned_val_rules: 'Buy Two, Get Three',
 			description:
 				'Add 1x Johan & Nyström - Fika and 2x Johan & Nyström - Sumatra blend to get one 1x Johan & Nyström - Sumatra blend for free.',
@@ -352,6 +360,7 @@ exports.campaigns = [
 			discount: { percent_off: 5, type: 'PERCENT' },
 		},
 		metadata: {
+			auto_publish: true,
 			assigned_val_rules: '5% off for Illy - Arabica',
 			promotion_product: 'Illy - Arabica',
 			description:
@@ -371,6 +380,7 @@ exports.campaigns = [
 			discount: { amount_off: 1500, type: 'AMOUNT' },
 		},
 		metadata: {
+			auto_publish: true,
 			assigned_val_rules: 'Double Trouble',
 			description:
 				'Get a double-pack of Johan & Nyström - Bourbon to get a $15 off your order.',
@@ -412,6 +422,7 @@ exports.campaigns = [
 			discount: { percent_off: 13, type: 'PERCENT' },
 		},
 		metadata: {
+			auto_publish: true,
 			assigned_val_rules: 'Partnership Campaign',
 			description:
 				'If your location is Poland, enjoy a 13% discount avaliable only for our Polish customers.',

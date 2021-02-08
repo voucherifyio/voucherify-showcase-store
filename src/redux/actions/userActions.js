@@ -462,6 +462,7 @@ export const getQualifications = () => async (dispatch, getState) => {
 	);
 	try {
 		dispatch(getQualificationsRequest());
+
 		const res = await fetch(
 			`${process.env.REACT_APP_API_URL || ''}/qualifications`,
 			{
@@ -472,6 +473,7 @@ export const getQualifications = () => async (dispatch, getState) => {
 			}
 		);
 		const qualifications = await res.json();
+
 		dispatch(getQualificationsSuccess(qualifications));
 	} catch (error) {
 		console.log('[getQualifications][Error]', error);
