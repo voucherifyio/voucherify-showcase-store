@@ -78,6 +78,7 @@ const DiscountCarouselSignUpModal = ({
 							<a
 								href="https://support.voucherify.io/article/19-how-does-the-distribution-manager-work"
 								className="voucherifyLink"
+								rel="noopener noreferrer"
 							>
 								Help Center
 							</a>

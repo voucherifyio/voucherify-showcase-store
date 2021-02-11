@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import _isEmpty from "lodash.isempty";
-import Spinner from "react-bootstrap/Spinner";
-import PropTypes from "prop-types";
-import ArrowLine from "../../assets/ArrowLine.png";
-import CustomersModalCustomer from "./CustomersModalCustomer";
-import "./style.css";
-import VoucherifyLogo from "../../assets/VoucherifyLogo.png";
-import ArrowIcon from "../../assets/ArrowIcon.png";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import _isEmpty from 'lodash.isempty';
+import Spinner from 'react-bootstrap/Spinner';
+import PropTypes from 'prop-types';
+import ArrowLine from '../../assets/ArrowLine.png';
+import CustomersModalCustomer from './CustomersModalCustomer';
+import './style.css';
+import VoucherifyLogo from '../../assets/VoucherifyLogo.png';
+import ArrowIcon from '../../assets/ArrowIcon.png';
 const CustomersModal = ({ customers, campaigns }) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	/* eslint-disable */
 	const herokuLink =
-		"https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F";
+		'https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F';
 	/* eslint-enable */
 
 	useEffect(() => {
@@ -36,7 +36,7 @@ const CustomersModal = ({ customers, campaigns }) => {
 						<p className="customersModalDesc">
 							Log in to explore various promotional and referral workflows we
 							have predefined in Voucherify dashboard. You can enable and
-							disable active promotions in the control panel on your right.{" "}
+							disable active promotions in the control panel on your right.{' '}
 							<span className="customersModalDescBold">
 								Remember to switch between customers to learn how promotion
 								personalization works!
@@ -47,9 +47,9 @@ const CustomersModal = ({ customers, campaigns }) => {
 						{customers
 							.filter(
 								(cust) =>
-									cust.metadata.title !== "Referral Friend #1" &&
-									cust.metadata.title !== "Referral Friend #2" &&
-									cust.metadata.title !== "Referral Friend #3"
+									cust.metadata.title !== 'Referral Friend #1' &&
+									cust.metadata.title !== 'Referral Friend #2' &&
+									cust.metadata.title !== 'Referral Friend #3'
 							)
 							.map((customer) => (
 								<CustomersModalCustomer
@@ -60,7 +60,12 @@ const CustomersModal = ({ customers, campaigns }) => {
 					</div>
 					<div className="customersModalSourceLinks">
 						<div className="sourceLinkWrapper">
-							<a href={herokuLink} className="customersModalArrowLink">
+							<a
+								href={herokuLink}
+								className="customersModalArrowLink"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
 								<img className="customersModalArrow" alt="" src={ArrowIcon} />
 								<div className="customersModalLink">
 									Connect this showcase to your Voucherify account
@@ -71,6 +76,7 @@ const CustomersModal = ({ customers, campaigns }) => {
 							<a
 								href="https://github.com/voucherifyio/voucherify-showcase-store"
 								className="customersModalArrowLink"
+								rel="noopener noreferrer"
 							>
 								<img className="customersModalArrow" alt="" src={ArrowIcon} />
 								<div className="customersModalLink">Check the source code</div>
@@ -80,7 +86,11 @@ const CustomersModal = ({ customers, campaigns }) => {
 
 					<div className="customersModalFooter">
 						<div className="voucherifyLogoWrapper">
-							<a href="https://voucherify.io">
+							<a
+								href="https://voucherify.io"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
 								<img
 									className="voucherifyLogo"
 									alt="Voucherify logo"

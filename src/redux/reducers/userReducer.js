@@ -53,14 +53,14 @@ const initialState = {
 	enableSidebar: false,
 	currentCartDiscount: null,
 	appVersion: null,
-	apiResponse: [],
-	apiCall: [],
 	apiCallResponse: [],
 };
 
 export const userReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case SET_API_RESPONSE: {
+			const id = '_' + Math.random().toString(36).substr(2, 9);
+
 			if (state.apiCallResponse.length === 10) {
 				const newApiCallResponse = [...state.apiCallResponse];
 				newApiCallResponse.shift();
@@ -69,7 +69,12 @@ export const userReducer = (state = initialState, action) => {
 					...state,
 					apiCallResponse: [
 						...newApiCallResponse,
-						{ data: action.payload.apiResponse, type: 'Response' },
+						{
+							id,
+							data: action.payload.apiResponse,
+							type: 'Response',
+							title: action.payload.title,
+						},
 					],
 				};
 			} else {
@@ -77,12 +82,19 @@ export const userReducer = (state = initialState, action) => {
 					...state,
 					apiCallResponse: [
 						...state.apiCallResponse,
-						{ data: action.payload.apiResponse, type: 'Response' },
+						{
+							id,
+							data: action.payload.apiResponse,
+							type: 'Response',
+							title: action.payload.title,
+						},
 					],
 				};
 			}
 		}
 		case SET_API_CALL: {
+			const id = '_' + Math.random().toString(36).substr(2, 9);
+
 			if (state.apiCallResponse.length === 10) {
 				const newApiCallResponse = [...state.apiCallResponse];
 				newApiCallResponse.shift();
@@ -91,7 +103,12 @@ export const userReducer = (state = initialState, action) => {
 					...state,
 					apiCallResponse: [
 						...newApiCallResponse,
-						{ data: action.payload.apiCall, type: 'Request' },
+						{
+							id,
+							data: action.payload.apiCall,
+							type: 'Request',
+							title: action.payload.title,
+						},
 					],
 				};
 			} else {
@@ -99,7 +116,12 @@ export const userReducer = (state = initialState, action) => {
 					...state,
 					apiCallResponse: [
 						...state.apiCallResponse,
-						{ data: action.payload.apiCall, type: 'Request' },
+						{
+							id,
+							data: action.payload.apiCall,
+							type: 'Request',
+							title: action.payload.title,
+						},
 					],
 				};
 			}

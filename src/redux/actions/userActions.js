@@ -35,12 +35,12 @@ import {
 	SET_API_RESPONSE,
 } from '../constants';
 
-export const setApiCall = (apiCall) => {
-	return { type: SET_API_CALL, payload: { apiCall } };
+export const setApiCall = (title, apiCall) => {
+	return { type: SET_API_CALL, payload: { title, apiCall } };
 };
 
-export const setApiResponse = (apiResponse) => {
-	return { type: SET_API_RESPONSE, payload: { apiResponse } };
+export const setApiResponse = (title, apiResponse) => {
+	return { type: SET_API_RESPONSE, payload: { title, apiResponse } };
 };
 
 export const isOldAppVersion = () => {
@@ -473,7 +473,7 @@ export const getQualifications = () => async (dispatch, getState) => {
 	try {
 		dispatch(getQualificationsRequest());
 
-		dispatch(setApiCall(qualificationsPayload));
+		dispatch(setApiCall('Qualifications', qualificationsPayload));
 		const res = await fetch(
 			`${process.env.REACT_APP_API_URL || ''}/qualifications`,
 			{
@@ -486,11 +486,9 @@ export const getQualifications = () => async (dispatch, getState) => {
 		const qualifications = await res.json();
 
 		dispatch(getQualificationsSuccess(qualifications));
-		dispatch(setApiResponse(qualifications));
+		dispatch(setApiResponse('Qualifications', qualifications));
 	} catch (error) {
 		console.log('[getQualifications][Error]', error);
-
-		dispatch(setApiResponse(error.toString()));
 
 		dispatch(getQualificationsError());
 	}

@@ -118,7 +118,11 @@ const Sidebar = ({
 
 					<div className="tabLinks tabIcon">
 						<Tooltip title="Check documentation">
-							<a href="https://github.com/voucherifyio/voucherify-showcase-store">
+							<a
+								href="https://github.com/voucherifyio/voucherify-showcase-store"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
 								<IconButton>
 									<GitHubIcon />
 								</IconButton>
@@ -127,7 +131,11 @@ const Sidebar = ({
 					</div>
 					<div className="tabIcon">
 						<Tooltip title="Deploy">
-							<a href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F">
+							<a
+								href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2F&template=https%3A%2F%2Fgithub.com%2Fvoucherifyio%2Fvoucherify-showcase-store%2F"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
 								<IconButton>
 									<LaunchIcon />
 								</IconButton>
@@ -172,25 +180,28 @@ const Sidebar = ({
 							</div>
 						</AccordionDetails>
 					</Accordion> */}
-					{apiCallResponse.map((callOrResponse, index) => {
+					{apiCallResponse.map((callOrResponse) => {
 						return (
 							<Accordion
 								square
-								key={`api-data-${index}`}
-								expanded={expanded === `api-data-${index}`}
-								onChange={handleTabChange(`api-data-${index}`)}
+								key={`api-data-${callOrResponse.id}`}
+								expanded={expanded === `api-data-${callOrResponse.id}`}
+								onChange={handleTabChange(`api-data-${callOrResponse.id}`)}
 								className={
-									expanded === `api-data-${index}`
+									expanded === `api-data-${callOrResponse.id}`
 										? 'accordionBackground open'
 										: 'accordionBackground'
 								}
 							>
 								<AccordionSummary
 									expandIcon={<ExpandMoreIcon />}
-									aria-controls={`api-response-${index}`}
-									id={`api-response-${index}`}
+									aria-controls={`api-response-${callOrResponse.id}`}
+									id={`api-response-${callOrResponse.id}`}
 								>
-									<p className="accordionTitle">{callOrResponse.type}</p>&nbsp;
+									<p className="accordionTitle">
+										{callOrResponse.title} {callOrResponse.type}
+									</p>
+									&nbsp;
 									{callOrResponse.type === 'Response' ? (
 										<CallReceivedIcon
 											style={{ color: 'rgba(0, 0, 0, 0.54)' }}

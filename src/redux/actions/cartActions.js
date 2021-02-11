@@ -121,10 +121,10 @@ export const getCartDiscount = (activeCartDiscount) => async (
 				(camp) => camp.id === activeCartDiscount
 			).tiers;
 
-			dispatch(setApiCall(getCartDiscountPayload));
+			dispatch(setApiCall('Cart Discounts', getCartDiscountPayload));
 
 			window.Voucherify.validate(getCartDiscountPayload, (res) => {
-				dispatch(setApiResponse(res));
+				dispatch(setApiResponse('Cart Discounts', res));
 				const promotions = res.promotions;
 				const foundPromotions = promotions.filter((o1) =>
 					promotionCampaigns.some((o2) => o1.id === o2.id)
@@ -132,12 +132,10 @@ export const getCartDiscount = (activeCartDiscount) => async (
 
 				// We're selecting the current highest promotion tier
 				const discount = foundPromotions[0];
-
-				if (discount) {
+				if (discount !== undefined) {
 					resolve(discount);
 				} else {
 					toast.error('You are not eligible for the Cart Discount');
-					dispatch(setApiResponse(res.reason));
 					reject(new Error(res.reason));
 				}
 			});
@@ -151,7 +149,6 @@ export const getCartDiscount = (activeCartDiscount) => async (
 		}
 	} catch (error) {
 		console.log('[getCartDiscount]', error);
-		dispatch(setApiResponse(error.toString()));
 		dispatch(getDiscountError());
 	}
 };
@@ -168,10 +165,12 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 	getDiscountPayload.code = voucherCode;
 	try {
 		dispatch(getDiscountRequest());
-		dispatch(setApiCall(getDiscountPayload));
+		dispatch(setApiCall('Validate', getDiscountPayload));
 		const discount = await new Promise((resolve, reject) => {
 			window.Voucherify.setIdentity(currentCustomer.source_id);
 			window.Voucherify.validate(getDiscountPayload, (res) => {
+				dispatch(setApiResponse('Validate', res));
+
 				if (res.valid) {
 					resolve(res);
 				} else {
@@ -197,12 +196,10 @@ export const getDiscount = (voucherCode) => async (dispatch, getState) => {
 				)
 			);
 		}
-		dispatch(setApiResponse(discount));
 		dispatch(getDiscountSuccess(discount));
 	} catch (error) {
 		console.log('[getDiscount]', error);
 		dispatch(getDiscountError());
-		dispatch(setApiResponse(error.toString()));
 	}
 };
 
@@ -225,9 +222,9 @@ export const checkoutCart = () => async (dispatch, getState) => {
 			);
 			checkoutPayload.status = 'PAID';
 
-			dispatch(setApiCall(checkoutPayload));
+			dispatch(setApiCall('Order', checkoutPayload));
 			const order = await sendPayload(checkoutPayload, 'order');
-			dispatch(setApiResponse(order));
+			dispatch(setApiResponse('Order', order));
 			dispatch(clearCart());
 		} else {
 			const checkoutPayload = setRedemptionPayload(
@@ -244,11 +241,11 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				checkoutPayload.code = discountCode;
 				const giftCardCode = discountCode;
 
-				dispatch(setApiCall(checkoutPayload));
+				dispatch(setApiCall('Redemption', checkoutPayload));
 
 				const order = await sendPayload(checkoutPayload, 'redeem');
 
-				dispatch(setApiResponse(order));
+				dispatch(setApiResponse('Redemption', order));
 				dispatch(clearCart());
 				dispatch(
 					updateGiftCardBalance(
@@ -261,24 +258,23 @@ export const checkoutCart = () => async (dispatch, getState) => {
 				// If voucher is applied
 				const discountCode = discount.code;
 				checkoutPayload.code = discountCode;
-				dispatch(setApiCall(checkoutPayload));
+				dispatch(setApiCall('Redemption', checkoutPayload));
 				const order = await sendPayload(checkoutPayload, 'redeem');
-				dispatch(setApiResponse(order));
+				dispatch(setApiResponse('Redemption', order));
 				dispatch(clearCart());
 			} else if (discount.hasOwnProperty('banner')) {
 				// If promotion is applied
 				const promotionId = discount.id;
 				checkoutPayload.promotionId = promotionId;
 
-				dispatch(setApiCall(checkoutPayload));
+				dispatch(setApiCall('Redemption', checkoutPayload));
 				const order = await sendPayload(checkoutPayload, 'redeem');
-				dispatch(setApiResponse(order));
+				dispatch(setApiResponse('Redemption', order));
 				dispatch(clearCart());
 			}
 		}
 	} catch (error) {
 		toast.error('There was a problem with your purchase');
 		console.log('[checkoutCart]', error);
-		dispatch(setApiResponse(error.toString()));
 	}
 };
