@@ -17,8 +17,6 @@ const refSliderCamp = (campaigns) =>
 
 const DiscountCarousel = ({ campaigns }) => {
 	const sliderCamps = useMemo(() => refSliderCamp(campaigns), [campaigns]);
-
-	if (Boolean(process.env.REACT_APP_OPEN_WEATHER_API_KEY)) {
 		return (
 			<>
 				<div className="carouselWrapper">
@@ -55,35 +53,6 @@ const DiscountCarousel = ({ campaigns }) => {
 				</div>
 			</>
 		);
-	} else {
-		return (
-			<>
-				<div className="carouselWrapper">
-					<Carousel
-						showThumbs={false}
-						stopOnHover={true}
-						showStatus={false}
-						autoPlay={true}
-						interval={5000}
-					>
-						{sliderCamps.map((campaign, i) => (
-							<div
-								key={i}
-								className="carousel"
-								style={{
-									background: `url(${campaign.metadata.carousel_banner_img_url}) no-repeat center`,
-									backgroundSize: 'cover',
-								}}
-							>
-								<DiscountCarouselBanner campaign={campaign} />
-							</div>
-						))}
-					</Carousel>
-				</div>
-			</>
-		);
-	}
-};
 
 const mapStateToProps = (state) => {
 	return {

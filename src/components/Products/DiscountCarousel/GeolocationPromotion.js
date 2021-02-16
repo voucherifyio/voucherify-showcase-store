@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import './style.css';
+
+import React, { useState } from 'react';
+
+import PropTypes from 'prop-types';
 import VoucherifyButton from '../../App/VoucherifyButton';
-import { publishCampaign } from '../../../redux/actions/userActions';
+import { connect } from 'react-redux';
+import { updateCurrentCustomerData } from '../../../redux/actions/userActions';
 
 const GeolocationPromotion = ({ dispatch }) => {
 	const [geolocationText, setGeolocationText] = useState('Share geolocation');
@@ -22,31 +24,11 @@ const GeolocationPromotion = ({ dispatch }) => {
 		setGeolocationText('Error');
 	};
 
-	const locationSuccess = async (position) => {
-		// We're passing receivied coordinates to OpenWeatherMap API
-		const lat = position.coords.latitude;
-		const lon = position.coords.longitude;
-		const res = await fetch(
-			`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}&units=metric`
-		);
-		const weather = await res.json();
-		let isSnow = false;
+	const locationSuccess = () => {
+		const isSnow = true;
 
-		// We're checking current weather for snow
-		weather.weather.forEach((data) => {
-			if (data.main === 'Snow') {
-				isSnow = true;
-			}
-		});
-
-		if (isSnow) {
-			// If it's snowing we're publishing voucher from 'Let it snow' campaign
-			await dispatch(publishCampaign({ name: 'Let it snow' }));
-			setGeolocationText('Success!');
-		} else {
-			// If none of the above, the customer can try one more time after 5 seconds
-			setGeolocationText('Better luck next time!');
-		}
+		setGeolocationText('Success!');
+		await dispatch(updateCurrentCustomerData({ metadata: {isSnow} }));
 
 		setTimeout(() => {
 			setGeolocationText('Share geolocation');
