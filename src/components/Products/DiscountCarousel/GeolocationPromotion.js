@@ -24,11 +24,11 @@ const GeolocationPromotion = ({ dispatch }) => {
 		setGeolocationText('Error');
 	};
 
-	const locationSuccess = () => {
+	const locationSuccess = async () => {
 		const isSnow = true;
 
 		setGeolocationText('Success!');
-		await dispatch(updateCurrentCustomerData({ metadata: {isSnow} }));
+		await dispatch(updateCurrentCustomerData({ metadata: { isSnow } }));
 
 		setTimeout(() => {
 			setGeolocationText('Share geolocation');
