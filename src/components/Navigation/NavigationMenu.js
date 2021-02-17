@@ -1,36 +1,37 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import IconButton from '@material-ui/core/IconButton';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import Badge from '@material-ui/core/Badge';
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import Col from 'react-bootstrap/Col';
-import Tooltip from '@material-ui/core/Tooltip';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import _isEmpty from 'lodash.isempty';
-import { setEnableSidebar, newSession } from '../../redux/actions/userActions';
-import { getCurrentCustomer } from '../../redux/actions/userActions';
-import { clearMessages } from '../../redux/actions/webhookActions';
-import Spinner from 'react-bootstrap/Spinner';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ReferralCampaignModal from './ReferralCampaignModal';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import Switch from '@material-ui/core/Switch';
-import {
-	setEnableCartDiscounts,
-	setCurrentCartDiscount,
-	getQualifications,
-} from '../../redux/actions/userActions';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
 	getCartDiscount,
 	removeDiscount,
 	removePromotionFromCart,
 } from '../../redux/actions/cartActions';
+import {
+	getQualifications,
+	setCurrentCartDiscount,
+	setEnableCartDiscounts,
+} from '../../redux/actions/userActions';
+import { newSession, setEnableSidebar } from '../../redux/actions/userActions';
+
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Badge from '@material-ui/core/Badge';
+import Col from 'react-bootstrap/Col';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import IconButton from '@material-ui/core/IconButton';
+import { Link } from 'react-router-dom';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import PropTypes from 'prop-types';
+import ReferralCampaignModal from './ReferralCampaignModal';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import Spinner from 'react-bootstrap/Spinner';
+import Switch from '@material-ui/core/Switch';
+import Tooltip from '@material-ui/core/Tooltip';
 import VoucherifyButton from '../App/VoucherifyButton';
+import _isEmpty from 'lodash.isempty';
+import { clearMessages } from '../../redux/actions/webhookActions';
+import { connect } from 'react-redux';
+import { getCurrentCustomer } from '../../redux/actions/userActions';
+import { withStyles } from '@material-ui/core/styles';
 
 const refCamp = (campaigns) =>
 	campaigns.find((camp) => camp.name === 'Referral Campaign');
@@ -97,6 +98,10 @@ const NavigationMenu = ({
 
 	const handleOnHide = () => {
 		setModalShow(!modalShow);
+	};
+
+	const handleCopyQualification = (e) => {
+		e.stopPropagation();
 	};
 
 	const handleSelectCustomer = (id) => {
@@ -247,17 +252,52 @@ const NavigationMenu = ({
 												qualification.code
 										)
 										.map((qualification, index) => {
+											console.log(qualification);
+											let customerCoupon = {};
+											if (qualification.object === 'promotion_tier') {
+												customerCoupon.code = 'Auto discount';
+											} else if (qualification?.code) {
+												customerCoupon.code = qualification.code;
+											} else {
+												customerCoupon = campaigns
+													.find((c) => c.name === qualification.name)
+													?.coupons.find(
+														(coupon) => coupon.customer === currentCustomer.id
+													);
+											}
 											return (
 												<NavDropdown.Item
 													key={index}
 													className="navigationMenuDropdownItemCartDiscount qualificationMenu navigationMenuDropdownItemQualification"
+													onClick={(e) => handleCopyQualification(e)}
 												>
-													<p>
-														{qualification.name ||
-															qualification.metadata.name ||
-															qualification.metadata.qualification_name ||
-															qualification.code}
-													</p>
+													<div
+														className="qualification"
+														onClick={(e) => handleCopyQualification(e)}
+													>
+														<div className="qualification-name ">
+															{qualification.name ||
+																qualification.metadata.name ||
+																qualification.metadata.qualification_name ||
+																qualification.code}
+														</div>
+														{customerCoupon?.code &&
+														customerCoupon.code !== 'Auto discount' ? (
+															<VoucherifyButton
+																code={
+																	customerCoupon?.code || qualification.code
+																}
+																text="Copy code"
+																style={{ margin: '0px 0px' }}
+															/>
+														) : (
+															<div className="qualification-none">
+																<b>
+																	{customerCoupon?.code || 'Not yet published'}
+																</b>
+															</div>
+														)}
+													</div>
 												</NavDropdown.Item>
 											);
 										})}

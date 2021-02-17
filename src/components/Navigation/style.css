@@ -159,6 +159,47 @@
 .qualificationMenu {
 	cursor: default !important;
 }
+
+.qualification {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+	height: 25px;
+	max-width: 250px;
+	cursor: pointer;
+	align-content: center;
+}
+
+.qualification-name {
+	height: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100%;
+	align-self: center;
+}
+.qualification > *:nth-child(2) {
+	display: none;
+	/* height: 50px; */
+	height: 100%;
+
+	margin: 0px 0px !important;
+	padding: 0px 10px !important;
+}
+.qualification:hover > *:nth-child(1) {
+	display: none;
+}
+.qualification:hover > *:nth-child(2) {
+	display: block;
+}
+
+.qualification > .qualification-none {
+	cursor: default;
+	padding: 0px !important;
+	height: 100%;
+}
+
 .navigationCartDiscount {
 	margin: 0;
 	align-self: center;
@@ -182,6 +223,11 @@
 		height: unset;
 		/* width: calc(100vw - 90px); */
 	}
+	.qualification {
+		width: 100%;
+		max-width: unset;
+	}
+
 	.dropdown-menu.show {
 		max-height: 420%;
 		overflow-y: auto;
