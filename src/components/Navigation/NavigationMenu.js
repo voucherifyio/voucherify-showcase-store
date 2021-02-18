@@ -288,6 +288,7 @@ const NavigationMenu = ({
 																	customerCoupon?.code || qualification.code
 																}
 																text="Copy code"
+																tooltip={false}
 																style={{ margin: '0px 0px' }}
 															/>
 														) : (
