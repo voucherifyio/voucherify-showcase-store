@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+
 import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const VoucherifyButton = ({
 	code,
@@ -24,13 +25,12 @@ const VoucherifyButton = ({
 		setCurrentText(code);
 	};
 
-	if (specialText && code && !tooltip) {
+	if ((specialText && code && !tooltip) || (code && !tooltip)) {
 		return (
 			<Button
 				className="voucherifyButtonOrange"
 				onClick={() => {
 					navigator.clipboard.writeText(code);
-					handleTooltipTitle();
 				}}
 			>
 				{currentText}
