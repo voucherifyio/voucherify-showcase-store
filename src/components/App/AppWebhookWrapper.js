@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import _isEmpty from 'lodash.isempty';
 import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AppModal from './AppModal';
-import socketIOClient from 'socket.io-client';
-import VoucherifyButton from './VoucherifyButton';
-import { getMessage, removeMessage } from '../../redux/actions/webhookActions';
+
+import React, { useEffect, useState } from 'react';
 import {
-	getCampaigns,
 	addPublishedCodes,
+	getCampaigns,
 } from '../../redux/actions/userActions';
-import { addProductReward } from '../../redux/actions/cartActions';
+import { getMessage, removeMessage } from '../../redux/actions/webhookActions';
+
+import AppModal from './AppModal';
 import PersonIcon from '@material-ui/icons/Person';
+import PropTypes from 'prop-types';
+import VoucherifyButton from './VoucherifyButton';
+import _isEmpty from 'lodash.isempty';
+import { addProductReward } from '../../redux/actions/cartActions';
+import { connect } from 'react-redux';
+import socketIOClient from 'socket.io-client';
 
 const AppWebhookWrapper = ({
 	dispatch,
@@ -236,7 +238,10 @@ const AppWebhookWrapper = ({
 				{currentMessageCustomer.messages[0].hasOwnProperty('code') && (
 					<div className="emailCta">
 						<p>Here is your code, copy it to use in checkout</p>
-						<VoucherifyButton code={currentMessageCustomer.messages[0].code} />
+						<VoucherifyButton
+							tooltip
+							code={currentMessageCustomer.messages[0].code}
+						/>
 					</div>
 				)}
 				{currentMessageCustomer.messages[0].hasOwnProperty('product') && (
