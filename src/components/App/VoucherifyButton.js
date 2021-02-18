@@ -31,6 +31,7 @@ const VoucherifyButton = ({
 				className="voucherifyButtonOrange"
 				onClick={() => {
 					navigator.clipboard.writeText(code);
+					handleChangeText();
 				}}
 			>
 				{currentText}
